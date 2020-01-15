@@ -8,6 +8,19 @@
 
 import CoreGraphics
 
+struct UndirectedEdge: Equatable, Hashable {
+    var first: Character
+    var second: Character
+
+    func hash(into hasher: inout Hasher) {
+        Set([self.first, self.second]).hash(into: &hasher)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return Set([lhs.first, lhs.second]) == Set([rhs.first, rhs.second])
+    }
+}
+
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
 struct VertexWeightedGraph {
@@ -41,6 +54,18 @@ struct VertexWeightedGraph {
 
     var vertices: Set<Vertex> {
         return Set(self.data.keys)
+    }
+
+    var edges: [(Vertex, Vertex)] {
+        var edges: Set<UndirectedEdge> = []
+
+        for vertex in self.data.keys {
+            for neighbor in self.vertices(adjacentTo: vertex) {
+                edges.insert(UndirectedEdge(first: vertex, second: neighbor))
+            }
+        }
+
+        return edges.map({ ($0.first, $0.second) })
     }
 
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
