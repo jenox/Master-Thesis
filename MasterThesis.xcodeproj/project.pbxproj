@@ -12,6 +12,19 @@
 		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
 		CBDA154D23CB670C0070847D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */; };
 		CBDA155523CB67400070847D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155423CB67400070847D /* ViewController.swift */; };
+		CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
+		CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155E23CB88850070847D /* MasterThesisTests.swift */; };
+		CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
+		CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156523CB9D1C0070847D /* CGVector.swift */; };
+		CBDA156823CB9D240070847D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156723CB9D240070847D /* Angle.swift */; };
+		CBDA156923CB9D320070847D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156723CB9D240070847D /* Angle.swift */; };
+		CBDA156A23CB9D340070847D /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156523CB9D1C0070847D /* CGVector.swift */; };
+		CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
+		CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
+		CBDA157023CBA70B0070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
+		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
+		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
+		CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +35,26 @@
 		CBDA154C23CB670C0070847D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBDA154E23CB670C0070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBDA155423CB67400070847D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexWeightedGraph.swift; sourceTree = "<group>"; };
+		CBDA155C23CB88850070847D /* MasterThesisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MasterThesisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBDA155E23CB88850070847D /* MasterThesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterThesisTests.swift; sourceTree = "<group>"; };
+		CBDA156023CB88850070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CBDA156523CB9D1C0070847D /* CGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
+		CBDA156723CB9D240070847D /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
+		CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
+		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
+		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CBDA153A23CB670B0070847D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBDA155923CB88850070847D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				CBDA153F23CB670B0070847D /* MasterThesis */,
+				CBDA155D23CB88850070847D /* MasterThesisTests */,
 				CBDA153E23CB670B0070847D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				CBDA153D23CB670B0070847D /* MasterThesis.app */,
+				CBDA155C23CB88850070847D /* MasterThesisTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,6 +87,12 @@
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
 				CBDA155423CB67400070847D /* ViewController.swift */,
+				CBDA156F23CBA70B0070847D /* Collection.swift */,
+				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
+				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
+				CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */,
+				CBDA156523CB9D1C0070847D /* CGVector.swift */,
+				CBDA156723CB9D240070847D /* Angle.swift */,
 				CBDA154623CB670C0070847D /* Assets.xcassets */,
 				CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */,
 				CBDA154E23CB670C0070847D /* Info.plist */,
@@ -70,6 +107,15 @@
 				CBDA154923CB670C0070847D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CBDA155D23CB88850070847D /* MasterThesisTests */ = {
+			isa = PBXGroup;
+			children = (
+				CBDA155E23CB88850070847D /* MasterThesisTests.swift */,
+				CBDA156023CB88850070847D /* Info.plist */,
+			);
+			path = MasterThesisTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,6 +138,23 @@
 			productReference = CBDA153D23CB670B0070847D /* MasterThesis.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CBDA155B23CB88850070847D /* MasterThesisTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBDA156123CB88850070847D /* Build configuration list for PBXNativeTarget "MasterThesisTests" */;
+			buildPhases = (
+				CBDA155823CB88850070847D /* Sources */,
+				CBDA155923CB88850070847D /* Frameworks */,
+				CBDA155A23CB88850070847D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MasterThesisTests;
+			productName = MasterThesisTests;
+			productReference = CBDA155C23CB88850070847D /* MasterThesisTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -103,6 +166,9 @@
 				ORGANIZATIONNAME = "Christian Schnorr";
 				TargetAttributes = {
 					CBDA153C23CB670B0070847D = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					CBDA155B23CB88850070847D = {
 						CreatedOnToolsVersion = 11.3;
 					};
 				};
@@ -121,6 +187,7 @@
 			projectRoot = "";
 			targets = (
 				CBDA153C23CB670B0070847D /* MasterThesis */,
+				CBDA155B23CB88850070847D /* MasterThesisTests */,
 			);
 		};
 /* End PBXProject section */
@@ -136,6 +203,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CBDA155A23CB88850070847D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -144,7 +218,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBDA155523CB67400070847D /* ViewController.swift in Sources */,
+				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
+				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
+				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
+				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
+				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
+				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBDA155823CB88850070847D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */,
+				CBDA157123CBA7440070847D /* Collection.swift in Sources */,
+				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
+				CBDA156923CB9D320070847D /* Angle.swift in Sources */,
+				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
+				CBDA156A23CB9D340070847D /* CGVector.swift in Sources */,
+				CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +408,40 @@
 			};
 			name = Release;
 		};
+		CBDA156223CB88850070847D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = MasterThesisTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.jenox.MasterThesisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CBDA156323CB88850070847D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = MasterThesisTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.jenox.MasterThesisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -331,6 +459,15 @@
 			buildConfigurations = (
 				CBDA155223CB670C0070847D /* Debug */,
 				CBDA155323CB670C0070847D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBDA156123CB88850070847D /* Build configuration list for PBXNativeTarget "MasterThesisTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBDA156223CB88850070847D /* Debug */,
+				CBDA156323CB88850070847D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
