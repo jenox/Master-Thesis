@@ -16,6 +16,8 @@ class ViewController: UIViewController {
 
 class Canvas: UIView {
     override func draw(_ rect: CGRect) {
+        // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
+
         var graph = VertexWeightedGraph()
         graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
         graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 2)
