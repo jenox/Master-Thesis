@@ -1,8 +1,15 @@
 __Since last meeting__
 
+More algorithm drafting / implementation.
+
+
+__2020-01-16__
+
 - Algorithm and evaluation structure
 - Draft input graph -> graph on which we run force-directed layout transformation
 - Title: Visualizing dynamic clustered data using area-proportional maps
+
+![](pipeline.jpg "Algorithm & Evaluation Pipeline")
 
 
 __2020-01-09__
