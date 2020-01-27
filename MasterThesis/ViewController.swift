@@ -45,12 +45,14 @@ class Canvas: UIView {
         context.translateBy(x: 0, y: bounds.height)
         context.scaleBy(x: 1, y: -1)
         context.translateBy(x: bounds.width / 2, y: bounds.height / 2)
+        context.scaleBy(x: 1.5, y: 1.5)
+        context.setLineWidth(0.5)
 
         let vertices = graph.vertices
         let edges = graph.edges
         let faces = graph.innerFaces
 
-        context.translateBy(x: -200, y: 0)
+        context.translateBy(x: -100, y: 0)
         do {
             for (endpoint1, endpoint2) in edges {
                 context.stroke(
@@ -61,11 +63,11 @@ class Canvas: UIView {
             }
 
             for vertex in vertices {
-                context.fill(graph.position(of: vertex), diameter: 10, color: .blue)
+                context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
             }
         }
 
-        context.translateBy(x: 400, y: 0)
+        context.translateBy(x: 200, y: 0)
         do {
             for (endpoint1, endpoint2) in edges {
                 let faces = faces.filter({ $0.contains(endpoint1) && $0.contains(endpoint2) }) as Array
@@ -73,11 +75,11 @@ class Canvas: UIView {
                 if faces.count == 2 {
                     let centroid1 = faces[0].map(graph.position(of:)).centroid
                     let centroid2 = faces[1].map(graph.position(of:)).centroid
-                    let mid = [centroid1, centroid2].centroid
+                    let mid = [graph.position(of: endpoint1), graph.position(of: endpoint2)].centroid // must be middle of edge, not middle of centroids!
 
-                    context.stroke(from: mid, to: centroid1, color: .red)
-                    context.stroke(from: mid, to: centroid2, color: .red)
-                    context.fill(mid, diameter: 10, color: .green)
+                    context.stroke(from: mid, to: centroid1, color: .black)
+                    context.stroke(from: mid, to: centroid2, color: .black)
+                    context.fill(mid, diameter: 5, color: .red)
                 } else {
                     let position1 = graph.position(of: endpoint1)
                     let position2 = graph.position(of: endpoint2)
@@ -85,18 +87,19 @@ class Canvas: UIView {
                     // results in 'degenerate' drawing but guarantees we don't introduce weird crossings
                     let target = [position1, position2].centroid
 
-                    context.stroke(from: centroid, to: target, color: .red)
-                    context.stroke(from: target, to: position1, color: .red)
-                    context.stroke(from: target, to: position2, color: .red)
-                    context.fill(target, diameter: 10, color: .green)
-                    context.fill(position1, diameter: 10, color: .green) // we fill those twice...
-                    context.fill(position2, diameter: 10, color: .green) // we fill those twice...
+                    context.stroke(from: centroid, to: target, color: .black)
+                    context.stroke(from: target, to: position1, color: .black)
+                    context.stroke(from: target, to: position2, color: .black)
+                    context.fill(target, diameter: 5, color: .blue)
+                    context.fill([target, centroid].centroid, diameter: 5, color: .red)
+                    context.fill(position1, diameter: 5, color: .red) // we fill those twice...
+                    context.fill(position2, diameter: 5, color: .red) // we fill those twice...
                 }
             }
 
             for face in faces {
                 let positions = face.map(graph.position(of:))
-                context.fill(positions.centroid, diameter: 10, color: .green)
+                context.fill(positions.centroid, diameter: 5, color: .blue)
             }
         }
     }
