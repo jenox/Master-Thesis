@@ -81,12 +81,19 @@ class Canvas: UIView {
         }
 
         for vertex in graph.vertices {
-            context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
-            context.translateBy(x: graph.position(of: vertex).x, y: graph.position(of: vertex).y)
-            context.scaleBy(x: 1, y: -1)
-            NSString(string: String(vertex)).draw(at: .zero, withAttributes: [:])
-            context.scaleBy(x: 1, y: -1)
-            context.translateBy(x: -graph.position(of: vertex).x, y: -graph.position(of: vertex).y)
+            let font = UIFont.systemFont(ofSize: 11, weight: .regular)
+            let attr = NSAttributedString(string: String(vertex), attributes: [.font: font])
+            let line = CTLineCreateWithAttributedString(attr)
+
+            context.addEllipse(in: CGRect(origin: graph.position(of: vertex), size: CGSize(width: 16, height: 16)).offsetBy(dx: -8, dy: -8))
+            context.setFillColor(UIColor.white.cgColor)
+            context.setStrokeColor(UIColor.black.cgColor)
+            context.drawPath(using: .fillStroke)
+
+            context.textPosition = graph.position(of: vertex)
+            context.textPosition.x -= CTLineGetBoundsWithOptions(line, .useOpticalBounds).width / 2
+            context.textPosition.y -= font.capHeight / 2
+            CTLineDraw(line, context)
         }
     }
 
@@ -145,11 +152,15 @@ class Canvas: UIView {
             context.setFillColor(colors[index % colors.count].withAlphaComponent(0.2).cgColor)
             context.fillPath()
 
-            context.translateBy(x: centroid.x, y: centroid.y)
-            context.scaleBy(x: 1, y: -1)
-            NSString(string: graph.name(of: face)).draw(at: .zero, withAttributes: [:])
-            context.scaleBy(x: 1, y: -1)
-            context.translateBy(x: -centroid.x, y: -centroid.y)
+
+            let font = UIFont.systemFont(ofSize: 11, weight: .regular)
+            let attr = NSAttributedString(string: graph.name(of: face), attributes: [.font: font])
+            let line = CTLineCreateWithAttributedString(attr)
+
+            context.textPosition = centroid
+            context.textPosition.x -= CTLineGetBoundsWithOptions(line, .useOpticalBounds).width / 2
+            context.textPosition.y -= font.capHeight / 2
+            CTLineDraw(line, context)
         }
 
         for (endpoint1, endpoint2) in graph.edges {
