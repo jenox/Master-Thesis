@@ -64,6 +64,11 @@ class Canvas: UIView {
 
             for vertex in vertices {
                 context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
+                context.translateBy(x: graph.position(of: vertex).x, y: graph.position(of: vertex).y)
+                context.scaleBy(x: 1, y: -1)
+                NSString(string: String(vertex)).draw(at: .zero, withAttributes: [:])
+                context.scaleBy(x: 1, y: -1)
+                context.translateBy(x: -graph.position(of: vertex).x, y: -graph.position(of: vertex).y)
             }
         }
 
