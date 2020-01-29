@@ -56,7 +56,7 @@ class Canvas: UIView {
 
     override func draw(_ rect: CGRect) {
         let input = Self.makeInputGraph()
-        var dual = input.dual()
+        let dual = input.subdividedDual()
 
         let context = UIGraphicsGetCurrentContext()!
         context.setFillColor(UIColor.white.cgColor)
@@ -68,17 +68,13 @@ class Canvas: UIView {
         context.scaleBy(x: 1.5, y: 1.5)
         context.setLineWidth(0.5)
 
-        context.translateBy(x: -275, y: 0)
+        context.translateBy(x: -200, y: 0)
         self.draw(input)
 
         context.translateBy(x: 200, y: 0)
         self.drawDual(of: input)
 
         context.translateBy(x: 200, y: 0)
-        self.draw(dual)
-
-        context.translateBy(x: 200, y: 0)
-        dual.subdivideEdges()
         self.draw(dual)
     }
 
@@ -165,7 +161,6 @@ class Canvas: UIView {
             context.setFillColor(colors[index % colors.count].withAlphaComponent(0.2).cgColor)
             context.fillPath()
 
-
             let font = UIFont.systemFont(ofSize: 11, weight: .regular)
             let attr = NSAttributedString(string: graph.name(of: face), attributes: [.font: font])
             let line = CTLineCreateWithAttributedString(attr)
@@ -181,7 +176,12 @@ class Canvas: UIView {
         }
 
         for vertex in graph.vertices {
-            context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
+            switch vertex {
+            case .internalFace, .outerEdge:
+                context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
+            case .subdivision:
+                context.fill(graph.position(of: vertex), diameter: 5, color: .red)
+            }
         }
     }
 }
