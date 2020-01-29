@@ -28,6 +28,7 @@
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
+		CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* Transformation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
+		CBEE493C23E1EAE100986877 /* Transformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
 				CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */,
+				CBEE493C23E1EAE100986877 /* Transformation.swift */,
 				CBDA156523CB9D1C0070847D /* CGVector.swift */,
 				CBDA156723CB9D240070847D /* Angle.swift */,
 				CBDA154623CB670C0070847D /* Assets.xcassets */,
@@ -236,6 +239,7 @@
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
+				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
 				CBEE493823E1E18900986877 /* Face.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,

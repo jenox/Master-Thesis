@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 }
 
 class Canvas: UIView {
-    override func draw(_ rect: CGRect) {
+    private class func makeInputGraph() -> VertexWeightedGraph {
         // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
 
         var graph = VertexWeightedGraph()
@@ -38,6 +38,13 @@ class Canvas: UIView {
         graph.insertEdge(between: "F", and: "A")
         graph.insertEdge(between: "F", and: "B")
 
+        return graph
+    }
+
+    override func draw(_ rect: CGRect) {
+        let input = Self.makeInputGraph()
+        let dual = input.dual()
+
         let context = UIGraphicsGetCurrentContext()!
         context.setFillColor(UIColor.white.cgColor)
         context.fill(rect)
@@ -48,151 +55,105 @@ class Canvas: UIView {
         context.scaleBy(x: 1.5, y: 1.5)
         context.setLineWidth(0.5)
 
-        let vertices = graph.vertices
-        let edges = graph.edges
-        let (faces, outerFace) = graph.faces
-
         context.translateBy(x: -200, y: 0)
-        do {
-            for (endpoint1, endpoint2) in edges {
-                context.stroke(
-                    from: graph.position(of: endpoint1),
-                    to: graph.position(of: endpoint2),
-                    color: .black
-                )
-            }
+        self.draw(input)
 
-            for vertex in vertices {
-                context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
-                context.translateBy(x: graph.position(of: vertex).x, y: graph.position(of: vertex).y)
-                context.scaleBy(x: 1, y: -1)
-                NSString(string: String(vertex)).draw(at: .zero, withAttributes: [:])
-                context.scaleBy(x: 1, y: -1)
-                context.translateBy(x: -graph.position(of: vertex).x, y: -graph.position(of: vertex).y)
+        context.translateBy(x: 200, y: 0)
+        self.drawDual(of: input)
+
+        context.translateBy(x: 200, y: 0)
+        self.draw(dual)
+    }
+
+    private func draw(_ graph: VertexWeightedGraph) {
+        let context = UIGraphicsGetCurrentContext()!
+
+        for (endpoint1, endpoint2) in graph.edges {
+            context.stroke(
+                from: graph.position(of: endpoint1),
+                to: graph.position(of: endpoint2),
+                color: .black
+            )
+        }
+
+        for vertex in graph.vertices {
+            context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
+            context.translateBy(x: graph.position(of: vertex).x, y: graph.position(of: vertex).y)
+            context.scaleBy(x: 1, y: -1)
+            NSString(string: String(vertex)).draw(at: .zero, withAttributes: [:])
+            context.scaleBy(x: 1, y: -1)
+            context.translateBy(x: -graph.position(of: vertex).x, y: -graph.position(of: vertex).y)
+        }
+    }
+
+    private func drawDual(of graph: VertexWeightedGraph) {
+        let context = UIGraphicsGetCurrentContext()!
+
+        let faces = graph.faces.inner
+
+        for (endpoint1, endpoint2) in graph.edges {
+            let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
+
+            if adjacentFaces.count == 2 {
+                let centroid1 = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
+                let centroid2 = adjacentFaces[1].vertices.map(graph.position(of:)).centroid
+                let mid = [graph.position(of: endpoint1), graph.position(of: endpoint2)].centroid // must be middle of edge, not middle of centroids!
+
+                context.stroke(from: mid, to: centroid1, color: .black)
+                context.stroke(from: mid, to: centroid2, color: .black)
+                context.fill(mid, diameter: 5, color: .red)
+            } else {
+                let position1 = graph.position(of: endpoint1)
+                let position2 = graph.position(of: endpoint2)
+                let centroid = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
+                // results in 'degenerate' drawing but guarantees we don't introduce weird crossings
+                let target = [position1, position2].centroid
+
+                context.stroke(from: centroid, to: target, color: .black)
+                context.stroke(from: target, to: position1, color: .black)
+                context.stroke(from: target, to: position2, color: .black)
+                context.fill(target, diameter: 5, color: .blue)
+                context.fill([target, centroid].centroid, diameter: 5, color: .red)
+                context.fill(position1, diameter: 5, color: .red) // we fill those twice...
+                context.fill(position2, diameter: 5, color: .red) // we fill those twice...
             }
         }
 
-        context.translateBy(x: 200, y: 0)
-        do {
-            for (endpoint1, endpoint2) in edges {
-                let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
+        for face in faces {
+            let positions = face.vertices.map(graph.position(of:))
+            context.fill(positions.centroid, diameter: 5, color: .blue)
+        }
+    }
 
-                if adjacentFaces.count == 2 {
-                    let centroid1 = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
-                    let centroid2 = adjacentFaces[1].vertices.map(graph.position(of:)).centroid
-                    let mid = [graph.position(of: endpoint1), graph.position(of: endpoint2)].centroid // must be middle of edge, not middle of centroids!
+    private func draw(_ graph: FaceWeightedGraph) {
+        let context = UIGraphicsGetCurrentContext()!
+        let colors = [UIColor.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple, .brown]
 
-                    context.stroke(from: mid, to: centroid1, color: .black)
-                    context.stroke(from: mid, to: centroid2, color: .black)
-                    context.fill(mid, diameter: 5, color: .red)
-                } else {
-                    let position1 = graph.position(of: endpoint1)
-                    let position2 = graph.position(of: endpoint2)
-                    let centroid = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
-                    // results in 'degenerate' drawing but guarantees we don't introduce weird crossings
-                    let target = [position1, position2].centroid
+        for (index, face) in graph.faces.enumerated() {
+            let centroid = face.vertices.map(graph.position(of:)).centroid
 
-                    context.stroke(from: centroid, to: target, color: .black)
-                    context.stroke(from: target, to: position1, color: .black)
-                    context.stroke(from: target, to: position2, color: .black)
-                    context.fill(target, diameter: 5, color: .blue)
-                    context.fill([target, centroid].centroid, diameter: 5, color: .red)
-                    context.fill(position1, diameter: 5, color: .red) // we fill those twice...
-                    context.fill(position2, diameter: 5, color: .red) // we fill those twice...
-                }
+            context.beginPath()
+            context.move(to: graph.position(of: face.vertices[0]))
+            for vertex in face.vertices.dropFirst() {
+                context.addLine(to: graph.position(of: vertex))
             }
+            context.closePath()
+            context.setFillColor(colors[index % colors.count].withAlphaComponent(0.2).cgColor)
+            context.fillPath()
 
-            for face in faces {
-                let positions = face.vertices.map(graph.position(of:))
-                context.fill(positions.centroid, diameter: 5, color: .blue)
-            }
+            context.translateBy(x: centroid.x, y: centroid.y)
+            context.scaleBy(x: 1, y: -1)
+            NSString(string: graph.name(of: face)).draw(at: .zero, withAttributes: [:])
+            context.scaleBy(x: 1, y: -1)
+            context.translateBy(x: -centroid.x, y: -centroid.y)
         }
 
-        context.translateBy(x: 200, y: 0)
-        do {
-            var dual = FaceWeightedGraph()
+        for (endpoint1, endpoint2) in graph.edges {
+            context.stroke(from: graph.position(of: endpoint1), to: graph.position(of: endpoint2), color: .black)
+        }
 
-            for face in faces {
-                let centroid = face.vertices.map(graph.position(of:)).centroid
-
-                // internal face vertex
-                dual.insert(.internalFace(face), at: centroid)
-            }
-
-            for (endpoint1, endpoint2) in edges {
-                let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
-                if adjacentFaces.count == 2 {
-                    // add edge between adjacent face vertices
-                    dual.insertEdge(between: .internalFace(adjacentFaces[0]), and: .internalFace(adjacentFaces[1]))
-                } else {
-                    let position1 = graph.position(of: endpoint1)
-                    let position2 = graph.position(of: endpoint2)
-                    let centroid = [position1, position2].centroid
-
-                    // outer edge vertex
-                    dual.insert(.outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), at: centroid)
-
-                    // add edge to face vertex
-                    dual.insertEdge(between: .outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), and: .internalFace(adjacentFaces[0]))
-                }
-            }
-
-            let outerEdges = Array(outerFace.vertices.makeAdjacentPairIterator())
-            for (edge1, edge2) in outerEdges.makeAdjacentPairIterator() {
-                dual.insertEdge(between: .outerEdge(UndirectedEdge(first: edge1.0, second: edge1.1)), and: .outerEdge(UndirectedEdge(first: edge2.0, second: edge2.1)))
-            }
-
-            for vertex in vertices {
-                var edges = graph.vertices(adjacentTo: vertex).map({ DirectedEdge(from: vertex, to: $0) })
-                edges.sort(by: { graph.angle(of: $0) < graph.angle(of: $1) })
-                let endpoints = edges.map({ $0.target })
-
-                var things: [FaceWeightedGraph.Vertex] = []
-                for (x, y) in endpoints.makeAdjacentPairIterator() {
-                    // area check required for triangles with 2 edges on outer face
-                    let face = Face(vertices: [vertex, x, y])
-                    if graph.vertices(adjacentTo: x).contains(y), graph.area(of: face) > 0 {
-                        things.append(.internalFace(face))
-                    } else {
-                        things.append(.outerEdge(UndirectedEdge(first: vertex, second: x)))
-                        things.append(.outerEdge(UndirectedEdge(first: vertex, second: y)))
-                    }
-                }
-
-                dual.registerFace(Face(vertices: things), named: String(vertex), weight: graph.weight(of: vertex))
-            }
-
-            let colors = [UIColor.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple, .brown]
-
-            for (index, face) in dual.faces.enumerated() {
-                let centroid = face.vertices.map(dual.position(of:)).centroid
-
-                context.beginPath()
-                context.move(to: dual.position(of: face.vertices[0]))
-                for vertex in face.vertices.dropFirst() {
-                    context.addLine(to: dual.position(of: vertex))
-                }
-                context.closePath()
-                context.setFillColor(colors[index % colors.count].withAlphaComponent(0.2).cgColor)
-                context.fillPath()
-
-                context.translateBy(x: centroid.x, y: centroid.y)
-                context.scaleBy(x: 1, y: -1)
-                NSString(string: dual.name(of: face)).draw(at: .zero, withAttributes: [:])
-                context.scaleBy(x: 1, y: -1)
-                context.translateBy(x: -centroid.x, y: -centroid.y)
-            }
-
-            for (endpoint1, endpoint2) in dual.edges {
-                context.stroke(from: dual.position(of: endpoint1), to: dual.position(of: endpoint2), color: .black)
-            }
-
-            for vertex in dual.vertices {
-                context.fill(dual.position(of: vertex), diameter: 5, color: .blue)
-            }
-
-            // TODO: do we guarantee planarity when connecting barycenter to midpoint of edges?
-            // https://en.wikipedia.org/wiki/Centroid#/media/File:Triangle.Centroid.svg
+        for vertex in graph.vertices {
+            context.fill(graph.position(of: vertex), diameter: 5, color: .blue)
         }
     }
 }
