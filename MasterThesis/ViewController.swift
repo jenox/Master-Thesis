@@ -18,25 +18,38 @@ class Canvas: UIView {
     private class func makeInputGraph() -> VertexWeightedGraph {
         // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
 
+//        var graph = VertexWeightedGraph()
+//        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
+//        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 2)
+//        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 3)
+//        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 4)
+//        graph.insertEdge(between: "A", and: "B")
+//        graph.insertEdge(between: "A", and: "C")
+//        graph.insertEdge(between: "B", and: "C")
+//        graph.insertEdge(between: "B", and: "D")
+//        graph.insertEdge(between: "C", and: "D")
+//
+//        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 5)
+//        graph.insertEdge(between: "E", and: "A")
+//        graph.insertEdge(between: "E", and: "B")
+//        graph.insertEdge(between: "E", and: "C")
+//
+//        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 6)
+//        graph.insertEdge(between: "F", and: "A")
+//        graph.insertEdge(between: "F", and: "B")
+
         var graph = VertexWeightedGraph()
         graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
-        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 2)
-        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 3)
-        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 4)
+        graph.insert("B", at: CGPoint(x: -75, y: -150), weight: 2)
+        graph.insert("C", at: CGPoint(x: 75, y: -150), weight: 3)
         graph.insertEdge(between: "A", and: "B")
         graph.insertEdge(between: "A", and: "C")
         graph.insertEdge(between: "B", and: "C")
-        graph.insertEdge(between: "B", and: "D")
-        graph.insertEdge(between: "C", and: "D")
 
         graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 5)
         graph.insertEdge(between: "E", and: "A")
         graph.insertEdge(between: "E", and: "B")
         graph.insertEdge(between: "E", and: "C")
-
-        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 6)
-        graph.insertEdge(between: "F", and: "A")
-        graph.insertEdge(between: "F", and: "B")
 
         return graph
     }
