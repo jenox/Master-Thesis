@@ -25,6 +25,9 @@
 		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
 		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
+		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
+		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
+		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,8 @@
 		CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
+		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +92,7 @@
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
 				CBDA155423CB67400070847D /* ViewController.swift */,
+				CBEE493623E1E17B00986877 /* Graph */,
 				CBDA156F23CBA70B0070847D /* Collection.swift */,
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
@@ -113,9 +119,18 @@
 			isa = PBXGroup;
 			children = (
 				CBDA155E23CB88850070847D /* MasterThesisTests.swift */,
+				CBEE493923E1E1BC00986877 /* FaceTests.swift */,
 				CBDA156023CB88850070847D /* Info.plist */,
 			);
 			path = MasterThesisTests;
+			sourceTree = "<group>";
+		};
+		CBEE493623E1E17B00986877 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				CBEE493723E1E18900986877 /* Face.swift */,
+			);
+			path = Graph;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +236,7 @@
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
+				CBEE493823E1E18900986877 /* Face.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
@@ -236,6 +252,8 @@
 				CBDA157123CBA7440070847D /* Collection.swift in Sources */,
 				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
 				CBDA156923CB9D320070847D /* Angle.swift in Sources */,
+				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
+				CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */,
 				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA156A23CB9D340070847D /* CGVector.swift in Sources */,
 				CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */,

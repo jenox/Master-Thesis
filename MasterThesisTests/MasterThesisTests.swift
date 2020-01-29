@@ -52,6 +52,6 @@ class MasterThesisTests: XCTestCase {
     }
 
     func testInnerFaces() {
-        XCTAssertEqual(graph.innerFaces, [["A", "B", "C"], ["B", "C", "D"]])
+        XCTAssertEqual(graph.faces.inner, [["A", "B", "C"], ["B", "C", "D"]])
     }
 }

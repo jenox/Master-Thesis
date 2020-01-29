@@ -26,7 +26,6 @@ struct UndirectedEdge: Equatable, Hashable {
 struct VertexWeightedGraph {
     typealias Vertex = Character
     typealias Weight = Double
-    typealias Face = Set<Character>
 
     init() {}
 
@@ -71,8 +70,8 @@ struct VertexWeightedGraph {
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
     // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
     // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
-    var faces: (inner: Set<Face>, outer: [Vertex]) {
-        var faces: Set<[Vertex]> = []
+    var faces: (inner: [Face<Vertex>], outer: Face<Vertex>) {
+        var faces: [Face<Vertex>] = []
         var edges: Set<DirectedEdge> = []
 
         for vertex in self.data.keys {
@@ -93,7 +92,7 @@ struct VertexWeightedGraph {
                 edges.remove(best)
 
                 if vertices.contains(best.target) {
-                    faces.insert(vertices.reversed())
+                    faces.append(Face(vertices: vertices.reversed()))
                     break
                 } else {
                     vertices.append(best.target)
@@ -102,9 +101,11 @@ struct VertexWeightedGraph {
         }
 
         // outer face has negative area!
-        precondition(faces.count(where: { self.area(of: $0) < 0 }) == 1)
+//        let outer = faces.first(where: { self.area(of: $0) < 0 })!
+        let index = faces.partition(by: { self.area(of: $0) >= 0 })
+        precondition(index == 1)
 
-        return (inner: Set(faces.filter({ self.area(of: $0) >= 0 }).map({ Set($0) })), outer: faces.first(where: { self.area(of: $0) < 0 })!)
+        return (inner: Array(faces.dropFirst()), outer: faces[0])
     }
 
     func position(of vertex: Vertex) -> CGPoint {
@@ -115,8 +116,8 @@ struct VertexWeightedGraph {
         return self.data[vertex]!.1
     }
 
-    func area(of face: [Vertex]) -> CGFloat {
-        let positions = face.map({ self.position(of: $0) })
+    func area(of face: Face<Vertex>) -> CGFloat {
+        let positions = face.vertices.map({ self.position(of: $0) })
 
         var sum = positions.last!.x * positions.first!.y - positions.last!.y * positions.first!.x
 
@@ -133,4 +134,3 @@ struct VertexWeightedGraph {
         return Angle.atan2(vector.dy, vector.dx)
     }
 }
-

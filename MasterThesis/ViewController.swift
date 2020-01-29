@@ -75,11 +75,11 @@ class Canvas: UIView {
         context.translateBy(x: 200, y: 0)
         do {
             for (endpoint1, endpoint2) in edges {
-                let faces = faces.filter({ $0.contains(endpoint1) && $0.contains(endpoint2) }) as Array
+                let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
 
-                if faces.count == 2 {
-                    let centroid1 = faces[0].map(graph.position(of:)).centroid
-                    let centroid2 = faces[1].map(graph.position(of:)).centroid
+                if adjacentFaces.count == 2 {
+                    let centroid1 = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
+                    let centroid2 = adjacentFaces[1].vertices.map(graph.position(of:)).centroid
                     let mid = [graph.position(of: endpoint1), graph.position(of: endpoint2)].centroid // must be middle of edge, not middle of centroids!
 
                     context.stroke(from: mid, to: centroid1, color: .black)
@@ -88,7 +88,7 @@ class Canvas: UIView {
                 } else {
                     let position1 = graph.position(of: endpoint1)
                     let position2 = graph.position(of: endpoint2)
-                    let centroid = faces[0].map(graph.position(of:)).centroid
+                    let centroid = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
                     // results in 'degenerate' drawing but guarantees we don't introduce weird crossings
                     let target = [position1, position2].centroid
 
@@ -103,7 +103,7 @@ class Canvas: UIView {
             }
 
             for face in faces {
-                let positions = face.map(graph.position(of:))
+                let positions = face.vertices.map(graph.position(of:))
                 context.fill(positions.centroid, diameter: 5, color: .blue)
             }
         }
@@ -113,33 +113,33 @@ class Canvas: UIView {
             var dual = FaceWeightedGraph()
 
             for face in faces {
-                let centroid = face.map(graph.position(of:)).centroid
+                let centroid = face.vertices.map(graph.position(of:)).centroid
 
                 // internal face vertex
                 dual.insert(.internalFace(face), at: centroid)
             }
 
             for (endpoint1, endpoint2) in edges {
-                let faces = faces.filter({ $0.contains(endpoint1) && $0.contains(endpoint2) }) as Array
-                if faces.count == 2 {
+                let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
+                if adjacentFaces.count == 2 {
                     // add edge between adjacent face vertices
-                    dual.insertEdge(between: .internalFace(faces[0]), and: .internalFace(faces[1]))
+                    dual.insertEdge(between: .internalFace(adjacentFaces[0]), and: .internalFace(adjacentFaces[1]))
                 } else {
                     let position1 = graph.position(of: endpoint1)
                     let position2 = graph.position(of: endpoint2)
                     let centroid = [position1, position2].centroid
 
                     // outer edge vertex
-                    dual.insert(.outerEdge([endpoint1, endpoint2]), at: centroid)
+                    dual.insert(.outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), at: centroid)
 
                     // add edge to face vertex
-                    dual.insertEdge(between: .outerEdge([endpoint1, endpoint2]), and: .internalFace(faces[0]))
+                    dual.insertEdge(between: .outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), and: .internalFace(adjacentFaces[0]))
                 }
             }
 
-            let outerEdges = Array(outerFace.makeAdjacentPairIterator())
+            let outerEdges = Array(outerFace.vertices.makeAdjacentPairIterator())
             for (edge1, edge2) in outerEdges.makeAdjacentPairIterator() {
-                dual.insertEdge(between: .outerEdge([edge1.0, edge1.1]), and: .outerEdge([edge2.0, edge2.1]))
+                dual.insertEdge(between: .outerEdge(UndirectedEdge(first: edge1.0, second: edge1.1)), and: .outerEdge(UndirectedEdge(first: edge2.0, second: edge2.1)))
             }
 
             for vertex in vertices {
@@ -150,15 +150,16 @@ class Canvas: UIView {
                 var things: [FaceWeightedGraph.Vertex] = []
                 for (x, y) in endpoints.makeAdjacentPairIterator() {
                     // area check required for triangles with 2 edges on outer face
-                    if graph.vertices(adjacentTo: x).contains(y), graph.area(of: [vertex, x, y]) > 0 {
-                        things.append(.internalFace([vertex, x, y]))
+                    let face = Face(vertices: [vertex, x, y])
+                    if graph.vertices(adjacentTo: x).contains(y), graph.area(of: face) > 0 {
+                        things.append(.internalFace(face))
                     } else {
-                        things.append(.outerEdge([vertex, x]))
-                        things.append(.outerEdge([vertex, y]))
+                        things.append(.outerEdge(UndirectedEdge(first: vertex, second: x)))
+                        things.append(.outerEdge(UndirectedEdge(first: vertex, second: y)))
                     }
                 }
 
-                dual.register(face: Set(things))
+                dual.register(face: Face(vertices: things))
             }
 
             for (endpoint1, endpoint2) in dual.edges {

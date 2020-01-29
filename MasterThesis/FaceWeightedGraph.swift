@@ -12,9 +12,18 @@ import CoreGraphics
 struct FaceWeightedGraph {
     init() {}
 
-    enum Vertex: Hashable {
-        case internalFace(Set<Character>)
-        case outerEdge(Set<Character>)
+    enum Vertex: Hashable, CustomStringConvertible {
+        case internalFace(Face<Character>)
+        case outerEdge(UndirectedEdge)
+
+        var description: String {
+            switch self {
+            case .internalFace(let face):
+                return face.vertices.map(String.init).joined(separator: "-")
+            case .outerEdge(let edge):
+                return "\(edge.first)-\(edge.second)"
+            }
+        }
     }
 
     private(set) var vertices: [Vertex] = []
@@ -22,7 +31,7 @@ struct FaceWeightedGraph {
     private(set) var adjacencies: [Vertex: [Vertex]] = [:]
     private(set) var edges: [(Vertex, Vertex)] = []
 
-    private(set) var faces: Set<Set<Vertex>> = []
+    private(set) var faces: Set<Face<Vertex>> = []
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint) {
         precondition(!self.vertices.contains(vertex))
@@ -42,8 +51,8 @@ struct FaceWeightedGraph {
         self.edges.append((endpoint1, endpoint2))
     }
 
-    mutating func register(face: Set<Vertex>) {
-        precondition(face.intersection(self.vertices).count == face.count)
+    mutating func register(face: Face<Vertex>) {
+        precondition(face.vertices.allSatisfy(self.vertices.contains))
         precondition(!self.faces.contains(face))
 
         self.faces.insert(face)
