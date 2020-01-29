@@ -19,22 +19,22 @@ class Canvas: UIView {
         // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
 
         var graph = VertexWeightedGraph()
-        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
-        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 2)
-        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 3)
-        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 4)
+        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 3)
+        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 5)
+        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 7.5)
+        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 2)
         graph.insertEdge(between: "A", and: "B")
         graph.insertEdge(between: "A", and: "C")
         graph.insertEdge(between: "B", and: "C")
         graph.insertEdge(between: "B", and: "D")
         graph.insertEdge(between: "C", and: "D")
 
-        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 5)
+        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 2.5)
         graph.insertEdge(between: "E", and: "A")
         graph.insertEdge(between: "E", and: "B")
         graph.insertEdge(between: "E", and: "C")
 
-        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 6)
+        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 1)
         graph.insertEdge(between: "F", and: "A")
         graph.insertEdge(between: "F", and: "B")
 
@@ -68,13 +68,10 @@ class Canvas: UIView {
         context.scaleBy(x: 1.5, y: 1.5)
         context.setLineWidth(0.5)
 
-        context.translateBy(x: -200, y: 0)
+        context.translateBy(x: -120, y: 0)
         self.draw(input)
 
-        context.translateBy(x: 200, y: 0)
-        self.drawDual(of: input)
-
-        context.translateBy(x: 200, y: 0)
+        context.translateBy(x: 240, y: 0)
         self.draw(dual, original: input)
     }
 
@@ -90,19 +87,7 @@ class Canvas: UIView {
         }
 
         for vertex in graph.vertices {
-            let font = UIFont.systemFont(ofSize: 11, weight: .regular)
-            let attr = NSAttributedString(string: String(vertex), attributes: [.font: font])
-            let line = CTLineCreateWithAttributedString(attr)
-
-            context.addEllipse(in: CGRect(origin: graph.position(of: vertex), size: CGSize(width: 16, height: 16)).offsetBy(dx: -8, dy: -8))
-            context.setFillColor(UIColor.white.cgColor)
-            context.setStrokeColor(UIColor.black.cgColor)
-            context.drawPath(using: .fillStroke)
-
-            context.textPosition = graph.position(of: vertex)
-            context.textPosition.x -= CTLineGetBoundsWithOptions(line, .useOpticalBounds).width / 2
-            context.textPosition.y -= font.capHeight / 2
-            CTLineDraw(line, context)
+            self.drawLabel(at: graph.position(of: vertex), name: vertex, weight: graph.weight(of: vertex), tintColor: .white)
         }
     }
 
@@ -166,38 +151,51 @@ class Canvas: UIView {
         }
 
         for face in graph.faces {
-            let color = UIColor.color(for: graph.name(of: face)).interpolate(to: .white, fraction: 0.5)
+            let color = UIColor.color(for: graph.name(of: face))
 
-            let font = UIFont.systemFont(ofSize: 11, weight: .regular)
-            let attr = NSAttributedString(string: String(graph.name(of: face)), attributes: [.font: font])
-            let line = CTLineCreateWithAttributedString(attr)
-
-            context.textPosition = face.vertices.map(graph.position(of:)).centroid
+            var position = face.vertices.map(graph.position(of:)).centroid
             for vertex in face.vertices {
                 if case .subdivision3 = vertex {
-                    context.textPosition = graph.position(of: vertex)
+                    position = graph.position(of: vertex)
                 }
             }
 
-            context.addEllipse(in: CGRect(origin: context.textPosition, size: CGSize(width: 16, height: 16)).offsetBy(dx: -8, dy: -8))
-            context.setFillColor(color.cgColor)
-            context.setStrokeColor(UIColor.black.cgColor)
-            context.drawPath(using: .fillStroke)
-            context.textPosition.x -= CTLineGetBoundsWithOptions(line, .useOpticalBounds).width / 2
-            context.textPosition.y -= font.capHeight / 2
-            CTLineDraw(line, context)
+            self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), tintColor: color)
         }
 
         for vertex in graph.vertices {
             switch vertex {
             case .internalFace, .outerEdge:
-                context.fill(graph.position(of: vertex), diameter: 2, color: .black)
+                context.fill(graph.position(of: vertex), diameter: 3, color: .black)
             case .subdivision1, .subdivision2:
                 context.fill(graph.position(of: vertex), diameter: 2, color: .black)
             case .subdivision3:
                 break
             }
         }
+    }
+
+    private func drawLabel(at position: CGPoint, name: Character, weight: Double, tintColor: UIColor) {
+        let context = UIGraphicsGetCurrentContext()!
+        let foregroundColor = tintColor == .white ? .black : tintColor.interpolate(to: .black, fraction: 0.75)
+
+        let text = "\(name) | \(weight == weight.rounded() ? Int(weight).description : weight.description)"
+        let font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        let attr = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: foregroundColor])
+        let line = CTLineCreateWithAttributedString(attr)
+
+        let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
+        let bounds = CGRect(origin: position, size: size).offsetBy(dx: -size.width / 2, dy: -size.height / 2)
+
+        context.addPath(UIBezierPath(roundedRect: bounds.insetBy(dx: -5, dy: -2), cornerRadius: size.height / 2 + 2).cgPath)
+        context.setFillColor(tintColor.interpolate(to: .white, fraction: 0.5).cgColor)
+        context.setStrokeColor(foregroundColor.cgColor)
+        context.drawPath(using: .fillStroke)
+
+        context.textPosition = position
+        context.textPosition.x -= size.width / 2
+        context.textPosition.y -= font.capHeight / 2
+        CTLineDraw(line, context)
     }
 }
 

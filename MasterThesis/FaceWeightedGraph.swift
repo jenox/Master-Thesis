@@ -43,6 +43,7 @@ struct FaceWeightedGraph {
 
     private(set) var faces: [Face<Vertex>] = []
     private(set) var faceNames: [Face<Vertex>: Character] = [:]
+    private(set) var faceWeights: [Face<Vertex>: Double] = [:]
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint) {
         precondition(!self.vertices.contains(vertex))
@@ -68,6 +69,7 @@ struct FaceWeightedGraph {
 
         self.faces.append(face)
         self.faceNames[face] = name
+        self.faceWeights[face] = weight
     }
 
     func position(of vertex: Vertex) -> CGPoint {
@@ -76,6 +78,10 @@ struct FaceWeightedGraph {
 
     func name(of face: Face<Vertex>) -> Character {
         return self.faceNames[face]!
+    }
+
+    func weight(of face: Face<Vertex>) -> Double {
+        return self.faceWeights[face]!
     }
 
 //    mutating func subdivideEdges() {
