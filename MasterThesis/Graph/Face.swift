@@ -18,6 +18,22 @@ struct Face<T>: Hashable where T: Hashable {
 
     let vertices: [T]
 
+    func indexOfEdge(between first: T, and second: T) -> Int? {
+        guard let index = self.vertices.firstIndex(of: first) else { return nil }
+
+        let predecessor = index == 0 ? self.vertices.count - 1 : index - 1
+        let successor = index + 1 == self.vertices.count ? 0 : index + 1
+
+        if self.vertices[successor] == second {
+            return index
+        }
+        else if self.vertices[predecessor] == second {
+            return predecessor
+        } else {
+            return nil
+        }
+    }
+
     func containsEdge(between first: T, and second: T) -> Bool {
         guard let index = self.vertices.firstIndex(of: first) else { return false }
 

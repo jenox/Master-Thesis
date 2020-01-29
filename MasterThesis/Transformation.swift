@@ -11,6 +11,7 @@ import Swift
 extension VertexWeightedGraph {
     // TODO: do we guarantee planarity when connecting barycenter to midpoint of edges?
     // https://en.wikipedia.org/wiki/Centroid#/media/File:Triangle.Centroid.svg
+    // Also, what about A-E edge in example? how would it work when AEC triangle is very long? do we get intersections / wrong topology?
     func dual() -> FaceWeightedGraph {
         let vertices = self.vertices
         let edges = self.edges

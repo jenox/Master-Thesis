@@ -43,7 +43,7 @@ class Canvas: UIView {
 
     override func draw(_ rect: CGRect) {
         let input = Self.makeInputGraph()
-        let dual = input.dual()
+        var dual = input.dual()
 
         let context = UIGraphicsGetCurrentContext()!
         context.setFillColor(UIColor.white.cgColor)
@@ -55,13 +55,17 @@ class Canvas: UIView {
         context.scaleBy(x: 1.5, y: 1.5)
         context.setLineWidth(0.5)
 
-        context.translateBy(x: -200, y: 0)
+        context.translateBy(x: -275, y: 0)
         self.draw(input)
 
         context.translateBy(x: 200, y: 0)
         self.drawDual(of: input)
 
         context.translateBy(x: 200, y: 0)
+        self.draw(dual)
+
+        context.translateBy(x: 200, y: 0)
+        dual.subdivideEdges()
         self.draw(dual)
     }
 
