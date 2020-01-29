@@ -29,7 +29,7 @@ extension VertexWeightedGraph {
         for (endpoint1, endpoint2) in edges {
             let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
             if adjacentFaces.count == 2 {
-                let helper = FaceWeightedGraph.Vertex.subdivision(UUID())
+                let helper = FaceWeightedGraph.Vertex.subdivision1(UUID())
                 dual.insert(helper, at: [self.position(of: endpoint1), self.position(of: endpoint2)].centroid)
 
                 // add edge between adjacent face vertices
@@ -43,7 +43,7 @@ extension VertexWeightedGraph {
                 // outer edge vertex
                 dual.insert(.outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), at: centroid)
 
-                let helper = FaceWeightedGraph.Vertex.subdivision(UUID())
+                let helper = FaceWeightedGraph.Vertex.subdivision2(UUID())
                 dual.insert(helper, at: [centroid, adjacentFaces[0].vertices.map(self.position(of:)).centroid].centroid)
 
                 // add edge to face vertex
@@ -55,7 +55,7 @@ extension VertexWeightedGraph {
         let outerEdges = Array(outerFace.vertices.makeAdjacentPairIterator())
         for (edge1, edge2) in outerEdges.makeAdjacentPairIterator() {
             precondition(edge1.1 == edge2.0)
-            let helper = FaceWeightedGraph.Vertex.subdivision(UUID())
+            let helper = FaceWeightedGraph.Vertex.subdivision3(UUID())
             let position = self.position(of: edge1.1)
 
             dual.insert(helper, at: position)
@@ -88,7 +88,7 @@ extension VertexWeightedGraph {
                 things.insert(x.first!, at: index + 1)
             }
 
-            dual.registerFace(Face(vertices: things), named: String(vertex), weight: self.weight(of: vertex))
+            dual.registerFace(Face(vertices: things), named: vertex, weight: self.weight(of: vertex))
         }
 
         return dual

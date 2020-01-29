@@ -16,7 +16,9 @@ struct FaceWeightedGraph {
     enum Vertex: Hashable, CustomStringConvertible {
         case internalFace(Face<Character>)
         case outerEdge(UndirectedEdge)
-        case subdivision(UUID)
+        case subdivision1(UUID)
+        case subdivision2(UUID)
+        case subdivision3(UUID)
 
         var description: String {
             switch self {
@@ -24,7 +26,11 @@ struct FaceWeightedGraph {
                 return face.vertices.map(String.init).joined(separator: "-")
             case .outerEdge(let edge):
                 return "\(edge.first)-\(edge.second)"
-            case .subdivision:
+            case .subdivision1:
+                return "#"
+            case .subdivision2:
+                return "@"
+            case .subdivision3:
                 return "*"
             }
         }
@@ -36,7 +42,7 @@ struct FaceWeightedGraph {
     private(set) var edges: [(Vertex, Vertex)] = []
 
     private(set) var faces: [Face<Vertex>] = []
-    private(set) var faceNames: [Face<Vertex>: String] = [:]
+    private(set) var faceNames: [Face<Vertex>: Character] = [:]
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint) {
         precondition(!self.vertices.contains(vertex))
@@ -56,7 +62,7 @@ struct FaceWeightedGraph {
         self.edges.append((endpoint1, endpoint2))
     }
 
-    mutating func registerFace(_ face: Face<Vertex>, named name: String, weight: Double) {
+    mutating func registerFace(_ face: Face<Vertex>, named name: Character, weight: Double) {
         precondition(face.vertices.allSatisfy(self.vertices.contains))
         precondition(!self.faces.contains(face))
 
@@ -68,7 +74,7 @@ struct FaceWeightedGraph {
         return self.locations[vertex]!
     }
 
-    func name(of face: Face<Vertex>) -> String {
+    func name(of face: Face<Vertex>) -> Character {
         return self.faceNames[face]!
     }
 
