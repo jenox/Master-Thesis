@@ -71,7 +71,7 @@ struct VertexWeightedGraph {
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
     // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
     // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
-    var innerFaces: Set<Face> {
+    var faces: (inner: Set<Face>, outer: [Vertex]) {
         var faces: Set<[Vertex]> = []
         var edges: Set<DirectedEdge> = []
 
@@ -104,7 +104,7 @@ struct VertexWeightedGraph {
         // outer face has negative area!
         precondition(faces.count(where: { self.area(of: $0) < 0 }) == 1)
 
-        return Set(faces.filter({ self.area(of: $0) >= 0 }).map({ Set($0) }))
+        return (inner: Set(faces.filter({ self.area(of: $0) >= 0 }).map({ Set($0) })), outer: faces.first(where: { self.area(of: $0) < 0 })!)
     }
 
     func position(of vertex: Vertex) -> CGPoint {
@@ -115,7 +115,7 @@ struct VertexWeightedGraph {
         return self.data[vertex]!.1
     }
 
-    private func area(of face: [Vertex]) -> CGFloat {
+    func area(of face: [Vertex]) -> CGFloat {
         let positions = face.map({ self.position(of: $0) })
 
         var sum = positions.last!.x * positions.first!.y - positions.last!.y * positions.first!.x
@@ -127,7 +127,7 @@ struct VertexWeightedGraph {
         return sum / 2
     }
 
-    private func angle(of edge: DirectedEdge) -> Angle {
+    func angle(of edge: DirectedEdge) -> Angle {
         let vector = CGVector(from: self.position(of: edge.source), to: self.position(of: edge.target))
 
         return Angle.atan2(vector.dy, vector.dx)

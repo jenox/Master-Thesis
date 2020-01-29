@@ -50,9 +50,9 @@ class Canvas: UIView {
 
         let vertices = graph.vertices
         let edges = graph.edges
-        let faces = graph.innerFaces
+        let (faces, outerFace) = graph.faces
 
-        context.translateBy(x: -100, y: 0)
+        context.translateBy(x: -200, y: 0)
         do {
             for (endpoint1, endpoint2) in edges {
                 context.stroke(
@@ -106,6 +106,75 @@ class Canvas: UIView {
                 let positions = face.map(graph.position(of:))
                 context.fill(positions.centroid, diameter: 5, color: .blue)
             }
+        }
+
+        context.translateBy(x: 200, y: 0)
+        do {
+            var dual = FaceWeightedGraph()
+
+            for face in faces {
+                let centroid = face.map(graph.position(of:)).centroid
+
+                // internal face vertex
+                dual.insert(.internalFace(face), at: centroid)
+            }
+
+            for (endpoint1, endpoint2) in edges {
+                let faces = faces.filter({ $0.contains(endpoint1) && $0.contains(endpoint2) }) as Array
+                if faces.count == 2 {
+                    // add edge between adjacent face vertices
+                    dual.insertEdge(between: .internalFace(faces[0]), and: .internalFace(faces[1]))
+                } else {
+                    let position1 = graph.position(of: endpoint1)
+                    let position2 = graph.position(of: endpoint2)
+                    let centroid = [position1, position2].centroid
+
+                    // outer edge vertex
+                    dual.insert(.outerEdge([endpoint1, endpoint2]), at: centroid)
+
+                    // add edge to face vertex
+                    dual.insertEdge(between: .outerEdge([endpoint1, endpoint2]), and: .internalFace(faces[0]))
+                }
+            }
+
+            let outerEdges = Array(outerFace.makeAdjacentPairIterator())
+            for (edge1, edge2) in outerEdges.makeAdjacentPairIterator() {
+                dual.insertEdge(between: .outerEdge([edge1.0, edge1.1]), and: .outerEdge([edge2.0, edge2.1]))
+            }
+
+            for vertex in vertices {
+                var edges = graph.vertices(adjacentTo: vertex).map({ DirectedEdge(from: vertex, to: $0) })
+                edges.sort(by: { graph.angle(of: $0) < graph.angle(of: $1) })
+                let endpoints = edges.map({ $0.target })
+
+                var things: [FaceWeightedGraph.Vertex] = []
+                for (x, y) in endpoints.makeAdjacentPairIterator() {
+                    // area check required for triangles with 2 edges on outer face
+                    if graph.vertices(adjacentTo: x).contains(y), graph.area(of: [vertex, x, y]) > 0 {
+                        things.append(.internalFace([vertex, x, y]))
+                    } else {
+                        things.append(.outerEdge([vertex, x]))
+                        things.append(.outerEdge([vertex, y]))
+                    }
+                }
+
+                dual.register(face: Set(things))
+            }
+
+            for (endpoint1, endpoint2) in dual.edges {
+                context.stroke(from: dual.position(of: endpoint1), to: dual.position(of: endpoint2), color: .black)
+            }
+
+            for vertex in dual.vertices {
+                context.fill(dual.position(of: vertex), diameter: 5, color: .blue)
+            }
+
+            for face in dual.faces {
+                print("Face:", face)
+            }
+
+            // TODO: do we guarantee planarity when connecting barycenter to midpoint of edges?
+            // https://en.wikipedia.org/wiki/Centroid#/media/File:Triangle.Centroid.svg
         }
     }
 }
