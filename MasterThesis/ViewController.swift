@@ -159,7 +159,28 @@ class Canvas: UIView {
                     }
                 }
 
-                dual.register(face: Face(vertices: things))
+                dual.registerFace(Face(vertices: things), named: String(vertex), weight: graph.weight(of: vertex))
+            }
+
+            let colors = [UIColor.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple, .brown]
+
+            for (index, face) in dual.faces.enumerated() {
+                let centroid = face.vertices.map(dual.position(of:)).centroid
+
+                context.beginPath()
+                context.move(to: dual.position(of: face.vertices[0]))
+                for vertex in face.vertices.dropFirst() {
+                    context.addLine(to: dual.position(of: vertex))
+                }
+                context.closePath()
+                context.setFillColor(colors[index % colors.count].withAlphaComponent(0.2).cgColor)
+                context.fillPath()
+
+                context.translateBy(x: centroid.x, y: centroid.y)
+                context.scaleBy(x: 1, y: -1)
+                NSString(string: dual.name(of: face)).draw(at: .zero, withAttributes: [:])
+                context.scaleBy(x: 1, y: -1)
+                context.translateBy(x: -centroid.x, y: -centroid.y)
             }
 
             for (endpoint1, endpoint2) in dual.edges {
@@ -168,10 +189,6 @@ class Canvas: UIView {
 
             for vertex in dual.vertices {
                 context.fill(dual.position(of: vertex), diameter: 5, color: .blue)
-            }
-
-            for face in dual.faces {
-                print("Face:", face)
             }
 
             // TODO: do we guarantee planarity when connecting barycenter to midpoint of edges?

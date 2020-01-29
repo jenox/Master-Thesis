@@ -31,7 +31,8 @@ struct FaceWeightedGraph {
     private(set) var adjacencies: [Vertex: [Vertex]] = [:]
     private(set) var edges: [(Vertex, Vertex)] = []
 
-    private(set) var faces: Set<Face<Vertex>> = []
+    private(set) var faces: [Face<Vertex>] = []
+    private(set) var faceNames: [Face<Vertex>: String] = [:]
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint) {
         precondition(!self.vertices.contains(vertex))
@@ -51,14 +52,19 @@ struct FaceWeightedGraph {
         self.edges.append((endpoint1, endpoint2))
     }
 
-    mutating func register(face: Face<Vertex>) {
+    mutating func registerFace(_ face: Face<Vertex>, named name: String, weight: Double) {
         precondition(face.vertices.allSatisfy(self.vertices.contains))
         precondition(!self.faces.contains(face))
 
-        self.faces.insert(face)
+        self.faces.append(face)
+        self.faceNames[face] = name
     }
 
     func position(of vertex: Vertex) -> CGPoint {
         return self.locations[vertex]!
+    }
+
+    func name(of face: Face<Vertex>) -> String {
+        return self.faceNames[face]!
     }
 }
