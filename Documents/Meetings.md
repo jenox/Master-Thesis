@@ -1,6 +1,45 @@
 __Since last meeting__
 
-More algorithm drafting / implementation.
+**Algorithm:** make contact representation  
+**Input:** planar straight-line drawing of 2-connected, internally triangulated graph G  
+**Output:** 1-subdivision of "dual" contact representation
+
+- create empty dual graph  
+- for `f` in G.innerFaces:  
+    - add "face" vertex `f` at barycenter of `f`  
+- for `{u,v}` in G.edges:  
+    - if `{u,v}` adjacent to 2 faces `f ≠ g`:  
+        - add subdivion vertex `x` at midpoint of `{u,v}`  
+        - add edge between `f` and `x`  
+        - add edge between `x` and `g`  
+    - elseif `{u,v}` adjacent to single face `f`:  
+        - add "outer edge" vertex `{u,v}` at midpoint of `{u,v}`  
+        - add subdivion vertex `x` at midpoint of midpoint of `{u,v}` and barycenter of `f`  
+        - add edge between `{u,v}` and `x`  
+        - add edge between `x` and `f`  
+- for `({u,v}, {v,w})` in incident edges of G.outerFace:  
+    - add subdivion vertex `x` at position of `v`  
+    - add edge between `{u,v}` and `x`  
+    - add edge between `x` and `{v,w}`  
+
+
+__2020-01-30__
+
+- More algorithm drafting / implementation
+
+TODOs:
+- Rename "Embedding" phase to "Filtering + Embedding"
+- Send algorithm in pseudocode to Tamara
+- Torsten: graphs of degree 3 are area-universal (Thomasson)
+    - Max degree? Outer face might not have deg 3. We could augment and remove though!
+- Force-directed algorithm
+    - Push vertices towards bisector of the two adjacent edges in face
+    - Weight different vertex displacements: based on local fatness
+        - If adjacent to two faces: want 180deg angle
+        - If adjacent to three faces: want 120deg angle
+    - Prevent edge crossings!
+- Up next: bigger test instances, dynamics
+- Next meetings on Feb 13th and Feb 27th
 
 
 __2020-01-16__
