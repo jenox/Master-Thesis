@@ -21,7 +21,30 @@ extension CGVector {
         return CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
     }
 
+    static func += (lhs: inout CGVector, rhs: CGVector) {
+        lhs = lhs + rhs
+    }
+
     static func / (lhs: CGVector, rhs: CGFloat) -> CGVector {
         return CGVector(dx: lhs.dx / rhs, dy: lhs.dy / rhs)
+    }
+
+    static func * (lhs: CGFloat, rhs: CGVector) -> CGVector {
+        return CGVector(dx: lhs * rhs.dx, dy: lhs * rhs.dy)
+    }
+
+    var length: CGFloat {
+        return hypot(self.dx, self.dy)
+    }
+
+    var normalized: CGVector {
+        let length = self.length
+        guard length > 0 else { return .zero }
+
+        return CGVector(dx: self.dx / self.length, dy: self.dy / self.length)
+    }
+
+    static func * (lhs: CGVector, rhs: CGVector) -> CGFloat {
+        return lhs.dx * rhs.dx + lhs.dy * rhs.dy
     }
 }

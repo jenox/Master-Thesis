@@ -101,7 +101,6 @@ struct VertexWeightedGraph {
         }
 
         // outer face has negative area!
-//        let outer = faces.first(where: { self.area(of: $0) < 0 })!
         let index = faces.partition(by: { self.area(of: $0) >= 0 })
         precondition(index == 1)
 

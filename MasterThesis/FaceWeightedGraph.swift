@@ -76,8 +76,16 @@ struct FaceWeightedGraph {
         return self.locations[vertex]!
     }
 
+    mutating func setPosition(_ position: CGPoint, of vertex: Vertex) {
+        self.locations[vertex] = position
+    }
+
     func name(of face: Face<Vertex>) -> Character {
         return self.faceNames[face]!
+    }
+
+    func area(of face: Face<Vertex>) -> Double {
+        return Double(Polygon(points: face.vertices.map(self.position(of:))).area)
     }
 
     func weight(of face: Face<Vertex>) -> Double {

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
+		CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
+		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
 		CBDA154723CB670C0070847D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154623CB670C0070847D /* Assets.xcassets */; };
 		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
@@ -32,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CB5A22DC23F33C6F00001A2F /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
+		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBDA154623CB670C0070847D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -123,6 +128,7 @@
 			children = (
 				CBDA155E23CB88850070847D /* MasterThesisTests.swift */,
 				CBEE493923E1E1BC00986877 /* FaceTests.swift */,
+				CB5A22DF23F352B800001A2F /* PolygonTests.swift */,
 				CBDA156023CB88850070847D /* Info.plist */,
 			);
 			path = MasterThesisTests;
@@ -132,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				CBEE493723E1E18900986877 /* Face.swift */,
+				CB5A22DC23F33C6F00001A2F /* Polygon.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -240,6 +247,7 @@
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
+				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
 				CBEE493823E1E18900986877 /* Face.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
@@ -256,8 +264,10 @@
 				CBDA157123CBA7440070847D /* Collection.swift in Sources */,
 				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
 				CBDA156923CB9D320070847D /* Angle.swift in Sources */,
+				CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */,
 				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
 				CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */,
+				CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */,
 				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA156A23CB9D340070847D /* CGVector.swift in Sources */,
 				CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */,

@@ -15,28 +15,47 @@ class ViewController: UIViewController {
 }
 
 class Canvas: UIView {
+    private var graph = Canvas.makeInputGraph().subdividedDual() {
+        didSet { setNeedsDisplay() }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        self.addGestureRecognizer(recognizer)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+
     private class func makeInputGraph() -> VertexWeightedGraph {
         // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
 
+        let weights: [Double] = [3, 5, 8, 13, 21, 34, 55, 89].shuffled()
+
         var graph = VertexWeightedGraph()
-        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 3)
-        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 5)
-        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 7.5)
-        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 2)
+        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: weights[0])
+        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: weights[1])
+        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: weights[2])
+        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: weights[3])
         graph.insertEdge(between: "A", and: "B")
         graph.insertEdge(between: "A", and: "C")
         graph.insertEdge(between: "B", and: "C")
         graph.insertEdge(between: "B", and: "D")
         graph.insertEdge(between: "C", and: "D")
 
-        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 2.5)
+        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: weights[4])
         graph.insertEdge(between: "E", and: "A")
         graph.insertEdge(between: "E", and: "B")
         graph.insertEdge(between: "E", and: "C")
 
-        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 1)
-        graph.insertEdge(between: "F", and: "A")
-        graph.insertEdge(between: "F", and: "B")
+//        graph.insertEdge(between: "E", and: "D")
+
+//        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 4.5)
+//        graph.insertEdge(between: "F", and: "A")
+//        graph.insertEdge(between: "F", and: "B")
 
 //        var graph = VertexWeightedGraph()
 //        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
@@ -55,9 +74,6 @@ class Canvas: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        let input = Self.makeInputGraph()
-        let dual = input.subdividedDual()
-
         let context = UIGraphicsGetCurrentContext()!
         context.setFillColor(UIColor.white.cgColor)
         context.fill(rect)
@@ -65,17 +81,13 @@ class Canvas: UIView {
         context.translateBy(x: 0, y: bounds.height)
         context.scaleBy(x: 1, y: -1)
         context.translateBy(x: bounds.width / 2, y: bounds.height / 2)
-        context.scaleBy(x: 1.5, y: 1.5)
+        context.scaleBy(x: 2, y: 2)
         context.setLineWidth(0.5)
 
-        context.translateBy(x: -120, y: 0)
-        self.draw(input)
-
-        context.translateBy(x: 240, y: 0)
-        self.draw(dual, original: input)
+        self.draw(self.graph)
     }
 
-    private func draw(_ graph: VertexWeightedGraph) {
+    private func draw(_ graph: VertexWeightedGraph, labeled: Bool = true) {
         let context = UIGraphicsGetCurrentContext()!
 
         for (endpoint1, endpoint2) in graph.edges {
@@ -86,52 +98,16 @@ class Canvas: UIView {
             )
         }
 
-        for vertex in graph.vertices {
+        for vertex in graph.vertices where labeled {
+            context.fill(graph.position(of: vertex), diameter: 5, color: .black)
             self.drawLabel(at: graph.position(of: vertex), name: vertex, weight: graph.weight(of: vertex), tintColor: .white)
         }
     }
 
-    private func drawDual(of graph: VertexWeightedGraph) {
+    private func draw(_ graph: FaceWeightedGraph, labeled: Bool = true) {
         let context = UIGraphicsGetCurrentContext()!
-
-        let faces = graph.faces.inner
-
-        for (endpoint1, endpoint2) in graph.edges {
-            let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
-
-            if adjacentFaces.count == 2 {
-                let centroid1 = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
-                let centroid2 = adjacentFaces[1].vertices.map(graph.position(of:)).centroid
-                let mid = [graph.position(of: endpoint1), graph.position(of: endpoint2)].centroid // must be middle of edge, not middle of centroids!
-
-                context.stroke(from: mid, to: centroid1, color: .black)
-                context.stroke(from: mid, to: centroid2, color: .black)
-                context.fill(mid, diameter: 5, color: .red)
-            } else {
-                let position1 = graph.position(of: endpoint1)
-                let position2 = graph.position(of: endpoint2)
-                let centroid = adjacentFaces[0].vertices.map(graph.position(of:)).centroid
-                // results in 'degenerate' drawing but guarantees we don't introduce weird crossings
-                let target = [position1, position2].centroid
-
-                context.stroke(from: centroid, to: target, color: .black)
-                context.stroke(from: target, to: position1, color: .black)
-                context.stroke(from: target, to: position2, color: .black)
-                context.fill(target, diameter: 5, color: .blue)
-                context.fill([target, centroid].centroid, diameter: 5, color: .red)
-                context.fill(position1, diameter: 5, color: .red) // we fill those twice...
-                context.fill(position2, diameter: 5, color: .red) // we fill those twice...
-            }
-        }
-
-        for face in faces {
-            let positions = face.vertices.map(graph.position(of:))
-            context.fill(positions.centroid, diameter: 5, color: .blue)
-        }
-    }
-
-    private func draw(_ graph: FaceWeightedGraph, original: VertexWeightedGraph) {
-        let context = UIGraphicsGetCurrentContext()!
+        let totalweight = self.graph.faces.map(self.graph.weight(of:)).reduce(0, +)
+        let totalarea = self.graph.faces.map(self.graph.area(of:)).reduce(0, +)
 
         for face in graph.faces {
             let color = UIColor.color(for: graph.name(of: face)).interpolate(to: .white, fraction: 0.75)
@@ -150,36 +126,41 @@ class Canvas: UIView {
             context.stroke(from: graph.position(of: endpoint1), to: graph.position(of: endpoint2), color: .black)
         }
 
-        for face in graph.faces {
-            let color = UIColor.color(for: graph.name(of: face))
+        for vertex in graph.vertices {
+            switch vertex {
+            case .internalFace, .outerEdge:
+                context.fill(graph.position(of: vertex), diameter: 5, color: .black)
+            case .subdivision1, .subdivision2, .subdivision3:
+                context.fill(graph.position(of: vertex), diameter: 3, color: .black)
+            }
+        }
 
+        for face in graph.faces where labeled {
+            let color = UIColor.color(for: graph.name(of: face))
             var position = face.vertices.map(graph.position(of:)).centroid
+
             for vertex in face.vertices {
                 if case .subdivision3 = vertex {
                     position = graph.position(of: vertex)
                 }
             }
 
-            self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), tintColor: color)
-        }
+            let weight = self.graph.weight(of: face)
+            let area = self.graph.area(of: face)
+            let pressure = (weight / totalweight) / (area / totalarea)
 
-        for vertex in graph.vertices {
-            switch vertex {
-            case .internalFace, .outerEdge:
-                context.fill(graph.position(of: vertex), diameter: 3, color: .black)
-            case .subdivision1, .subdivision2:
-                context.fill(graph.position(of: vertex), diameter: 2, color: .black)
-            case .subdivision3:
-                break
-            }
+            self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), percent: 100 / pressure, tintColor: color)
         }
     }
 
-    private func drawLabel(at position: CGPoint, name: Character, weight: Double, tintColor: UIColor) {
+    private func drawLabel(at position: CGPoint, name: Character, weight: Double, percent: Double? = nil, tintColor: UIColor) {
         let context = UIGraphicsGetCurrentContext()!
         let foregroundColor = tintColor == .white ? .black : tintColor.interpolate(to: .black, fraction: 0.75)
 
-        let text = "\(name) | \(weight == weight.rounded() ? Int(weight).description : weight.description)"
+        var text = "\(name) | \(weight == weight.rounded() ? Int(weight).description : weight.description)"
+        if let percent = percent {
+            text += " | \(Int(percent.rounded()))%"
+        }
         let font = UIFont.systemFont(ofSize: 10, weight: .regular)
         let attr = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: foregroundColor])
         let line = CTLineCreateWithAttributedString(attr)
@@ -196,6 +177,34 @@ class Canvas: UIView {
         context.textPosition.x -= size.width / 2
         context.textPosition.y -= font.capHeight / 2
         CTLineDraw(line, context)
+    }
+
+    @objc private func tapped() {
+        var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
+        for vertex in self.graph.vertices {
+            forces[vertex] = .zero
+        }
+
+        let totalweight = self.graph.faces.map(self.graph.weight(of:)).reduce(0, +)
+        let totalarea = self.graph.faces.map(self.graph.area(of:)).reduce(0, +)
+
+        for face in self.graph.faces {
+            let weight = self.graph.weight(of: face)
+            let area = self.graph.area(of: face)
+            let pressure = (weight / totalweight) / (area / totalarea)
+
+            let polygon = Polygon(points: face.vertices.map(self.graph.position(of:)))
+
+            for (index, vertex) in face.vertices.enumerated() {
+                let normal = polygon.normal(at: index)
+
+                forces[vertex]! += CGFloat(log(pressure)) * normal
+            }
+        }
+
+        for (vertex, force) in forces {
+            self.graph.setPosition(self.graph.position(of: vertex) + force, of: vertex)
+        }
     }
 }
 
