@@ -151,6 +151,13 @@ class Canvas: UIView {
 
             self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), percent: 100 / pressure, tintColor: color)
         }
+
+        let edges = graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1)) })
+        for (a,b) in edges {
+            for (c,d) in edges where a != c || b != d {
+                precondition(!Segment(a: a, b: b).intersects(Segment(a: c, b: d)))
+            }
+        }
     }
 
     private func drawLabel(at position: CGPoint, name: Character, weight: Double, percent: Double? = nil, tintColor: UIColor) {
@@ -261,3 +268,35 @@ extension UIColor {
         return UIColor(red: r3, green: g3, blue: b3, alpha: a3)
     }
 }
+
+struct Segment {
+    var a: CGPoint
+    var b: CGPoint
+
+    func intersects(_ other: Segment) -> Bool {
+        if self.a == other.a || self.a == other.b { return false }
+        if self.b == other.a || self.b == other.b { return false }
+
+        return check_inter(a: self.a, b: self.b, c: other.a, d: other.b)
+    }
+}
+// https://cp-algorithms.com/geometry/check-segments-intersection.html
+private func inter1(a: CGFloat, b: CGFloat, c: CGFloat, d: CGFloat) -> Bool {
+    var a = a; var b = b; var c = c; var d = d;
+    if a > b { swap(&a, &b) }
+    if c > d { swap(&c, &d) }
+    return max(a, c) <= min(b, d)
+}
+private func check_inter(a: CGPoint, b: CGPoint, c: CGPoint, d: CGPoint) -> Bool {
+    if (c.cross(a,d) == 0 && c.cross(b,d) == 0) {
+        return inter1(a: a.x, b: b.x, c: c.x, d: d.x) && inter1(a: a.y, b: b.y, c: c.y, d: d.y)
+    } else {
+        return sgn(a.cross(b,c)) != sgn(a.cross(b,d)) && sgn(c.cross(d,a)) != sgn(c.cross(d,b))
+    }
+}
+private extension CGPoint {
+    static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
+    func cross(_ p: CGPoint) -> CGFloat { return self.x * p.y - self.y * p.x}
+    func cross(_ a: CGPoint, _ b: CGPoint) -> CGFloat { return (a - self).cross(b - self) }
+}
+private func sgn(_ x: CGFloat) -> Int { return x >= 0 ? x != 0 ? 1 : 0 : -1 }
