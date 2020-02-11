@@ -24,7 +24,7 @@ struct Polygon: Equatable {
 }
 
 extension Polygon {
-    func normal(at index: Int) -> CGVector {
+    func normalAndAngle(at index: Int) -> (normal: CGVector, angle: Angle) {
         let a = self.points[(index + self.points.count - 1) % self.points.count]
         let b = self.points[index]
         let c = self.points[(index + 1) % self.points.count]
@@ -33,7 +33,11 @@ extension Polygon {
         let vq = CGVector(from: b, to: c)
 
         let outside = (Angle.atan2(vq.dy, vq.dx) - Angle.atan2(vp.dy, vp.dx)).counterclockwise
-        return vp.rotated(by: outside / 2).normalized
+        return (vp.rotated(by: outside / 2).normalized, outside)
+    }
+
+    func normal(at index: Int) -> CGVector {
+        return normalAndAngle(at: index).normal
     }
 }
 

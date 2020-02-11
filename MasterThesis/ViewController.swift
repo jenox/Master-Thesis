@@ -33,7 +33,7 @@ class Canvas: UIView {
     private class func makeInputGraph() -> VertexWeightedGraph {
         // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
 
-        let weights: [Double] = [3, 5, 8, 13, 21, 34, 55, 89].shuffled()
+        let weights: [Double] = [34, 5, 21, 8, 13]
 
         var graph = VertexWeightedGraph()
         graph.insert("A", at: CGPoint(x: 0, y: 130), weight: weights[0])
@@ -152,11 +152,21 @@ class Canvas: UIView {
             self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), percent: 100 / pressure, tintColor: color)
         }
 
-        let edges = graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1)) })
-        for (a,b) in edges {
-            for (c,d) in edges where a != c || b != d {
-                precondition(!Segment(a: a, b: b).intersects(Segment(a: c, b: d)))
+        let edges = self.graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1), $0.0, $0.1) })
+        for (a,b,u,v) in edges {
+            for (c,d,x,y) in edges where a != c || b != d {
+                if Segment(a: a, b: b).intersects(Segment(a: c, b: d)) {
+                    fatalError("intersection: \(u)-\(v) and \(x)-\(y) at \(a)-\(b) and \(c)-\(d)")
+                }
             }
+        }
+
+        for (vertex, force) in self.computeForces() {
+            context.beginPath()
+            context.move(to: self.graph.position(of: vertex))
+            context.addLine(to: context.currentPointOfPath + 10 * force)
+            context.setStrokeColor(UIColor.red.cgColor)
+            context.strokePath()
         }
     }
 
@@ -187,6 +197,24 @@ class Canvas: UIView {
     }
 
     @objc private func tapped() {
+        let forces = self.computeForces()
+        let edges = self.graph.edges.map({ Segment(a: self.graph.position(of: $0.0), b: self.graph.position(of: $0.1)) })
+
+        for (vertex, var force) in forces {
+            let position = self.graph.position(of: vertex)
+            let mindist = edges.filter({ $0.a != position && $0.b != position }).map(position.distance(to:)).min()!
+//            let mindist = positions.filter({ $0 != position }).map(position.distance(to:)).min()!
+
+            // FIXME: this still crashes?!
+            if force.length > 0.25 * mindist {
+                force = 0.25 * mindist * force.normalized
+            }
+
+            self.graph.setPosition(self.graph.position(of: vertex) + force, of: vertex)
+        }
+    }
+
+    private func computeForces() -> [FaceWeightedGraph.Vertex: CGVector] {
         var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
         for vertex in self.graph.vertices {
             forces[vertex] = .zero
@@ -203,15 +231,17 @@ class Canvas: UIView {
             let polygon = Polygon(points: face.vertices.map(self.graph.position(of:)))
 
             for (index, vertex) in face.vertices.enumerated() {
-                let normal = polygon.normal(at: index)
+                let (normal, angle) = polygon.normalAndAngle(at: index)
 
-                forces[vertex]! += CGFloat(log(pressure)) * normal
+                if pressure >= 1 {
+                    forces[vertex]! += CGFloat(log(pressure)) * pow((360 - angle.degrees) / 180, 1) * normal
+                } else {
+                    forces[vertex]! += CGFloat(log(pressure)) * pow(angle.degrees / 180, 1) * normal
+                }
             }
         }
 
-        for (vertex, force) in forces {
-            self.graph.setPosition(self.graph.position(of: vertex) + force, of: vertex)
-        }
+        return forces
     }
 }
 
@@ -219,7 +249,7 @@ extension Collection where Element == CGPoint {
     var centroid: CGPoint {
         let count = self.isEmpty ? 1 : CGFloat(self.count)
         let x = self.reduce(0, { $0 + $1.x }) / count
-        let y = self.reduce(0, { $0 + $1.y  }) / count
+        let y = self.reduce(0, { $0 + $1.y }) / count
 
         return CGPoint(x: x, y: y)
     }
@@ -269,6 +299,26 @@ extension UIColor {
     }
 }
 
+extension CGPoint {
+    func distance(to other: CGPoint) -> CGFloat {
+        return hypot(other.x - self.x, other.y - self.y)
+    }
+
+    /// https://stackoverflow.com/a/1501725/796103
+    func distance(to segment: Segment) -> CGFloat {
+        // Return minimum distance between line segment vw and point p
+        let l2 = pow(segment.a.distance(to: segment.b), 2)  // i.e. |w-v|^2 -  avoid a sqrt
+        if (l2 == 0.0) { return self.distance(to: segment.a) } // v == w case
+        // Consider the line extending the segment, parameterized as v + t (w - v).
+        // We find projection of point p onto the line.
+        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+        // We clamp t from [0,1] to handle points outside the segment vw.
+        let t = max(0, min(1, ((self - segment.a) * (segment.b - segment.a)) / l2))
+        let projection = segment.a + t * (segment.b - segment.a) // Projection falls on the segment
+        return self.distance(to: projection)
+    }
+}
+
 struct Segment {
     var a: CGPoint
     var b: CGPoint
@@ -296,6 +346,10 @@ private func check_inter(a: CGPoint, b: CGPoint, c: CGPoint, d: CGPoint) -> Bool
 }
 private extension CGPoint {
     static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
+    static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y) }
+    static func * (lhs: CGPoint, rhs: CGPoint) -> CGFloat { return lhs.x*rhs.x + lhs.y*rhs.y }
+    static func * (lhs: CGFloat, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs * rhs.x, y: lhs * rhs.y) }
+    static func / (lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x / rhs, y: lhs.y / rhs) }
     func cross(_ p: CGPoint) -> CGFloat { return self.x * p.y - self.y * p.x}
     func cross(_ a: CGPoint, _ b: CGPoint) -> CGFloat { return (a - self).cross(b - self) }
 }

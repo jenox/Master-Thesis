@@ -24,6 +24,5 @@ class PolygonTests: XCTestCase {
 
 func XCTAssertNormal(_ vector: CGVector, inDirection direction: CGVector, file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(hypot(vector.dx, vector.dy), 1.0, accuracy: 1e-6, "length", file: file, line: line)
-    print(vector, direction)
     XCTAssertEqual(vector.normalized * direction.normalized, 1.0, accuracy: 1e-3, "direction", file: file, line: line)
 }
