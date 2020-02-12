@@ -18,6 +18,15 @@ struct Face<T>: Hashable where T: Hashable {
 
     let vertices: [T]
 
+    func neighbors(of vertex: T) -> (T, T) {
+        let index = self.vertices.firstIndex(of: vertex)!
+
+        return (
+            self.vertices[(index + 1) % self.vertices.count],
+            self.vertices[(index + self.vertices.count - 1) % self.vertices.count]
+        )
+    }
+
     func indexOfEdge(between first: T, and second: T) -> Int? {
         guard let index = self.vertices.firstIndex(of: first) else { return nil }
 

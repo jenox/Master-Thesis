@@ -15,60 +15,82 @@ class ViewController: UIViewController {
 }
 
 class Canvas: UIView {
-    private var graph = Canvas.makeInputGraph().subdividedDual() {
+
+    // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
+    private var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
         didSet { setNeedsDisplay() }
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        self.addGestureRecognizer(recognizer)
+//        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+//        self.addGestureRecognizer(recognizer)
     }
 
     required init?(coder: NSCoder) {
         fatalError()
     }
 
-    private class func makeInputGraph() -> VertexWeightedGraph {
-        // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
-
-        let weights: [Double] = [34, 5, 21, 8, 13]
-
+    private class func makeVoronoiInputGraph() -> VertexWeightedGraph {
         var graph = VertexWeightedGraph()
-        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: weights[0])
-        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: weights[1])
-        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: weights[2])
-        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: weights[3])
+        graph.insert("A", at: CGPoint(x: -100, y: 150), weight: 34)
+        graph.insert("B", at: CGPoint(x: 0, y: 150), weight: 5)
+        graph.insert("C", at: CGPoint(x: 100, y: 150), weight: 21)
+        graph.insert("D", at: CGPoint(x: -150, y: 50), weight: 8)
+        graph.insert("E", at: CGPoint(x: -50, y: 50), weight: 8)
+        graph.insert("F", at: CGPoint(x: 50, y: 50), weight: 5)
+        graph.insert("G", at: CGPoint(x: 150, y: 50), weight: 8)
+        graph.insert("H", at: CGPoint(x: -100, y: -50), weight: 5)
+        graph.insert("I", at: CGPoint(x: 0, y: -50), weight: 13)
+        graph.insert("J", at: CGPoint(x: 100, y: -50), weight: 21)
+        graph.insert("K", at: CGPoint(x: -50, y: -150), weight: 8)
+        graph.insert("L", at: CGPoint(x: 50, y: -150), weight: 8)
+
+        graph.insertEdge(between: "A", and: "B")
+        graph.insertEdge(between: "B", and: "C")
+        graph.insertEdge(between: "D", and: "E")
+        graph.insertEdge(between: "E", and: "F")
+        graph.insertEdge(between: "F", and: "G")
+        graph.insertEdge(between: "H", and: "I")
+        graph.insertEdge(between: "I", and: "J")
+        graph.insertEdge(between: "K", and: "L")
+        graph.insertEdge(between: "A", and: "D")
+        graph.insertEdge(between: "A", and: "E")
+        graph.insertEdge(between: "B", and: "E")
+        graph.insertEdge(between: "B", and: "F")
+        graph.insertEdge(between: "C", and: "F")
+        graph.insertEdge(between: "C", and: "G")
+        graph.insertEdge(between: "D", and: "H")
+        graph.insertEdge(between: "E", and: "H")
+        graph.insertEdge(between: "E", and: "I")
+        graph.insertEdge(between: "F", and: "I")
+        graph.insertEdge(between: "F", and: "J")
+        graph.insertEdge(between: "G", and: "J")
+        graph.insertEdge(between: "H", and: "K")
+        graph.insertEdge(between: "I", and: "K")
+        graph.insertEdge(between: "I", and: "L")
+        graph.insertEdge(between: "J", and: "L")
+
+        return graph
+    }
+
+    private class func makeSmallInputGraph() -> VertexWeightedGraph {
+        var graph = VertexWeightedGraph()
+        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 34)
+        graph.insert("B", at: CGPoint(x: -75, y: 0), weight: 5)
+        graph.insert("C", at: CGPoint(x: 75, y: 0), weight: 21)
+        graph.insert("D", at: CGPoint(x: 0, y: -130), weight: 8)
         graph.insertEdge(between: "A", and: "B")
         graph.insertEdge(between: "A", and: "C")
         graph.insertEdge(between: "B", and: "C")
         graph.insertEdge(between: "B", and: "D")
         graph.insertEdge(between: "C", and: "D")
 
-        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: weights[4])
+        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 13)
         graph.insertEdge(between: "E", and: "A")
         graph.insertEdge(between: "E", and: "B")
         graph.insertEdge(between: "E", and: "C")
-
-//        graph.insertEdge(between: "E", and: "D")
-
-//        graph.insert("F", at: CGPoint(x: -100, y: 130), weight: 4.5)
-//        graph.insertEdge(between: "F", and: "A")
-//        graph.insertEdge(between: "F", and: "B")
-
-//        var graph = VertexWeightedGraph()
-//        graph.insert("A", at: CGPoint(x: 0, y: 130), weight: 1)
-//        graph.insert("B", at: CGPoint(x: -75, y: -150), weight: 2)
-//        graph.insert("C", at: CGPoint(x: 75, y: -150), weight: 3)
-//        graph.insertEdge(between: "A", and: "B")
-//        graph.insertEdge(between: "A", and: "C")
-//        graph.insertEdge(between: "B", and: "C")
-//
-//        graph.insert("E", at: CGPoint(x: 0, y: 50), weight: 5)
-//        graph.insertEdge(between: "E", and: "A")
-//        graph.insertEdge(between: "E", and: "B")
-//        graph.insertEdge(between: "E", and: "C")
 
         return graph
     }
@@ -196,17 +218,34 @@ class Canvas: UIView {
         CTLineDraw(line, context)
     }
 
+//    var down: Bool = false
+    var timer: Timer?
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { _ in
+            self.tapped()
+        })
+        self.tapped()
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.timer?.invalidate()
+    }
+
     @objc private func tapped() {
         let forces = self.computeForces()
         let edges = self.graph.edges.map({ Segment(a: self.graph.position(of: $0.0), b: self.graph.position(of: $0.1)) })
+        let positions = self.graph.vertices.map(self.graph.position(of:))
 
         for (vertex, var force) in forces {
             let position = self.graph.position(of: vertex)
-            let mindist = edges.filter({ $0.a != position && $0.b != position }).map(position.distance(to:)).min()!
-//            let mindist = positions.filter({ $0 != position }).map(position.distance(to:)).min()!
+            var mindist = edges.filter({ $0.a != position && $0.b != position }).map(position.distance(to:)).min()!
+            mindist = min(mindist, positions.filter({ $0 != position }).map(position.distance(to:)).min()!)
 
             // FIXME: this still crashes?!
             if force.length > 0.25 * mindist {
+//                print("clamping")
                 force = 0.25 * mindist * force.normalized
             }
 
@@ -237,6 +276,28 @@ class Canvas: UIView {
                     forces[vertex]! += CGFloat(log(pressure)) * pow((360 - angle.degrees) / 180, 1) * normal
                 } else {
                     forces[vertex]! += CGFloat(log(pressure)) * pow(angle.degrees / 180, 1) * normal
+                }
+            }
+        }
+
+        for face in self.graph.faces {
+            for (index, vertex) in face.vertices.enumerated() {
+                switch vertex {
+                case .subdivision1, .subdivision2, .subdivision3:
+                    let (left, right) = face.neighbors(of: vertex)
+                    let pos = self.graph.position(of: vertex)
+                    let pos1 = self.graph.position(of: left)
+                    let pos2 = self.graph.position(of: right)
+
+                    let polygon = Polygon(points: face.vertices.map(self.graph.position(of:)))
+                    let vector = polygon.normal(at: index).rotated(by: .init(degrees: 90))
+
+                    forces[vertex]! += 5 * log(pos.distance(to: pos1) / pos.distance(to: pos2)) * vector
+
+//                    forces[vertex]! += 0.2 * CGVector(from: pos, to: pos1)
+//                    forces[vertex]! += 0.2 * CGVector(from: pos, to: pos2)
+                default:
+                    break
                 }
             }
         }
