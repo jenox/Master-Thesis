@@ -17,7 +17,7 @@ class ViewController: UIViewController {
 class Canvas: UIView {
 
     // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
-    private var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
+    private var graph = Canvas.makeSmallInputGraph().subdividedDual() {
         didSet { setNeedsDisplay() }
     }
     private var timer: Timer?
@@ -173,7 +173,7 @@ class Canvas: UIView {
             }
         }
 
-        for (vertex, force) in self.computeForces() {
+        for (vertex, force) in ForceComputer().forces(in: self.graph) {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)
@@ -221,72 +221,9 @@ class Canvas: UIView {
     }
 
     @objc private func step() {
-        let forces = self.computeForces()
-        let edges = self.graph.edges.map({ Segment(a: self.graph.position(of: $0.0), b: self.graph.position(of: $0.1)) })
-        let positions = self.graph.vertices.map(self.graph.position(of:))
+        let forces = ForceComputer().forces(in: self.graph)
+        ForceApplicator().apply(forces, to: &self.graph)
 
-        for (vertex, var force) in forces {
-            let position = self.graph.position(of: vertex)
-            var mindist = edges.filter({ $0.a != position && $0.b != position }).map(position.distance(to:)).min()!
-            mindist = min(mindist, positions.filter({ $0 != position }).map(position.distance(to:)).min()!)
-
-            // FIXME: this still crashes?!
-            if force.length > 0.25 * mindist {
-//                print("clamping")
-                force = 0.25 * mindist * force.normalized
-            }
-
-            self.graph.setPosition(self.graph.position(of: vertex) + force, of: vertex)
-        }
-    }
-
-    private func computeForces() -> [FaceWeightedGraph.Vertex: CGVector] {
-        var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
-        for vertex in self.graph.vertices {
-            forces[vertex] = .zero
-        }
-
-        let totalweight = self.graph.faces.map(self.graph.weight(of:)).reduce(0, +)
-        let totalarea = self.graph.faces.map(self.graph.area(of:)).reduce(0, +)
-
-        for face in self.graph.faces {
-            let weight = self.graph.weight(of: face)
-            let area = self.graph.area(of: face)
-            let pressure = (weight / totalweight) / (area / totalarea)
-
-            let polygon = Polygon(points: face.vertices.map(self.graph.position(of:)))
-
-            for (index, vertex) in face.vertices.enumerated() {
-                let (normal, angle) = polygon.normalAndAngle(at: index)
-
-                if pressure >= 1 {
-                    forces[vertex]! += CGFloat(log(pressure)) * pow((360 - angle.degrees) / 180, 1) * normal
-                } else {
-                    forces[vertex]! += CGFloat(log(pressure)) * pow(angle.degrees / 180, 1) * normal
-                }
-            }
-        }
-
-        for face in self.graph.faces {
-            for (index, vertex) in face.vertices.enumerated() {
-                switch vertex {
-                case .subdivision1, .subdivision2, .subdivision3:
-                    let (left, right) = face.neighbors(of: vertex)
-                    let pos = self.graph.position(of: vertex)
-                    let pos1 = self.graph.position(of: left)
-                    let pos2 = self.graph.position(of: right)
-
-                    let polygon = Polygon(points: face.vertices.map(self.graph.position(of:)))
-                    let vector = polygon.normal(at: index).rotated(by: .init(degrees: 90))
-
-                    forces[vertex]! += 5 * log(pos.distance(to: pos1) / pos.distance(to: pos2)) * vector
-                default:
-                    break
-                }
-            }
-        }
-
-        return forces
     }
 }
 
