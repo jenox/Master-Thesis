@@ -1,26 +1,21 @@
-__Since last meeting__
+__2020-02-27__
 
-**Algorithm:** make contact representation  
-**Input:** planar straight-line drawing of 2-connected, internally triangulated graph G  
-**Output:** 1-subdivision of "dual" contact representation
+__2020-02-13__
 
-- create empty dual graph  
-- for `f` in G.innerFaces:  
-    - add "face" vertex `f` at barycenter of `f`  
-- for `{u,v}` in G.edges:  
-    - if `{u,v}` adjacent to 2 faces `f ≠ g`:  
-        - add subdivion vertex `x` at midpoint of `{u,v}`  
-        - add edge between `f` and `x`  
-        - add edge between `x` and `g`  
-    - elseif `{u,v}` adjacent to single face `f`:  
-        - add "outer edge" vertex `{u,v}` at midpoint of `{u,v}`  
-        - add subdivion vertex `x` at midpoint of midpoint of `{u,v}` and barycenter of `f`  
-        - add edge between `{u,v}` and `x`  
-        - add edge between `x` and `f`  
-- for `({u,v}, {v,w})` in incident edges of G.outerFace:  
-    - add subdivion vertex `x` at position of `v`  
-    - add edge between `{u,v}` and `x`  
-    - add edge between `x` and `{v,w}`  
+- Transformation algorithm in pseudocode
+- Problem with initial force-directed implementation
+    - Subdivision vertices are very rigid and severly restrict movement of other vertices
+    - Tight corridors are being generated
+    - Edge crossings are still being generated
+
+TODOs:
+- [x] Try to balance distance between subdivision vertices and their neighbors
+- [ ] Try adding repulsive forces between vertices and edges of the same face -> local fatness
+- [x] Fix PrEd implementation
+- [ ] Try speeding things up by only adding helper vertex after a couple of iterations
+- [ ] Theory and practice together: start with optimal drawing already (Kleist/Thomassen)
+- [ ] Read Circular Arc Kobourov Cartogram: one-bend to circular arc?
+- [ ] Reread Lombardi Spring Embedder: also with one-bend helper vertex?
 
 
 __2020-01-30__
@@ -28,18 +23,17 @@ __2020-01-30__
 - More algorithm drafting / implementation
 
 TODOs:
-- Rename "Embedding" phase to "Filtering + Embedding"
-- Send algorithm in pseudocode to Tamara
-- Torsten: graphs of degree 3 are area-universal (Thomasson)
-    - Max degree? Outer face might not have deg 3. We could augment and remove though!
-- Force-directed algorithm
+- [ ] Rename "Embedding" phase to "Filtering + Embedding"
+- [x] Send algorithm in pseudocode to Tamara
+- [ ] Torsten: graphs of degree 3 are area-universal (Thomassen)
+    - Max degree? Outer face might not have degree 3. We could augment and remove though!
+- [x] Force-directed algorithm
     - Push vertices towards bisector of the two adjacent edges in face
     - Weight different vertex displacements: based on local fatness
         - If adjacent to two faces: want 180deg angle
         - If adjacent to three faces: want 120deg angle
     - Prevent edge crossings!
 - Up next: bigger test instances, dynamics
-- Next meetings on Feb 13th and Feb 27th
 
 
 __2020-01-16__
@@ -72,15 +66,15 @@ Planar graphs and face areas: area universality
 - Duality of problems: cartogram for vertex-weighted graph vs realizing drawing (of dual) with given face areas
 
 TODOs
-- Linda Kleist result as initial configuration for force-directed?
-- Check if Webcola can be used to ensure no edge crossings are created! -> no
-- Draft algorithm and evaluation structure: black boxes with input and output
-- Title for thesis
-- Quality Metrics
+- [x] Can Linda Kleist result as initial configuration for force-directed?
+- [x] Check if Webcola can be used to ensure no edge crossings are created! -> no
+- [x] Draft algorithm and evaluation structure: black boxes with input and output
+- [x] Title for thesis
+- [x] Think about quality metrics
     - “Local fatness”
     - Polygonal complexity
     - Can we create constraints for those?
-- Research questions for evaluation?
+- [x] Think about research questions for evaluation
     - How much worse is applying changes to just starting from scratch?
     - Think in terms of possible plots
 
