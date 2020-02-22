@@ -120,4 +120,16 @@ struct FaceWeightedGraph {
 //            self.faceNames[newface] = self.faceNames.removeValue(forKey: face)!
 //        }
 //    }
+
+    func vector(from vertex: Vertex, to point: CGPoint) -> CGVector {
+        return CGVector(from: self.position(of: vertex), to: point)
+    }
+
+    func distance(from vertex1: Vertex, to vertex2: Vertex) -> CGFloat {
+        return self.position(of: vertex1).distance(to: self.position(of: vertex2))
+    }
+
+    func segment(from vertex1: Vertex, to vertex2: Vertex) -> Segment {
+        return Segment(a: self.position(of: vertex1), b: self.position(of: vertex2))
+    }
 }

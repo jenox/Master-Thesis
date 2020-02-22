@@ -13,12 +13,20 @@ extension CGVector {
         self = CGVector(dx: target.x - source.x, dy: target.y - source.y)
     }
 
+    static prefix func - (value: CGVector) -> CGVector {
+        return CGVector(dx: -value.dx, dy: -value.dy)
+    }
+
     static func + (lhs: CGPoint, rhs: CGVector) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.dx, y: lhs.y + rhs.dy)
     }
 
     static func + (lhs: CGVector, rhs: CGVector) -> CGVector {
         return CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
+    }
+
+    static func - (lhs: CGVector, rhs: CGVector) -> CGVector {
+        return CGVector(dx: lhs.dx - rhs.dx, dy: lhs.dy - rhs.dy)
     }
 
     static func += (lhs: inout CGVector, rhs: CGVector) {
@@ -46,5 +54,20 @@ extension CGVector {
 
     static func * (lhs: CGVector, rhs: CGVector) -> CGFloat {
         return lhs.dx * rhs.dx + lhs.dy * rhs.dy
+    }
+}
+
+extension CGVector {
+    func scalarProjection(onto other: CGVector) -> CGFloat {
+        return self * other / other.length
+    }
+
+    // https://en.wikipedia.org/wiki/Vector_projection
+    func projected(onto other: CGVector) -> CGVector {
+        return (self * other) / (other * other) * other
+    }
+
+    func rejected(from other: CGVector) -> CGVector {
+        return other - self.projected(onto: other)
     }
 }

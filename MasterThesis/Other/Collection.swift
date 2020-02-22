@@ -35,4 +35,16 @@ extension Collection {
             }
         })
     }
+
+    func cartesian<T>(with other: T) -> AnySequence<(Element, T.Element)> where T: Collection {
+        var cartesian: [(Element, T.Element)] = []
+
+        for element1 in self {
+            for element2 in other {
+                cartesian.append((element1, element2))
+            }
+        }
+
+        return AnySequence(cartesian)
+    }
 }

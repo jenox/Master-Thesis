@@ -102,6 +102,31 @@ extension Angle {
 }
 
 extension Angle {
+    /// [0°, 180°]
+    init(between a: CGVector, and b: CGVector) {
+        self = Angle.acos(a.normalized * b.normalized)
+    }
+
+    /// [-180°, 180°)
+    init(from a: CGVector, to b: CGVector) {
+        self = (Angle.atan2(b.dy, b.dx) - Angle.atan2(a.dy, a.dx)).normalized
+    }
+
+    /// [-180°, 180°)
+    init(from start: CGPoint, by vertex: CGPoint, to end: CGPoint) {
+        let vp = CGVector(from: vertex, to: start)
+        let vq = CGVector(from: vertex, to: end)
+        let angle = Angle(from: vp, to: vq).normalized
+
+        self = angle
+    }
+
+    static func direction(of vector: CGVector) -> Angle {
+        return Angle.atan2(vector.dy, vector.dx)
+    }
+}
+
+extension Angle {
     public static func asin(_ value: CGFloat) -> Angle {
         return Angle(radians: CoreGraphics.asin(value))
     }

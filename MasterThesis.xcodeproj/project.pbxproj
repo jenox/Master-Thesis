@@ -35,6 +35,8 @@
 		CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEA24014CCD00AA4846 /* Misc.swift */; };
 		CBF37CED240150FB00AA4846 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* ForceApplicator.swift */; };
 		CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEE240151FE00AA4846 /* ForceComputer.swift */; };
+		CBF37CF12401844C00AA4846 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Other.swift */; };
+		CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF22401846D00AA4846 /* CGPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,8 @@
 		CBF37CEA24014CCD00AA4846 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		CBF37CEC240150FB00AA4846 /* ForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceApplicator.swift; sourceTree = "<group>"; };
 		CBF37CEE240151FE00AA4846 /* ForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceComputer.swift; sourceTree = "<group>"; };
+		CBF37CF02401844C00AA4846 /* Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
+		CBF37CF22401846D00AA4846 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				CBDA156523CB9D1C0070847D /* CGVector.swift */,
+				CBF37CF22401846D00AA4846 /* CGPoint.swift */,
 				CBDA156723CB9D240070847D /* Angle.swift */,
 				CB5A22DC23F33C6F00001A2F /* Polygon.swift */,
 				CBF37CEA24014CCD00AA4846 /* Misc.swift */,
@@ -162,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				CBDA156F23CBA70B0070847D /* Collection.swift */,
+				CBF37CF02401844C00AA4846 /* Other.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -278,6 +284,7 @@
 				CBDA155523CB67400070847D /* ViewController.swift in Sources */,
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
+				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
@@ -286,6 +293,7 @@
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBF37CED240150FB00AA4846 /* ForceApplicator.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
+				CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */,
 				CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */,
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
 				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,

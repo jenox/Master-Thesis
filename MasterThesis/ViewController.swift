@@ -221,9 +221,14 @@ class Canvas: UIView {
     }
 
     @objc private func step() {
+        let before = CACurrentMediaTime()
+
         let forces = ForceComputer().forces(in: self.graph)
         ForceApplicator().apply(forces, to: &self.graph)
 
+        let after = CACurrentMediaTime()
+
+        print("Stepped in \(String(format: "%.3f", 1e3 * (after - before)))ms")
     }
 }
 
