@@ -32,6 +32,7 @@
 		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* Transformation.swift */; };
+		CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEA24014CCD00AA4846 /* Misc.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* Transformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformation.swift; sourceTree = "<group>"; };
+		CBF37CEA24014CCD00AA4846 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,14 +101,10 @@
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
 				CBDA155423CB67400070847D /* ViewController.swift */,
+				CBF37CE924014BF500AA4846 /* Algorithm */,
 				CBEE493623E1E17B00986877 /* Graph */,
-				CBDA156F23CBA70B0070847D /* Collection.swift */,
-				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
-				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
-				CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */,
-				CBEE493C23E1EAE100986877 /* Transformation.swift */,
-				CBDA156523CB9D1C0070847D /* CGVector.swift */,
-				CBDA156723CB9D240070847D /* Angle.swift */,
+				CBF37CE724014BC600AA4846 /* Geometry */,
+				CBF37CE824014BD800AA4846 /* Other */,
 				CBDA154623CB670C0070847D /* Assets.xcassets */,
 				CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */,
 				CBDA154E23CB670C0070847D /* Info.plist */,
@@ -138,9 +136,38 @@
 			isa = PBXGroup;
 			children = (
 				CBEE493723E1E18900986877 /* Face.swift */,
-				CB5A22DC23F33C6F00001A2F /* Polygon.swift */,
+				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
+				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
+				CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */,
 			);
 			path = Graph;
+			sourceTree = "<group>";
+		};
+		CBF37CE724014BC600AA4846 /* Geometry */ = {
+			isa = PBXGroup;
+			children = (
+				CBDA156523CB9D1C0070847D /* CGVector.swift */,
+				CBDA156723CB9D240070847D /* Angle.swift */,
+				CB5A22DC23F33C6F00001A2F /* Polygon.swift */,
+				CBF37CEA24014CCD00AA4846 /* Misc.swift */,
+			);
+			path = Geometry;
+			sourceTree = "<group>";
+		};
+		CBF37CE824014BD800AA4846 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				CBDA156F23CBA70B0070847D /* Collection.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		CBF37CE924014BF500AA4846 /* Algorithm */ = {
+			isa = PBXGroup;
+			children = (
+				CBEE493C23E1EAE100986877 /* Transformation.swift */,
+			);
+			path = Algorithm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +278,7 @@
 				CBEE493823E1E18900986877 /* Face.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
+				CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */,
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
 				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
 			);
