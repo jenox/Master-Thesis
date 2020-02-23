@@ -12,10 +12,16 @@ TODOs:
 - [x] Try to balance distance between subdivision vertices and their neighbors
 - [ ] Try adding repulsive forces between vertices and edges of the same face -> local fatness
 - [x] Fix PrEd implementation
-- [ ] Try speeding things up by only adding helper vertex after a couple of iterations
+    - Works, but is pretty slow now!
+- [ ] Try speeding things up by only adding helper vertices after a couple of iterations
+    - Would require different transformation as current implementation relies on subdivision vertices to be valid contact representation
 - [ ] Theory and practice together: start with optimal drawing already (Kleist/Thomassen)
-- [ ] Read Circular Arc Kobourov Cartogram: one-bend to circular arc?
-- [ ] Reread Lombardi Spring Embedder: also with one-bend helper vertex?
+    - Would be inconsistent with how we apply dynamic updates though!
+- [x] Read Circular Arc Kobourov Cartogram: one-bend to circular arc?
+    - No dummy vertices, flow network problem
+- [x] Reread Lombardi Spring Embedder: also with one-bend helper vertex?
+    - Dummy vertex added only in second phase, and _only those_ are displaced in second force-directed phase
+- [x] Read Thomassen paper
 
 
 __2020-01-30__
@@ -23,7 +29,7 @@ __2020-01-30__
 - More algorithm drafting / implementation
 
 TODOs:
-- [ ] Rename "Embedding" phase to "Filtering + Embedding"
+- [x] Rename "Embedding" phase to "Filtering + Embedding"
 - [x] Send algorithm in pseudocode to Tamara
 - [ ] Torsten: graphs of degree 3 are area-universal (Thomassen)
     - Max degree? Outer face might not have degree 3. We could augment and remove though!
@@ -43,6 +49,9 @@ __2020-01-16__
 - Title: Visualizing dynamic clustered data using area-proportional maps
 
 ![](pipeline.jpg "Algorithm & Evaluation Pipeline")
+
+Changes:
+- "Embedding" -> "Filtering + Embedding"
 
 
 __2020-01-09__
