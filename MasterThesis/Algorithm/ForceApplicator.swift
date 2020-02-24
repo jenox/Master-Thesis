@@ -83,6 +83,6 @@ private struct UpperBounds {
         let direction = Angle.direction(of: vector)
         let fractionalIndex = CGFloat(self.numberOfArcs) * direction.counterclockwise.turns
 
-        return Int(fractionalIndex)
+        return Int(fractionalIndex) % self.numberOfArcs
     }
 }
