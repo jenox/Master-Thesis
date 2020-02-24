@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
     override func loadView() {
@@ -16,11 +17,72 @@ class ViewController: UIViewController {
 
 class Canvas: UIView {
 
+    // MARK: - Stored Properties
+
     // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
-    private var graph = Canvas.makeSmallInputGraph().subdividedDual() {
+    private var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
         didSet { setNeedsDisplay() }
     }
-    private var timer: Timer?
+
+    private var isStepping: Bool = false
+
+    private let toggle = UISwitch()
+
+
+    // MARK: - Initialization
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        toggle.addTarget(self, action: #selector(toggleDidChange), for: .valueChanged)
+        addSubview(toggle)
+        toggle.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(40)
+            make.top.equalToSuperview().inset(40)
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+
+
+    // MARK: - Stepping
+
+    @objc private func toggleDidChange() {
+        if self.toggle.isOn {
+            self.stepIfNeeded()
+        }
+    }
+
+    @objc private func stepIfNeeded() {
+        guard !self.isStepping else { return }
+        guard self.toggle.isOn else { return }
+
+        let before = CACurrentMediaTime()
+        self.isStepping = true
+
+        DispatchQueue.global(qos: .userInitiated).async(execute: {
+            var graph = self.graph
+            let forces = ForceComputer().forces(in: graph)
+            ForceApplicator().apply(forces, to: &graph)
+
+            DispatchQueue.main.async(execute: {
+                self.graph = graph
+            })
+
+            self.isStepping = false
+            let after = CACurrentMediaTime()
+            print("Stepped in \(String(format: "%.3f", 1e3 * (after - before)))ms")
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+                self?.stepIfNeeded()
+            })
+        })
+    }
+
+
+    // MARK: - Test Graphs
 
     private class func makeVoronoiInputGraph() -> VertexWeightedGraph {
         var graph = VertexWeightedGraph()
@@ -84,6 +146,9 @@ class Canvas: UIView {
 
         return graph
     }
+
+
+    // MARK: - Rendering
 
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
@@ -206,29 +271,6 @@ class Canvas: UIView {
         context.textPosition.x -= size.width / 2
         context.textPosition.y -= font.capHeight / 2
         CTLineDraw(line, context)
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { _ in
-            self.step()
-        })
-        self.step()
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.timer?.invalidate()
-    }
-
-    @objc private func step() {
-        let before = CACurrentMediaTime()
-
-        let forces = ForceComputer().forces(in: self.graph)
-        ForceApplicator().apply(forces, to: &self.graph)
-
-        let after = CACurrentMediaTime()
-
-        print("Stepped in \(String(format: "%.3f", 1e3 * (after - before)))ms")
     }
 }
 
