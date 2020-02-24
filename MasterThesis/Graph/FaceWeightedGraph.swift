@@ -92,6 +92,10 @@ struct FaceWeightedGraph {
         return self.faceWeights[face]!
     }
 
+    mutating func setWeight(_ weight: Double, of face: Face<Vertex>) {
+        self.faceWeights[face] = weight
+    }
+
 //    mutating func subdivideEdges() {
 //        for edge in self.edges {
 //            self.subdivide(edge)

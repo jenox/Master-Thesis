@@ -81,6 +81,30 @@ class Canvas: UIView {
         })
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+       let location = touches.first!.location(in: self).applying(self.effectiveRenderingTransform.inverted())
+
+        guard let face = self.graph.face(at: location) else { return }
+
+        self.toggle.setOn(false, animated: true)
+
+        let name = self.graph.name(of: face)
+        let text = "\(self.graph.weight(of: face))"
+
+        let alert = UIAlertController(title: "Face \(name)", message: nil, preferredStyle: .alert)
+        alert.addTextField(configurationHandler: { tf in tf.text = text; tf.placeholder = text })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            if let weight = alert.textFields![0].text.flatMap(Double.init) {
+                self.graph.setWeight(weight, of: face)
+                self.toggle.setOn(true, animated: true)
+                self.toggle.sendActions(for: .valueChanged)
+            }
+        }))
+
+        (self.next as! UIViewController).present(alert, animated: true, completion: nil)
+    }
+
 
     // MARK: - Test Graphs
 
@@ -150,15 +174,21 @@ class Canvas: UIView {
 
     // MARK: - Rendering
 
+    private var effectiveRenderingTransform: CGAffineTransform {
+        var transform = CGAffineTransform.identity
+        transform = transform.translatedBy(x: 0, y: bounds.height)
+        transform = transform.scaledBy(x: 1, y: -1)
+        transform = transform.translatedBy(x: bounds.width / 2, y: bounds.height / 2)
+        transform = transform.scaledBy(x: 2, y: 2)
+
+        return transform
+    }
+
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
         context.setFillColor(UIColor.white.cgColor)
         context.fill(rect)
-
-        context.translateBy(x: 0, y: bounds.height)
-        context.scaleBy(x: 1, y: -1)
-        context.translateBy(x: bounds.width / 2, y: bounds.height / 2)
-        context.scaleBy(x: 2, y: 2)
+        context.concatenate(self.effectiveRenderingTransform)
         context.setLineWidth(0.5)
 
         self.draw(self.graph)
@@ -271,6 +301,29 @@ class Canvas: UIView {
         context.textPosition.x -= size.width / 2
         context.textPosition.y -= font.capHeight / 2
         CTLineDraw(line, context)
+    }
+}
+
+extension FaceWeightedGraph {
+    func vertex(at location: CGPoint) -> Vertex? {
+        if let vertex = self.vertices.min(by: { self.position(of: $0).distance(to: location) }) {
+            return self.position(of: vertex).distance(to: location) <= 10 ? vertex : nil
+        } else {
+            return nil
+        }
+    }
+
+    func face(at location: CGPoint) -> Face<Vertex>? {
+        for face in self.faces {
+            let vertices = face.vertices.map(self.position(of:))
+            let polygon = Polygon(points: vertices)
+
+            if polygon.contains(location) {
+                return face
+            }
+        }
+
+        return nil
     }
 }
 

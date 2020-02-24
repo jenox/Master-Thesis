@@ -21,6 +21,17 @@ struct Polygon: Equatable {
     var area: CGFloat {
         return self.points.makeAdjacentPairIterator().reduce(0, { $0 + $1.0.x * $1.1.y - $1.0.y * $1.1.x })
     }
+
+    func contains(_ point: CGPoint) -> Bool {
+        let path = CGMutablePath()
+        path.move(to: self.points[0])
+        for point in self.points.dropFirst() {
+            path.addLine(to: point)
+        }
+        path.closeSubpath()
+
+        return path.contains(point)
+    }
 }
 
 extension Polygon {
