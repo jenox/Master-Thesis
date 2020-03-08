@@ -17,6 +17,7 @@
 		CB131A5C241548D700B5F5BB /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A5A241548D000B5F5BB /* Commands.swift */; };
 		CB131A5D24154A1600B5F5BB /* CLIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A582415451F00B5F5BB /* CLIResponse.swift */; };
 		CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */; };
+		CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6124156E4A00B5F5BB /* StatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
 		CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
@@ -69,6 +70,7 @@
 		CB131A582415451F00B5F5BB /* CLIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIResponse.swift; sourceTree = "<group>"; };
 		CB131A5A241548D000B5F5BB /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIReceiver.swift; sourceTree = "<group>"; };
+		CB131A6124156E4A00B5F5BB /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		CB5A22DC23F33C6F00001A2F /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +173,7 @@
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
 				CBDA155423CB67400070847D /* ViewController.swift */,
+				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
 				CBF37CE924014BF500AA4846 /* Algorithm */,
 				CBEE493623E1E17B00986877 /* Graph */,
 				CBF37CE724014BC600AA4846 /* Geometry */,
@@ -389,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBDA155523CB67400070847D /* ViewController.swift in Sources */,
+				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,

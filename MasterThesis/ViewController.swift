@@ -21,16 +21,45 @@ class Canvas: UIView {
 
     // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
     var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
-        didSet { setNeedsDisplay() }
+        didSet {
+            self.statisticsView.countryStatistics = Self.statistics(from: self.graph)
+            setNeedsDisplay()
+        }
     }
 
     private let toggle = UISwitch()
+    private let statisticsView: StatisticsView
 
 
     // MARK: - Initialization
 
+    private class func statistics(from graph: FaceWeightedGraph) -> [CountryStatistics] {
+        var stats: [CountryStatistics] = []
+        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +)
+        let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
+
+        for face in graph.faces {
+            let name = graph.name(of: face)
+            let color = UIColor.color(for: name)
+            let weight = graph.weight(of: face)
+            let area = graph.area(of: face)
+            let pressure = (weight / totalweight) / (area / totalarea)
+
+            stats.append(.init(countryName: "\(name)", countryColor: color, statisticalAccuracy: round(1e3 * min(pressure, 1 / pressure)) / 1e1, localFatness: 1))
+        }
+
+        return stats
+    }
+
     override init(frame: CGRect) {
+        self.statisticsView = StatisticsView(countryStatistics: Self.statistics(from: self.graph))
+
         super.init(frame: frame)
+
+        self.addSubview(self.statisticsView)
+        self.statisticsView.snp.makeConstraints { make in
+            make.left.bottom.equalToSuperview().inset(20)
+        }
 
         toggle.addTarget(self, action: #selector(toggleDidChange), for: .valueChanged)
         addSubview(toggle)
