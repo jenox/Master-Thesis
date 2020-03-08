@@ -35,22 +35,22 @@ final class CLIReceiver {
         }
     }
 
-    private var canvas: Canvas {
-        return UIApplication.shared.keyWindow!.rootViewController!.view as! Canvas
+    private var viewController: ViewController {
+        return UIApplication.shared.keyWindow!.rootViewController as! ViewController
     }
 
     private func start(_ command: StartCommand) -> CLIResponse {
-        canvas.beginSteppingContinuously()
+        viewController.beginSteppingContinuously()
         return .message("ok")
     }
 
     private func stop(_ command: StopCommand) -> CLIResponse {
-        canvas.endSteppingContinuously()
+        viewController.endSteppingContinuously()
         return .message("ok")
     }
 
     private func changeCountryWeight(_ command: ChangeCountryWeightCommand) -> CLIResponse {
-        canvas.performGraphOperation({ graph in
+        viewController.performGraphOperation({ graph in
             graph.setWeight(command.weight, of: graph.faces.first(where: { graph.faceNames[$0] == command.country.first! })!)
         })
 
