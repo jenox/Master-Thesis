@@ -2,12 +2,30 @@
   "object": {
     "pins": [
       {
+        "package": "MultipeerKit",
+        "repositoryURL": "https://github.com/insidegui/MultipeerKit",
+        "state": {
+          "branch": null,
+          "revision": "3f430bc28e1426ba42cdaa8b19fb4d89ce6d1c3b",
+          "version": "0.1.2"
+        }
+      },
+      {
         "package": "SnapKit",
         "repositoryURL": "https://github.com/SnapKit/SnapKit",
         "state": {
           "branch": null,
           "revision": "d458564516e5676af9c70b4f4b2a9178294f1bc6",
           "version": "5.0.1"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "35b76bf577d3cc74820f8991894ce3bcdf024ddc",
+          "version": "0.0.2"
         }
       }
     ]

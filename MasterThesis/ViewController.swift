@@ -20,11 +20,9 @@ class Canvas: UIView {
     // MARK: - Stored Properties
 
     // TODO: Try with larger voronoi triangulations or low triangle nestings (K4s)
-    private var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
+    var graph = Canvas.makeVoronoiInputGraph().subdividedDual() {
         didSet { setNeedsDisplay() }
     }
-
-    private var isStepping: Bool = false
 
     private let toggle = UISwitch()
 
@@ -51,59 +49,93 @@ class Canvas: UIView {
 
     @objc private func toggleDidChange() {
         if self.toggle.isOn {
-            self.stepIfNeeded()
+            self.beginSteppingContinuously()
+        } else {
+            self.endSteppingContinuously()
         }
     }
 
-    @objc private func stepIfNeeded() {
-        guard !self.isStepping else { return }
-        guard self.toggle.isOn else { return }
+    private var isSteppingContinuously: Bool = false
+    private var hasScheduledNextSteppingBlock: Bool = false
+
+    func beginSteppingContinuously() {
+        self.toggle.setOn(true, animated: true)
+        guard !isSteppingContinuously else { return }
+
+        self.isSteppingContinuously = true
+
+        if !self.hasScheduledNextSteppingBlock {
+            self.hasScheduledNextSteppingBlock = true
+
+            self.queue.async(execute: self.stepOnceAndScheduleNextIfNeeded)
+        }
+    }
+
+    func endSteppingContinuously() {
+        self.toggle.setOn(false, animated: true)
+        isSteppingContinuously = false
+    }
+
+    private func stepOnceAndScheduleNextIfNeeded() {
+        DispatchQueue.main.async(execute: {
+            self.hasScheduledNextSteppingBlock = false
+        })
 
         let before = CACurrentMediaTime()
-        self.isStepping = true
+        var graph = self.graph
+        let forces = ForceComputer().forces(in: graph)
+        ForceApplicator().apply(forces, to: &graph)
+        DispatchQueue.main.async(execute: {
+            self.graph = graph
+        })
+        let after = CACurrentMediaTime()
+        print("Stepped in \(String(format: "%.3f", 1e3 * (after - before)))ms")
 
-        DispatchQueue.global(qos: .userInitiated).async(execute: {
-            var graph = self.graph
-            let forces = ForceComputer().forces(in: graph)
-            ForceApplicator().apply(forces, to: &graph)
-
-            DispatchQueue.main.async(execute: {
-                self.graph = graph
-            })
-
-            self.isStepping = false
-            let after = CACurrentMediaTime()
-            print("Stepped in \(String(format: "%.3f", 1e3 * (after - before)))ms")
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
-                self?.stepIfNeeded()
-            })
+        DispatchQueue.main.async(execute: {
+            if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
+                self.queue.asyncAfter(deadline: .now() + 0.1, execute: self.stepOnceAndScheduleNextIfNeeded)
+            }
         })
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       let location = touches.first!.location(in: self).applying(self.effectiveRenderingTransform.inverted())
+    private let queue = DispatchQueue(label: "GraphModificationQueue")
 
-        guard let face = self.graph.face(at: location) else { return }
-
-        self.toggle.setOn(false, animated: true)
-
-        let name = self.graph.name(of: face)
-        let text = "\(self.graph.weight(of: face))"
-
-        let alert = UIAlertController(title: "Face \(name)", message: nil, preferredStyle: .alert)
-        alert.addTextField(configurationHandler: { tf in tf.text = text; tf.placeholder = text })
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
-            if let weight = alert.textFields![0].text.flatMap(Double.init) {
-                self.graph.setWeight(weight, of: face)
-                self.toggle.setOn(true, animated: true)
-                self.toggle.sendActions(for: .valueChanged)
-            }
-        }))
-
-        (self.next as! UIViewController).present(alert, animated: true, completion: nil)
+    func performGraphOperation(_ transform: @escaping (inout FaceWeightedGraph) -> Void) {
+        self.queue.async(execute: {
+            let before = CACurrentMediaTime()
+            var graph = self.graph
+            transform(&graph)
+            DispatchQueue.main.async(execute: {
+                self.graph = graph
+            })
+            let after = CACurrentMediaTime()
+            print("Performed graph operation in \(String(format: "%.3f", 1e3 * (after - before)))ms")
+        })
     }
+
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//       let location = touches.first!.location(in: self).applying(self.effectiveRenderingTransform.inverted())
+//
+//        guard let face = self.graph.face(at: location) else { return }
+//
+//        self.toggle.setOn(false, animated: true)
+//
+//        let name = self.graph.name(of: face)
+//        let text = "\(self.graph.weight(of: face))"
+//
+//        let alert = UIAlertController(title: "Face \(name)", message: nil, preferredStyle: .alert)
+//        alert.addTextField(configurationHandler: { tf in tf.text = text; tf.placeholder = text })
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+//            if let weight = alert.textFields![0].text.flatMap(Double.init) {
+//                self.graph.setWeight(weight, of: face)
+//                self.toggle.setOn(true, animated: true)
+//                self.toggle.sendActions(for: .valueChanged)
+//            }
+//        }))
+//
+//        (self.next as! UIViewController).present(alert, animated: true, completion: nil)
+//    }
 
 
     // MARK: - Test Graphs
