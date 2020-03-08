@@ -27,7 +27,7 @@ class MasterThesisTests: XCTestCase {
     }
 
     func testVertices() {
-        XCTAssertEqual(graph.vertices, ["A", "B", "C", "D"])
+        XCTAssertEqual(Set(graph.vertices), ["A", "B", "C", "D"])
     }
 
     func testPositions() {
@@ -45,10 +45,10 @@ class MasterThesisTests: XCTestCase {
     }
 
     func testAdjacencies() {
-        XCTAssertEqual(graph.vertices(adjacentTo: "A"), ["B", "C"])
-        XCTAssertEqual(graph.vertices(adjacentTo: "B"), ["A", "C", "D"])
-        XCTAssertEqual(graph.vertices(adjacentTo: "C"), ["A", "B", "D"])
-        XCTAssertEqual(graph.vertices(adjacentTo: "D"), ["B", "C"])
+        XCTAssertEqual(Set(graph.vertices(adjacentTo: "A")), ["B", "C"])
+        XCTAssertEqual(Set(graph.vertices(adjacentTo: "B")), ["A", "C", "D"])
+        XCTAssertEqual(Set(graph.vertices(adjacentTo: "C")), ["A", "B", "D"])
+        XCTAssertEqual(Set(graph.vertices(adjacentTo: "D")), ["B", "C"])
     }
 
     func testInnerFaces() {

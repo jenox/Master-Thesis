@@ -29,12 +29,15 @@ struct VertexWeightedGraph {
 
     init() {}
 
+    private(set) var vertices: [Vertex] = []
+    private(set) var edges: [(Vertex, Vertex)] = []
     private var data: [Vertex: (CGPoint, Weight)] = [:]
-    private var adjacencies: [Vertex: Set<Vertex>] = [:]
+    private var adjacencies: [Vertex: [Vertex]] = [:]
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint, weight: Weight) {
         precondition(self.data[vertex] == nil)
 
+        self.vertices.append(vertex)
         self.data[vertex] = (position, weight)
         self.adjacencies[vertex] = []
     }
@@ -43,28 +46,13 @@ struct VertexWeightedGraph {
         precondition(endpoint1 != endpoint2)
         precondition(!self.vertices(adjacentTo: endpoint1).contains(endpoint2))
 
-        self.adjacencies[endpoint1]!.insert(endpoint2)
-        self.adjacencies[endpoint2]!.insert(endpoint1)
+        self.edges.append((endpoint1, endpoint2))
+        self.adjacencies[endpoint1]!.append(endpoint2)
+        self.adjacencies[endpoint2]!.append(endpoint1)
     }
 
-    func vertices(adjacentTo vertex: Vertex) -> Set<Vertex> {
+    func vertices(adjacentTo vertex: Vertex) -> [Vertex] {
         return self.adjacencies[vertex]!
-    }
-
-    var vertices: Set<Vertex> {
-        return Set(self.data.keys)
-    }
-
-    var edges: [(Vertex, Vertex)] {
-        var edges: Set<UndirectedEdge> = []
-
-        for vertex in self.data.keys {
-            for neighbor in self.vertices(adjacentTo: vertex) {
-                edges.insert(UndirectedEdge(first: vertex, second: neighbor))
-            }
-        }
-
-        return edges.map({ ($0.first, $0.second) })
     }
 
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
@@ -74,7 +62,7 @@ struct VertexWeightedGraph {
         var faces: [Face<Vertex>] = []
         var edges: Set<DirectedEdge> = []
 
-        for vertex in self.data.keys {
+        for vertex in self.vertices {
             for neighbor in self.vertices(adjacentTo: vertex) {
                 edges.insert(DirectedEdge(from: vertex, to: neighbor))
             }
