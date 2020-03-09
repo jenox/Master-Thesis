@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 
     init() {
         self.graphView = FaceWeightedGraphView(frame: UIScreen.main.bounds, graph: self.graph)
-        self.statisticsView = StatisticsView(countryStatistics: Self.statistics(from: self.graph))
+        self.statisticsView = GraphStatisticsView(graph: self.graph)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -32,12 +32,12 @@ class ViewController: UIViewController {
     var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
         didSet {
             self.graphView.graph = self.graph
-            self.statisticsView.countryStatistics = Self.statistics(from: self.graph)
+            self.statisticsView.graph = self.graph
         }
     }
 
     private let graphView: FaceWeightedGraphView
-    private let statisticsView: StatisticsView
+    private let statisticsView: GraphStatisticsView
     private let toggle = UISwitch()
 
     override func viewDidLoad() {
@@ -127,24 +127,6 @@ class ViewController: UIViewController {
             let after = CACurrentMediaTime()
             print("Performed graph operation in \(String(format: "%.3f", 1e3 * (after - before)))ms")
         })
-    }
-
-    private class func statistics(from graph: FaceWeightedGraph) -> [CountryStatistics] {
-        var stats: [CountryStatistics] = []
-        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +)
-        let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
-
-        for face in graph.faces {
-            let name = graph.name(of: face)
-            let color = UIColor.color(for: name)
-            let weight = graph.weight(of: face)
-            let area = graph.area(of: face)
-            let pressure = (weight / totalweight) / (area / totalarea)
-
-            stats.append(.init(countryName: "\(name)", countryColor: color, statisticalAccuracy: round(1e3 * min(pressure, 1 / pressure)) / 1e1, localFatness: 1))
-        }
-
-        return stats
     }
 
 

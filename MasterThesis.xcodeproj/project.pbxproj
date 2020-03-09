@@ -22,6 +22,7 @@
 		CB131A66241598FE00B5F5BB /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A65241598FE00B5F5BB /* Debug.swift */; };
 		CB131A682415991200B5F5BB /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A672415991200B5F5BB /* CanvasView.swift */; };
 		CB131A6A2415A1A400B5F5BB /* FaceWeightedGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A692415A1A400B5F5BB /* FaceWeightedGraphView.swift */; };
+		CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
 		CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
@@ -79,6 +80,7 @@
 		CB131A65241598FE00B5F5BB /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		CB131A672415991200B5F5BB /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		CB131A692415A1A400B5F5BB /* FaceWeightedGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraphView.swift; sourceTree = "<group>"; };
+		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB5A22DC23F33C6F00001A2F /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,6 +186,7 @@
 				CB131A692415A1A400B5F5BB /* FaceWeightedGraphView.swift */,
 				CB131A672415991200B5F5BB /* CanvasView.swift */,
 				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
+				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
 				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
 				CB131A65241598FE00B5F5BB /* Debug.swift */,
 				CBF37CE924014BF500AA4846 /* Algorithm */,
@@ -409,6 +412,7 @@
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
+				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */,

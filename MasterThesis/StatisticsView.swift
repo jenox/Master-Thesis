@@ -7,140 +7,110 @@
 //
 
 import UIKit
+import SnapKit
 
-struct CountryStatistics {
-    var countryName: String
-    var countryColor: UIColor
-    var statisticalAccuracy: Double
-    var localFatness: Double
+struct StatisticsRow {
+    var name: String? = nil
+    var weight: String? = nil
+    var area: String? = nil
+    var statisticalAccuracy: String? = nil
+    var localFatness: String? = nil
+    var backgroundColor: UIColor? = nil
 }
 
 class StatisticsView: UIView {
-    var countryStatistics: [CountryStatistics] {
+    let columns: [KeyPath<StatisticsRow, String?>]
+    let header: StatisticsRow
+    var rows: [StatisticsRow] {
         didSet {
-            stackView.arrangedSubviews.dropFirst(countryStatistics.count).forEach({
-                stackView.removeArrangedSubview($0)
+            self.stackView.arrangedSubviews.dropFirst(self.rows.count).forEach({
+                self.stackView.removeArrangedSubview($0)
                 $0.removeFromSuperview()
             })
 
-            for x in countryStatistics.dropFirst(stackView.arrangedSubviews.count) {
-                let view = CountryStatisticsView(countryStatistics: x)
-                stackView.addArrangedSubview(view)
-                NSLayoutConstraint.activate([
-                    view.countryNameLabel.widthAnchor.constraint(equalTo: countryNameSummaryLabel.widthAnchor),
-                    view.statisticalAccuracyLabel.widthAnchor.constraint(equalTo: statisticalAccuracyCaptionLabel.widthAnchor),
-                    view.localFatnessLabel.widthAnchor.constraint(equalTo: localFatnessCaptionLabel.widthAnchor)
-                ])
+            for row in self.rows.dropFirst(self.stackView.arrangedSubviews.count) {
+                let view = StatisticsRowView(row: row, columns: self.columns)
+                self.stackView.addArrangedSubview(view)
+                view.align(with: self.headerRowView)
             }
 
-            for (view, stats) in zip(stackView.arrangedSubviews, countryStatistics) {
-                (view as! CountryStatisticsView).countryStatistics = stats
+            for (view, row) in zip(self.stackView.arrangedSubviews, self.rows) {
+                (view as! StatisticsRowView).row = row
             }
         }
     }
+    var footer: StatisticsRow {
+        didSet { self.footerRowView.row = self.footer }
+    }
 
-    private let countryNameCaptionLabel = UILabel()
-    private let statisticalAccuracyCaptionLabel = UILabel()
-    private let localFatnessCaptionLabel = UILabel()
     private let separatorView = UIView()
+    private let verticalSeparatorView: [UIView]
+    private let headerRowView: StatisticsRowView
     private let stackView = UIStackView()
-    private let countryNameSummaryLabel = UILabel()
-    private let statisticalAccuracySummaryLabel = UILabel()
-    private let localFatnessSummaryLabel = UILabel()
-    private let verticalSeparatorView1 = UIView()
-    private let verticalSeparatorView2 = UIView()
+    private var regularRowViews: [StatisticsRowView]
+    private var footerRowView: StatisticsRowView
 
-    init(countryStatistics: [CountryStatistics]) {
-        self.countryStatistics = countryStatistics
+    init(header: StatisticsRow, rows: [StatisticsRow], footer: StatisticsRow, columns: [KeyPath<StatisticsRow, String?>]) {
+        self.header = header
+        self.rows = rows
+        self.footer = footer
+        self.columns = columns
+
+        self.verticalSeparatorView = (0...columns.count).map({ _ in UIView() })
+        self.headerRowView = StatisticsRowView(row: header, columns: columns)
+        self.regularRowViews = rows.map({ StatisticsRowView(row: $0, columns: columns) })
+        self.footerRowView = StatisticsRowView(row: footer, columns: columns)
 
         super.init(frame: .zero)
 
-        addSubview(countryNameCaptionLabel)
-        addSubview(statisticalAccuracyCaptionLabel)
-        addSubview(localFatnessCaptionLabel)
-        addSubview(separatorView)
-        addSubview(stackView)
-        addSubview(countryNameSummaryLabel)
-        addSubview(statisticalAccuracySummaryLabel)
-        addSubview(localFatnessSummaryLabel)
-        addSubview(verticalSeparatorView1)
-        addSubview(verticalSeparatorView2)
+        self.backgroundColor = .white
+        self.verticalSeparatorView.forEach({ $0.backgroundColor = .black })
+        self.separatorView.backgroundColor = .black
+        self.stackView.axis = .vertical
+        self.stackView.distribution = .fill
+        self.stackView.alignment = .fill
+        self.stackView.spacing = 0
 
-        countryNameCaptionLabel.text = "Country"
-        statisticalAccuracyCaptionLabel.text = "Statistical Accuary"
-        localFatnessCaptionLabel.text = "Local Fattness"
-        countryNameSummaryLabel.text = "Total"
-        statisticalAccuracySummaryLabel.text = "100%"
-        localFatnessSummaryLabel.text = "100%"
-        separatorView.backgroundColor = UIColor.black
-        verticalSeparatorView1.backgroundColor = UIColor.black
-        verticalSeparatorView2.backgroundColor = UIColor.black
+        self.verticalSeparatorView.forEach(self.addSubview(_:))
+        self.addSubview(self.separatorView)
+        self.addSubview(self.headerRowView)
+        self.addSubview(self.stackView)
+        self.addSubview(self.footerRowView)
+        self.regularRowViews.forEach(self.stackView.addArrangedSubview(_:))
+        self.regularRowViews.forEach(self.headerRowView.align(with:))
+        self.footerRowView.align(with: self.headerRowView)
 
-        for x in countryStatistics {
-            let view = CountryStatisticsView(countryStatistics: x)
-            stackView.addArrangedSubview(view)
-            NSLayoutConstraint.activate([
-                view.countryNameLabel.widthAnchor.constraint(equalTo: countryNameSummaryLabel.widthAnchor),
-                view.statisticalAccuracyLabel.widthAnchor.constraint(equalTo: statisticalAccuracyCaptionLabel.widthAnchor),
-                view.localFatnessLabel.widthAnchor.constraint(equalTo: localFatnessCaptionLabel.widthAnchor)
-            ])
+        for (index, separator) in self.verticalSeparatorView.enumerated() {
+            separator.snp.makeConstraints({ make in
+                if index == 0 { make.left.equalToSuperview() }
+                else if index == self.columns.count { make.right.equalToSuperview() }
+                else { make.centerX.equalTo(self.headerRowView.gap(at: index - 1)).offset(5) }
+                make.top.bottom.equalToSuperview()
+                make.width.equalTo(0.5)
+            })
         }
 
-        backgroundColor = .white
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 0
-
-        countryNameCaptionLabel.snp.makeConstraints { make in
-            make.top.left.equalToSuperview()
-        }
-        statisticalAccuracyCaptionLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(countryNameCaptionLabel)
-            make.left.equalTo(countryNameCaptionLabel.snp.right).offset(10)
-        }
-        localFatnessCaptionLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(countryNameCaptionLabel)
-            make.left.equalTo(statisticalAccuracyCaptionLabel.snp.right).offset(10)
-            make.right.equalToSuperview()
-        }
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(countryNameCaptionLabel.snp.bottom)
+        self.separatorView.snp.makeConstraints({ make in
+            make.top.left.right.equalToSuperview()
             make.height.equalTo(0.5)
-            make.left.right.equalToSuperview()
-        }
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(separatorView.snp.bottom)
-            make.left.right.equalToSuperview()
-        }
-        countryNameSummaryLabel.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom)
-            make.width.equalTo(countryNameCaptionLabel)
-            make.left.bottom.equalToSuperview()
-        }
-        statisticalAccuracySummaryLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(countryNameSummaryLabel)
-            make.width.equalTo(statisticalAccuracyCaptionLabel)
-            make.left.equalTo(countryNameCaptionLabel.snp.right).offset(10)
-        }
-        localFatnessSummaryLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(countryNameSummaryLabel)
-            make.width.equalTo(localFatnessCaptionLabel)
-            make.left.equalTo(statisticalAccuracyCaptionLabel.snp.right).offset(10)
-            make.right.equalToSuperview()
-        }
+        })
 
-        verticalSeparatorView1.snp.makeConstraints { make in
-            make.left.equalTo(countryNameCaptionLabel.snp.right).offset(5)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(0.5)
-        }
+        self.headerRowView.snp.makeConstraints({ make in
+            make.top.equalTo(self.separatorView.snp.bottom)
+            make.left.equalTo(self.verticalSeparatorView.first!.snp.right)
+            make.right.equalTo(self.verticalSeparatorView.last!.snp.left)
+        })
 
-        verticalSeparatorView2.snp.makeConstraints { make in
-            make.left.equalTo(statisticalAccuracyCaptionLabel.snp.right).offset(5)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(0.5)
-        }
+        self.stackView.snp.makeConstraints({ make in
+            make.top.equalTo(self.headerRowView.snp.bottom)
+            make.left.right.equalTo(self.headerRowView)
+        })
+
+        self.footerRowView.snp.makeConstraints({ make in
+            make.top.equalTo(self.stackView.snp.bottom)
+            make.left.right.equalTo(self.headerRowView)
+            make.bottom.equalToSuperview()
+        })
     }
 
     required init?(coder: NSCoder) {
@@ -148,64 +118,82 @@ class StatisticsView: UIView {
     }
 }
 
-class CountryStatisticsView: UIView {
-    var countryStatistics: CountryStatistics {
-        didSet { performFormattingUpdate() }
+class StatisticsRowView: UIView {
+    let columns: [KeyPath<StatisticsRow, String?>]
+    var row: StatisticsRow {
+        didSet { self.performFormattingUpdate() }
     }
 
-    let countryNameLabel = UILabel()
-    let statisticalAccuracyLabel = UILabel()
-    let localFatnessLabel = UILabel()
+    private let labels: [UILabel]
     private let separatorView = UIView()
 
-    init(countryStatistics: CountryStatistics) {
-        self.countryStatistics = countryStatistics
+    init(row: StatisticsRow, columns: [KeyPath<StatisticsRow, String?>]) {
+        self.columns = columns
+        self.row = row
+
+        self.labels = (0..<columns.count).map({ _ in UILabel() })
 
         super.init(frame: .zero)
 
-        addSubview(countryNameLabel)
-        addSubview(statisticalAccuracyLabel)
-        addSubview(localFatnessLabel)
-        addSubview(separatorView)
+        self.separatorView.backgroundColor = .black
 
-        countryNameLabel.snp.makeConstraints { make in
-            make.left.top.equalToSuperview()
+        self.labels.forEach(self.addSubview(_:))
+        self.addSubview(self.separatorView)
+
+        for label in self.labels {
+            label.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+            }
         }
-        statisticalAccuracyLabel.snp.makeConstraints { make in
-            make.left.equalTo(countryNameLabel.snp.right).offset(10)
-            make.top.bottom.equalTo(countryNameLabel)
+
+        for label in self.labels.dropFirst() {
+            label.snp.makeConstraints { make in
+                make.top.bottom.equalTo(self.labels.first!)
+            }
         }
-        localFatnessLabel.snp.makeConstraints { make in
-            make.left.equalTo(statisticalAccuracyLabel.snp.right).offset(10)
-            make.right.equalToSuperview()
-            make.top.bottom.equalTo(countryNameLabel)
+
+        for (left, right) in zip(self.labels, self.labels.dropFirst()) {
+            right.snp.makeConstraints { make in
+                make.left.equalTo(left.snp.right).offset(10)
+            }
         }
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(countryNameLabel.snp.bottom)
+
+        self.labels.first!.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(5)
+        }
+
+        self.labels.last!.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(5)
+        }
+
+        self.separatorView.snp.makeConstraints { make in
+            make.top.equalTo(self.labels.first!.snp.bottom)
             make.height.equalTo(0.5)
             make.left.right.bottom.equalToSuperview()
         }
 
-        performFormattingUpdate()
+        self.performFormattingUpdate()
     }
 
     required init?(coder: NSCoder) {
         fatalError()
     }
 
-    func align(with other: CountryStatisticsView) {
-        NSLayoutConstraint.activate([
-            self.countryNameLabel.widthAnchor.constraint(equalTo: other.countryNameLabel.widthAnchor),
-            self.statisticalAccuracyLabel.widthAnchor.constraint(equalTo: other.statisticalAccuracyLabel.widthAnchor),
-            self.localFatnessLabel.widthAnchor.constraint(equalTo: other.localFatnessLabel.widthAnchor)
-        ])
+    func align(with other: StatisticsRowView) {
+        for (first, second) in zip(self.labels, other.labels) {
+            first.widthAnchor.constraint(equalTo: second.widthAnchor).isActive = true
+        }
+    }
+
+    func gap(at index: Int) -> ConstraintItem {
+        return self.labels[index].snp.right
     }
 
     private func performFormattingUpdate() {
-        separatorView.backgroundColor = UIColor.black
-        backgroundColor = countryStatistics.countryColor.withAlphaComponent(0.2)
-        countryNameLabel.text = "\(countryStatistics.countryName)"
-        statisticalAccuracyLabel.text = "\(countryStatistics.statisticalAccuracy)"
-        localFatnessLabel.text = "\(countryStatistics.localFatness)"
+        self.backgroundColor = self.row.backgroundColor?.withAlphaComponent(0.2)
+
+        for (label, column) in zip(self.labels, self.columns) {
+            label.text = self.row[keyPath: column]
+        }
     }
 }
