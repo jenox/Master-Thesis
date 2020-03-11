@@ -37,44 +37,33 @@ class GraphStatisticsView: UIView {
     }
 
     private class func computeStatistics(for graph: FaceWeightedGraph) -> (countries: [StatisticsRow], summary: StatisticsRow) {
+        let metrics = QualityMetricComputer().qualityMetrics(in: graph)
         var countries: [StatisticsRow] = []
-        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +)
-        let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
-
-        var statisticalAccuracies: [Double] = []
-//        var localFatnesses: [Double] = []
 
         func format(absolute: Double) -> String {
             if round(absolute) == absolute { return "\(Int(absolute))" }
             else { return "\(round(10 * absolute) / 10)" }
         }
+
         func format(percentage: Double) -> String {
             return "\(round(1e3 * percentage) / 1e1)%"
         }
 
-        for face in graph.faces {
-            let name = graph.name(of: face)
-            let weight = graph.weight(of: face)
-            let area = graph.area(of: face)
-            let normalizedArea = (area / totalarea) * totalweight
-            let pressure = (weight / totalweight) / (area / totalarea)
-
-            let statisticalAccuracy = min(pressure, 1 / pressure)
-            statisticalAccuracies.append(statisticalAccuracy)
-
+        for (name, metrics) in metrics.sorted(by: { $0.0 < $1.0 }) {
             countries.append(StatisticsRow(
                 name: "\(name)",
-                weight: format(absolute: weight),
-                area: format(absolute: normalizedArea),
-                statisticalAccuracy: format(percentage: statisticalAccuracy),
-                localFatness: nil,
-                backgroundColor: UIColor.color(for: name)
+                weight: format(absolute: metrics.weight),
+                area: format(absolute: metrics.normalizedArea),
+                statisticalAccuracy: format(percentage: metrics.statisticalAccuracy),
+                localFatness: format(percentage: metrics.localFatness),
+                backgroundColor: UIColor.color(for: name.first!)
             ))
         }
 
         return (countries, StatisticsRow(
             name: "Summary",
-            statisticalAccuracy: format(percentage: statisticalAccuracies.average)
+            statisticalAccuracy: format(percentage: metrics.map({ $0.1.statisticalAccuracy }).average),
+            localFatness: format(percentage: metrics.map({ $0.1.localFatness }).average)
         ))
     }
 }

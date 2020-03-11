@@ -9,6 +9,8 @@
 import CoreGraphics
 
 extension CGPoint {
+    static func - (lhs: CGPoint, rhs: CGPoint) -> CGVector { return CGVector(dx: lhs.x - rhs.x, dy: lhs.y - rhs.y) }
+
     /// Returns the orthogonal projection of the point onto the given segment if
     /// said point would lie on that segment or `nil` if it would not.
     func projected(onto segment: Segment) -> CGPoint? {

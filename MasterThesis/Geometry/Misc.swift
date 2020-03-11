@@ -64,12 +64,6 @@ private func check_inter(a: CGPoint, b: CGPoint, c: CGPoint, d: CGPoint) -> Bool
     }
 }
 private extension CGPoint {
-    static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
-    static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y) }
-    static func * (lhs: CGPoint, rhs: CGPoint) -> CGFloat { return lhs.x*rhs.x + lhs.y*rhs.y }
-    static func * (lhs: CGFloat, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs * rhs.x, y: lhs * rhs.y) }
-    static func / (lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x / rhs, y: lhs.y / rhs) }
-    func cross(_ p: CGPoint) -> CGFloat { return self.x * p.y - self.y * p.x}
     func cross(_ a: CGPoint, _ b: CGPoint) -> CGFloat { return (a - self).cross(b - self) }
 }
 private func sgn(_ x: CGFloat) -> Int { return x >= 0 ? x != 0 ? 1 : 0 : -1 }

@@ -1,4 +1,18 @@
-__2020-02-27__
+__2020-03-05__
+
+- Focus on better initial layout (Kleist/Thomassen) only if we have time!
+
+TODOs:
+- [ ] Try merging vertices when they get too close to one another
+- [ ] Implement other dynamic operations with additional subdivision vertices
+- [x] Implement quality metrics: statistical accuracy, local fatness
+    - Implemented: polygon area / area of regular n-gon in smalltest enclosing circle (though more "global"?)
+    - Other idea 1: [incircle / circumcircle](https://mathematica.stackexchange.com/questions/121987/how-to-find-the-incircle-and-circumcircle-for-an-irregular-polygon)
+    - Other idea 2: area of the smallest circle of the largest circles fitting on the inside of polygon, touching two adjacent segments
+        - Unnormalized. What about vertices with internal angle >180deg?
+    - Problems with some ideas: infinitesimal tweaks should have infinitesimal impact on fatness
+- [ ] Think about test case generation
+
 
 __2020-02-13__
 

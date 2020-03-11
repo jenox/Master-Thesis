@@ -55,6 +55,8 @@ extension CGVector {
     static func * (lhs: CGVector, rhs: CGVector) -> CGFloat {
         return lhs.dx * rhs.dx + lhs.dy * rhs.dy
     }
+
+    func cross(_ p: CGVector) -> CGFloat { return self.dx * p.dy - self.dy * p.dx }
 }
 
 extension CGVector {
