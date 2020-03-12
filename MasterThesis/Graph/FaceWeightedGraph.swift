@@ -2,7 +2,7 @@
 //  FaceWeightedGraph.swift
 //  MasterThesis
 //
-//  Created by Christian Schnorr on 12.01.20.
+//  Created by Christian Schnorr on 12.03.20.
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
@@ -13,127 +13,114 @@ import CoreGraphics
 struct FaceWeightedGraph {
     init() {}
 
-    enum Vertex: Hashable, CustomStringConvertible {
-        case internalFace(Face<Character>)
-        case outerEdge(UndirectedEdge)
-        case subdivision1(UUID)
-        case subdivision2(UUID)
-        case subdivision3(UUID)
+    struct Vertex: Hashable, CustomStringConvertible {
+        private static var nextID: Int = 0
+        private let id: Int
+
+        init() {
+            self.id = Self.nextID
+            Self.nextID += 1
+        }
 
         var description: String {
-            switch self {
-            case .internalFace(let face):
-                return face.vertices.map(String.init).joined(separator: "-")
-            case .outerEdge(let edge):
-                return "\(edge.first)-\(edge.second)"
-            case .subdivision1:
-                return "#"
-            case .subdivision2:
-                return "@"
-            case .subdivision3:
-                return "*"
-            }
+            return "\(self.id)"
         }
     }
 
+    private struct VertexPayload {
+        var position: CGPoint
+        var adjacencies: [Vertex]
+    }
+
+    private struct FacePayload {
+        var weight: Double
+        var boundary: [Vertex]
+    }
+
     private(set) var vertices: [Vertex] = []
-    private(set) var locations: [Vertex: CGPoint] = [:]
-    private(set) var adjacencies: [Vertex: [Vertex]] = [:]
     private(set) var edges: [(Vertex, Vertex)] = []
+    private var vertexPayloads: [Vertex: VertexPayload] = [:]
 
-    private(set) var faces: [Face<Vertex>] = []
-    private(set) var faceNames: [Face<Vertex>: Character] = [:]
-    private(set) var faceWeights: [Face<Vertex>: Double] = [:]
+    private(set) var faces: [String] = []
+    private var facePayloads: [String: FacePayload] = [:]
 
-    mutating func insert(_ vertex: Vertex, at position: CGPoint) {
-        precondition(!self.vertices.contains(vertex))
+    mutating func insertVertex(at position: CGPoint) -> Vertex {
+        let vertex = Vertex()
 
         self.vertices.append(vertex)
-        self.locations[vertex] = position
-        self.adjacencies[vertex] = []
+        self.vertexPayloads[vertex] = VertexPayload(position: position, adjacencies: [])
+
+        return vertex
     }
 
-    mutating func insertEdge(between endpoint1: Vertex, and endpoint2: Vertex) {
-        precondition(endpoint1 != endpoint2)
-        precondition(!self.adjacencies[endpoint1]!.contains(endpoint2))
-        precondition(!self.adjacencies[endpoint2]!.contains(endpoint1))
-
-        self.adjacencies[endpoint1]!.append(endpoint2)
-        self.adjacencies[endpoint2]!.append(endpoint1)
-        self.edges.append((endpoint1, endpoint2))
-    }
-
-    mutating func registerFace(_ face: Face<Vertex>, named name: Character, weight: Double) {
-        precondition(face.vertices.allSatisfy(self.vertices.contains))
-        precondition(!self.faces.contains(face))
-
-        self.faces.append(face)
-        self.faceNames[face] = name
-        self.faceWeights[face] = weight
+    mutating func displace(_ vertex: Vertex, by displacement: CGVector) {
+        self.vertexPayloads[vertex]!.position += displacement
     }
 
     func position(of vertex: Vertex) -> CGPoint {
-        return self.locations[vertex]!
+        return self.vertexPayloads[vertex]!.position
     }
 
-    mutating func setPosition(_ position: CGPoint, of vertex: Vertex) {
-        self.locations[vertex] = position
+    mutating func insertEdge(between vertex1: Vertex, and vertex2: Vertex) {
+        assert(!self.vertexPayloads[vertex1]!.adjacencies.contains(vertex2))
+        assert(!self.vertexPayloads[vertex2]!.adjacencies.contains(vertex1))
+
+        self.vertexPayloads[vertex1]!.adjacencies.append(vertex2)
+        self.vertexPayloads[vertex2]!.adjacencies.append(vertex1)
+        self.edges.append((vertex1, vertex2))
     }
 
-    func name(of face: Face<Vertex>) -> Character {
-        return self.faceNames[face]!
+    func containsEdge(between vertex1: Vertex, and vertex2: Vertex) -> Bool {
+        return self.vertexPayloads[vertex1]!.adjacencies.contains(vertex2)
     }
 
-    func area(of face: Face<Vertex>) -> Double {
-        return Double(Polygon(points: face.vertices.map(self.position(of:))).area)
+    func vertices(adjacentTo vertex: Vertex) -> [Vertex] {
+        return self.vertexPayloads[vertex]!.adjacencies
     }
 
-    func weight(of face: Face<Vertex>) -> Double {
-        return self.faceWeights[face]!
+    func vertex(adjacentTo first: Vertex, and second: Vertex) -> Vertex? {
+        let vertices = Set(self.vertexPayloads[first]!.adjacencies).intersection(self.vertexPayloads[second]!.adjacencies)
+        assert(vertices.count <= 1)
+        return vertices.first
     }
 
-    mutating func setWeight(_ weight: Double, of face: Face<Vertex>) {
-        self.faceWeights[face] = weight
+    mutating func defineFace(named name: String, boundedBy boundary: [Vertex], weight: Double) {
+        assert(self.facePayloads[name] == nil)
+        assert(boundary.makeAdjacentPairIterator().allSatisfy(self.containsEdge(between:and:)))
+
+        self.faces.append(name)
+        self.facePayloads[name] = FacePayload(weight: weight, boundary: boundary)
     }
 
-//    mutating func subdivideEdges() {
-//        for edge in self.edges {
-//            self.subdivide(edge)
-//        }
-//    }
-//
-//    private mutating func subdivide(_ edge: (Vertex, Vertex)) {
-//        guard let index = self.edges.firstIndex(where: { $0.0 == edge.0 && $0.1 == edge.1 }) else { fatalError() }
-//
-//        let vertex = Vertex.subdivision(UUID())
-//        let position = [self.position(of: edge.0), self.position(of: edge.1)].centroid
-//
-//        self.insert(vertex, at: position)
-//        self.edges[index].1 = vertex
-//        self.edges.append((vertex, edge.1))
-//
-//        for (index, face) in self.faces.enumerated() {
-//            guard let position = face.indexOfEdge(between: edge.0, and: edge.1) else { continue }
-//
-//            var vertices = face.vertices
-//            vertices.insert(vertex, at: position + 1)
-//
-//            let newface = Face(vertices: vertices)
-//
-//            self.faces[index] = newface
-//            self.faceNames[newface] = self.faceNames.removeValue(forKey: face)!
-//        }
-//    }
+    func polygon(for face: String) -> Polygon {
+        return Polygon(points: self.boundary(of: face).map(self.position(of:)))
+    }
 
-    func vector(from vertex: Vertex, to point: CGPoint) -> CGVector {
-        return CGVector(from: self.position(of: vertex), to: point)
+    func area(of face: String) -> Double {
+        return Double(self.polygon(for: face).area)
+    }
+
+    func weight(of face: String) -> Double {
+        return self.facePayloads[face]!.weight
+    }
+
+    mutating func setWeight(of face: String, to value: Double) {
+        self.facePayloads[face]!.weight = value
+    }
+
+    func boundary(of face: String) -> [Vertex] {
+        return self.facePayloads[face]!.boundary
+    }
+
+    func segment(from vertex1: Vertex, to vertex2: Vertex) -> Segment {
+        return Segment(a: self.position(of: vertex1), b: self.position(of: vertex2))
     }
 
     func distance(from vertex1: Vertex, to vertex2: Vertex) -> CGFloat {
         return self.position(of: vertex1).distance(to: self.position(of: vertex2))
     }
 
-    func segment(from vertex1: Vertex, to vertex2: Vertex) -> Segment {
-        return Segment(a: self.position(of: vertex1), b: self.position(of: vertex2))
+    func vector(from vertex: Vertex, to point: CGPoint) -> CGVector {
+        return CGVector(from: self.position(of: vertex), to: point)
     }
 }

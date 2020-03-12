@@ -7,90 +7,115 @@
 //
 
 import Foundation
+import CoreGraphics
 
 extension VertexWeightedGraph {
-    // TODO: do we guarantee planarity when connecting barycenter to midpoint of edges?
-    // https://en.wikipedia.org/wiki/Centroid#/media/File:Triangle.Centroid.svg
-    // Also, what about A-E edge in example? how would it work when AEC triangle is very long? do we get intersections / wrong topology?
     func subdividedDual() -> FaceWeightedGraph {
-        let vertices = self.vertices
-        let edges = self.edges
         let (faces, outerFace) = self.faces
 
-        var dual = FaceWeightedGraph()
+        var graph = FaceWeightedGraph()
 
+        var faceVertices: [Face<VertexWeightedGraph.Vertex>: FaceWeightedGraph.Vertex] = [:]
+        var outerEdgeVertices: [UndirectedEdge: FaceWeightedGraph.Vertex] = [:]
+        var adjacentFaces: [UndirectedEdge: [Face<VertexWeightedGraph.Vertex>]] = [:]
+
+        // for `f` in G.innerFaces
         for face in faces {
-            let centroid = face.vertices.map(self.position(of:)).centroid
+            let barycenter = CGPoint.centroid(of: face.vertices.map(self.position(of:)))
 
-            // internal face vertex
-            dual.insert(.internalFace(face), at: centroid)
-        }
+            // add "face" vertex `f` at barycenter of `f`
+            let x = graph.insertVertex(at: barycenter)
 
-        for (endpoint1, endpoint2) in edges {
-            let adjacentFaces = faces.filter({ $0.containsEdge(between: endpoint1, and: endpoint2) })
-            if adjacentFaces.count == 2 {
-                let helper = FaceWeightedGraph.Vertex.subdivision1(UUID())
-                dual.insert(helper, at: [self.position(of: endpoint1), self.position(of: endpoint2)].centroid)
-
-                // add edge between adjacent face vertices
-                dual.insertEdge(between: .internalFace(adjacentFaces[0]), and: helper)
-                dual.insertEdge(between: helper, and: .internalFace(adjacentFaces[1]))
-            } else {
-                let position1 = self.position(of: endpoint1)
-                let position2 = self.position(of: endpoint2)
-                let centroid = [position1, position2].centroid
-
-                // outer edge vertex
-                dual.insert(.outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), at: centroid)
-
-                let helper = FaceWeightedGraph.Vertex.subdivision2(UUID())
-                dual.insert(helper, at: [centroid, adjacentFaces[0].vertices.map(self.position(of:)).centroid].centroid)
-
-                // add edge to face vertex
-                dual.insertEdge(between: .outerEdge(UndirectedEdge(first: endpoint1, second: endpoint2)), and: helper)
-                dual.insertEdge(between: helper, and: .internalFace(adjacentFaces[0]))
+            faceVertices[face] = x
+            for (u, v) in face.vertices.makeAdjacentPairIterator() {
+                adjacentFaces[UndirectedEdge(first: u, second: v), default: []].append(face)
             }
         }
 
-        let outerEdges = Array(outerFace.vertices.makeAdjacentPairIterator())
-        for (edge1, edge2) in outerEdges.makeAdjacentPairIterator() {
-            precondition(edge1.1 == edge2.0)
-            let helper = FaceWeightedGraph.Vertex.subdivision3(UUID())
-            let position = self.position(of: edge1.1)
+        // for `{u,v}` in G.edges
+        for (u, v) in self.edges {
+            let midpoint = CGPoint.centroid(of: [u, v].map(self.position(of:)))
+            let adjacentFaces = adjacentFaces[UndirectedEdge(first: u, second: v)]!
 
-            dual.insert(helper, at: position)
-            dual.insertEdge(between: .outerEdge(UndirectedEdge(first: edge1.0, second: edge1.1)), and: helper)
-            dual.insertEdge(between: helper, and: .outerEdge(UndirectedEdge(first: edge2.0, second: edge2.1)))
+            // if `{u,v}` adjacent to 2 faces `f ≠ g`
+            if adjacentFaces.count == 2 {
+                // add subdivion vertex `x` at midpoint of `{u,v}`
+                let x = graph.insertVertex(at: midpoint)
+
+                // add edge between `f` and `x`
+                graph.insertEdge(between: faceVertices[adjacentFaces[0]]!, and: x)
+
+                // add edge between `x` and `g`
+                graph.insertEdge(between: x, and: faceVertices[adjacentFaces[1]]!)
+            }
+
+            // elseif `{u,v}` adjacent to single face `f`
+            else if adjacentFaces.count == 1 {
+                let barycenter = CGPoint.centroid(of: adjacentFaces[0].vertices.map(self.position(of:)))
+
+                // add "outer edge" vertex `{u,v}` at midpoint of `{u,v}`
+                let uv = graph.insertVertex(at: midpoint)
+
+                // add subdivion vertex `x` at midpoint of midpoint of `{u,v}` and barycenter of `f`
+                let x = graph.insertVertex(at: .centroid(of: midpoint, barycenter))
+
+                // add edge between `{u,v}` and `x`
+                graph.insertEdge(between: uv, and: x)
+
+                // add edge between `x` and `f`
+                graph.insertEdge(between: x, and: faceVertices[adjacentFaces[0]]!)
+
+                outerEdgeVertices[UndirectedEdge(first: u, second: v)] = uv
+            } else {
+                fatalError()
+            }
         }
 
-        for vertex in vertices {
-            var edges = self.vertices(adjacentTo: vertex).map({ DirectedEdge(from: vertex, to: $0) })
-            edges.sort(by: { self.angle(of: $0) < self.angle(of: $1) })
-            let endpoints = edges.map({ $0.target })
+        // for `({u,v}, {v,w})` in incident edges of G.outerFace
+        for ((u, v), (_, w)) in Array(outerFace.vertices.makeAdjacentPairIterator()).makeAdjacentPairIterator() {
 
-            var things: [FaceWeightedGraph.Vertex] = []
+            // add subdivion vertex `x` at position of `v`
+            let x = graph.insertVertex(at: self.position(of: v))
+
+            // add edge between `{u,v}` and `x`
+            graph.insertEdge(between: outerEdgeVertices[UndirectedEdge(first: u, second: v)]!, and: x)
+
+            // add edge between `x` and `{v,w}`
+            graph.insertEdge(between: x, and: outerEdgeVertices[UndirectedEdge(first: v, second: w)]!)
+        }
+
+        // Determine and register faces on computed dual graph
+        for vertex in self.vertices {
+            let endpoints = self.vertices(adjacentTo: vertex).sorted(by: { self.angle(of: DirectedEdge(from: vertex, to: $0)) })
+            var vertices: [FaceWeightedGraph.Vertex] = []
+
             for (x, y) in endpoints.makeAdjacentPairIterator() {
-                // area check required for triangles with 2 edges on outer face
                 let face = Face(vertices: [vertex, x, y])
-                if self.vertices(adjacentTo: x).contains(y), self.area(of: face) > 0 {
-                    things.append(.internalFace(face))
+
+                // For triangles with two edges on outer face we must check orientation!
+                if self.vertices(adjacentTo: x).contains(y), Polygon(points: face.vertices.map(self.position(of:))).area > 0 {
+                    vertices.append(faceVertices[face]!)
                 } else {
-                    things.append(.outerEdge(UndirectedEdge(first: vertex, second: x)))
-                    things.append(.outerEdge(UndirectedEdge(first: vertex, second: y)))
+                    // add both outer edge vertices
+                    vertices.append(outerEdgeVertices[UndirectedEdge(first: vertex, second: x)]!)
+                    vertices.append(outerEdgeVertices[UndirectedEdge(first: vertex, second: y)]!)
                 }
             }
 
-            for index in things.indices.reversed() {
-                let a = things[index]
-                let b = things[(index + 1) % things.count]
-                let x = Set(dual.adjacencies[a]!).intersection(dual.adjacencies[b]!)
-                assert(x.count == 1)
-                things.insert(x.first!, at: index + 1)
+            for (index, (u, v)) in vertices.makeAdjacentPairIterator().enumerated().reversed() {
+                let x = graph.vertex(adjacentTo: u, and: v)!
+                vertices.insert(x, at: index + 1)
             }
 
-            dual.registerFace(Face(vertices: things), named: vertex, weight: self.weight(of: vertex))
+            graph.defineFace(named: "\(vertex)", boundedBy: vertices, weight: self.weight(of: vertex))
         }
 
-        return dual
+        return graph
+    }
+}
+
+extension Collection {
+    func sorted<T>(by transform: (Element) throws -> T) rethrows -> [Element] where T: Comparable {
+        return try self.map({ ($0, try transform($0)) }).sorted(by: { $0.1 < $1.1 }).map({ $0.0 })
     }
 }

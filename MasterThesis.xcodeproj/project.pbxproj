@@ -39,14 +39,13 @@
 		CBDA156823CB9D240070847D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156723CB9D240070847D /* Angle.swift */; };
 		CBDA156923CB9D320070847D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156723CB9D240070847D /* Angle.swift */; };
 		CBDA156A23CB9D340070847D /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156523CB9D1C0070847D /* CGVector.swift */; };
-		CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
 		CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBDA157023CBA70B0070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
 		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
 		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
-		CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
 		CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */; };
 		CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F135241A60C100BCC6E2 /* Circle.swift */; };
+		CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */; };
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
@@ -98,11 +97,11 @@
 		CBDA156023CB88850070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBDA156523CB9D1C0070847D /* CGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
 		CBDA156723CB9D240070847D /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
-		CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityMetricComputer.swift; sourceTree = "<group>"; };
 		CBE6F135241A60C100BCC6E2 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
+		CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* Transformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformation.swift; sourceTree = "<group>"; };
@@ -230,7 +229,7 @@
 				CBEE493723E1E18900986877 /* Face.swift */,
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
-				CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */,
+				CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -416,13 +415,13 @@
 				CBDA155523CB67400070847D /* ViewController.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
-				CBDA156C23CBA6EA0070847D /* FaceWeightedGraph.swift in Sources */,
 				CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */,
+				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
 				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* FaceWeightedGraphView.swift in Sources */,
@@ -456,7 +455,6 @@
 				CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */,
 				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
 				CBDA156A23CB9D340070847D /* CGVector.swift in Sources */,
-				CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

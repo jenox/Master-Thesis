@@ -22,10 +22,9 @@ class ForceComputer {
             let weight = graph.weight(of: face)
             let area = graph.area(of: face)
             let pressure = (weight / totalweight) / (area / totalarea)
+            let polygon = graph.polygon(for: face)
 
-            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
-
-            for (index, vertex) in face.vertices.enumerated() {
+            for (index, vertex) in graph.boundary(of: face).enumerated() {
                 let (normal, angle) = polygon.normalAndAngle(at: index)
 
                 if pressure >= 1 {
@@ -37,20 +36,18 @@ class ForceComputer {
         }
 
         for face in graph.faces {
-            for (index, vertex) in face.vertices.enumerated() {
-                switch vertex {
-                case .subdivision1, .subdivision2, .subdivision3:
-                    let (left, right) = face.neighbors(of: vertex)
+            let boundary = graph.boundary(of: face)
+            for (index, vertex) in boundary.enumerated() {
+                if graph.vertices(adjacentTo: vertex).count == 2 {
+                    let (left, right) = Face(vertices: boundary).neighbors(of: vertex)
                     let pos = graph.position(of: vertex)
                     let pos1 = graph.position(of: left)
                     let pos2 = graph.position(of: right)
 
-                    let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
+                    let polygon = graph.polygon(for: face)
                     let vector = polygon.normal(at: index).rotated(by: .init(degrees: 90))
 
                     forces[vertex]! += 5 * log(pos.distance(to: pos1) / pos.distance(to: pos2)) * vector
-                default:
-                    break
                 }
             }
         }

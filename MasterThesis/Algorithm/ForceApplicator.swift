@@ -20,7 +20,7 @@ class ForceApplicator {
                 displacement = upperBound * displacement.normalized
             }
 
-            graph.setPosition(graph.position(of: vertex) + displacement, of: vertex)
+            graph.displace(vertex, by: displacement)
         }
     }
 

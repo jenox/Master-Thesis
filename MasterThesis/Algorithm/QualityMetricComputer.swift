@@ -16,16 +16,15 @@ class QualityMetricComputer {
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
 
         for face in graph.faces {
-            let name = graph.name(of: face)
             let weight = graph.weight(of: face)
             let area = graph.area(of: face)
             let normalizedArea = (area / totalarea) * totalweight
-            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
+            let polygon = graph.polygon(for: face)
 
             let statisticalAccuracy = Self.statisticalAccuracy(normalizedArea: normalizedArea, weight: weight)
             let localFatness = Self.localFatness(of: polygon)
 
-            qualityMetrics.append(("\(name)", Metrics(
+            qualityMetrics.append((face, Metrics(
                 weight: weight,
                 normalizedArea: normalizedArea,
                 statisticalAccuracy: statisticalAccuracy,

@@ -37,43 +37,49 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
     func draw(in context: CGContext, scale: CGFloat) {
         context.setLineWidth(1 / scale)
-        draw(self.graph, scale: scale)
+        self.draw(self.graph, scale: scale)
     }
 
     private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, labeled: Bool = true) {
         let context = UIGraphicsGetCurrentContext()!
 
+        // Face backgrounds
         for face in graph.faces {
-            let color = UIColor.color(for: graph.name(of: face)).interpolate(to: .white, fraction: 0.75)
-            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
+            let color = UIColor.color(for: face).interpolate(to: .white, fraction: 0.75)
+            let polygon = graph.polygon(for: face)
 
             context.fill(polygon, with: color)
         }
 
+        // Edges
         for (endpoint1, endpoint2) in graph.edges {
             context.stroke(from: graph.position(of: endpoint1), to: graph.position(of: endpoint2), color: .black)
         }
 
+        // Vertices
         for vertex in graph.vertices {
-            switch vertex {
-            case .internalFace, .outerEdge:
-                context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
-            case .subdivision1, .subdivision2, .subdivision3:
-                context.fill(graph.position(of: vertex), diameter: 3 / scale, color: .black)
+            switch graph.vertices(adjacentTo: vertex).count {
+            case 2: context.fill(graph.position(of: vertex), diameter: 3 / scale, color: .black)
+            case 3: context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
+            default: fatalError()
             }
         }
 
-        for face in graph.faces where labeled {
-            let color = UIColor.color(for: graph.name(of: face))
-            var position = face.vertices.map(graph.position(of:)).centroid
+        // Face circumcircles
+        for face in graph.faces {
+            let polygon = graph.polygon(for: face)
+            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
 
-            for vertex in face.vertices {
-                if case .subdivision3 = vertex {
-                    position = graph.position(of: vertex)
-                }
-            }
+            context.stroke(circle, with: UIColor.color(for: face).withAlphaComponent(0.4))
+        }
 
-            self.drawLabel(at: position, name: graph.name(of: face), tintColor: color, scale: scale)
+        // Forces
+        for (vertex, force) in ForceComputer().forces(in: self.graph) {
+            context.beginPath()
+            context.move(to: self.graph.position(of: vertex))
+            context.addLine(to: context.currentPointOfPath + 10 * force)
+            context.setStrokeColor(UIColor.red.cgColor)
+            context.strokePath()
         }
 
         let edges = self.graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1), $0.0, $0.1) })
@@ -84,66 +90,6 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
                 }
             }
         }
-
-        for face in graph.faces {
-            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
-            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
-
-            context.stroke(circle, with: UIColor.red.withAlphaComponent(0.2))
-        }
-
-        for (vertex, force) in ForceComputer().forces(in: self.graph) {
-            context.beginPath()
-            context.move(to: self.graph.position(of: vertex))
-            context.addLine(to: context.currentPointOfPath + 10 * force)
-            context.setStrokeColor(UIColor.red.cgColor)
-            context.strokePath()
-        }
-    }
-
-    private func drawLabel(at position: CGPoint, name: Character, tintColor: UIColor, scale: CGFloat) {
-        let context = UIGraphicsGetCurrentContext()!
-        let foregroundColor = tintColor == .white ? .black : tintColor.interpolate(to: .black, fraction: 0.75)
-
-        let font = UIFont.systemFont(ofSize: 14 / scale, weight: .regular)
-        let attr = NSAttributedString(string: "\(name)", attributes: [.font: font, .foregroundColor: foregroundColor])
-        let line = CTLineCreateWithAttributedString(attr)
-
-        let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
-        let bounds = CGRect(origin: position, size: size).offsetBy(dx: -size.width / 2, dy: -size.height / 2)
-
-        context.addPath(UIBezierPath(roundedRect: bounds.insetBy(dx: -5 / scale, dy: -2 / scale), cornerRadius: (size.height / 2 + 2) / scale).cgPath)
-        context.setFillColor(tintColor.interpolate(to: .white, fraction: 0.5).cgColor)
-        context.setStrokeColor(foregroundColor.cgColor)
-        context.drawPath(using: .fillStroke)
-
-        context.textPosition = position
-        context.textPosition.x -= size.width / 2
-        context.textPosition.y -= font.capHeight / 2
-        CTLineDraw(line, context)
-    }
-}
-
-extension FaceWeightedGraph {
-    func vertex(at location: CGPoint) -> Vertex? {
-        if let vertex = self.vertices.min(by: { self.position(of: $0).distance(to: location) }) {
-            return self.position(of: vertex).distance(to: location) <= 10 ? vertex : nil
-        } else {
-            return nil
-        }
-    }
-
-    func face(at location: CGPoint) -> Face<Vertex>? {
-        for face in self.faces {
-            let vertices = face.vertices.map(self.position(of:))
-            let polygon = Polygon(points: vertices)
-
-            if polygon.contains(location) {
-                return face
-            }
-        }
-
-        return nil
     }
 }
 
@@ -183,6 +129,10 @@ extension UIColor {
 
     static func color(for vertex: Character) -> UIColor {
         return self.colors[Int(vertex.unicodeScalars.first!.value + 7) % colors.count]
+    }
+
+    static func color(for string: String) -> UIColor {
+        return self.colors[Int(string.unicodeScalars.reduce(7, { $0 + $1.value })) % colors.count]
     }
 
     func interpolate(to other: UIColor, fraction: CGFloat) -> UIColor {
