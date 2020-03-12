@@ -42,17 +42,14 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
     private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, labeled: Bool = true) {
         let context = UIGraphicsGetCurrentContext()!
-        let totalweight = self.graph.faces.map(self.graph.weight(of:)).reduce(0, +)
-        let totalarea = self.graph.faces.map(self.graph.area(of:)).reduce(0, +)
 
         for face in graph.faces {
             let color = UIColor.color(for: graph.name(of: face)).interpolate(to: .white, fraction: 0.75)
+            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
 
             context.beginPath()
-            context.move(to: graph.position(of: face.vertices[0]))
-            for vertex in face.vertices.dropFirst() {
-                context.addLine(to: graph.position(of: vertex))
-            }
+            context.move(to: polygon.points[0])
+            polygon.points.dropFirst().forEach(context.addLine(to:))
             context.closePath()
             context.setFillColor(color.cgColor)
             context.fillPath()
@@ -81,11 +78,7 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
                 }
             }
 
-            let weight = self.graph.weight(of: face)
-            let area = self.graph.area(of: face)
-            let pressure = (weight / totalweight) / (area / totalarea)
-
-            self.drawLabel(at: position, name: graph.name(of: face), weight: graph.weight(of: face), percent: 100 / pressure, tintColor: color, scale: scale)
+            self.drawLabel(at: position, name: graph.name(of: face), tintColor: color, scale: scale)
         }
 
         let edges = self.graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1), $0.0, $0.1) })
@@ -97,6 +90,16 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
             }
         }
 
+        for face in graph.faces {
+            let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
+
+            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
+            context.beginPath()
+            context.addEllipse(in: CGRect(x: circle.center.x - circle.radius, y: circle.center.y - circle.radius, width: 2 * circle.radius, height: 2 * circle.radius))
+            context.setStrokeColor(UIColor.red.withAlphaComponent(0.2).cgColor)
+            context.strokePath()
+        }
+
         for (vertex, force) in ForceComputer().forces(in: self.graph) {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
@@ -106,16 +109,12 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
         }
     }
 
-    private func drawLabel(at position: CGPoint, name: Character, weight: Double, percent: Double? = nil, tintColor: UIColor, scale: CGFloat) {
+    private func drawLabel(at position: CGPoint, name: Character, tintColor: UIColor, scale: CGFloat) {
         let context = UIGraphicsGetCurrentContext()!
         let foregroundColor = tintColor == .white ? .black : tintColor.interpolate(to: .black, fraction: 0.75)
 
-        var text = "\(name) | \(weight == weight.rounded() ? Int(weight).description : weight.description)"
-        if let percent = percent {
-            text += " | \(Int(percent.rounded()))%"
-        }
         let font = UIFont.systemFont(ofSize: 14 / scale, weight: .regular)
-        let attr = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: foregroundColor])
+        let attr = NSAttributedString(string: "\(name)", attributes: [.font: font, .foregroundColor: foregroundColor])
         let line = CTLineCreateWithAttributedString(attr)
 
         let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size

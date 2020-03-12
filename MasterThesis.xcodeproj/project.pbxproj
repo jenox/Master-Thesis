@@ -46,6 +46,7 @@
 		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBDA157323CBA7440070847D /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156B23CBA6EA0070847D /* FaceWeightedGraph.swift */; };
 		CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */; };
+		CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F135241A60C100BCC6E2 /* Circle.swift */; };
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
@@ -101,6 +102,7 @@
 		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityMetricComputer.swift; sourceTree = "<group>"; };
+		CBE6F135241A60C100BCC6E2 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* Transformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformation.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				CBF37CF22401846D00AA4846 /* CGPoint.swift */,
 				CBDA156723CB9D240070847D /* Angle.swift */,
 				CB5A22DC23F33C6F00001A2F /* Polygon.swift */,
+				CBE6F135241A60C100BCC6E2 /* Circle.swift */,
 				CBF37CEA24014CCD00AA4846 /* Misc.swift */,
 			);
 			path = Geometry;
@@ -429,6 +432,7 @@
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBF37CED240150FB00AA4846 /* ForceApplicator.swift in Sources */,
 				CB131A682415991200B5F5BB /* CanvasView.swift in Sources */,
+				CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */,
 				CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */,
