@@ -60,7 +60,7 @@ struct VertexWeightedGraph {
     // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
     var faces: (inner: [Face<Vertex>], outer: Face<Vertex>) {
         var faces: [Face<Vertex>] = []
-        var edges: Set<DirectedEdge> = []
+        var edges: OrderedSet<DirectedEdge> = []
 
         for vertex in self.vertices {
             for neighbor in self.vertices(adjacentTo: vertex) {
