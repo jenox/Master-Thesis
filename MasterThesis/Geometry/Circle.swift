@@ -16,6 +16,10 @@ struct Circle {
         return self.center.distance(to: point) <= self.radius * 1.00001
     }
 
+    var boundingBox: CGRect {
+        return CGRect(x: self.center.x - self.radius, y: self.center.y - self.radius, width: 2 * self.radius, height: 2 * self.radius)
+    }
+
     // MARK: - Smallest Enclosing Circle
 
     // https://www.nayuki.io/page/smallest-enclosing-circle
@@ -25,7 +29,7 @@ struct Circle {
 
         for (offset, p) in points.enumerated() {
             if c == nil || !c!.contains(p) {
-                c = .smallestEnclosingCircle(of: points.dropFirst(offset + 1), p)
+                c = .smallestEnclosingCircle(of: points.prefix(offset), p)
             }
         }
 
@@ -39,7 +43,7 @@ struct Circle {
             if circle.radius == 0 {
                 circle = .circumcircle(of: p, q)
             } else {
-                circle = .smallestEnclosingCircle(of: points.dropFirst(offset + 1), p, q)
+                circle = .smallestEnclosingCircle(of: points.prefix(offset), p, q)
             }
         }
 
@@ -75,14 +79,15 @@ struct Circle {
     }
 
     private static func circumcircle(of a: CGPoint, _ b: CGPoint) -> Circle {
-        let ab = CGVector(from: a, to: b)
+        let center = CGPoint(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
+        let radius = max(center.distance(to: a), center.distance(to: b))
 
-        return Circle(center: a + 0.5 * ab, radius: 0.5 * ab.length)
+        return Circle(center: center, radius: radius)
     }
 
     private static func circumcircle(of a: CGPoint, _ b: CGPoint, _ c: CGPoint) -> Circle? {
-        let ox = min(a.x, b.x, c.x) + max(min(a.x, b.x), c.x) / 2
-        let oy = min(a.y, b.y, c.y) + max(min(a.y, b.y), c.y) / 2
+        let ox = (min(a.x, b.x, c.x) + max(a.x, b.x, c.x)) / 2
+        let oy = (min(a.y, b.y, c.y) + max(a.y, b.y, c.y)) / 2
         let ax = a.x - ox
         let ay = a.y - oy
         let bx = b.x - ox
@@ -93,16 +98,12 @@ struct Circle {
 
         guard d != 0 else { return nil }
 
-        let x = ((ax*ax + ay*ay) * (by - cy) + (bx*bx + by*by) * (cy - ay) + (cx*cx + cy*cy) * (ay - by)) / d
-        let y = ((ax*ax + ay*ay) * (cx - bx) + (bx*bx + by*by) * (ax - cx) + (cx*cx + cy*cy) * (bx - ax)) / d
+        let x = ox + ((ax*ax + ay*ay) * (by - cy) + (bx*bx + by*by) * (cy - ay) + (cx*cx + cy*cy) * (ay - by)) / d
+        let y = oy + ((ax*ax + ay*ay) * (cx - bx) + (bx*bx + by*by) * (ax - cx) + (cx*cx + cy*cy) * (bx - ax)) / d
 
-        let center = CGPoint(x: ox + x, y: oy + y)
-        let radius = max(center.distance(to: a), center.distance(to: b), center.distance(to: c))
-        let circle = Circle(center: center, radius: radius)
+        let center = CGPoint(x: x, y: y)
+        let radius = [a,b,c].map(center.distance(to:)).max()!
 
-        let distances = [a,b,c].map(center.distance(to:))
-        precondition(distances.max()! / distances.min()! <= 1.0001)
-
-        return circle
+        return Circle(center: center, radius: radius)
     }
 }

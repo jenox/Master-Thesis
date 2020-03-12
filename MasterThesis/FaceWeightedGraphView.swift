@@ -47,12 +47,7 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
             let color = UIColor.color(for: graph.name(of: face)).interpolate(to: .white, fraction: 0.75)
             let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
 
-            context.beginPath()
-            context.move(to: polygon.points[0])
-            polygon.points.dropFirst().forEach(context.addLine(to:))
-            context.closePath()
-            context.setFillColor(color.cgColor)
-            context.fillPath()
+            context.fill(polygon, with: color)
         }
 
         for (endpoint1, endpoint2) in graph.edges {
@@ -92,12 +87,9 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
         for face in graph.faces {
             let polygon = Polygon(points: face.vertices.map(graph.position(of:)))
-
             let circle = Circle.smallestEnclosingCircle(of: polygon.points)
-            context.beginPath()
-            context.addEllipse(in: CGRect(x: circle.center.x - circle.radius, y: circle.center.y - circle.radius, width: 2 * circle.radius, height: 2 * circle.radius))
-            context.setStrokeColor(UIColor.red.withAlphaComponent(0.2).cgColor)
-            context.strokePath()
+
+            context.stroke(circle, with: UIColor.red.withAlphaComponent(0.2))
         }
 
         for (vertex, force) in ForceComputer().forces(in: self.graph) {
@@ -166,6 +158,22 @@ private extension CGContext {
         self.beginPath()
         self.move(to: source)
         self.addLine(to: target)
+        self.strokePath()
+    }
+
+    func fill(_ polygon: Polygon, with color: UIColor) {
+        self.beginPath()
+        self.move(to: polygon.points[0])
+        polygon.points.dropFirst().forEach(self.addLine(to:))
+        self.closePath()
+        self.setFillColor(color.cgColor)
+        self.fillPath()
+    }
+
+    func stroke(_ circle: Circle, with color: UIColor) {
+        self.beginPath()
+        self.addEllipse(in: circle.boundingBox)
+        self.setStrokeColor(color.cgColor)
         self.strokePath()
     }
 }
