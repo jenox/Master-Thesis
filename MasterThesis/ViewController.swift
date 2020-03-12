@@ -32,8 +32,10 @@ class ViewController: UIViewController {
 //    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
     var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
         didSet {
-            self.graphView.graph = self.graph
-            self.statisticsView.graph = self.graph
+            DispatchQueue.main.async(execute: {
+                self.graphView.graph = self.graph
+                self.statisticsView.graph = self.graph
+            })
         }
     }
 
@@ -100,7 +102,7 @@ class ViewController: UIViewController {
             self.hasScheduledNextSteppingBlock = false
         })
 
-        self.performGraphOperation(named: "step", as: { graph in
+        self.scheduleGraphOperation(named: "step", as: { graph in
             for (u, v) in graph.edges {
                 guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
                 guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
@@ -114,17 +116,15 @@ class ViewController: UIViewController {
 
         DispatchQueue.main.async(execute: {
             if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
-                self.queue.asyncAfter(deadline: .now() + 0.1, execute: self.stepOnceAndScheduleNextIfNeeded)
+                self.queue.asyncAfter(deadline: .now() + 0.05, execute: self.stepOnceAndScheduleNextIfNeeded)
             }
         })
     }
 
-    func performGraphOperation(named name: String, as transform: @escaping (inout FaceWeightedGraph) -> Void) {
+    func scheduleGraphOperation(named name: String, as transform: @escaping (inout FaceWeightedGraph) -> Void) {
         self.queue.async(execute: {
             let before = CACurrentMediaTime()
-            var graph = self.graph
-            transform(&graph)
-            DispatchQueue.main.async(execute: { self.graph = graph })
+            transform(&self.graph)
             let after = CACurrentMediaTime()
 
             print("Performed operation in \(String(format: "%.3f", 1e3 * (after - before)))ms: \(name)")
