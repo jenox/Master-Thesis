@@ -58,10 +58,10 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
         // Vertices
         for vertex in graph.vertices {
-            switch graph.vertices(adjacentTo: vertex).count {
-            case 2: context.fill(graph.position(of: vertex), diameter: 3 / scale, color: .black)
-            case 3: context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
-            default: fatalError()
+            if graph.isSubdivisionVertex(vertex) {
+                context.fill(graph.position(of: vertex), diameter: 3 / scale, color: .black)
+            } else {
+                context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
             }
         }
 
@@ -82,13 +82,8 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
             context.strokePath()
         }
 
-        let edges = self.graph.edges.map({ (self.graph.position(of: $0.0), self.graph.position(of: $0.1), $0.0, $0.1) })
-        for (a,b,u,v) in edges {
-            for (c,d,x,y) in edges where a != c || b != d {
-                if Segment(a: a, b: b).intersects(Segment(a: c, b: d)) {
-                    fatalError("intersection: \(u)-\(v) and \(x)-\(y) at \(a)-\(b) and \(c)-\(d)")
-                }
-            }
+        if let crossing = self.graph.firstEdgeCrossing() {
+            fatalError("intersection: \(crossing)")
         }
     }
 }

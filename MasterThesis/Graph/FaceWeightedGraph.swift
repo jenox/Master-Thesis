@@ -123,4 +123,86 @@ struct FaceWeightedGraph {
     func vector(from vertex: Vertex, to point: CGPoint) -> CGVector {
         return CGVector(from: self.position(of: vertex), to: point)
     }
+
+    func degree(of vertex: Vertex) -> Int {
+        return self.vertices(adjacentTo: vertex).count
+    }
+
+    func isSubdivisionVertex(_ vertex: Vertex) -> Bool {
+        switch self.degree(of: vertex) {
+        case 2: return true
+        case 3: return false
+        default: fatalError()
+        }
+    }
+
+    func contains(_ vertex: Vertex) -> Bool {
+        return self.vertexPayloads[vertex] != nil
+    }
+
+    mutating func contractEdgeIfPossible(between a: Vertex, and b: Vertex) {
+        assert(self.vertex(adjacentTo: a, and: b) == nil)
+
+        // cannot contract edge between 2 3-degree vertices
+        // we have u-v-w with v having no further neighbors
+        guard let v = [a, b].first(where: { self.degree(of: $0) == 2 }) else { return }
+        let u = v == a ? b : a
+        let w = self.vertices(adjacentTo: v).first(where: { $0 != u })!
+
+        // TODO: must be able to be contracted WITHOUT introducing crossings
+
+        // contract v "into" u
+        var copy = self
+        copy.edges.deleteFirst(of: (u,v), (v,u), by: ==)
+        copy.edges.replaceFirst(of: (v,w), (w,v), with: (u,w), by: ==)
+        copy.vertices.deleteFirst(of: v, by: ==)
+        copy.vertexPayloads[v] = nil
+        copy.vertexPayloads[u]!.adjacencies.replaceFirst(of: v, with: w, by: ==)
+        copy.vertexPayloads[w]!.adjacencies.replaceFirst(of: v, with: u, by: ==)
+
+        guard copy.isCrossingFree() else {
+            print("Could not contract edge \(a)-\(b): would create edge crossing!")
+            return
+        }
+
+        print("Contracting edge \(a)-\(b)...")
+
+        self = copy
+
+        // Fix faces
+        for (face, payload) in self.facePayloads {
+            if let index = payload.boundary.firstIndex(of: v) {
+                self.facePayloads[face]!.boundary.remove(at: index)
+            }
+        }
+    }
+
+    func firstEdgeCrossing() -> (Segment, Segment)? {
+        for ((u,v),(w,x)) in self.edges.cartesian(with: self.edges) where Set([u,v,w,x]).count == 4 {
+            let s1 = self.segment(from: u, to: v)
+            let s2 = self.segment(from: w, to: x)
+            if s1.intersects(s2) {
+                return (s1, s2)
+            }
+        }
+
+        return nil
+    }
+
+    func isCrossingFree() -> Bool {
+        return self.firstEdgeCrossing() == nil
+    }
+}
+
+private extension Array {
+    mutating func deleteFirst(of values: Element..., by isEqual: (Element, Element) -> Bool) {
+        let index = self.firstIndex(where: { element in values.contains(where: { isEqual($0, element) }) })!
+        self.swapAt(index, self.indices.last!)
+        self.removeLast()
+    }
+
+    mutating func replaceFirst(of values: Element..., with replacement: Element, by isEqual: (Element, Element) -> Bool) {
+        let index = self.firstIndex(where: { element in values.contains(where: { isEqual($0, element) }) })!
+        self[index] = replacement
+    }
 }

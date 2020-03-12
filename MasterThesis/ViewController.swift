@@ -29,8 +29,8 @@ class ViewController: UIViewController {
 
     // MARK: - View Management
 
-    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
-//    var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
+//    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
+    var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
         didSet {
             self.graphView.graph = self.graph
             self.statisticsView.graph = self.graph
@@ -101,6 +101,13 @@ class ViewController: UIViewController {
         })
 
         self.performGraphOperation(named: "step", as: { graph in
+            for (u, v) in graph.edges {
+                guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
+                guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
+
+                graph.contractEdgeIfPossible(between: u, and: v)
+            }
+
             let forces = ForceComputer().forces(in: graph)
             ForceApplicator().apply(forces, to: &graph)
         })
