@@ -11,18 +11,18 @@ import ArgumentParser
 
 CLITransmitter.current.start()
 
-struct ListrCTL: ParsableCommand {
+struct CLI: ParsableCommand {
 
     static let configuration = CommandConfiguration(
-        commandName: "listrctl",
-        abstract: "",
-        subcommands: [Start.self, Stop.self, ChangeCountryWeight.self]
+        commandName: "CLI",
+        abstract: "Interact with the GUI",
+        subcommands: [Start.self, Stop.self, ChangeCountryWeight.self, FlipBorder.self]
     )
 
     struct Start: ParsableCommand {
         static let configuration = CommandConfiguration(
             commandName: "start",
-            abstract: ""
+            abstract: "Start the optimization algorithm"
         )
 
         func run() throws {
@@ -33,7 +33,7 @@ struct ListrCTL: ParsableCommand {
     struct Stop: ParsableCommand {
         static let configuration = CommandConfiguration(
             commandName: "stop",
-            abstract: ""
+            abstract: "Stop the optimization algorithm"
         )
 
         func run() throws {
@@ -44,16 +44,30 @@ struct ListrCTL: ParsableCommand {
     struct ChangeCountryWeight: ParsableCommand {
         static let configuration = CommandConfiguration(
             commandName: "weight",
-            abstract: ""
+            abstract: "Change a country's weight"
         )
 
-        @Argument(help: "") var country: String
-        @Argument(help: "") var weight: Double
+        @Argument(help: "The country whose weight to change") var country: String
+        @Argument(help: "The country's new weight") var weight: Double
 
         func run() throws {
             send(ChangeCountryWeightCommand(country: country, weight: weight))
         }
     }
+
+    struct FlipBorder: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            commandName: "flip",
+            abstract: "Flip an internal border"
+        )
+
+        @Argument(help: "") var first: String
+        @Argument(help: "") var second: String
+
+        func run() throws {
+            send(FlipBorderCommand(first: first, second: second))
+        }
+    }
 }
 
-ListrCTL.main()
+CLI.main()

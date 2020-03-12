@@ -20,40 +20,57 @@ final class CLIReceiver {
     }
 
     func start() {
-        transceiver.receive(StartCommand.self, using: response(start(_:)))
-        transceiver.receive(StopCommand.self, using: response(stop(_:)))
-        transceiver.receive(ChangeCountryWeightCommand.self, using: response(changeCountryWeight))
+        transceiver.receive(StartCommand.self, using: response(start(_:completion:)))
+        transceiver.receive(StopCommand.self, using: response(stop(_:completion:)))
+        transceiver.receive(ChangeCountryWeightCommand.self, using: response(changeCountryWeight(_:completion:)))
+        transceiver.receive(FlipBorderCommand.self, using: response(flipBorder(_:completion:)))
+
 
         transceiver.resume()
     }
 
-    private func response<T: Codable>(_ handler: @escaping (T) -> CLIResponse) -> (T) -> Void {
-        return { [weak self] (command: T) in
-            let result = handler(command)
+    private func response<T: Codable>(_ handler: @escaping (T, @escaping (CLIResponse) -> Void) -> Void) -> (T) -> Void {
+        return { [weak self] command in
+            handler(command, { response in
+                self?.transceiver.broadcast(response)
+            })
+        }
+    }
 
-            self?.transceiver.broadcast(result)
+    private func start(_ command: StartCommand, completion: @escaping (CLIResponse) -> Void) {
+        viewController.beginSteppingContinuously()
+
+        completion(.message("ok"))
+    }
+
+    private func stop(_ command: StopCommand, completion: @escaping (CLIResponse) -> Void) {
+        viewController.endSteppingContinuously()
+
+        completion(.message("ok"))
+    }
+
+    private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
+        viewController.scheduleGraphOperation(named: "update weight", as: { graph in
+            try graph.setWeight(of: command.country, to: command.weight)
+        }, completion: self.wrapCompletionHandler(completion))
+    }
+
+    private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
+        completion(.message("not implemented"))
+    }
+
+    private func wrapCompletionHandler(_ completion: @escaping (CLIResponse) -> Void) -> (Result<Void, Error>) -> Void {
+        return { result in
+            switch result {
+            case .success:
+                completion(.message("ok"))
+            case .failure(let error):
+                completion(.message("error: \(error)"))
+            }
         }
     }
 
     private var viewController: ViewController {
         return UIApplication.shared.keyWindow!.rootViewController as! ViewController
-    }
-
-    private func start(_ command: StartCommand) -> CLIResponse {
-        viewController.beginSteppingContinuously()
-        return .message("ok")
-    }
-
-    private func stop(_ command: StopCommand) -> CLIResponse {
-        viewController.endSteppingContinuously()
-        return .message("ok")
-    }
-
-    private func changeCountryWeight(_ command: ChangeCountryWeightCommand) -> CLIResponse {
-        viewController.scheduleGraphOperation(named: "update weight", as: { graph in
-            graph.setWeight(of: command.country, to: command.weight)
-        })
-
-        return .message("ok")
     }
 }

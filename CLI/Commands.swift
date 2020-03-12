@@ -8,10 +8,16 @@
 
 import Foundation
 
-struct StartCommand: Hashable, Codable {}
-struct StopCommand: Hashable, Codable {}
+struct StartCommand: Codable {}
 
-struct ChangeCountryWeightCommand: Hashable, Codable {
+struct StopCommand: Codable {}
+
+struct ChangeCountryWeightCommand: Codable {
     let country: String
     let weight: Double
+}
+
+struct FlipBorderCommand: Codable {
+    let first: String
+    let second: String
 }

@@ -112,7 +112,7 @@ class ViewController: UIViewController {
 
             let forces = ForceComputer().forces(in: graph)
             ForceApplicator().apply(forces, to: &graph)
-        })
+        }, completion: { _ in })
 
         DispatchQueue.main.async(execute: {
             if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
@@ -121,10 +121,18 @@ class ViewController: UIViewController {
         })
     }
 
-    func scheduleGraphOperation(named name: String, as transform: @escaping (inout FaceWeightedGraph) -> Void) {
+    func scheduleGraphOperation(named name: String, as transform: @escaping (inout FaceWeightedGraph) throws -> Void, completion: @escaping (Result<Void, Error>) -> Void) {
         self.queue.async(execute: {
+            let result: Result<Void, Error>
+            defer { DispatchQueue.main.async(execute: { completion(result) }) }
+
             let before = CACurrentMediaTime()
-            transform(&self.graph)
+            do {
+                try transform(&self.graph)
+                result = .success(())
+            } catch let error {
+                result = .failure(error)
+            }
             let after = CACurrentMediaTime()
 
             print("Performed operation in \(String(format: "%.3f", 1e3 * (after - before)))ms: \(name)")
