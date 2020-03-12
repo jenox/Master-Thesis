@@ -50,7 +50,7 @@ final class CLIReceiver {
     }
 
     private func changeCountryWeight(_ command: ChangeCountryWeightCommand) -> CLIResponse {
-        viewController.performGraphOperation({ graph in
+        viewController.performGraphOperation(named: "update weight", as: { graph in
             graph.setWeight(of: command.country, to: command.weight)
         })
 
