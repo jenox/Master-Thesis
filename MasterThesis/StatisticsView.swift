@@ -15,6 +15,7 @@ struct StatisticsRow {
     var area: String? = nil
     var statisticalAccuracy: String? = nil
     var localFatness: String? = nil
+    var polygonalComplexity: String? = nil
     var backgroundColor: UIColor? = nil
 }
 

@@ -18,11 +18,11 @@ class GraphStatisticsView: UIView {
     private let statisticsView: StatisticsView
 
     init(graph: FaceWeightedGraph) {
-        let header = StatisticsRow(name: "Country", weight: "Weight", area: "Normalized Area", statisticalAccuracy: "Accuracy", localFatness: "Fatness", backgroundColor: nil)
+        let header = StatisticsRow(name: "Country", weight: "Weight", area: "Normalized Area", statisticalAccuracy: "Accuracy", localFatness: "Fatness", polygonalComplexity: "Polygonal Complexity", backgroundColor: nil)
         let (rows, summary) = Self.computeStatistics(for: graph)
 
         self.graph = graph
-        self.statisticsView = StatisticsView(header: header, rows: rows, footer: summary, columns: [\.name, \.weight, \.area, \.statisticalAccuracy, \.localFatness])
+        self.statisticsView = StatisticsView(header: header, rows: rows, footer: summary, columns: [\.name, \.weight, \.area, \.polygonalComplexity, \.statisticalAccuracy, \.localFatness])
 
         super.init(frame: .zero)
 
@@ -56,6 +56,7 @@ class GraphStatisticsView: UIView {
                 area: format(absolute: metrics.normalizedArea),
                 statisticalAccuracy: format(percentage: metrics.statisticalAccuracy),
                 localFatness: format(percentage: metrics.localFatness),
+                polygonalComplexity: "\(metrics.polygonalComplexity)",
                 backgroundColor: UIColor.color(for: name.first!)
             ))
         }

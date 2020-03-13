@@ -28,7 +28,8 @@ class QualityMetricComputer {
                 weight: weight,
                 normalizedArea: normalizedArea,
                 statisticalAccuracy: statisticalAccuracy,
-                localFatness: localFatness
+                localFatness: localFatness,
+                polygonalComplexity: polygon.points.count
             )))
         }
 
@@ -60,4 +61,5 @@ struct Metrics {
     var normalizedArea: Double
     var statisticalAccuracy: Double
     var localFatness: Double
+    var polygonalComplexity: Int
 }
