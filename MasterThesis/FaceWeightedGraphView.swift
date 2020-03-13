@@ -35,12 +35,12 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
         fatalError()
     }
 
-    func draw(in context: CGContext, scale: CGFloat) {
+    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         context.setLineWidth(1 / scale)
-        self.draw(self.graph, scale: scale)
+        self.draw(self.graph, scale: scale, rotation: rotation)
     }
 
-    private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, labeled: Bool = true) {
+    private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, rotation: Angle, labeled: Bool = true) {
         let context = UIGraphicsGetCurrentContext()!
 
         // Face backgrounds
@@ -58,20 +58,27 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
         // Vertices
         for vertex in graph.vertices {
+            let position = graph.position(of: vertex)
+
             if graph.isSubdivisionVertex(vertex) {
-                context.fill(graph.position(of: vertex), diameter: 3 / scale, color: .black)
+                context.fill(position, diameter: 3 / scale, color: .black)
             } else {
-                context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
+                context.fill(position, diameter: 5 / scale, color: .black)
             }
 
-            let font = UIFont.systemFont(ofSize: 10)
+            let font = UIFont.systemFont(ofSize: 14 / sqrt(scale))
             let string = NSAttributedString(string: "\(vertex)", attributes: [.font: font])
             let line = CTLineCreateWithAttributedString(string)
             let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
-            context.textPosition = graph.position(of: vertex)
+
+            context.textPosition = .zero
             context.textPosition.x -= size.width / 2
             context.textPosition.y -= font.capHeight / 2
+            context.saveGState()
+            context.translateBy(x: position.x, y: position.y)
+            context.rotate(by: -rotation.radians)
             CTLineDraw(line, context)
+            context.restoreGState()
         }
 
         // Face circumcircles

@@ -9,15 +9,15 @@
 import UIKit
 
 protocol CanvasRenderer {
-    func draw(in context: CGContext, scale: CGFloat)
+    func draw(in context: CGContext, scale: CGFloat, rotation: Angle)
 }
 struct AnyCanvasRenderer: CanvasRenderer {
-    private let _drawInContextWithScale: (_ context: CGContext, _ scale: CGFloat) -> Void
-    init(closure: @escaping (_ context: CGContext, _ scale: CGFloat) -> Void) {
+    private let _drawInContextWithScale: (_ context: CGContext, _ scale: CGFloat, _ rotation: Angle) -> Void
+    init(closure: @escaping (_ context: CGContext, _ scale: CGFloat, _ rotation: Angle) -> Void) {
         self._drawInContextWithScale = closure
     }
-    func draw(in context: CGContext, scale: CGFloat) {
-        self._drawInContextWithScale(context, scale)
+    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
+        self._drawInContextWithScale(context, scale, rotation)
     }
 }
 
@@ -101,6 +101,9 @@ class CanvasView: UIView {
 
         let scale = hypot(self.currentUserTransform.a, self.currentUserTransform.b)
 
-        self.renderer?.draw(in: context, scale: scale)
+        var angle = Angle.acos(self.currentUserTransform.a / scale)
+        if self.currentUserTransform.b / scale < 0 { angle = -angle }
+
+        self.renderer?.draw(in: context, scale: scale, rotation: angle)
     }
 }
