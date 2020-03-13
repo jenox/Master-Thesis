@@ -208,8 +208,8 @@ struct FaceWeightedGraph {
         let boundary1 = self.boundary(of: a) // "left"
         let boundary2 = self.boundary(of: b) // "right"
         var shared = boundary1.filter(boundary2.contains)
-        let c = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.first!) })! // "below"
-        let d = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.last!) })! // "above"
+        let below = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.first!) })! // "below"
+        let above = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.last!) })! // "above"
 
         assert(shared.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
         assert(shared.count(where: { !self.isSubdivisionVertex($0) }) == 2)
@@ -237,22 +237,50 @@ struct FaceWeightedGraph {
         assert(!self.isSubdivisionVertex(shared[0]))
         assert(!self.isSubdivisionVertex(shared[1]))
 
-        print(shared)
         let middle = CGPoint.centroid(of: shared.map(self.position(of:)))
         let vector = CGVector(from: self.position(of: shared[0]), to: middle).rotated(by: .init(degrees: 90))
         self.move(shared[0], to: middle + 0.1 * vector)
         self.move(shared[1], to: middle - 0.1 * vector)
 
-        self.facePayloads[a]!.boundary.removeAll(where: { $0 == 3 })
-        self.facePayloads[b]!.boundary.removeAll(where: { $0 == 6 })
-        self.facePayloads[c]!.boundary.insert(3, at: Face(vertices: self.boundary(of: c)).indexOfEdge(between: 6, and: 56)! + 1)
-        self.facePayloads[d]!.boundary.insert(6, at: Face(vertices: self.boundary(of: d)).indexOfEdge(between: 3, and: 27)! + 1)
-        self.edges.replaceFirst(of: (3,27),(27,3), with: (6,27), by: ==)
-        self.edges.replaceFirst(of: (6,56),(56,6), with: (3,56), by: ==)
-        self.vertexPayloads[27]!.adjacencies.replaceFirst(of: 3, with: 6, by: ==)
-        self.vertexPayloads[56]!.adjacencies.replaceFirst(of: 6, with: 3, by: ==)
-        self.vertexPayloads[3]!.adjacencies.replaceFirst(of: 27, with: 56, by: ==)
-        self.vertexPayloads[6]!.adjacencies.replaceFirst(of: 56, with: 27, by: ==)
+        print(shared)
+        print(self.vertices(adjacentTo: shared[0]), self.vertices(adjacentTo: shared[1]))
+
+        func relocate(_ a: Vertex, _ b: Vertex) {
+            let others = self.vertices(adjacentTo: a).filter({ $0 != b })
+            let c = others[0]
+            let d = others[1]
+
+            if !self.segment(from: a, to: c).intersects(self.segment(from: b, to: d)) {
+
+                print("change1 \(a)-\(d) to \(b)-\(d)", c)
+
+//                self.edges.replaceFirst(of: (6,56),(56,6), with: (3,56), by: ==)
+//                self.vertexPayloads[56]!.adjacencies.replaceFirst(of: 6, with: 3, by: ==)
+//                self.vertexPayloads[6]!.adjacencies.replaceFirst(of: 56, with: 27, by: ==)
+                // 3.adj.insert(56)
+                // 6.adj.remove(56)
+
+                self.facePayloads[below]!.boundary.insert(b, at: Face(vertices: self.boundary(of: below)).indexOfEdge(between: a, and: d)! + 1)
+            } else if !self.segment(from: a, to: d).intersects(self.segment(from: b, to: c)) {
+                print("change2 \(a)-\(c) to \(b)-\(c)", d)
+
+//                self.edges.replaceFirst(of: (3,27),(27,3), with: (6,27), by: ==)
+//                self.vertexPayloads[27]!.adjacencies.replaceFirst(of: 3, with: 6, by: ==)
+//                self.vertexPayloads[3]!.adjacencies.replaceFirst(of: 27, with: 56, by: ==)
+                // 3.adj.remove(27)
+                // 6.adj.insert(27)
+
+                self.facePayloads[above]!.boundary.insert(b, at: Face(vertices: self.boundary(of: above)).indexOfEdge(between: a, and: c)! + 1)
+            } else {
+                fatalError()
+            }
+        }
+
+        relocate(shared[0], shared[1])
+        relocate(shared[1], shared[0])
+
+        self.facePayloads[a]!.boundary.removeAll(where: { $0 == shared[0] })
+        self.facePayloads[b]!.boundary.removeAll(where: { $0 == shared[1] })
 
         self.ensureIntegrity()
     }
