@@ -1,5 +1,6 @@
 Need to work on forces:
-- Short borders after edge flip: repelling forces between vertices of degree 3?
+- Crossing are created due to floating point inaccuracies (?) when vertices are too close to one another!
+- Short borders after edge flip -> Repelling forces between vertices of degree 3?
 - Forces working towards (local) fatness?
 - Unstable balancing of subdivision vertices
 
@@ -19,7 +20,10 @@ TODOs:
     - Other idea 2: area of the smallest circle of the largest circles fitting on the inside of polygon, touching two adjacent segments
         - Unnormalized. What about vertices with internal angle >180deg?
     - Problems with some ideas: infinitesimal tweaks should have infinitesimal impact on fatness
-- [ ] Think about test case generation
+- [x] Think about test case generation
+    - Voronoi/Delaunay triangulation on random points, random weights?
+    - Nest K4s in random triangles?
+    - In regular intervals, perform random dynamic operations: change weights randomly, flip random internal border?
 
 
 __2020-02-13__
