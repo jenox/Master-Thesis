@@ -56,7 +56,9 @@ final class CLIReceiver {
     }
 
     private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
-        completion(.message("not implemented"))
+        viewController.scheduleGraphOperation(named: "flip border", as: { graph in
+            try graph.flipBorder(between: command.first, and: command.second)
+        }, completion: self.wrapCompletionHandler(completion))
     }
 
     private func wrapCompletionHandler(_ completion: @escaping (CLIResponse) -> Void) -> (Result<Void, Error>) -> Void {

@@ -1,3 +1,9 @@
+Need to work on forces:
+- Short borders after edge flip: repelling forces between vertices of degree 3?
+- Forces working towards (local) fatness?
+- Unstable balancing of subdivision vertices
+
+
 __2020-03-05__
 
 - Focus on better initial layout (Kleist/Thomassen) only if we have time!
@@ -5,7 +11,8 @@ __2020-03-05__
 TODOs:
 - [x] Try merging vertices when they get too close to one another
     - Only contract edges; but not edges between 2 3-degree verices
-- [ ] Implement other dynamic operations with additional subdivision vertices
+- [x] Implement other dynamic operations with additional subdivision vertices
+    - Implemented generic internal edge flip
 - [x] Implement quality metrics: statistical accuracy, local fatness
     - Implemented: polygon area / area of regular n-gon in smalltest enclosing circle (though more "global"?)
     - Other idea 1: [incircle / circumcircle](https://mathematica.stackexchange.com/questions/121987/how-to-find-the-incircle-and-circumcircle-for-an-irregular-polygon)

@@ -204,12 +204,9 @@ struct FaceWeightedGraph {
         return self.firstEdgeCrossing() == nil
     }
 
-    mutating func flipBorder(between a: String, and b: String) throws {
-        let boundary1 = self.boundary(of: a) // "left"
-        let boundary2 = self.boundary(of: b) // "right"
-        var shared = boundary1.filter(boundary2.contains)
-        let below = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.first!) })! // "below"
-        let above = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.last!) })! // "above"
+    mutating func flipBorder(between left: String, and right: String) throws {
+        var shared = self.boundary(of: left).filter(self.boundary(of: right).contains)
+        print("Boundary of \(left) and \(right): \(shared)")
 
         assert(shared.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
         assert(shared.count(where: { !self.isSubdivisionVertex($0) }) == 2)
@@ -242,35 +239,29 @@ struct FaceWeightedGraph {
         self.move(shared[0], to: middle + 0.1 * vector)
         self.move(shared[1], to: middle - 0.1 * vector)
 
-        print(shared)
-        print(self.vertices(adjacentTo: shared[0]), self.vertices(adjacentTo: shared[1]))
-
         func relocate(_ a: Vertex, _ b: Vertex) {
             let others = self.vertices(adjacentTo: a).filter({ $0 != b })
             let c = others[0]
             let d = others[1]
 
             if !self.segment(from: a, to: c).intersects(self.segment(from: b, to: d)) {
+                self.edges.replaceFirst(of: (a,d),(d,a), with: (b,d), by: ==)
+                self.vertexPayloads[d]!.adjacencies.replaceFirst(of: a, with: b, by: ==)
+                self.vertexPayloads[a]!.adjacencies.deleteFirst(of: d, by: ==)
+                self.vertexPayloads[b]!.adjacencies.append(d)
 
-                print("change1 \(a)-\(d) to \(b)-\(d)", c)
-
-//                self.edges.replaceFirst(of: (6,56),(56,6), with: (3,56), by: ==)
-//                self.vertexPayloads[56]!.adjacencies.replaceFirst(of: 6, with: 3, by: ==)
-//                self.vertexPayloads[6]!.adjacencies.replaceFirst(of: 56, with: 27, by: ==)
-                // 3.adj.insert(56)
-                // 6.adj.remove(56)
-
-                self.facePayloads[below]!.boundary.insert(b, at: Face(vertices: self.boundary(of: below)).indexOfEdge(between: a, and: d)! + 1)
+                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: d) })!
+                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: d)!
+                self.facePayloads[face]!.boundary.insert(b, at: index + 1)
             } else if !self.segment(from: a, to: d).intersects(self.segment(from: b, to: c)) {
-                print("change2 \(a)-\(c) to \(b)-\(c)", d)
+                self.edges.replaceFirst(of: (a,c),(c,a), with: (b,c), by: ==)
+                self.vertexPayloads[c]!.adjacencies.replaceFirst(of: a, with: b, by: ==)
+                self.vertexPayloads[a]!.adjacencies.deleteFirst(of: c, by: ==)
+                self.vertexPayloads[b]!.adjacencies.append(c)
 
-//                self.edges.replaceFirst(of: (3,27),(27,3), with: (6,27), by: ==)
-//                self.vertexPayloads[27]!.adjacencies.replaceFirst(of: 3, with: 6, by: ==)
-//                self.vertexPayloads[3]!.adjacencies.replaceFirst(of: 27, with: 56, by: ==)
-                // 3.adj.remove(27)
-                // 6.adj.insert(27)
-
-                self.facePayloads[above]!.boundary.insert(b, at: Face(vertices: self.boundary(of: above)).indexOfEdge(between: a, and: c)! + 1)
+                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: c) })!
+                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: c)!
+                self.facePayloads[face]!.boundary.insert(b, at: index + 1)
             } else {
                 fatalError()
             }
@@ -279,8 +270,11 @@ struct FaceWeightedGraph {
         relocate(shared[0], shared[1])
         relocate(shared[1], shared[0])
 
-        self.facePayloads[a]!.boundary.removeAll(where: { $0 == shared[0] })
-        self.facePayloads[b]!.boundary.removeAll(where: { $0 == shared[1] })
+        for face in [left, right] {
+            let boundary = self.boundary(of: face)
+            let vertex = [shared[0], shared[1]].first(where: { self.vertices(adjacentTo: $0).count(where: boundary.contains(_:)) == 1 })!
+            self.facePayloads[face]!.boundary.removeAll(where: { $0 == vertex })
+        }
 
         self.ensureIntegrity()
     }
