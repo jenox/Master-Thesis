@@ -20,6 +20,10 @@ class ViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.toggle.addTarget(self, action: #selector(self.toggleDidChange), for: .valueChanged)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            try? self.graph.flipBorder(between: "E", and: "F")
+        })
     }
 
     required init?(coder: NSCoder) {

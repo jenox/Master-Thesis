@@ -63,6 +63,15 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
             } else {
                 context.fill(graph.position(of: vertex), diameter: 5 / scale, color: .black)
             }
+
+            let font = UIFont.systemFont(ofSize: 10)
+            let string = NSAttributedString(string: "\(vertex)", attributes: [.font: font])
+            let line = CTLineCreateWithAttributedString(string)
+            let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
+            context.textPosition = graph.position(of: vertex)
+            context.textPosition.x -= size.width / 2
+            context.textPosition.y -= font.capHeight / 2
+            CTLineDraw(line, context)
         }
 
         // Face circumcircles

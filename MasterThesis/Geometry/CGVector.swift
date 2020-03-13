@@ -21,6 +21,10 @@ extension CGVector {
         return CGPoint(x: lhs.x + rhs.dx, y: lhs.y + rhs.dy)
     }
 
+    static func - (lhs: CGPoint, rhs: CGVector) -> CGPoint {
+        return CGPoint(x: lhs.x - rhs.dx, y: lhs.y - rhs.dy)
+    }
+
     static func + (lhs: CGVector, rhs: CGVector) -> CGVector {
         return CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
     }

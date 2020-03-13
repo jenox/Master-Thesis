@@ -48,6 +48,13 @@ struct Segment {
 
         return check_inter(a: self.a, b: self.b, c: other.a, d: other.b)
     }
+
+    func point(at progress: CGFloat) -> CGPoint {
+        return CGPoint(
+            x: self.a.x + progress * (self.b.x - self.a.x),
+            y: self.a.y + progress * (self.b.y - self.a.y)
+        )
+    }
 }
 // https://cp-algorithms.com/geometry/check-segments-intersection.html
 private func inter1(a: CGFloat, b: CGFloat, c: CGFloat, d: CGFloat) -> Bool {

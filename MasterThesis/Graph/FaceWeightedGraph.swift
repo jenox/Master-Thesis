@@ -13,9 +13,13 @@ import CoreGraphics
 struct FaceWeightedGraph {
     init() {}
 
-    struct Vertex: Hashable, CustomStringConvertible {
+    struct Vertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
         private static var nextID: Int = 0
         private let id: Int
+
+        init(integerLiteral value: Int) {
+            self.id = value
+        }
 
         init() {
             self.id = Self.nextID
@@ -55,6 +59,10 @@ struct FaceWeightedGraph {
 
     mutating func displace(_ vertex: Vertex, by displacement: CGVector) {
         self.vertexPayloads[vertex]!.position += displacement
+    }
+
+    mutating func move(_ vertex: Vertex, to position: CGPoint) {
+        self.vertexPayloads[vertex]!.position = position
     }
 
     func position(of vertex: Vertex) -> CGPoint {
@@ -194,6 +202,116 @@ struct FaceWeightedGraph {
 
     func isCrossingFree() -> Bool {
         return self.firstEdgeCrossing() == nil
+    }
+
+    mutating func flipBorder(between a: String, and b: String) throws {
+        let boundary1 = self.boundary(of: a) // "left"
+        let boundary2 = self.boundary(of: b) // "right"
+        var shared = boundary1.filter(boundary2.contains)
+        let c = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.first!) })! // "below"
+        let d = self.faces.first(where: { $0 != a && $0 != b && self.boundary(of: $0).contains(shared.last!) })! // "above"
+
+        assert(shared.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
+        assert(shared.count(where: { !self.isSubdivisionVertex($0) }) == 2)
+        assert(shared.dropFirst().dropLast().allSatisfy(self.isSubdivisionVertex(_:)))
+
+        while shared.count >= 3 {
+            // contract edge x-y; a,b other neighbors to x
+            let others = self.vertices(adjacentTo: shared[0]).filter({ $0 != shared[1] })
+            assert(others.count == 2)
+
+            let y = self.position(of: shared[1])
+            // TODO: maybe binary search this down from 0.5 while preserving crossings?
+            let xa = self.segment(from: shared[0], to: others[0]).point(at: 0.3)
+            let xb = self.segment(from: shared[0], to: others[1]).point(at: 0.3)
+
+            self.contractEdge(from: shared[1], into: shared[0])
+            self.move(shared[0], to: y)
+            self.subdivideEdge(between: shared[0], and: others[0], at: xa)
+            self.subdivideEdge(between: shared[0], and: others[1], at: xb)
+
+            shared.remove(at: 1)
+            shared.reverse()
+        }
+
+        assert(!self.isSubdivisionVertex(shared[0]))
+        assert(!self.isSubdivisionVertex(shared[1]))
+
+        print(shared)
+        let middle = CGPoint.centroid(of: shared.map(self.position(of:)))
+        let vector = CGVector(from: self.position(of: shared[0]), to: middle).rotated(by: .init(degrees: 90))
+        self.move(shared[0], to: middle + 0.1 * vector)
+        self.move(shared[1], to: middle - 0.1 * vector)
+
+        self.facePayloads[a]!.boundary.removeAll(where: { $0 == 3 })
+        self.facePayloads[b]!.boundary.removeAll(where: { $0 == 6 })
+        self.facePayloads[c]!.boundary.insert(3, at: Face(vertices: self.boundary(of: c)).indexOfEdge(between: 6, and: 56)! + 1)
+        self.facePayloads[d]!.boundary.insert(6, at: Face(vertices: self.boundary(of: d)).indexOfEdge(between: 3, and: 27)! + 1)
+        self.edges.replaceFirst(of: (3,27),(27,3), with: (6,27), by: ==)
+        self.edges.replaceFirst(of: (6,56),(56,6), with: (3,56), by: ==)
+        self.vertexPayloads[27]!.adjacencies.replaceFirst(of: 3, with: 6, by: ==)
+        self.vertexPayloads[56]!.adjacencies.replaceFirst(of: 6, with: 3, by: ==)
+        self.vertexPayloads[3]!.adjacencies.replaceFirst(of: 27, with: 56, by: ==)
+        self.vertexPayloads[6]!.adjacencies.replaceFirst(of: 56, with: 27, by: ==)
+
+        self.ensureIntegrity()
+    }
+
+    func ensureIntegrity() {
+        // make sure adjacendies are symmetric
+        // make sure edges are in sync with adjacencies
+        // make sures faces are valid
+        // make sure no crossings
+        for (u,v) in self.edges {
+            assert(self.vertexPayloads[u]!.adjacencies.contains(v))
+        }
+    }
+
+    @discardableResult
+    private mutating func subdivideEdge(between u: Vertex, and w: Vertex, at position: CGPoint? = nil) -> Vertex {
+        assert(self.vertices(adjacentTo: u).contains(w))
+
+        let position = position ?? CGPoint.centroid(of: [u, w].map(self.position(of:)))
+
+        let v = self.insertVertex(at: position)
+//        print("subdivide \(u)-\(w) with \(v)")
+        self.edges.replaceFirst(of: (u,w), (w,u), with: (u,v), by: ==)
+        self.edges.append((v,w))
+        self.vertexPayloads[u]!.adjacencies.replaceFirst(of: w, with: v, by: ==)
+        self.vertexPayloads[w]!.adjacencies.replaceFirst(of: u, with: v, by: ==)
+        self.vertexPayloads[v]!.adjacencies = [u, w]
+
+        for (face, payload) in self.facePayloads {
+            if let index = Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
+                self.facePayloads[face]!.boundary.insert(v, at: index + 1)
+            }
+        }
+
+        return v
+    }
+
+    private mutating func contractEdge(from y: Vertex, into x: Vertex) {
+        assert(self.vertices(adjacentTo: x).contains(y))
+        assert(self.vertex(adjacentTo: x, and: y) == nil)
+        assert(!self.isSubdivisionVertex(x))
+        assert(self.isSubdivisionVertex(y))
+
+//        print("contract \(y) into \(x)")
+
+        let z = self.vertices(adjacentTo: y).first(where: { $0 != x })!
+
+        self.edges.deleteFirst(of: (x,y), (y,x), by: ==)
+        self.edges.replaceFirst(of: (y,z), (z,y), with: (x,z), by: ==)
+        self.vertices.deleteFirst(of: y, by: ==)
+        self.vertexPayloads[y] = nil
+        self.vertexPayloads[x]!.adjacencies.replaceFirst(of: y, with: z, by: ==)
+        self.vertexPayloads[z]!.adjacencies.replaceFirst(of: y, with: x, by: ==)
+
+        for (face, payload) in self.facePayloads {
+            if let index = payload.boundary.firstIndex(of: y) {
+                self.facePayloads[face]!.boundary.remove(at: index)
+            }
+        }
     }
 }
 
