@@ -1,8 +1,19 @@
-Need to work on forces:
+__2020-03-13__
+
 - Crossing are created due to floating point inaccuracies (?) when vertices are too close to one another!
 - Short borders after edge flip -> Repelling forces between vertices of degree 3?
-- Forces working towards (local) fatness?
-- Unstable balancing of subdivision vertices
+
+TODOs:
+- [x] Do some research on _local_ fatness in literature: Computational geometry @ Utrecht, Maarten Loeffler, Bettina Speackman
+    - Or existence k-kernel of polygon as additional metric? -> Punish snakes
+    - CGAL library
+- [ ] Implement test case generation
+    - Different graph sizes, up to 30 countries
+    - When nesting K4s, prefer triangles that were already nested into others
+- [ ] Improve forces
+    - Forces repelling degree-3-vertices
+    - Forces working towards (local) fatness
+    - Forces working against tight corridors
 
 
 __2020-03-05__
