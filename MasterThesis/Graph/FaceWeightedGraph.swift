@@ -135,6 +135,10 @@ struct FaceWeightedGraph {
         return CGVector(from: self.position(of: vertex), to: point)
     }
 
+    func vector(from vertex1: Vertex, to vertex2: Vertex) -> CGVector {
+        return CGVector(from: self.position(of: vertex1), to: self.position(of: vertex2))
+    }
+
     func degree(of vertex: Vertex) -> Int {
         return self.vertices(adjacentTo: vertex).count
     }
@@ -236,8 +240,8 @@ struct FaceWeightedGraph {
 
         let middle = CGPoint.centroid(of: shared.map(self.position(of:)))
         let vector = CGVector(from: self.position(of: shared[0]), to: middle).rotated(by: .init(degrees: 90))
-        self.move(shared[0], to: middle + 0.1 * vector)
-        self.move(shared[1], to: middle - 0.1 * vector)
+        self.move(shared[0], to: middle + 0.01 * vector)
+        self.move(shared[1], to: middle - 0.01 * vector)
 
         func relocate(_ a: Vertex, _ b: Vertex) {
             let others = self.vertices(adjacentTo: a).filter({ $0 != b })

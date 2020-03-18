@@ -55,6 +55,18 @@ struct Segment {
             y: self.a.y + progress * (self.b.y - self.a.y)
         )
     }
+
+    func closestPoint(to other: CGPoint) -> CGPoint {
+        // Return minimum distance between line segment vw and point p
+        let l2 = pow(self.a.distance(to: self.b), 2)  // i.e. |w-v|^2 -  avoid a sqrt
+        guard (l2 != 0.0) else { return self.a } // v == w case
+        // Consider the line extending the segment, parameterized as v + t (w - v).
+        // We find projection of point p onto the line.
+        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+        // We clamp t from [0,1] to handle points outside the segment vw.
+        let t = max(0, min(1, ((other - self.a) * (self.b - self.a)) / l2))
+        return self.point(at: t)
+    }
 }
 // https://cp-algorithms.com/geometry/check-segments-intersection.html
 private func inter1(a: CGFloat, b: CGFloat, c: CGFloat, d: CGFloat) -> Bool {

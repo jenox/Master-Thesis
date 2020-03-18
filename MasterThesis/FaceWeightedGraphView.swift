@@ -13,10 +13,15 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
         didSet { self.canvasView.setNeedsDisplay() }
     }
 
+    var forceComputer: ForceComputer {
+        didSet { self.canvasView.setNeedsDisplay() }
+    }
+
     private let canvasView: CanvasView = .init()
 
-    init(frame: CGRect, graph: FaceWeightedGraph) {
+    init(frame: CGRect, graph: FaceWeightedGraph, forceComputer: ForceComputer) {
         self.graph = graph
+        self.forceComputer = forceComputer
 
         super.init(frame: frame)
 
@@ -90,7 +95,7 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
         }
 
         // Forces
-        for (vertex, force) in ForceComputer().forces(in: self.graph) {
+        for (vertex, force) in self.forceComputer.forces(in: self.graph) {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)

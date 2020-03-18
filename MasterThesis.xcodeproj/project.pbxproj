@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB10864E2422CDA400D54808 /* FloatSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB10864D2422CDA400D54808 /* FloatSettingView.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
 		CB131A52241543AD00B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A51241543AD00B5F5BB /* MultipeerKit */; };
@@ -71,6 +72,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB10864D2422CDA400D54808 /* FloatSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatSettingView.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB131A56241544C600B5F5BB /* CLITransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITransmitter.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
 				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
 				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
+				CB10864D2422CDA400D54808 /* FloatSettingView.swift */,
 				CB131A65241598FE00B5F5BB /* Debug.swift */,
 				CBF37CE924014BF500AA4846 /* Algorithm */,
 				CBEE493623E1E17B00986877 /* Graph */,
@@ -428,6 +431,7 @@
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
+				CB10864E2422CDA400D54808 /* FloatSettingView.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */,

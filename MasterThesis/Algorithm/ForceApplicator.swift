@@ -34,9 +34,18 @@ class ForceApplicator {
             if let projected = graph.position(of: v).projected(onto: graph.segment(from: a, to: b)) {
                 let vector = graph.vector(from: v, to: projected)
 
-                upperBounds[v]!.addUpperBound(vector.length / 3, inDirectionOf: vector, padding: 2)
-                upperBounds[a]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
-                upperBounds[b]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
+                // If vector becomes too short, floating point inaccuracies can
+                // still result in edge crossings being created — restrict
+                // involved vertices altogether
+                if vector.length >= 1e-12 {
+                    upperBounds[v]!.addUpperBound(vector.length / 3, inDirectionOf: vector, padding: 2)
+                    upperBounds[a]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
+                    upperBounds[b]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
+                } else {
+                    upperBounds[v]!.addUpperBound(0)
+                    upperBounds[a]!.addUpperBound(0)
+                    upperBounds[b]!.addUpperBound(0)
+                }
             } else {
                 let distanceToA = graph.distance(from: v, to: a)
                 let distanceToB = graph.distance(from: v, to: b)

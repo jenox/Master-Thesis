@@ -37,6 +37,10 @@ extension CGVector {
         lhs = lhs + rhs
     }
 
+    static func -= (lhs: inout CGVector, rhs: CGVector) {
+        lhs = lhs - rhs
+    }
+
     static func / (lhs: CGVector, rhs: CGFloat) -> CGVector {
         return CGVector(dx: lhs.dx / rhs, dy: lhs.dy / rhs)
     }

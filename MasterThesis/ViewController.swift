@@ -14,12 +14,21 @@ class ViewController: UIViewController {
     // MARK: - Initialization
 
     init() {
-        self.graphView = FaceWeightedGraphView(frame: UIScreen.main.bounds, graph: self.graph)
+        self.graphView = FaceWeightedGraphView(frame: UIScreen.main.bounds, graph: self.graph, forceComputer: self.forceComputer)
         self.statisticsView = GraphStatisticsView(graph: self.graph)
+
+        self.floatSettingViews = [
+            .init(title: "V-V Repulsion", value: self.forceComputer.force1Strength, range: 1e-2...1e3),
+            .init(title: "V-V Attraction", value: self.forceComputer.force2Strength, range: 1e-2...1e1),
+            .init(title: "V-E Repulsion", value: self.forceComputer.force3Strength, range: 1e-2...1e3),
+            .init(title: "Pressure", value: self.forceComputer.force4Strength, range: 1e-2...1e1),
+            .init(title: "Angle", value: self.forceComputer.force5Strength, range: 1e-2...1e2)
+        ]
 
         super.init(nibName: nil, bundle: nil)
 
-        self.toggle.addTarget(self, action: #selector(self.toggleDidChange), for: .valueChanged)
+        self.stepToggle.addTarget(self, action: #selector(self.toggleDidChange), for: .valueChanged)
+        self.floatSettingViews.forEach({ $0.valueChanged = { [weak self] in self?.forceSettingDidChange()} })
         self.statisticsView.isUserInteractionEnabled = false
     }
 
@@ -29,6 +38,10 @@ class ViewController: UIViewController {
 
 
     // MARK: - View Management
+
+    var forceComputer: ForceComputer = .init() {
+        didSet { self.graphView.forceComputer = self.forceComputer }
+    }
 
 //    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
     var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
@@ -42,34 +55,55 @@ class ViewController: UIViewController {
 
     private let graphView: FaceWeightedGraphView
     private let statisticsView: GraphStatisticsView
-    private let toggle = UISwitch()
+    private let stepToggle = UISwitch()
+    private let floatSettingViews: [FloatSettingView]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.addSubview(self.graphView)
         self.view.addSubview(self.statisticsView)
-        self.view.addSubview(self.toggle)
+        self.view.addSubview(self.stepToggle)
+        self.floatSettingViews.forEach(self.view.addSubview(_:))
 
         self.graphView.snp.makeConstraints({ make in
             make.edges.equalToSuperview()
         })
 
-        self.toggle.snp.makeConstraints({ make in
-            make.right.equalToSuperview().inset(40)
-            make.top.equalToSuperview().inset(40)
+        self.stepToggle.snp.makeConstraints({ make in
+            make.top.left.equalToSuperview().inset(40)
         })
+
+        self.floatSettingViews.first!.snp.makeConstraints({ make in
+            make.top.equalToSuperview().inset(40)
+            make.right.equalToSuperview().inset(20)
+        })
+
+        for (above, below) in zip(self.floatSettingViews, self.floatSettingViews.dropFirst()) {
+            below.snp.makeConstraints({ make in
+                make.top.equalTo(above.snp.bottom).offset(10)
+                make.right.equalTo(above)
+            })
+        }
 
         self.statisticsView.snp.makeConstraints({ make in
             make.left.bottom.equalToSuperview().inset(20)
         })
     }
 
+    @objc private func forceSettingDidChange() {
+        self.forceComputer.force1Strength = self.floatSettingViews[0].value
+        self.forceComputer.force2Strength = self.floatSettingViews[1].value
+        self.forceComputer.force3Strength = self.floatSettingViews[2].value
+        self.forceComputer.force4Strength = self.floatSettingViews[3].value
+        self.forceComputer.force5Strength = self.floatSettingViews[4].value
+    }
+
 
     // MARK: - Stepping
 
     @objc private func toggleDidChange() {
-        if self.toggle.isOn {
+        if self.stepToggle.isOn {
             self.beginSteppingContinuously()
         } else {
             self.endSteppingContinuously()
@@ -81,7 +115,7 @@ class ViewController: UIViewController {
     private var hasScheduledNextSteppingBlock: Bool = false
 
     func beginSteppingContinuously() {
-        self.toggle.setOn(true, animated: true)
+        self.stepToggle.setOn(true, animated: true)
         guard !isSteppingContinuously else { return }
 
         self.isSteppingContinuously = true
@@ -94,7 +128,7 @@ class ViewController: UIViewController {
     }
 
     func endSteppingContinuously() {
-        self.toggle.setOn(false, animated: true)
+        self.stepToggle.setOn(false, animated: true)
         isSteppingContinuously = false
     }
 
@@ -111,7 +145,7 @@ class ViewController: UIViewController {
                 graph.contractEdgeIfPossible(between: u, and: v)
             }
 
-            let forces = ForceComputer().forces(in: graph)
+            let forces = self.forceComputer.forces(in: graph)
             ForceApplicator().apply(forces, to: &graph)
         }, completion: { _ in })
 
