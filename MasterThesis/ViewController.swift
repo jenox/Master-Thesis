@@ -30,6 +30,10 @@ class ViewController: UIViewController {
         self.stepToggle.addTarget(self, action: #selector(self.toggleDidChange), for: .valueChanged)
         self.floatSettingViews.forEach({ $0.valueChanged = { [weak self] in self?.forceSettingDidChange()} })
         self.statisticsView.isUserInteractionEnabled = false
+        self.graph1Button.setTitle("Small", for: .normal)
+        self.graph2Button.setTitle("Large", for: .normal)
+        self.graph1Button.addTarget(self, action: #selector(self.loadGraph1), for: .touchUpInside)
+        self.graph2Button.addTarget(self, action: #selector(self.loadGraph2), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -57,6 +61,8 @@ class ViewController: UIViewController {
     private let statisticsView: GraphStatisticsView
     private let stepToggle = UISwitch()
     private let floatSettingViews: [FloatSettingView]
+    private let graph1Button = UIButton(type: .system)
+    private let graph2Button = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +70,8 @@ class ViewController: UIViewController {
         self.view.addSubview(self.graphView)
         self.view.addSubview(self.statisticsView)
         self.view.addSubview(self.stepToggle)
+        self.view.addSubview(self.graph1Button)
+        self.view.addSubview(self.graph2Button)
         self.floatSettingViews.forEach(self.view.addSubview(_:))
 
         self.graphView.snp.makeConstraints({ make in
@@ -86,6 +94,16 @@ class ViewController: UIViewController {
             })
         }
 
+        self.graph1Button.snp.makeConstraints({ make in
+            make.top.equalTo(self.stepToggle)
+            make.left.equalTo(self.stepToggle.snp.right).offset(20)
+        })
+
+        self.graph2Button.snp.makeConstraints({ make in
+            make.top.equalTo(self.stepToggle)
+            make.left.equalTo(self.graph1Button.snp.right).offset(20)
+        })
+
         self.statisticsView.snp.makeConstraints({ make in
             make.left.bottom.equalToSuperview().inset(20)
         })
@@ -97,6 +115,18 @@ class ViewController: UIViewController {
         self.forceComputer.force3Strength = self.floatSettingViews[2].value
         self.forceComputer.force4Strength = self.floatSettingViews[3].value
         self.forceComputer.force5Strength = self.floatSettingViews[4].value
+    }
+
+    @objc private func loadGraph1() {
+        self.queue.async(execute: {
+            self.graph = Self.makeSmallInputGraph().subdividedDual()
+        })
+    }
+
+    @objc private func loadGraph2() {
+        self.queue.async(execute: {
+            self.graph = Self.makeVoronoiInputGraph().subdividedDual()
+        })
     }
 
 
