@@ -1,3 +1,27 @@
+- Local Fatness
+    - Estimating complexity of 2D shapes
+        - length of shortest turing machine that outputs polygon
+        - deals with (unordered) points, not necessarily polygons
+        - distribution/entropy of distances from centroid
+        - distribution/entropy of angles at points (they "guess" connections)
+        - random trace through points: not relevant to us, we know how points are connected
+    - Better Bounds on the Union Complexity of Locally Fat Objects
+        - k-fatness: minimum ratio of area of circle with boundary intersecting and center inside polygon intersecting polygon to circle area
+        - susceptible to small angles
+    - Measuring the Complexity of Polygonal Objects:
+        - distance from convex hull
+        - amplitude and frequency of vibration
+    - Guarding Fat Polygons and Triangulating Guarded Polygon
+        - epsilon good: every point can see at least an epsilon-fraction of the polygon area (or boundary)
+        - (alpha, beta)-covered: for every point on boundary we can fit a triangle with angle ≥ alpha and sides ≥ beta inside the polygon
+        - susceptible to small angles
+- Forces
+    - Force debugging and visualization tool
+    - Stability issues: vertex-vertex-repulsion grows the map infinitely, angle seems to shrink it
+    - Some force "configurations" work well for the bigger test case but not so well for the small on -> need randomized test cases!
+- Test case generation
+    -
+
 __2020-03-13__
 
 - Crossing are created due to floating point inaccuracies (?) when vertices are too close to one another!
@@ -10,7 +34,7 @@ TODOs:
 - [ ] Implement test case generation
     - Different graph sizes, up to 30 countries
     - When nesting K4s, prefer triangles that were already nested into others
-- [ ] Improve forces
+- [x] Improve forces
     - Forces repelling degree-3-vertices
     - Forces working towards (local) fatness
     - Forces working against tight corridors
