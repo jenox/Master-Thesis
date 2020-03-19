@@ -87,12 +87,12 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
         }
 
         // Face circumcircles
-        for face in graph.faces {
-            let polygon = graph.polygon(for: face)
-            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
-
-            context.stroke(circle, with: UIColor.color(for: face).withAlphaComponent(0.4))
-        }
+//        for face in graph.faces {
+//            let polygon = graph.polygon(for: face)
+//            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
+//
+//            context.stroke(circle, with: UIColor.color(for: face).withAlphaComponent(0.4))
+//        }
 
         // Forces
         for (vertex, force) in self.forceComputer.forces(in: self.graph) {

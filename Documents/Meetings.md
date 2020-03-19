@@ -1,3 +1,5 @@
+__2020-03-19__
+
 - Local Fatness
     - Estimating complexity of 2D shapes
         - length of shortest turing machine that outputs polygon
@@ -20,7 +22,19 @@
     - Stability issues: vertex-vertex-repulsion grows the map infinitely, angle seems to shrink it
     - Some force "configurations" work well for the bigger test case but not so well for the small on -> need randomized test cases!
 - Test case generation
-    -
+
+Gravitation center for forces?
+
+"Local" fatness metrics:
+- "Distance" from circumcircle
+- "Distance" from convex hull
+- Entropy of angles
+- Entropy of distances from centroid
+
+TODOs:
+- [ ] Implement different quality metrics
+- [ ] Test cases for real this time
+
 
 __2020-03-13__
 

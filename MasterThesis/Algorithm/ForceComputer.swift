@@ -9,11 +9,11 @@
 import CoreGraphics
 
 struct ForceComputer {
-    var force1Strength: CGFloat = 10
-    var force2Strength: CGFloat = 1e-3
+    var force1Strength: CGFloat = 25
+    var force2Strength: CGFloat = 0
     var force3Strength: CGFloat = 10
-    var force4Strength: CGFloat = 3
-    var force5Strength: CGFloat = 10
+    var force4Strength: CGFloat = 1
+    var force5Strength: CGFloat = 1
 
     func forces(in graph: FaceWeightedGraph) -> [FaceWeightedGraph.Vertex: CGVector] {
         var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
@@ -72,6 +72,7 @@ struct ForceComputer {
             }
         }
 
+        // Angle
         if self.force5Strength > 0 {
             for face in graph.faces {
                 let polygon = graph.polygon(for: face)
