@@ -32,8 +32,10 @@ class ViewController: UIViewController {
         self.statisticsView.isUserInteractionEnabled = false
         self.graph1Button.setTitle("Small", for: .normal)
         self.graph2Button.setTitle("Large", for: .normal)
-        self.graph1Button.addTarget(self, action: #selector(self.loadGraph1), for: .touchUpInside)
-        self.graph2Button.addTarget(self, action: #selector(self.loadGraph2), for: .touchUpInside)
+        self.graph3Button.setTitle("Random", for: .normal)
+        self.graph1Button.addTarget(self, action: #selector(self.loadSmallGraph), for: .touchUpInside)
+        self.graph2Button.addTarget(self, action: #selector(self.loadLargeGraph), for: .touchUpInside)
+        self.graph3Button.addTarget(self, action: #selector(self.loadRandomGraph), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -47,8 +49,7 @@ class ViewController: UIViewController {
         didSet { self.graphView.forceComputer = self.forceComputer }
     }
 
-//    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
-    var graph = ViewController.makeVoronoiInputGraph().subdividedDual() {
+    var graph = ViewController.makeSmallInputGraph().subdividedDual() {
         didSet {
             DispatchQueue.main.async(execute: {
                 self.graphView.graph = self.graph
@@ -63,6 +64,7 @@ class ViewController: UIViewController {
     private let floatSettingViews: [FloatSettingView]
     private let graph1Button = UIButton(type: .system)
     private let graph2Button = UIButton(type: .system)
+    private let graph3Button = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +74,7 @@ class ViewController: UIViewController {
         self.view.addSubview(self.stepToggle)
         self.view.addSubview(self.graph1Button)
         self.view.addSubview(self.graph2Button)
+        self.view.addSubview(self.graph3Button)
         self.floatSettingViews.forEach(self.view.addSubview(_:))
 
         self.graphView.snp.makeConstraints({ make in
@@ -104,6 +107,11 @@ class ViewController: UIViewController {
             make.left.equalTo(self.graph1Button.snp.right).offset(20)
         })
 
+        self.graph3Button.snp.makeConstraints({ make in
+            make.top.equalTo(self.stepToggle)
+            make.left.equalTo(self.graph2Button.snp.right).offset(20)
+        })
+
         self.statisticsView.snp.makeConstraints({ make in
             make.left.bottom.equalToSuperview().inset(20)
         })
@@ -117,15 +125,21 @@ class ViewController: UIViewController {
         self.forceComputer.force5Strength = self.floatSettingViews[4].value
     }
 
-    @objc private func loadGraph1() {
+    @objc private func loadSmallGraph() {
         self.queue.async(execute: {
             self.graph = Self.makeSmallInputGraph().subdividedDual()
         })
     }
 
-    @objc private func loadGraph2() {
+    @objc private func loadLargeGraph() {
         self.queue.async(execute: {
             self.graph = Self.makeVoronoiInputGraph().subdividedDual()
+        })
+    }
+
+    @objc private func loadRandomGraph() {
+        self.queue.async(execute: {
+            self.graph = DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), nestingRatio: 0.4).generateRandomGraph().subdividedDual()
         })
     }
 

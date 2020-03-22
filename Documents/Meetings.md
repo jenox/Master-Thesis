@@ -1,3 +1,14 @@
+- Randomly generate vertex-weighted graphs
+    - Parameters
+        - bounds
+        - range of weights
+        - number of vertices
+        - fraction of vertices nested into existing triangles
+        - nesting bias
+    - Problem: "unnatural" shapes
+        - Triangulation creates tight countries on outside
+        - Cramped initial layout: Minimum distance between points? Distribute points evenly? Run force-directed algorithm before applying transformation?
+
 __2020-03-19__
 
 - Local Fatness
@@ -33,7 +44,7 @@ Gravitation center for forces?
 
 TODOs:
 - [ ] Implement different quality metrics
-- [ ] Test cases for real this time
+- [x] Test cases for real this time
 
 
 __2020-03-13__

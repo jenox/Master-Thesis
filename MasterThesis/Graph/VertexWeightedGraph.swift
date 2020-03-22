@@ -42,6 +42,10 @@ struct VertexWeightedGraph {
         self.adjacencies[vertex] = []
     }
 
+    mutating func containsEdge(between endpoint1: Vertex, and endpoint2: Vertex) -> Bool {
+        return self.vertices(adjacentTo: endpoint1).contains(endpoint2)
+    }
+
     mutating func insertEdge(between endpoint1: Vertex, and endpoint2: Vertex) {
         precondition(endpoint1 != endpoint2)
         precondition(!self.vertices(adjacentTo: endpoint1).contains(endpoint2))
