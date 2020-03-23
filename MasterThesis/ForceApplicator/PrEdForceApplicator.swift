@@ -8,7 +8,7 @@
 
 import CoreGraphics
 
-class ForceApplicator {
+class PrEdForceApplicator: ForceApplicator {
     func apply(_ forces: [FaceWeightedGraph.Vertex: CGVector], to graph: inout FaceWeightedGraph) {
         let upperBounds = self.computeMaximumAmplitudes(in: graph)
 

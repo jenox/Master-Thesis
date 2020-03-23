@@ -9,7 +9,7 @@
 import UIKit
 
 class FaceWeightedGraphView: UIView, CanvasRenderer {
-    var graph: FaceWeightedGraph {
+    var graph: FaceWeightedGraph? {
         didSet { self.canvasView.setNeedsDisplay() }
     }
 
@@ -19,7 +19,7 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
     private let canvasView: CanvasView = .init()
 
-    init(frame: CGRect, graph: FaceWeightedGraph, forceComputer: ForceComputer) {
+    init(frame: CGRect, graph: FaceWeightedGraph?, forceComputer: ForceComputer) {
         self.graph = graph
         self.forceComputer = forceComputer
 
@@ -42,7 +42,10 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         context.setLineWidth(1 / scale)
-        self.draw(self.graph, scale: scale, rotation: rotation)
+
+        if let graph = self.graph {
+            self.draw(graph, scale: scale, rotation: rotation)
+        }
     }
 
     private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, rotation: Angle, labeled: Bool = true) {
@@ -95,15 +98,15 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 //        }
 
         // Forces
-        for (vertex, force) in self.forceComputer.forces(in: self.graph) {
+        for (vertex, force) in try! self.forceComputer.forces(in: graph) {
             context.beginPath()
-            context.move(to: self.graph.position(of: vertex))
+            context.move(to: graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)
             context.setStrokeColor(UIColor.red.cgColor)
             context.strokePath()
         }
 
-        if let crossing = self.graph.firstEdgeCrossing() {
+        if let crossing = graph.firstEdgeCrossing() {
             fatalError("intersection: \(crossing)")
         }
     }

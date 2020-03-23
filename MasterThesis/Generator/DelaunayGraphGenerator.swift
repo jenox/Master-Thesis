@@ -1,24 +1,13 @@
 //
-//  GraphGenerator.swift
+//  DelaunayGraphGenerator.swift
 //  MasterThesis
 //
-//  Created by Christian Schnorr on 22.03.20.
+//  Created by Christian Schnorr on 23.03.20.
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
 import CoreGraphics
 import Delaunay
-
-protocol GraphGenerator {
-    func generateRandomGraph<T>(using generator: inout T) -> VertexWeightedGraph where T: RandomNumberGenerator
-}
-
-extension GraphGenerator {
-    func generateRandomGraph() -> VertexWeightedGraph {
-        var generator = SystemRandomNumberGenerator()
-        return self.generateRandomGraph(using: &generator)
-    }
-}
 
 struct DelaunayGraphGenerator: GraphGenerator {
     var bounds: CGRect = .init(x: -256, y: -256, width: 512, height: 512)
@@ -27,7 +16,7 @@ struct DelaunayGraphGenerator: GraphGenerator {
     var nestingBias: Double = 0.5
     var weights: ClosedRange<Double> = 1...50
 
-    func generateRandomGraph<T>(using generator: inout T) -> VertexWeightedGraph where T: RandomNumberGenerator {
+    func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator {
         precondition(self.countries.count >= 3)
 
         var graph = VertexWeightedGraph()

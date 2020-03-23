@@ -8,7 +8,7 @@
 
 import CoreGraphics
 
-struct ForceComputer {
+struct ConcreteForceComputer: ForceComputer {
     var force1Strength: CGFloat = 25
     var force2Strength: CGFloat = 0
     var force3Strength: CGFloat = 10

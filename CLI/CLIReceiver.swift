@@ -38,25 +38,25 @@ final class CLIReceiver {
     }
 
     private func start(_ command: StartCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.beginSteppingContinuously()
+        viewController.pipeline.isSteppingContinuously = true
 
         completion(.message("ok"))
     }
 
     private func stop(_ command: StopCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.endSteppingContinuously()
+        viewController.pipeline.isSteppingContinuously = false
 
         completion(.message("ok"))
     }
 
     private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.scheduleGraphOperation(named: "update weight", as: { graph in
+        viewController.pipeline.scheduleMutationOperation(named: "change weight", as: { graph in
             try graph.setWeight(of: command.country, to: command.weight)
         }, completion: self.wrapCompletionHandler(completion))
     }
 
     private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.scheduleGraphOperation(named: "flip border", as: { graph in
+        viewController.pipeline.scheduleMutationOperation(named: "flip border", as: { graph in
             try graph.flipBorder(between: command.first, and: command.second)
         }, completion: self.wrapCompletionHandler(completion))
     }
@@ -72,7 +72,7 @@ final class CLIReceiver {
         }
     }
 
-    private var viewController: ViewController {
-        return UIApplication.shared.keyWindow!.rootViewController as! ViewController
+    private var viewController: RootViewController {
+        return UIApplication.shared.windows.first!.rootViewController as! RootViewController
     }
 }

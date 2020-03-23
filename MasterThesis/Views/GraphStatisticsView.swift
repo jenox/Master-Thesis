@@ -9,7 +9,7 @@
 import UIKit
 
 class GraphStatisticsView: UIView {
-    var graph: FaceWeightedGraph {
+    var graph: FaceWeightedGraph? {
         didSet {
             (self.statisticsView.rows, self.statisticsView.footer) = Self.computeStatistics(for: self.graph)
         }
@@ -17,7 +17,7 @@ class GraphStatisticsView: UIView {
 
     private let statisticsView: StatisticsView
 
-    init(graph: FaceWeightedGraph) {
+    init(graph: FaceWeightedGraph?) {
         let header = StatisticsRow(name: "Country", weight: "Weight", area: "Normalized Area", statisticalAccuracy: "Accuracy", localFatness: "Fatness", polygonalComplexity: "Polygonal Complexity", backgroundColor: nil)
         let (rows, summary) = Self.computeStatistics(for: graph)
 
@@ -36,7 +36,9 @@ class GraphStatisticsView: UIView {
         fatalError()
     }
 
-    private class func computeStatistics(for graph: FaceWeightedGraph) -> (countries: [StatisticsRow], summary: StatisticsRow) {
+    private class func computeStatistics(for graph: FaceWeightedGraph?) -> (countries: [StatisticsRow], summary: StatisticsRow) {
+        guard let graph = graph else { return ([], StatisticsRow(name: "Summary", statisticalAccuracy: "-1", localFatness: "-1")) }
+
         let metrics = QualityMetricComputer().qualityMetrics(in: graph)
         var countries: [StatisticsRow] = []
 

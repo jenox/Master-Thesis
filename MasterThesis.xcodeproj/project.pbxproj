@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB10864E2422CDA400D54808 /* FloatSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB10864D2422CDA400D54808 /* FloatSettingView.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
 		CB131A52241543AD00B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A51241543AD00B5F5BB /* MultipeerKit */; };
@@ -34,7 +33,6 @@
 		CBDA154723CB670C0070847D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154623CB670C0070847D /* Assets.xcassets */; };
 		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
 		CBDA154D23CB670C0070847D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */; };
-		CBDA155523CB67400070847D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155423CB67400070847D /* ViewController.swift */; };
 		CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
 		CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155E23CB88850070847D /* MasterThesisTests.swift */; };
 		CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
@@ -55,10 +53,21 @@
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* Transformation.swift */; };
 		CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEA24014CCD00AA4846 /* Misc.swift */; };
-		CBF37CED240150FB00AA4846 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* ForceApplicator.swift */; };
-		CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEE240151FE00AA4846 /* ForceComputer.swift */; };
+		CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */; };
+		CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */; };
 		CBF37CF12401844C00AA4846 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Other.swift */; };
 		CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF22401846D00AA4846 /* CGPoint.swift */; };
+		CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2924292D3D005B3048 /* Transformer.swift */; };
+		CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */; };
+		CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */; };
+		CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */; };
+		CBFDDE3624292F50005B3048 /* ForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3524292F50005B3048 /* ForceComputer.swift */; };
+		CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE38242952A9005B3048 /* Pipeline.swift */; };
+		CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3A24295328005B3048 /* RootViewController.swift */; };
+		CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3C242954EA005B3048 /* ContentView.swift */; };
+		CBFDDE3F2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */; };
+		CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
+		CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE41242960C5005B3048 /* TestGraphs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,7 +83,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB10864D2422CDA400D54808 /* FloatSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatSettingView.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB131A56241544C600B5F5BB /* CLITransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITransmitter.swift; sourceTree = "<group>"; };
@@ -97,7 +105,6 @@
 		CBDA154923CB670C0070847D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CBDA154C23CB670C0070847D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBDA154E23CB670C0070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CBDA155423CB67400070847D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexWeightedGraph.swift; sourceTree = "<group>"; };
 		CBDA155C23CB88850070847D /* MasterThesisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MasterThesisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA155E23CB88850070847D /* MasterThesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterThesisTests.swift; sourceTree = "<group>"; };
@@ -114,10 +121,20 @@
 		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* Transformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformation.swift; sourceTree = "<group>"; };
 		CBF37CEA24014CCD00AA4846 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
-		CBF37CEC240150FB00AA4846 /* ForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceApplicator.swift; sourceTree = "<group>"; };
-		CBF37CEE240151FE00AA4846 /* ForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceComputer.swift; sourceTree = "<group>"; };
+		CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicator.swift; sourceTree = "<group>"; };
+		CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteForceComputer.swift; sourceTree = "<group>"; };
 		CBF37CF02401844C00AA4846 /* Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		CBF37CF22401846D00AA4846 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		CBFDDE2924292D3D005B3048 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
+		CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityEvaluator.swift; sourceTree = "<group>"; };
+		CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayGraphGenerator.swift; sourceTree = "<group>"; };
+		CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceApplicator.swift; sourceTree = "<group>"; };
+		CBFDDE3524292F50005B3048 /* ForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceComputer.swift; sourceTree = "<group>"; };
+		CBFDDE38242952A9005B3048 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
+		CBFDDE3A24295328005B3048 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		CBFDDE3C242954EA005B3048 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteForceComputerConfigurationView.swift; sourceTree = "<group>"; };
+		CBFDDE41242960C5005B3048 /* TestGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGraphs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,16 +219,13 @@
 			isa = PBXGroup;
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
-				CBDA155423CB67400070847D /* ViewController.swift */,
-				CB131A692415A1A400B5F5BB /* FaceWeightedGraphView.swift */,
-				CB131A672415991200B5F5BB /* CanvasView.swift */,
-				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
-				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
-				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
-				CB10864D2422CDA400D54808 /* FloatSettingView.swift */,
-				CB131A65241598FE00B5F5BB /* Debug.swift */,
-				CBF37CE924014BF500AA4846 /* Algorithm */,
+				CBFDDE372429303C005B3048 /* Views */,
 				CBEE493623E1E17B00986877 /* Graph */,
+				CBFDDE2824292AFE005B3048 /* Generator */,
+				CBFDDE3024292E0F005B3048 /* Transformer */,
+				CBFDDE2E24292DDB005B3048 /* ForceComputer */,
+				CBFDDE2F24292DDD005B3048 /* ForceApplicator */,
+				CBFDDE2B24292D4D005B3048 /* Quality Metrics */,
 				CB456EA6241AB7AA00008E87 /* DataStructures */,
 				CBF37CE724014BC600AA4846 /* Geometry */,
 				CBF37CE824014BD800AA4846 /* Other */,
@@ -272,20 +286,71 @@
 			children = (
 				CBDA156F23CBA70B0070847D /* Collection.swift */,
 				CBF37CF02401844C00AA4846 /* Other.swift */,
+				CB131A65241598FE00B5F5BB /* Debug.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
 		};
-		CBF37CE924014BF500AA4846 /* Algorithm */ = {
+		CBFDDE2824292AFE005B3048 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
 				CBE405AD2427D99D009E3922 /* GraphGenerator.swift */,
-				CBEE493C23E1EAE100986877 /* Transformation.swift */,
-				CBF37CEE240151FE00AA4846 /* ForceComputer.swift */,
-				CBF37CEC240150FB00AA4846 /* ForceApplicator.swift */,
+				CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */,
+			);
+			path = Generator;
+			sourceTree = "<group>";
+		};
+		CBFDDE2B24292D4D005B3048 /* Quality Metrics */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */,
 				CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */,
 			);
-			path = Algorithm;
+			path = "Quality Metrics";
+			sourceTree = "<group>";
+		};
+		CBFDDE2E24292DDB005B3048 /* ForceComputer */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE3524292F50005B3048 /* ForceComputer.swift */,
+				CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */,
+			);
+			path = ForceComputer;
+			sourceTree = "<group>";
+		};
+		CBFDDE2F24292DDD005B3048 /* ForceApplicator */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */,
+				CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */,
+			);
+			path = ForceApplicator;
+			sourceTree = "<group>";
+		};
+		CBFDDE3024292E0F005B3048 /* Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE2924292D3D005B3048 /* Transformer.swift */,
+				CBEE493C23E1EAE100986877 /* Transformation.swift */,
+			);
+			path = Transformer;
+			sourceTree = "<group>";
+		};
+		CBFDDE372429303C005B3048 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
+				CBFDDE3A24295328005B3048 /* RootViewController.swift */,
+				CBFDDE3C242954EA005B3048 /* ContentView.swift */,
+				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
+				CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */,
+				CB131A692415A1A400B5F5BB /* FaceWeightedGraphView.swift */,
+				CB131A672415991200B5F5BB /* CanvasView.swift */,
+				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
+				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
+				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,19 +498,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBFDDE3624292F50005B3048 /* ForceComputer.swift in Sources */,
 				CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */,
+				CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */,
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
-				CBDA155523CB67400070847D /* ViewController.swift in Sources */,
+				CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
+				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
+				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
 				CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */,
+				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
-				CB10864E2422CDA400D54808 /* FloatSettingView.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */,
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
-				CBF37CEF240151FE00AA4846 /* ForceComputer.swift in Sources */,
+				CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */,
+				CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */,
 				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
 				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
@@ -454,8 +524,9 @@
 				CBEE493823E1E18900986877 /* Face.swift in Sources */,
 				CB131A66241598FE00B5F5BB /* Debug.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
-				CBF37CED240150FB00AA4846 /* ForceApplicator.swift in Sources */,
+				CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */,
 				CB131A682415991200B5F5BB /* CanvasView.swift in Sources */,
+				CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */,
 				CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */,
@@ -463,6 +534,8 @@
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
 				CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */,
 				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
+				CBFDDE3F2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift in Sources */,
+				CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +548,7 @@
 				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
 				CBDA156923CB9D320070847D /* Angle.swift in Sources */,
 				CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */,
+				CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */,
 				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
 				CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */,
 				CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */,
@@ -569,7 +643,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -623,7 +697,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -9,6 +9,13 @@
 import Foundation
 import CoreGraphics
 
+struct NaiveTransformer: Transformer {
+    func transform(_ graph: VertexWeightedGraph) throws -> FaceWeightedGraph {
+        return graph.subdividedDual()
+    }
+}
+
+// TODO: make private
 extension VertexWeightedGraph {
     func subdividedDual() -> FaceWeightedGraph {
         let (faces, outerFace) = self.faces
@@ -114,7 +121,7 @@ extension VertexWeightedGraph {
     }
 }
 
-extension Collection {
+private extension Collection {
     func sorted<T>(by transform: (Element) throws -> T) rethrows -> [Element] where T: Comparable {
         return try self.map({ ($0, try transform($0)) }).sorted(by: { $0.1 < $1.1 }).map({ $0.0 })
     }
