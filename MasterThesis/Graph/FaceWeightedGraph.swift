@@ -208,8 +208,19 @@ struct FaceWeightedGraph {
         return self.firstEdgeCrossing() == nil
     }
 
+    private func boundary(between left: String, and right: String) -> [Vertex]? {
+        let left = self.boundary(of: left)
+        let right = Set(self.boundary(of: right))
+        guard let index = left.firstIndex(where: right.contains) else { return nil }
+
+        let rotated = left.rotated(by: index)
+        let boundary = rotated.reversed().prefix(while: right.contains).reversed() + rotated.prefix(while: right.contains)
+
+        return Array(boundary)
+    }
+
     mutating func flipBorder(between left: String, and right: String) throws {
-        var shared = self.boundary(of: left).filter(self.boundary(of: right).contains)
+        var shared = self.boundary(between: left, and: right)!
         print("Boundary of \(left) and \(right): \(shared)")
 
         assert(shared.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
@@ -351,5 +362,10 @@ private extension Array {
     mutating func replaceFirst(of values: Element..., with replacement: Element, by isEqual: (Element, Element) -> Bool) {
         let index = self.firstIndex(where: { element in values.contains(where: { isEqual($0, element) }) })!
         self[index] = replacement
+    }
+
+    func rotated(by offset: Int) -> [Element] {
+        assert(self.indices.contains(offset))
+        return Array(self.dropFirst(offset)) + self.prefix(offset)
     }
 }
