@@ -15,8 +15,7 @@ struct NaiveTransformer: Transformer {
     }
 }
 
-// TODO: make private
-extension VertexWeightedGraph {
+private extension VertexWeightedGraph {
     func subdividedDual() -> FaceWeightedGraph {
         let (faces, outerFace) = self.faces
 

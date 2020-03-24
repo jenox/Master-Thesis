@@ -37,10 +37,10 @@ __2020-03-19__
 Gravitation center for forces?
 
 "Local" fatness metrics:
-- "Distance" from circumcircle
-- "Distance" from convex hull
-- Entropy of angles
-- Entropy of distances from centroid
+- [x] "Distance" from circumcircle
+- [ ] "Distance" from convex hull
+- [ ] Entropy of angles
+- [ ] Entropy of distances from centroid
 
 TODOs:
 - [ ] Implement different quality metrics

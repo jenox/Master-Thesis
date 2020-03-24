@@ -13,6 +13,8 @@ import CoreGraphics
 struct FaceWeightedGraph {
     init() {}
 
+    typealias Face = String
+
     struct Vertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
         private static var nextID: Int = 0
         private let id: Int
@@ -45,8 +47,8 @@ struct FaceWeightedGraph {
     private(set) var edges: [(Vertex, Vertex)] = []
     private var vertexPayloads: [Vertex: VertexPayload] = [:]
 
-    private(set) var faces: [String] = []
-    private var facePayloads: [String: FacePayload] = [:]
+    private(set) var faces: [Face] = []
+    private var facePayloads: [Face: FacePayload] = [:]
 
     mutating func insertVertex(at position: CGPoint) -> Vertex {
         let vertex = Vertex()
@@ -265,8 +267,8 @@ struct FaceWeightedGraph {
                 self.vertexPayloads[a]!.adjacencies.deleteFirst(of: d, by: ==)
                 self.vertexPayloads[b]!.adjacencies.append(d)
 
-                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: d) })!
-                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: d)!
+                let face = self.faces.first(where: { $0 != left && $0 != right && MasterThesis.Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: d) })!
+                let index = MasterThesis.Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: d)!
                 self.facePayloads[face]!.boundary.insert(b, at: index + 1)
             } else if !self.segment(from: a, to: d).intersects(self.segment(from: b, to: c)) {
                 self.edges.replaceFirst(of: (a,c),(c,a), with: (b,c), by: ==)
@@ -274,8 +276,8 @@ struct FaceWeightedGraph {
                 self.vertexPayloads[a]!.adjacencies.deleteFirst(of: c, by: ==)
                 self.vertexPayloads[b]!.adjacencies.append(c)
 
-                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: c) })!
-                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: c)!
+                let face = self.faces.first(where: { $0 != left && $0 != right && MasterThesis.Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: c) })!
+                let index = MasterThesis.Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: c)!
                 self.facePayloads[face]!.boundary.insert(b, at: index + 1)
             } else {
                 fatalError()
@@ -319,7 +321,7 @@ struct FaceWeightedGraph {
         self.vertexPayloads[v]!.adjacencies = [u, w]
 
         for (face, payload) in self.facePayloads {
-            if let index = Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
+            if let index = MasterThesis.Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
                 self.facePayloads[face]!.boundary.insert(v, at: index + 1)
             }
         }

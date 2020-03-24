@@ -9,7 +9,7 @@
 import Swift
 
 protocol QualityEvaluator {
-    func qualityMetrics(of graph: FaceWeightedGraph) -> [String: QualityValue]
+    func quality(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph) throws -> QualityValue
 }
 
 enum QualityValue {

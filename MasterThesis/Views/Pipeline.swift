@@ -12,8 +12,16 @@ import CoreFoundation
 
 class Pipeline: ObservableObject {
     @Published private(set) var graph: FaceWeightedGraph?
+    @Published var transformer = NaiveTransformer()
     @Published var forceComputer = ConcreteForceComputer()
     @Published var forceApplicator = PrEdForceApplicator()
+
+    @Published var statisticalAccuracyMetric = StatisticalAccuracy()
+    @Published var distanceFromCircumcircleMetric = DistanceFromCircumcircle()
+    @Published var distanceFromConvexHullMetric = DistanceFromConvexHull()
+    @Published var entropyOfAnglesMetric = EntropyOfAngles()
+    @Published var entropyOfDistancesFromCentroidMetric = EntropyOfDistancesFromCentroid()
+
     @Published var isSteppingContinuously: Bool = false {
         didSet {
             if self.isSteppingContinuously, !oldValue, !self.hasScheduledNextSteppingBlock {
@@ -38,7 +46,7 @@ class Pipeline: ObservableObject {
 
     func replaceGraph(with graph: VertexWeightedGraph) {
         self.scheduleReplacementOperation(named: "original", as: {
-            return graph.subdividedDual()
+            return try self.transformer.transform(graph)
         })
     }
 
@@ -67,7 +75,7 @@ class Pipeline: ObservableObject {
             if result.isSuccess {
                 DispatchQueue.main.async(execute: {
                     if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
-                        self.queue.asyncAfter(deadline: .now() + 0.05, execute: self.stepOnceAndScheduleNextIfNeeded)
+                        self.queue.asyncAfter(deadline: .now() + 0.01, execute: self.stepOnceAndScheduleNextIfNeeded)
                     }
                 })
             } else {

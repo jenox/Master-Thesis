@@ -9,20 +9,23 @@
 import UIKit
 import SnapKit
 
-struct StatisticsRow {
-    var name: String? = nil
-    var weight: String? = nil
-    var area: String? = nil
-    var statisticalAccuracy: String? = nil
-    var localFatness: String? = nil
-    var polygonalComplexity: String? = nil
-    var backgroundColor: UIColor? = nil
+struct Column<RowType> {
+    var title: String
+    var value: (RowType) throws -> String
+    var backgroundColor: (RowType) -> UIColor
 }
 
-class StatisticsView: UIView {
-    let columns: [KeyPath<StatisticsRow, String?>]
-    let header: StatisticsRow
-    var rows: [StatisticsRow] {
+class StatisticsView<RowType>: UIView {
+    var columns: [Column<RowType>] {
+        didSet {
+            assert(self.columns.count != oldValue.count)
+            for row in self.stackView.arrangedSubviews {
+                (row as! StatisticsRowView<RowType>).performFormattingUpdate()
+            }
+        }
+    }
+
+    var rows: [RowType] {
         didSet {
             self.stackView.arrangedSubviews.dropFirst(self.rows.count).forEach({
                 self.stackView.removeArrangedSubview($0)
@@ -40,27 +43,20 @@ class StatisticsView: UIView {
             }
         }
     }
-    var footer: StatisticsRow {
-        didSet { self.footerRowView.row = self.footer }
-    }
 
     private let separatorView = UIView()
     private let verticalSeparatorView: [UIView]
-    private let headerRowView: StatisticsRowView
+    private let headerRowView: StatisticsRowView<RowType>
     private let stackView = UIStackView()
-    private var regularRowViews: [StatisticsRowView]
-    private var footerRowView: StatisticsRowView
+    private var regularRowViews: [StatisticsRowView<RowType>]
 
-    init(header: StatisticsRow, rows: [StatisticsRow], footer: StatisticsRow, columns: [KeyPath<StatisticsRow, String?>]) {
-        self.header = header
+    init(rows: [RowType], columns: [Column<RowType>]) {
         self.rows = rows
-        self.footer = footer
         self.columns = columns
 
         self.verticalSeparatorView = (0...columns.count).map({ _ in UIView() })
-        self.headerRowView = StatisticsRowView(row: header, columns: columns)
+        self.headerRowView = StatisticsRowView(row: nil, columns: columns)
         self.regularRowViews = rows.map({ StatisticsRowView(row: $0, columns: columns) })
-        self.footerRowView = StatisticsRowView(row: footer, columns: columns)
 
         super.init(frame: .zero)
 
@@ -76,16 +72,14 @@ class StatisticsView: UIView {
         self.addSubview(self.separatorView)
         self.addSubview(self.headerRowView)
         self.addSubview(self.stackView)
-        self.addSubview(self.footerRowView)
         self.regularRowViews.forEach(self.stackView.addArrangedSubview(_:))
         self.regularRowViews.forEach(self.headerRowView.align(with:))
-        self.footerRowView.align(with: self.headerRowView)
 
         for (index, separator) in self.verticalSeparatorView.enumerated() {
             separator.snp.makeConstraints({ make in
                 if index == 0 { make.left.equalToSuperview() }
                 else if index == self.columns.count { make.right.equalToSuperview() }
-                else { make.centerX.equalTo(self.headerRowView.gap(at: index - 1)).offset(5) }
+                else { make.centerX.equalTo(self.headerRowView.gap(at: index - 1)) }
                 make.top.bottom.equalToSuperview()
                 make.width.equalTo(0.5)
             })
@@ -105,11 +99,6 @@ class StatisticsView: UIView {
         self.stackView.snp.makeConstraints({ make in
             make.top.equalTo(self.headerRowView.snp.bottom)
             make.left.right.equalTo(self.headerRowView)
-        })
-
-        self.footerRowView.snp.makeConstraints({ make in
-            make.top.equalTo(self.stackView.snp.bottom)
-            make.left.right.equalTo(self.headerRowView)
             make.bottom.equalToSuperview()
         })
     }
@@ -119,20 +108,23 @@ class StatisticsView: UIView {
     }
 }
 
-class StatisticsRowView: UIView {
-    let columns: [KeyPath<StatisticsRow, String?>]
-    var row: StatisticsRow {
+class StatisticsRowView<RowType>: UIView {
+    var row: RowType? {
         didSet { self.performFormattingUpdate() }
+    }
+
+    var columns: [Column<RowType>] {
+        didSet { assert(self.columns.count != oldValue.count) }
     }
 
     private let labels: [UILabel]
     private let separatorView = UIView()
 
-    init(row: StatisticsRow, columns: [KeyPath<StatisticsRow, String?>]) {
+    init(row: RowType?, columns: [Column<RowType>]) {
         self.columns = columns
         self.row = row
 
-        self.labels = (0..<columns.count).map({ _ in UILabel() })
+        self.labels = (0..<columns.count).map({ _ in InsetLabel() })
 
         super.init(frame: .zero)
 
@@ -155,16 +147,16 @@ class StatisticsRowView: UIView {
 
         for (left, right) in zip(self.labels, self.labels.dropFirst()) {
             right.snp.makeConstraints { make in
-                make.left.equalTo(left.snp.right).offset(10)
+                make.left.equalTo(left.snp.right)
             }
         }
 
         self.labels.first!.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(5)
+            make.left.equalToSuperview()
         }
 
         self.labels.last!.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(5)
+            make.right.equalToSuperview()
         }
 
         self.separatorView.snp.makeConstraints { make in
@@ -190,11 +182,23 @@ class StatisticsRowView: UIView {
         return self.labels[index].snp.right
     }
 
-    private func performFormattingUpdate() {
-        self.backgroundColor = self.row.backgroundColor?.withAlphaComponent(0.2)
-
+    func performFormattingUpdate() {
         for (label, column) in zip(self.labels, self.columns) {
-            label.text = self.row[keyPath: column]
+            label.text = self.row.map({ (try? column.value($0)) ?? "" }) ?? column.title
+            label.backgroundColor = self.row.map(column.backgroundColor)?.withAlphaComponent(0.2) ?? .clear
         }
+    }
+}
+
+class InsetLabel: UILabel {
+    override var intrinsicContentSize: CGSize {
+        var intrinsicContentSize = super.intrinsicContentSize
+        intrinsicContentSize.width += 10
+
+        return intrinsicContentSize
+    }
+
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.insetBy(dx: 5, dy: 0))
     }
 }

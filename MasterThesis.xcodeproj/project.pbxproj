@@ -45,7 +45,6 @@
 		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
 		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
-		CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */; };
 		CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F135241A60C100BCC6E2 /* Circle.swift */; };
 		CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */; };
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
@@ -68,6 +67,12 @@
 		CBFDDE3F2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */; };
 		CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE41242960C5005B3048 /* TestGraphs.swift */; };
+		CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */; };
+		CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
+		CBFDDE48242AA14D005B3048 /* EntropyOfAngles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */; };
+		CBFDDE4A242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */; };
+		CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */; };
+		CBFDDE52242AA454005B3048 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -114,7 +119,6 @@
 		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBE405AD2427D99D009E3922 /* GraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerator.swift; sourceTree = "<group>"; };
-		CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityMetricComputer.swift; sourceTree = "<group>"; };
 		CBE6F135241A60C100BCC6E2 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
@@ -135,6 +139,12 @@
 		CBFDDE3C242954EA005B3048 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteForceComputerConfigurationView.swift; sourceTree = "<group>"; };
 		CBFDDE41242960C5005B3048 /* TestGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGraphs.swift; sourceTree = "<group>"; };
+		CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromCircumcircle.swift; sourceTree = "<group>"; };
+		CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromConvexHull.swift; sourceTree = "<group>"; };
+		CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntropyOfAngles.swift; sourceTree = "<group>"; };
+		CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntropyOfDistancesFromCentroid.swift; sourceTree = "<group>"; };
+		CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticalAccuracy.swift; sourceTree = "<group>"; };
+		CBFDDE51242AA454005B3048 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +297,7 @@
 				CBDA156F23CBA70B0070847D /* Collection.swift */,
 				CBF37CF02401844C00AA4846 /* Other.swift */,
 				CB131A65241598FE00B5F5BB /* Debug.swift */,
+				CBFDDE51242AA454005B3048 /* Errors.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -304,7 +315,11 @@
 			isa = PBXGroup;
 			children = (
 				CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */,
-				CBE6F13324195F6200BCC6E2 /* QualityMetricComputer.swift */,
+				CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */,
+				CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */,
+				CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */,
+				CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */,
+				CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */,
 			);
 			path = "Quality Metrics";
 			sourceTree = "<group>";
@@ -507,8 +522,8 @@
 				CBDA156823CB9D240070847D /* Angle.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
-				CBE6F13424195F6200BCC6E2 /* QualityMetricComputer.swift in Sources */,
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
+				CBFDDE48242AA14D005B3048 /* EntropyOfAngles.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
@@ -528,11 +543,16 @@
 				CB131A682415991200B5F5BB /* CanvasView.swift in Sources */,
 				CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */,
 				CBE6F136241A60C100BCC6E2 /* Circle.swift in Sources */,
+				CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */,
 				CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */,
+				CBFDDE4A242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift in Sources */,
+				CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */,
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
+				CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */,
 				CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */,
+				CBFDDE52242AA454005B3048 /* Errors.swift in Sources */,
 				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
 				CBFDDE3F2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift in Sources */,
 				CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */,

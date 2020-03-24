@@ -35,7 +35,14 @@ struct ContentView: View {
     }
 
     private var statisticsView: some View {
-        return StatisticsViewWrapper(graph: self.pipeline.graph)
+        return StatisticsViewWrapper(
+            graph: self.pipeline.graph,
+            statisticalAccuracyMetric: self.pipeline.statisticalAccuracyMetric,
+            distanceFromCircumcircleMetric: self.pipeline.distanceFromCircumcircleMetric,
+            distanceFromConvexHullMetric: self.pipeline.distanceFromConvexHullMetric,
+            entropyOfAnglesMetric: self.pipeline.entropyOfAnglesMetric,
+            entropyOfDistancesFromCentroidMetric: self.pipeline.entropyOfDistancesFromCentroidMetric
+        )
     }
 
     private func clear() {
@@ -76,19 +83,36 @@ struct GraphView: View, UIViewRepresentable {
 struct StatisticsViewWrapper: View, UIViewRepresentable {
     var graph: FaceWeightedGraph?
 
+    var statisticalAccuracyMetric: StatisticalAccuracy
+    var distanceFromCircumcircleMetric: DistanceFromCircumcircle
+    var distanceFromConvexHullMetric: DistanceFromConvexHull
+    var entropyOfAnglesMetric: EntropyOfAngles
+    var entropyOfDistancesFromCentroidMetric: EntropyOfDistancesFromCentroid
+
     typealias UIViewType = WrapperView<GraphStatisticsView>
 
     func makeUIView(context: UIViewRepresentableContext<StatisticsViewWrapper>) -> UIViewType {
-        let view = GraphStatisticsView(graph: self.graph)
+        let view = GraphStatisticsView(graph: self.graph, qualityMetrics: self.qualityMetrics)
 
         return WrapperView(contentView: view)
     }
 
     func updateUIView(_ view: UIViewType, context: UIViewRepresentableContext<StatisticsViewWrapper>) {
         view.contentView.graph = self.graph
+        view.contentView.qualityMetrics = self.qualityMetrics
     }
 
     static func dismantleUIView(_ uiView: UIViewType, coordinator: Void) {
+    }
+
+    private var qualityMetrics: [(String, QualityEvaluator)] {
+        return [
+            ("Statistical Accuracy", self.statisticalAccuracyMetric),
+            ("Distance from Circumcircle", self.distanceFromCircumcircleMetric),
+            ("Distance from Hull", self.distanceFromConvexHullMetric),
+            ("Entropy of Angles", self.entropyOfAnglesMetric),
+            ("Entropy of Distances", self.entropyOfDistancesFromCentroidMetric),
+        ]
     }
 }
 
