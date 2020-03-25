@@ -141,6 +141,15 @@ private extension CGContext {
         self.setStrokeColor(color.cgColor)
         self.strokePath()
     }
+
+    func stroke(_ polygon: Polygon, with color: UIColor) {
+        self.beginPath()
+        self.move(to: polygon.points[0])
+        polygon.points.dropFirst().forEach(self.addLine(to:))
+        self.closePath()
+        self.setStrokeColor(color.cgColor)
+        self.strokePath()
+    }
 }
 
 extension UIColor {

@@ -14,5 +14,6 @@ protocol QualityEvaluator {
 
 enum QualityValue {
     case integer(Int)
+    case double(Double)
     case percentage(Double)
 }

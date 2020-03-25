@@ -49,6 +49,7 @@ class GraphStatisticsView: UIView {
         return .init(title: qualityMetric.name, value: { graph, face in
             switch try qualityMetric.evaluator.quality(of: face, in: graph!) {
             case .integer(let value): return self.format(integer: value)
+            case .double(let value): return self.format(double: value)
             case .percentage(let value): return self.format(percentage: value)
             }
         }, backgroundColor: { UIColor.color(for: $0.1) })
@@ -80,8 +81,8 @@ class GraphStatisticsView: UIView {
     }
 
     private class func format(double: Double) -> String {
-        if round(10 * double) == 10 * double { return "\(Int(double))" }
-        else { return "\(round(10 * double) / 10)" }
+        if round(1e3 * double) == 1e3 * double { return "\(Int(double))" }
+        else { return "\(round(1e3 * double) / 1e3)" }
     }
 
     private class func format(percentage: Double) -> String {

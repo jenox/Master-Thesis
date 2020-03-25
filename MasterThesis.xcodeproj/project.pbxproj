@@ -69,8 +69,7 @@
 		CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE41242960C5005B3048 /* TestGraphs.swift */; };
 		CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */; };
 		CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
-		CBFDDE48242AA14D005B3048 /* EntropyOfAngles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */; };
-		CBFDDE4A242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */; };
+		CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE47242AA14D005B3048 /* Entropy.swift */; };
 		CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */; };
 		CBFDDE52242AA454005B3048 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
 /* End PBXBuildFile section */
@@ -141,8 +140,7 @@
 		CBFDDE41242960C5005B3048 /* TestGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGraphs.swift; sourceTree = "<group>"; };
 		CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromCircumcircle.swift; sourceTree = "<group>"; };
 		CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromConvexHull.swift; sourceTree = "<group>"; };
-		CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntropyOfAngles.swift; sourceTree = "<group>"; };
-		CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntropyOfDistancesFromCentroid.swift; sourceTree = "<group>"; };
+		CBFDDE47242AA14D005B3048 /* Entropy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entropy.swift; sourceTree = "<group>"; };
 		CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticalAccuracy.swift; sourceTree = "<group>"; };
 		CBFDDE51242AA454005B3048 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,8 +316,7 @@
 				CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */,
 				CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */,
 				CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */,
-				CBFDDE47242AA14D005B3048 /* EntropyOfAngles.swift */,
-				CBFDDE49242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift */,
+				CBFDDE47242AA14D005B3048 /* Entropy.swift */,
 			);
 			path = "Quality Metrics";
 			sourceTree = "<group>";
@@ -523,7 +520,7 @@
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
-				CBFDDE48242AA14D005B3048 /* EntropyOfAngles.swift in Sources */,
+				CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
@@ -547,7 +544,6 @@
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBF37CF32401846D00AA4846 /* CGPoint.swift in Sources */,
 				CBF37CEB24014CCD00AA4846 /* Misc.swift in Sources */,
-				CBFDDE4A242AA15E005B3048 /* EntropyOfDistancesFromCentroid.swift in Sources */,
 				CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */,
 				CBDA156623CB9D1C0070847D /* CGVector.swift in Sources */,
 				CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */,

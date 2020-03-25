@@ -8,6 +8,9 @@
     - Problem: "unnatural" shapes
         - Triangulation creates tight countries on outside
         - Cramped initial layout: Minimum distance between points? Distribute points evenly? Run force-directed algorithm before applying transformation?
+- Implement entropy-based quality metrics
+    - Numbers don't currently appear meaningful
+    - Complexity measure was intended for point clouds, we diverted it from its original use: add more points on polygon boundary to get closer to original use, e.g. subdivide edges while length ≥ epsilon?
 
 __2020-03-19__
 
@@ -38,12 +41,12 @@ Gravitation center for forces?
 
 "Local" fatness metrics:
 - [x] "Distance" from circumcircle
-- [ ] "Distance" from convex hull
-- [ ] Entropy of angles
-- [ ] Entropy of distances from centroid
+- [x] "Distance" from convex hull
+- [x] Entropy of angles
+- [x] Entropy of distances from centroid
 
 TODOs:
-- [ ] Implement different quality metrics
+- [x] Implement different quality metrics
 - [x] Test cases for real this time
 
 
