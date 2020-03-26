@@ -8,10 +8,12 @@
 
 import Dispatch
 import Combine
+import CoreGraphics
 import CoreFoundation
 
 class Pipeline: ObservableObject {
     @Published private(set) var graph: FaceWeightedGraph?
+    @Published var generator = DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQ"), nestingRatio: 0.3, nestingBias: 0.5)
     @Published var transformer = NaiveTransformer()
     @Published var forceComputer = ConcreteForceComputer()
     @Published var forceApplicator = PrEdForceApplicator()
@@ -41,7 +43,12 @@ class Pipeline: ObservableObject {
     }
 
     func generateNewGraph() {
-        fatalError()
+        self.scheduleReplacementOperation(named: "generate", as: {
+            let original = try self.generator.generateRandomGraph()
+            let transformed = try self.transformer.transform(original)
+
+            return transformed
+        })
     }
 
     func replaceGraph(with graph: VertexWeightedGraph) {
