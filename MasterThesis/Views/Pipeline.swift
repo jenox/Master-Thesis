@@ -79,15 +79,15 @@ class Pipeline: ObservableObject {
             let forces = self.forceComputer.forces(in: graph)
             PrEdForceApplicator().apply(forces, to: &graph)
         }, completion: { result in
-            if result.isSuccess {
-                DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async(execute: {
+                if result.isSuccess {
                     if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
                         self.queue.asyncAfter(deadline: .now() + 0.01, execute: self.stepOnceAndScheduleNextIfNeeded)
                     }
-                })
-            } else {
-                self.isSteppingContinuously = false
-            }
+                } else {
+                    self.isSteppingContinuously = false
+                }
+            })
         })
     }
 
@@ -98,7 +98,10 @@ class Pipeline: ObservableObject {
 
             let before = CFAbsoluteTimeGetCurrent()
             do {
-                self.graph = try transform()
+                let graph = try transform()
+                DispatchQueue.main.async(execute: {
+                    self.graph = graph
+                })
                 result = .success(())
             } catch let error {
                 result = .failure(error)
@@ -119,7 +122,9 @@ class Pipeline: ObservableObject {
             do {
                 guard var graph = self.graph else { throw MutationOperationError.noGraphToBeMutated }
                 try transform(&graph)
-                self.graph = graph
+                DispatchQueue.main.async(execute: {
+                    self.graph = graph
+                })
                 result = .success(())
             } catch let error {
                 result = .failure(error)
