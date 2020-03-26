@@ -27,6 +27,8 @@ struct ContentView: View {
             Button(action: self.loadSmall, label: { Text("Small") })
             Button(action: self.loadLarge, label: { Text("Large") })
             Button(action: self.generateRandom, label: { Text("Random") })
+            Button(action: self.performRandomWeightChange, label: { Text("Random Weight") })
+            Button(action: self.performRandomEdgeFlip, label: { Text("Random Flip") })
         }).frame(width: 160, height: nil, alignment: .center)
     }
 
@@ -59,6 +61,14 @@ struct ContentView: View {
 
     private func generateRandom() {
         self.pipeline.generateNewGraph()
+    }
+
+    private func performRandomWeightChange() {
+        self.pipeline.performRandomWeightChange()
+    }
+
+    private func performRandomEdgeFlip() {
+        self.pipeline.performRandomEdgeFlip()
     }
 }
 

@@ -10,6 +10,7 @@ import Dispatch
 import Combine
 import CoreGraphics
 import CoreFoundation
+import Foundation
 
 class Pipeline: ObservableObject {
     @Published private(set) var graph: FaceWeightedGraph?
@@ -60,6 +61,47 @@ class Pipeline: ObservableObject {
     func replaceGraph(with graph: FaceWeightedGraph) {
         self.scheduleReplacementOperation(named: "dual", as: {
             return graph
+        })
+    }
+
+    func performRandomWeightChange() {
+        self.scheduleMutationOperation(named: "random weight", as: { graph in
+            guard let face = graph.faces.randomElement() else { throw UnsupportedOperationError() }
+            let weight = Double.random(in: self.generator.weights)
+            try graph.setWeight(of: face, to: weight)
+        })
+    }
+
+    func performRandomEdgeFlip() {
+        self.scheduleMutationOperation(named: "random edge flip", as: { graph in
+            var boundaries: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Vertex>] = [:]
+            var adjacencies: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Face>] = [:]
+
+            for face in graph.faces {
+                boundaries[face] = Set(graph.boundary(of: face))
+            }
+
+            for (u, v) in graph.edges {
+                let faces = graph.faces.filter({ boundaries[$0]!.contains(u) && boundaries[$0]!.contains(v) })
+                precondition(faces.count == 1 || faces.count == 2)
+
+                if faces.count == 2 {
+                    adjacencies[faces[0], default: []].insert(faces[1])
+                    adjacencies[faces[1], default: []].insert(faces[0])
+                }
+            }
+
+            let linearized = adjacencies.flatMap({ key, value in value.map({ (key, $0) }) })
+            let filtered = linearized.filter({ (u,v) in
+                let boundary = graph.boundary(between: u, and: v)!
+                let count1 = graph.faces.filter({ boundaries[$0]!.contains(boundary.first!) }).count
+                let count2 = graph.faces.filter({ boundaries[$0]!.contains(boundary.last!) }).count
+                return count1 == 3 && count2 == 3
+            })
+
+            guard let selected = filtered.randomElement() else { throw UnsupportedOperationError() }
+
+            try graph.flipBorder(between: selected.0, and: selected.1)
         })
     }
 

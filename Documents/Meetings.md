@@ -11,6 +11,8 @@
 - Implement entropy-based quality metrics
     - Numbers don't currently appear meaningful
     - Complexity measure was intended for point clouds, we diverted it from its original use: add more points on polygon boundary to get closer to original use, e.g. subdivide edges while length ≥ epsilon?
+- Edge flips can create multiple adjacencies, e.g. A-E in small graph!
+
 
 __2020-03-19__
 

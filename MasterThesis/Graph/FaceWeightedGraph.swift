@@ -210,24 +210,24 @@ struct FaceWeightedGraph {
         return self.firstEdgeCrossing() == nil
     }
 
-    private func boundary(between left: String, and right: String) -> [Vertex]? {
+    func boundary(between left: String, and right: String) -> [Vertex]? {
         let left = self.boundary(of: left)
         let right = Set(self.boundary(of: right))
         guard let index = left.firstIndex(where: right.contains) else { return nil }
 
         let rotated = left.rotated(by: index)
-        let boundary = rotated.reversed().prefix(while: right.contains).reversed() + rotated.prefix(while: right.contains)
+        let boundary = Array(rotated.reversed().prefix(while: right.contains).reversed() + rotated.prefix(while: right.contains))
 
-        return Array(boundary)
+        assert(boundary.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
+        assert(boundary.count(where: { !self.isSubdivisionVertex($0) }) == 2)
+        assert(boundary.dropFirst().dropLast().allSatisfy(self.isSubdivisionVertex(_:)))
+
+        return boundary
     }
 
     mutating func flipBorder(between left: String, and right: String) throws {
         var shared = self.boundary(between: left, and: right)!
         print("Boundary of \(left) and \(right): \(shared)")
-
-        assert(shared.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
-        assert(shared.count(where: { !self.isSubdivisionVertex($0) }) == 2)
-        assert(shared.dropFirst().dropLast().allSatisfy(self.isSubdivisionVertex(_:)))
 
         while shared.count >= 3 {
             // contract edge x-y; a,b other neighbors to x
