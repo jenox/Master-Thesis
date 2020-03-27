@@ -16,6 +16,10 @@ struct DelaunayGraphGenerator: GraphGenerator {
     var nestingBias: Double = 0.5
     var weights: ClosedRange<Double> = 1...50
 
+    func generateRandomWeight<T>(using generator: inout T) -> Double where T : RandomNumberGenerator {
+        return .random(in: self.weights, using: &generator)
+    }
+
     func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator {
         precondition(self.countries.count >= 3)
 
@@ -68,7 +72,7 @@ struct DelaunayGraphGenerator: GraphGenerator {
                 Triangle(c, a, x)
             ])
 
-            graph.insert(country, at: x, weight: .random(in: self.weights, using: &generator))
+            graph.insert(country, at: x, weight: self.generateRandomWeight(using: &generator))
             vertices[x] = country
             graph.insertEdge(between: vertices[a]!, and: country)
             graph.insertEdge(between: vertices[b]!, and: country)

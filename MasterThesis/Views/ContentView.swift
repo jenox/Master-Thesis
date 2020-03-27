@@ -21,15 +21,17 @@ struct ContentView: View {
     }
 
     private var controlView: some View {
+        let binding = Binding(value: self.pipeline.isRunning, enable: self.pipeline.start, disable: self.pipeline.stop)
+
         return VStack(alignment: .leading, content: {
-            Toggle(isOn: self.$pipeline.isSteppingContinuously, label: { Text("Step") })
-            Button(action: self.clear, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
+            Toggle(isOn: binding, label: { Text("Step") })
+            Button(action: self.pipeline.clear, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
             Button(action: self.loadSmall, label: { Text("Load Small") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.loadLarge, label: { Text("Load Large") }).disabled(!self.pipeline.graph.isEmpty)
-            Button(action: self.generateRandom, label: { Text("Generate Random") }).disabled(!self.pipeline.graph.isEmpty)
-            Button(action: self.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
-            Button(action: self.performRandomWeightChange, label: { Text("Random Weight") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.performRandomEdgeFlip, label: { Text("Random Flip") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: self.pipeline.generate, label: { Text("Generate") }).disabled(!self.pipeline.graph.isEmpty)
+            Button(action: self.pipeline.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
+            Button(action: self.pipeline.changeRandomCountryWeight, label: { Text("Change Weight") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: self.pipeline.flipRandomAdjacency, label: { Text("Flip Adjacency") }).disabled(self.pipeline.graph.isEmpty)
         }).frame(width: 160, height: nil, alignment: .center)
     }
 
@@ -41,31 +43,17 @@ struct ContentView: View {
         return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
     }
 
-    private func clear() {
-        self.pipeline.clearGraph()
-    }
-
     private func loadSmall() {
-        self.pipeline.replaceGraph(with: TestGraphs.makeSmallInputGraph())
+        self.pipeline.load(TestGraphs.makeSmallInputGraph())
     }
 
     private func loadLarge() {
-        self.pipeline.replaceGraph(with: TestGraphs.makeVoronoiInputGraph())
+        self.pipeline.load(TestGraphs.makeVoronoiInputGraph())
     }
+}
 
-    private func generateRandom() {
-        self.pipeline.generateNewGraph()
-    }
-
-    private func transform() {
-        self.pipeline.transformVertexWeightedGraph()
-    }
-
-    private func performRandomWeightChange() {
-        self.pipeline.performRandomWeightChange()
-    }
-
-    private func performRandomEdgeFlip() {
-        self.pipeline.performRandomEdgeFlip()
+private extension Binding where Value == Bool {
+    init(value: @escaping @autoclosure () -> Bool, enable: @escaping () -> Void, disable: @escaping () -> Void) {
+        self.init(get: value, set: { newValue in if newValue { enable() } else { disable() } })
     }
 }

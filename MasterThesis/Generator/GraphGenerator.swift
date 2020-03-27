@@ -9,12 +9,6 @@
 import Swift
 
 protocol GraphGenerator {
+    func generateRandomWeight<T>(using generator: inout T) -> Double where T: RandomNumberGenerator
     func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator
-}
-
-extension GraphGenerator {
-    func generateRandomGraph() throws -> VertexWeightedGraph {
-        var generator = SystemRandomNumberGenerator()
-        return try self.generateRandomGraph(using: &generator)
-    }
 }

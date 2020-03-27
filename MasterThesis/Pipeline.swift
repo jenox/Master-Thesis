@@ -12,68 +12,152 @@ import CoreGraphics
 import CoreFoundation
 import Foundation
 
-enum GraphModificationQueue {
-    private static let queue = DispatchQueue(label: "GraphModificationQueue")
-
-    static func schedule(_ closure: @escaping () -> Void, after delay: TimeInterval = 0) {
-        self.queue.asyncAfter(deadline: .now() + delay, execute: closure)
-    }
-}
-
-
 final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: MasterThesis.Transformer, ForceComputer: MasterThesis.ForceComputer, ForceApplicator: MasterThesis.ForceApplicator {
-    @Published private(set) var graph: EitherGraph? = nil
-    @Published var generator: Generator
-    @Published var transformer: Transformer
-    @Published var forceComputer: ForceComputer
-    @Published var forceApplicator: ForceApplicator
-    let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
 
-    init(generator: Generator, transformer: Transformer, forceComputer: ForceComputer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)]) {
+    // MARK: - Initialization
+
+    init(generator: Generator, transformer: Transformer, forceComputer: ForceComputer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)], randomNumberGenerator: AnyRandomNumberGenerator) {
         self.generator = generator
         self.transformer = transformer
         self.forceComputer = forceComputer
         self.forceApplicator = forceApplicator
         self.qualityMetrics = qualityMetrics
+        self.randomNumberGenerator = randomNumberGenerator
     }
 
-    @Published var isSteppingContinuously: Bool = false {
-        didSet {
-            if self.isSteppingContinuously, !oldValue, !self.hasScheduledNextSteppingBlock {
-                self.hasScheduledNextSteppingBlock = true
-                GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded)
+
+    // MARK: - Components
+
+    @Published var generator: Generator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    @Published var transformer: Transformer { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    @Published var forceComputer: ForceComputer { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    @Published var forceApplicator: ForceApplicator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
+    private(set) var randomNumberGenerator: AnyRandomNumberGenerator
+
+
+    // MARK: - Running
+
+    @Published private(set) var graph: EitherGraph? = nil { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    @Published private(set) var isRunning: Bool = false { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    private var hasScheduledNextSteppingBlock: Bool = false { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+
+    func start() {
+        dispatchPrecondition(condition: .onQueue(.main))
+        guard !self.isRunning else { return }
+
+        self.isRunning = true
+        self.hasScheduledNextSteppingBlock = true
+        GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded)
+    }
+
+    func stop() {
+        dispatchPrecondition(condition: .onQueue(.main))
+        self.isRunning = false
+    }
+
+    private func stepOnceAndScheduleNextIfNeeded() {
+        DispatchQueue.main.sync(execute: {
+            self.hasScheduledNextSteppingBlock = false
+        })
+
+        self.scheduleMutationOperation(named: "step", { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
+
+            for (u, v) in graph.edges {
+                guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
+                guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
+
+                graph.contractEdgeIfPossible(between: u, and: v)
             }
-        }
+
+            let forces = try self.forceComputer.forces(in: graph)
+            try self.forceApplicator.apply(forces, to: &graph)
+
+            return .faceWeighted(graph)
+        }, completion: { result in
+            if result.isSuccess {
+                if self.isRunning && !self.hasScheduledNextSteppingBlock {
+                    GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded, after: 0.01)
+                }
+            } else {
+                self.isRunning = false
+            }
+        })
     }
 
-    private var hasScheduledNextSteppingBlock: Bool = false
 
-    func clearGraph() {
-        self.scheduleReplacementOperation(named: "clear", as: {
+    // MARK: - Abstract Operations
+
+    private typealias Operation = () throws -> Void
+    private typealias ReplacementOperation = () throws -> EitherGraph?
+    private typealias MutationOperation = (EitherGraph) throws -> EitherGraph
+    typealias CompletionHandler = (Result<Void, Error>) -> Void
+
+    private func scheduleReplacementOperation(named name: String, _ operation: @escaping ReplacementOperation, completion: CompletionHandler? = nil) {
+        self.scheduleOperation(named: name, {
+            let graph = try operation()
+            DispatchQueue.main.sync(execute: {
+                self.graph = graph
+            })
+        }, completion: completion)
+    }
+
+    private func scheduleMutationOperation(named name: String, _ operation: @escaping MutationOperation, completion: CompletionHandler? = nil) {
+        self.scheduleOperation(named: name, {
+            guard var graph = self.graph else { throw UnsupportedOperationError() }
+            graph = try operation(graph)
+            DispatchQueue.main.sync(execute: {
+                self.graph = graph
+            })
+        }, completion: completion)
+    }
+
+    private func scheduleOperation(named name: String, _ operation: @escaping Operation, completion: CompletionHandler? = nil) {
+        dispatchPrecondition(condition: .onQueue(.main))
+
+        GraphModificationQueue.schedule({
+            let result: Result<Void, Error>
+            defer { DispatchQueue.main.async(execute: { completion?(result) }) }
+
+            let before = CFAbsoluteTimeGetCurrent()
+            do {
+                try operation()
+                result = .success(())
+            } catch let error {
+                result = .failure(error)
+            }
+            let after = CFAbsoluteTimeGetCurrent()
+
+            let verb = result.isSuccess ? "Performed" : "Failed"
+            let duration = "\(String(format: "%.3f", 1e3 * (after - before)))ms"
+            print("\(verb) operation “\(name)” in \(duration)")
+        })
+    }
+
+
+    // MARK: - Concrete Operations
+
+    func clear() {
+        self.scheduleReplacementOperation(named: "clear", {
             return nil
         })
     }
 
-    func generateNewGraph() {
-        self.scheduleReplacementOperation(named: "generate", as: {
-            return .vertexWeighted(try self.generator.generateRandomGraph())
-        })
-    }
-
-    func replaceGraph(with graph: VertexWeightedGraph) {
-        self.scheduleReplacementOperation(named: "original", as: {
+    func load(_ graph: VertexWeightedGraph) {
+        self.scheduleReplacementOperation(named: "load", {
             return .vertexWeighted(graph)
         })
     }
 
-    func replaceGraph(with graph: FaceWeightedGraph) {
-        self.scheduleReplacementOperation(named: "dual", as: {
-            return .faceWeighted(graph)
+    func generate() {
+        self.scheduleReplacementOperation(named: "generate", {
+            return .vertexWeighted(try self.generator.generateRandomGraph(using: &self.randomNumberGenerator))
         })
     }
 
-    func transformVertexWeightedGraph() {
-        self.scheduleMutationOperation(named: "transform", as: { graph in
+    func transform() {
+        self.scheduleMutationOperation(named: "transform", { graph in
             guard case .vertexWeighted(let untransformed) = graph else { throw UnsupportedOperationError() }
 
             let transformed = try self.transformer.transform(untransformed)
@@ -82,19 +166,30 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    func performRandomWeightChange() {
-        self.scheduleMutationOperation(named: "random weight", as: { graph in
+    func changeRandomCountryWeight() {
+        self.scheduleMutationOperation(named: "random weight change", { graph in
             guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
             guard let face = graph.faces.randomElement() else { throw UnsupportedOperationError() }
-            let weight = Double.random(in: (self.generator as! DelaunayGraphGenerator).weights) // TODO
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             try graph.setWeight(of: face, to: weight)
 
             return .faceWeighted(graph)
         })
     }
 
-    func performRandomEdgeFlip() {
-        self.scheduleMutationOperation(named: "random edge flip", as: { graph in
+    func changeWeight(of country: String, to weight: Double, completion: @escaping CompletionHandler) {
+        self.scheduleMutationOperation(named: "edge flip", { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
+
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+            try graph.setWeight(of: country, to: weight)
+
+            return .faceWeighted(graph)
+        }, completion: completion)
+    }
+
+    func flipRandomAdjacency() {
+        self.scheduleMutationOperation(named: "random edge flip", { graph in
             guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
 
             var boundaries: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Vertex>] = [:]
@@ -130,89 +225,21 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    private func stepOnceAndScheduleNextIfNeeded() {
-        DispatchQueue.main.async(execute: {
-            self.hasScheduledNextSteppingBlock = false
-        })
-
-        self.scheduleMutationOperation(named: "step", as: { graph in
+    func flipAdjacency(between first: String, and second: String, completion: @escaping CompletionHandler) {
+        self.scheduleMutationOperation(named: "edge flip", { graph in
             guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
 
-            for (u, v) in graph.edges {
-                guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
-                guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
-
-                graph.contractEdgeIfPossible(between: u, and: v)
-            }
-
-            let forces = try self.forceComputer.forces(in: graph)
-            try self.forceApplicator.apply(forces, to: &graph)
+            try graph.flipBorder(between: first, and: second)
 
             return .faceWeighted(graph)
-        }, completion: { result in
-            DispatchQueue.main.async(execute: {
-                if result.isSuccess {
-                    if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
-                        GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded, after: 0.01)
-                    }
-                } else {
-                    self.isSteppingContinuously = false
-                }
-            })
-        })
-    }
-
-    func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> EitherGraph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        GraphModificationQueue.schedule({
-            let result: Result<Void, Error>
-            defer { DispatchQueue.main.async(execute: { completion?(result) }) }
-
-            let before = CFAbsoluteTimeGetCurrent()
-            do {
-                let graph = try transform()
-                DispatchQueue.main.async(execute: {
-                    self.graph = graph
-                })
-                result = .success(())
-            } catch let error {
-                result = .failure(error)
-            }
-            let after = CFAbsoluteTimeGetCurrent()
-
-            let verb = result.isSuccess ? "Performed" : "Failed"
-            print("\(verb) replacement operation “\(name)” in \(String(format: "%.3f", 1e3 * (after - before)))ms")
-        })
-    }
-
-    func scheduleMutationOperation(named name: String, as transform: @escaping (EitherGraph) throws -> EitherGraph, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        GraphModificationQueue.schedule({
-            let result: Result<Void, Error>
-            defer { DispatchQueue.main.async(execute: { completion?(result) }) }
-
-            let before = CFAbsoluteTimeGetCurrent()
-            do {
-                guard var graph = self.graph else { throw UnsupportedOperationError() }
-                graph = try transform(graph)
-                DispatchQueue.main.async(execute: {
-                    self.graph = graph
-                })
-                result = .success(())
-            } catch let error {
-                result = .failure(error)
-            }
-            let after = CFAbsoluteTimeGetCurrent()
-
-            let verb = result.isSuccess ? "Performed" : "Failed"
-            print("\(verb) mutation operation “\(name)” in \(String(format: "%.3f", 1e3 * (after - before)))ms")
-        })
+        }, completion: completion)
     }
 }
 
-extension Result {
-    var isSuccess: Bool {
-        switch self {
-        case .success: return true
-        case .failure: return false
-        }
+private enum GraphModificationQueue {
+    private static let queue = DispatchQueue(label: "GraphModificationQueue")
+
+    static func schedule(_ closure: @escaping () -> Void, after delay: TimeInterval = 0) {
+        self.queue.asyncAfter(deadline: .now() + delay, execute: closure)
     }
 }

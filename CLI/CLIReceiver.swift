@@ -24,8 +24,6 @@ final class CLIReceiver {
         transceiver.receive(StopCommand.self, using: response(stop(_:completion:)))
         transceiver.receive(ChangeCountryWeightCommand.self, using: response(changeCountryWeight(_:completion:)))
         transceiver.receive(FlipBorderCommand.self, using: response(flipBorder(_:completion:)))
-
-
         transceiver.resume()
     }
 
@@ -35,34 +33,6 @@ final class CLIReceiver {
                 self?.transceiver.broadcast(response)
             })
         }
-    }
-
-    private func start(_ command: StartCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.pipeline.isSteppingContinuously = true
-
-        completion(.message("ok"))
-    }
-
-    private func stop(_ command: StopCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.pipeline.isSteppingContinuously = false
-
-        completion(.message("ok"))
-    }
-
-    private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.pipeline.scheduleMutationOperation(named: "change weight", as: { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-            try graph.setWeight(of: command.country, to: command.weight)
-            return .faceWeighted(graph)
-        }, completion: self.wrapCompletionHandler(completion))
-    }
-
-    private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
-        viewController.pipeline.scheduleMutationOperation(named: "flip border", as: { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-            try graph.flipBorder(between: command.first, and: command.second)
-            return .faceWeighted(graph)
-        }, completion: self.wrapCompletionHandler(completion))
     }
 
     private func wrapCompletionHandler(_ completion: @escaping (CLIResponse) -> Void) -> (Result<Void, Error>) -> Void {
@@ -76,7 +46,25 @@ final class CLIReceiver {
         }
     }
 
-    private var viewController: RootViewController {
-        return UIApplication.shared.windows.first!.rootViewController as! RootViewController
+    private func start(_ command: StartCommand, completion: @escaping (CLIResponse) -> Void) {
+        pipeline.start()
+        completion(.message("ok"))
+    }
+
+    private func stop(_ command: StopCommand, completion: @escaping (CLIResponse) -> Void) {
+        pipeline.stop()
+        completion(.message("ok"))
+    }
+
+    private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
+        pipeline.changeWeight(of: command.country, to: command.weight, completion: self.wrapCompletionHandler(completion))
+    }
+
+    private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
+        pipeline.flipAdjacency(between: command.first, and: command.second, completion: self.wrapCompletionHandler(completion))
+    }
+
+    private var pipeline: PrimaryPipeline {
+        return (UIApplication.shared.windows.first!.rootViewController as! RootViewController).pipeline
     }
 }

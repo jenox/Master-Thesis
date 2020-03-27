@@ -17,3 +17,12 @@ extension Comparable {
         self = max(self, other)
     }
 }
+
+extension Result {
+    var isSuccess: Bool {
+        switch self {
+        case .success: return true
+        case .failure: return false
+        }
+    }
+}

@@ -11,6 +11,7 @@
 		CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */; };
 		CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */; };
 		CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */; };
+		CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
 		CB131A52241543AD00B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A51241543AD00B5F5BB /* MultipeerKit */; };
@@ -95,6 +96,7 @@
 		CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphView.swift; sourceTree = "<group>"; };
 		CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EitherGraph.swift; sourceTree = "<group>"; };
+		CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRandomNumberGenerator.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB131A56241544C600B5F5BB /* CLITransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITransmitter.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				CBF37CF02401844C00AA4846 /* Other.swift */,
 				CB131A65241598FE00B5F5BB /* Debug.swift */,
 				CBFDDE51242AA454005B3048 /* Errors.swift */,
+				CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -543,6 +546,7 @@
 				CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */,
 				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */,
+				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
 				CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */,
 				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */,

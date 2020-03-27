@@ -22,7 +22,8 @@ class RootViewController: UIHostingController<AnyView> {
             ("Distance from Hull", DistanceFromConvexHull()),
             ("Entropy of Angles", EntropyOfAngles()),
             ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
-        ]
+        ],
+        randomNumberGenerator: AnyRandomNumberGenerator(SystemRandomNumberGenerator())
     )
 
     init() {
