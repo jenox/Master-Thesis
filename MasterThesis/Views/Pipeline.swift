@@ -12,8 +12,20 @@ import CoreGraphics
 import CoreFoundation
 import Foundation
 
+enum Graph {
+    case vertexWeighted(VertexWeightedGraph)
+    case faceWeighted(FaceWeightedGraph)
+
+    var faceWeightedGraph: FaceWeightedGraph? {
+        switch self {
+        case .faceWeighted(let graph): return graph
+        case .vertexWeighted: return nil
+        }
+    }
+}
+
 class Pipeline: ObservableObject {
-    @Published private(set) var graph: FaceWeightedGraph?
+    @Published private(set) var graph: Graph? = nil
     @Published var generator = DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQ"), nestingRatio: 0.3, nestingBias: 0.5)
     @Published var transformer = NaiveTransformer()
     @Published var forceComputer = ConcreteForceComputer()
@@ -45,35 +57,37 @@ class Pipeline: ObservableObject {
 
     func generateNewGraph() {
         self.scheduleReplacementOperation(named: "generate", as: {
-            let original = try self.generator.generateRandomGraph()
-            let transformed = try self.transformer.transform(original)
-
-            return transformed
+            return .vertexWeighted(try self.generator.generateRandomGraph())
         })
     }
 
     func replaceGraph(with graph: VertexWeightedGraph) {
         self.scheduleReplacementOperation(named: "original", as: {
-            return try self.transformer.transform(graph)
+            return .vertexWeighted(graph)
         })
     }
 
     func replaceGraph(with graph: FaceWeightedGraph) {
         self.scheduleReplacementOperation(named: "dual", as: {
-            return graph
+            return .faceWeighted(graph)
         })
     }
 
     func performRandomWeightChange() {
         self.scheduleMutationOperation(named: "random weight", as: { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
             guard let face = graph.faces.randomElement() else { throw UnsupportedOperationError() }
             let weight = Double.random(in: self.generator.weights)
             try graph.setWeight(of: face, to: weight)
+
+            return .faceWeighted(graph)
         })
     }
 
     func performRandomEdgeFlip() {
         self.scheduleMutationOperation(named: "random edge flip", as: { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
+
             var boundaries: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Vertex>] = [:]
             var adjacencies: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Face>] = [:]
 
@@ -102,6 +116,8 @@ class Pipeline: ObservableObject {
             guard let selected = filtered.randomElement() else { throw UnsupportedOperationError() }
 
             try graph.flipBorder(between: selected.0, and: selected.1)
+
+            return .faceWeighted(graph)
         })
     }
 
@@ -111,6 +127,8 @@ class Pipeline: ObservableObject {
         })
 
         self.scheduleMutationOperation(named: "step", as: { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
+
             for (u, v) in graph.edges {
                 guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
                 guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
@@ -119,7 +137,9 @@ class Pipeline: ObservableObject {
             }
 
             let forces = self.forceComputer.forces(in: graph)
-            PrEdForceApplicator().apply(forces, to: &graph)
+            self.forceApplicator.apply(forces, to: &graph)
+
+            return .faceWeighted(graph)
         }, completion: { result in
             DispatchQueue.main.async(execute: {
                 if result.isSuccess {
@@ -133,7 +153,7 @@ class Pipeline: ObservableObject {
         })
     }
 
-    func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> FaceWeightedGraph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> Graph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
         self.queue.async(execute: {
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
@@ -155,15 +175,15 @@ class Pipeline: ObservableObject {
         })
     }
 
-    func scheduleMutationOperation(named name: String, as transform: @escaping (inout FaceWeightedGraph) throws -> Void, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    func scheduleMutationOperation(named name: String, as transform: @escaping (Graph) throws -> Graph, completion: ((Result<Void, Error>) -> Void)? = nil) {
         self.queue.async(execute: {
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
 
             let before = CFAbsoluteTimeGetCurrent()
             do {
-                guard var graph = self.graph else { throw MutationOperationError.noGraphToBeMutated }
-                try transform(&graph)
+                guard var graph = self.graph else { throw UnsupportedOperationError() }
+                graph = try transform(graph)
                 DispatchQueue.main.async(execute: {
                     self.graph = graph
                 })
@@ -177,10 +197,6 @@ class Pipeline: ObservableObject {
             print("\(verb) mutation operation “\(name)” in \(String(format: "%.3f", 1e3 * (after - before)))ms")
         })
     }
-}
-
-enum MutationOperationError: Error {
-    case noGraphToBeMutated
 }
 
 extension Result {

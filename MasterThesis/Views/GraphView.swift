@@ -1,5 +1,5 @@
 //
-//  FaceWeightedGraphView.swift
+//  GraphView.swift
 //  MasterThesis
 //
 //  Created by Christian Schnorr on 08.03.20.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class FaceWeightedGraphView: UIView, CanvasRenderer {
-    var graph: FaceWeightedGraph? {
+class GraphView: UIView, CanvasRenderer {
+    var graph: Graph? {
         didSet { self.canvasView.setNeedsDisplay() }
     }
 
@@ -19,7 +19,7 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
 
     private let canvasView: CanvasView = .init()
 
-    init(frame: CGRect, graph: FaceWeightedGraph?, forceComputer: ForceComputer) {
+    init(frame: CGRect, graph: Graph?, forceComputer: ForceComputer) {
         self.graph = graph
         self.forceComputer = forceComputer
 
@@ -43,8 +43,13 @@ class FaceWeightedGraphView: UIView, CanvasRenderer {
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         context.setLineWidth(1 / scale)
 
-        if let graph = self.graph {
+        switch self.graph {
+        case .vertexWeighted(let graph):
+            break
+        case .faceWeighted(let graph):
             self.draw(graph, scale: scale, rotation: rotation)
+        case .none:
+            break
         }
     }
 

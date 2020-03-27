@@ -51,13 +51,17 @@ final class CLIReceiver {
 
     private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
         viewController.pipeline.scheduleMutationOperation(named: "change weight", as: { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
             try graph.setWeight(of: command.country, to: command.weight)
+            return .faceWeighted(graph)
         }, completion: self.wrapCompletionHandler(completion))
     }
 
     private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
         viewController.pipeline.scheduleMutationOperation(named: "flip border", as: { graph in
+            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
             try graph.flipBorder(between: command.first, and: command.second)
+            return .faceWeighted(graph)
         }, completion: self.wrapCompletionHandler(completion))
     }
 

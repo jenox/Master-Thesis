@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
-        return GraphView(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
+        return GraphViewWrapper(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
             .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
             .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
@@ -73,25 +73,25 @@ struct ContentView: View {
 }
 
 
-struct GraphView: View, UIViewRepresentable {
-    var graph: FaceWeightedGraph?
+struct GraphViewWrapper: View, UIViewRepresentable {
+    var graph: Graph?
     var forceComputer: ConcreteForceComputer
 
-    func makeUIView(context: UIViewRepresentableContext<GraphView>) -> FaceWeightedGraphView {
-        return FaceWeightedGraphView(frame: UIScreen.main.bounds, graph: self.graph, forceComputer: self.forceComputer)
+    func makeUIView(context: UIViewRepresentableContext<GraphViewWrapper>) -> GraphView {
+        return GraphView(frame: UIScreen.main.bounds, graph: self.graph, forceComputer: self.forceComputer)
     }
 
-    func updateUIView(_ view: FaceWeightedGraphView, context: UIViewRepresentableContext<GraphView>) {
+    func updateUIView(_ view: GraphView, context: UIViewRepresentableContext<GraphViewWrapper>) {
         view.graph = self.graph
         view.forceComputer = self.forceComputer
     }
 
-    static func dismantleUIView(_ uiView: FaceWeightedGraphView, coordinator: Void) {
+    static func dismantleUIView(_ uiView: GraphView, coordinator: Void) {
     }
 }
 
 struct StatisticsViewWrapper: View, UIViewRepresentable {
-    var graph: FaceWeightedGraph?
+    var graph: Graph?
 
     var statisticalAccuracyMetric: StatisticalAccuracy
     var distanceFromCircumcircleMetric: DistanceFromCircumcircle
@@ -102,13 +102,13 @@ struct StatisticsViewWrapper: View, UIViewRepresentable {
     typealias UIViewType = WrapperView<GraphStatisticsView>
 
     func makeUIView(context: UIViewRepresentableContext<StatisticsViewWrapper>) -> UIViewType {
-        let view = GraphStatisticsView(graph: self.graph, qualityMetrics: self.qualityMetrics)
+        let view = GraphStatisticsView(graph: self.graph?.faceWeightedGraph, qualityMetrics: self.qualityMetrics)
 
         return WrapperView(contentView: view)
     }
 
     func updateUIView(_ view: UIViewType, context: UIViewRepresentableContext<StatisticsViewWrapper>) {
-        view.contentView.graph = self.graph
+        view.contentView.graph = self.graph?.faceWeightedGraph
         view.contentView.qualityMetrics = self.qualityMetrics
     }
 
