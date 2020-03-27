@@ -23,12 +23,13 @@ struct ContentView: View {
     private var controlView: some View {
         return VStack(alignment: .leading, content: {
             Toggle(isOn: self.$pipeline.isSteppingContinuously, label: { Text("Step") })
-            Button(action: self.clear, label: { Text("Clear") })
-            Button(action: self.loadSmall, label: { Text("Small") })
-            Button(action: self.loadLarge, label: { Text("Large") })
-            Button(action: self.generateRandom, label: { Text("Random") })
-            Button(action: self.performRandomWeightChange, label: { Text("Random Weight") })
-            Button(action: self.performRandomEdgeFlip, label: { Text("Random Flip") })
+            Button(action: self.clear, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: self.loadSmall, label: { Text("Load Small") }).disabled(!self.pipeline.graph.isEmpty)
+            Button(action: self.loadLarge, label: { Text("Load Large") }).disabled(!self.pipeline.graph.isEmpty)
+            Button(action: self.generateRandom, label: { Text("Generate Random") }).disabled(!self.pipeline.graph.isEmpty)
+            Button(action: self.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
+            Button(action: self.performRandomWeightChange, label: { Text("Random Weight") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: self.performRandomEdgeFlip, label: { Text("Random Flip") }).disabled(self.pipeline.graph.isEmpty)
         }).frame(width: 160, height: nil, alignment: .center)
     }
 
@@ -61,6 +62,10 @@ struct ContentView: View {
 
     private func generateRandom() {
         self.pipeline.generateNewGraph()
+    }
+
+    private func transform() {
+        self.pipeline.transformVertexWeightedGraph()
     }
 
     private func performRandomWeightChange() {
@@ -147,5 +152,31 @@ class WrapperView<ContentView>: UIView where ContentView: UIView {
 
     override var intrinsicContentSize: CGSize {
         return contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
+}
+
+private extension Graph {
+    var faceWeightedGraph: FaceWeightedGraph? {
+        switch self {
+        case .faceWeighted(let graph): return graph
+        case .vertexWeighted: return nil
+        }
+    }
+}
+
+private extension Optional where Wrapped == Graph {
+    var isVertexWeighted: Bool {
+        guard case .vertexWeighted = self else { return false }
+        return true
+    }
+
+    var isFaceWeighted: Bool {
+        guard case .faceWeighted = self else { return false }
+        return true
+    }
+
+    var isEmpty: Bool {
+        guard case .none = self else { return false }
+        return true
     }
 }

@@ -8,13 +8,13 @@
 
 import UIKit
 
-class GraphView: UIView, CanvasRenderer {
+class GraphView: UIView {
     var graph: Graph? {
-        didSet { self.canvasView.setNeedsDisplay() }
+        didSet { self.updateCanvasViewRenderer() }
     }
 
     var forceComputer: ForceComputer {
-        didSet { self.canvasView.setNeedsDisplay() }
+        didSet { self.updateCanvasViewRenderer() }
     }
 
     private let canvasView: CanvasView = .init()
@@ -33,47 +33,70 @@ class GraphView: UIView, CanvasRenderer {
             make.width.equalTo(0).priority(.low)
         }
 
-        self.canvasView.renderer = self // Yes, this is a retain cycle...
+        self.updateCanvasViewRenderer()
     }
 
     required init?(coder: NSCoder) {
         fatalError()
     }
 
-    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
-        context.setLineWidth(1 / scale)
-
+    private func updateCanvasViewRenderer() {
         switch self.graph {
         case .vertexWeighted(let graph):
-            break
+            self.canvasView.renderer = VertexWeightedGraphRenderer(graph: graph)
         case .faceWeighted(let graph):
-            self.draw(graph, scale: scale, rotation: rotation)
+            self.canvasView.renderer = FaceWeightedGraphRenderer(graph: graph, forceComputer: self.forceComputer)
         case .none:
-            break
+            self.canvasView.renderer = nil
         }
     }
+}
 
-    private func draw(_ graph: FaceWeightedGraph, scale: CGFloat, rotation: Angle, labeled: Bool = true) {
+private struct VertexWeightedGraphRenderer: CanvasRenderer {
+    var graph: VertexWeightedGraph
+
+    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         let context = UIGraphicsGetCurrentContext()!
+        context.setLineWidth(1 / scale)
+
+        // Edges
+        for (u, v) in self.graph.edges {
+            context.stroke(from: self.graph.position(of: u), to: self.graph.position(of: v), color: .black)
+        }
+
+        // Vertices
+        for vertex in self.graph.vertices {
+            context.fill(self.graph.position(of: vertex), diameter: 5, color: .black)
+        }
+    }
+}
+
+private struct FaceWeightedGraphRenderer: CanvasRenderer {
+    var graph: FaceWeightedGraph
+    var forceComputer: ForceComputer
+
+    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
+        let context = UIGraphicsGetCurrentContext()!
+        context.setLineWidth(1 / scale)
 
         // Face backgrounds
-        for face in graph.faces {
+        for face in self.graph.faces {
             let color = UIColor.color(for: face).interpolate(to: .white, fraction: 0.75)
-            let polygon = graph.polygon(for: face)
+            let polygon = self.graph.polygon(for: face)
 
             context.fill(polygon, with: color)
         }
 
         // Edges
-        for (endpoint1, endpoint2) in graph.edges {
-            context.stroke(from: graph.position(of: endpoint1), to: graph.position(of: endpoint2), color: .black)
+        for (endpoint1, endpoint2) in self.graph.edges {
+            context.stroke(from: self.graph.position(of: endpoint1), to: self.graph.position(of: endpoint2), color: .black)
         }
 
         // Vertices
-        for vertex in graph.vertices {
-            let position = graph.position(of: vertex)
+        for vertex in self.graph.vertices {
+            let position = self.graph.position(of: vertex)
 
-            if graph.isSubdivisionVertex(vertex) {
+            if self.graph.isSubdivisionVertex(vertex) {
                 context.fill(position, diameter: 3 / scale, color: .black)
             } else {
                 context.fill(position, diameter: 5 / scale, color: .black)
@@ -94,25 +117,13 @@ class GraphView: UIView, CanvasRenderer {
             context.restoreGState()
         }
 
-        // Face circumcircles
-//        for face in graph.faces {
-//            let polygon = graph.polygon(for: face)
-//            let circle = Circle.smallestEnclosingCircle(of: polygon.points)
-//
-//            context.stroke(circle, with: UIColor.color(for: face).withAlphaComponent(0.4))
-//        }
-
         // Forces
-        for (vertex, force) in try! self.forceComputer.forces(in: graph) {
+        for (vertex, force) in try! self.forceComputer.forces(in: self.graph) {
             context.beginPath()
-            context.move(to: graph.position(of: vertex))
+            context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)
             context.setStrokeColor(UIColor.red.cgColor)
             context.strokePath()
-        }
-
-        if let crossing = graph.firstEdgeCrossing() {
-            fatalError("intersection: \(crossing)")
         }
     }
 }

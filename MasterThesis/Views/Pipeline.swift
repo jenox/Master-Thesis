@@ -15,13 +15,6 @@ import Foundation
 enum Graph {
     case vertexWeighted(VertexWeightedGraph)
     case faceWeighted(FaceWeightedGraph)
-
-    var faceWeightedGraph: FaceWeightedGraph? {
-        switch self {
-        case .faceWeighted(let graph): return graph
-        case .vertexWeighted: return nil
-        }
-    }
 }
 
 class Pipeline: ObservableObject {
@@ -70,6 +63,16 @@ class Pipeline: ObservableObject {
     func replaceGraph(with graph: FaceWeightedGraph) {
         self.scheduleReplacementOperation(named: "dual", as: {
             return .faceWeighted(graph)
+        })
+    }
+
+    func transformVertexWeightedGraph() {
+        self.scheduleMutationOperation(named: "transform", as: { graph in
+            guard case .vertexWeighted(let untransformed) = graph else { throw UnsupportedOperationError() }
+
+            let transformed = try self.transformer.transform(untransformed)
+
+            return .faceWeighted(transformed)
         })
     }
 

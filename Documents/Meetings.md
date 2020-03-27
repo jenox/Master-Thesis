@@ -18,7 +18,7 @@ __2020-03-26__
 - Edge flips can create multiple adjacencies, e.g. A-E in small graph!
 
 TODOs:
-- [ ] Draw generated, untransformed, vertex-weighted graphs
+- [x] Draw generated, untransformed, vertex-weighted graphs
 - [ ] Minimum distance when generating graphs, maybe run force-directed before transforming?
 - [ ] Forbidden edges for edge flips
 - [x] Improve entropy measures by getting similar edge lengths first
