@@ -67,6 +67,10 @@ struct Segment {
         let t = max(0, min(1, ((other - self.a) * (self.b - self.a)) / l2))
         return self.point(at: t)
     }
+
+    var length: CGFloat {
+        return self.a.distance(to: self.b)
+    }
 }
 // https://cp-algorithms.com/geometry/check-segments-intersection.html
 private func inter1(a: CGFloat, b: CGFloat, c: CGFloat, d: CGFloat) -> Bool {

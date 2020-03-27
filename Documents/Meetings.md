@@ -1,3 +1,5 @@
+- Because our polygons have low number of vertices, edges are relatively long and we place a lot of subdivision vertices on there, resulting in 180deg angles dominating heavily!
+
 __2020-03-26__
 
 - Randomly generate vertex-weighted graphs
@@ -19,7 +21,7 @@ TODOs:
 - [ ] Draw generated, untransformed, vertex-weighted graphs
 - [ ] Minimum distance when generating graphs, maybe run force-directed before transforming?
 - [ ] Forbidden edges for edge flips
-- [ ] Improve entropy measures by getting similar edge lengths first
+- [x] Improve entropy measures by getting similar edge lengths first
 - [ ] Start writing :)
 
 - For Evaluation:
