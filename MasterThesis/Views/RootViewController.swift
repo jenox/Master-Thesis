@@ -8,8 +8,22 @@
 
 import SwiftUI
 
+typealias PrimaryPipeline = Pipeline<DelaunayGraphGenerator, NaiveTransformer, ConcreteForceComputer, PrEdForceApplicator>
+
 class RootViewController: UIHostingController<AnyView> {
-    let pipeline = Pipeline()
+    let pipeline: PrimaryPipeline = .init(
+        generator: DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQ"), nestingRatio: 0.3, nestingBias: 0.5),
+        transformer: NaiveTransformer(),
+        forceComputer: ConcreteForceComputer(),
+        forceApplicator: PrEdForceApplicator(),
+        qualityMetrics: [
+            ("Statistical Accuracy", StatisticalAccuracy()),
+            ("Distance from Circumcircle", DistanceFromCircumcircle()),
+            ("Distance from Hull", DistanceFromConvexHull()),
+            ("Entropy of Angles", EntropyOfAngles()),
+            ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
+        ]
+    )
 
     init() {
         super.init(rootView: AnyView(ContentView().environmentObject(self.pipeline)))

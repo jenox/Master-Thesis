@@ -12,29 +12,40 @@ import CoreGraphics
 import CoreFoundation
 import Foundation
 
-class Pipeline: ObservableObject {
-    @Published private(set) var graph: EitherGraph? = nil
-    @Published var generator = DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQ"), nestingRatio: 0.3, nestingBias: 0.5)
-    @Published var transformer = NaiveTransformer()
-    @Published var forceComputer = ConcreteForceComputer()
-    @Published var forceApplicator = PrEdForceApplicator()
+enum GraphModificationQueue {
+    private static let queue = DispatchQueue(label: "GraphModificationQueue")
 
-    @Published var statisticalAccuracyMetric = StatisticalAccuracy()
-    @Published var distanceFromCircumcircleMetric = DistanceFromCircumcircle()
-    @Published var distanceFromConvexHullMetric = DistanceFromConvexHull()
-    @Published var entropyOfAnglesMetric = EntropyOfAngles()
-    @Published var entropyOfDistancesFromCentroidMetric = EntropyOfDistancesFromCentroid()
+    static func schedule(_ closure: @escaping () -> Void, after delay: TimeInterval = 0) {
+        self.queue.asyncAfter(deadline: .now() + delay, execute: closure)
+    }
+}
+
+
+final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: MasterThesis.Transformer, ForceComputer: MasterThesis.ForceComputer, ForceApplicator: MasterThesis.ForceApplicator {
+    @Published private(set) var graph: EitherGraph? = nil
+    @Published var generator: Generator
+    @Published var transformer: Transformer
+    @Published var forceComputer: ForceComputer
+    @Published var forceApplicator: ForceApplicator
+    let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
+
+    init(generator: Generator, transformer: Transformer, forceComputer: ForceComputer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)]) {
+        self.generator = generator
+        self.transformer = transformer
+        self.forceComputer = forceComputer
+        self.forceApplicator = forceApplicator
+        self.qualityMetrics = qualityMetrics
+    }
 
     @Published var isSteppingContinuously: Bool = false {
         didSet {
             if self.isSteppingContinuously, !oldValue, !self.hasScheduledNextSteppingBlock {
                 self.hasScheduledNextSteppingBlock = true
-                self.queue.async(execute: self.stepOnceAndScheduleNextIfNeeded)
+                GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded)
             }
         }
     }
 
-    private let queue = DispatchQueue(label: "GraphModificationQueue")
     private var hasScheduledNextSteppingBlock: Bool = false
 
     func clearGraph() {
@@ -75,7 +86,7 @@ class Pipeline: ObservableObject {
         self.scheduleMutationOperation(named: "random weight", as: { graph in
             guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
             guard let face = graph.faces.randomElement() else { throw UnsupportedOperationError() }
-            let weight = Double.random(in: self.generator.weights)
+            let weight = Double.random(in: (self.generator as! DelaunayGraphGenerator).weights) // TODO
             try graph.setWeight(of: face, to: weight)
 
             return .faceWeighted(graph)
@@ -134,15 +145,15 @@ class Pipeline: ObservableObject {
                 graph.contractEdgeIfPossible(between: u, and: v)
             }
 
-            let forces = self.forceComputer.forces(in: graph)
-            self.forceApplicator.apply(forces, to: &graph)
+            let forces = try self.forceComputer.forces(in: graph)
+            try self.forceApplicator.apply(forces, to: &graph)
 
             return .faceWeighted(graph)
         }, completion: { result in
             DispatchQueue.main.async(execute: {
                 if result.isSuccess {
                     if self.isSteppingContinuously && !self.hasScheduledNextSteppingBlock {
-                        self.queue.asyncAfter(deadline: .now() + 0.01, execute: self.stepOnceAndScheduleNextIfNeeded)
+                        GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded, after: 0.01)
                     }
                 } else {
                     self.isSteppingContinuously = false
@@ -152,7 +163,7 @@ class Pipeline: ObservableObject {
     }
 
     func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> EitherGraph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        self.queue.async(execute: {
+        GraphModificationQueue.schedule({
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
 
@@ -174,7 +185,7 @@ class Pipeline: ObservableObject {
     }
 
     func scheduleMutationOperation(named name: String, as transform: @escaping (EitherGraph) throws -> EitherGraph, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        self.queue.async(execute: {
+        GraphModificationQueue.schedule({
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
 

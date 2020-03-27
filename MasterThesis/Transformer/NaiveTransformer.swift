@@ -1,5 +1,5 @@
 //
-//  Transformation.swift
+//  NaiveTransformer.swift
 //  MasterThesis
 //
 //  Created by Christian Schnorr on 29.01.20.

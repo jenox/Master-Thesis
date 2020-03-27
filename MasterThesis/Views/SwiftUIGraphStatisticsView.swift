@@ -11,12 +11,7 @@ import SwiftUI
 
 struct SwiftUIGraphStatisticsView: View, UIViewRepresentable {
     var graph: EitherGraph?
-
-    var statisticalAccuracyMetric: StatisticalAccuracy
-    var distanceFromCircumcircleMetric: DistanceFromCircumcircle
-    var distanceFromConvexHullMetric: DistanceFromConvexHull
-    var entropyOfAnglesMetric: EntropyOfAngles
-    var entropyOfDistancesFromCentroidMetric: EntropyOfDistancesFromCentroid
+    var qualityMetrics: [(String, QualityEvaluator)]
 
     typealias UIViewType = UIViewHostingView<GraphStatisticsView>
 
@@ -32,15 +27,5 @@ struct SwiftUIGraphStatisticsView: View, UIViewRepresentable {
     }
 
     static func dismantleUIView(_ uiView: UIViewType, coordinator: Void) {
-    }
-
-    private var qualityMetrics: [(String, QualityEvaluator)] {
-        return [
-            ("Statistical Accuracy", self.statisticalAccuracyMetric),
-            ("Distance from Circumcircle", self.distanceFromCircumcircleMetric),
-            ("Distance from Hull", self.distanceFromConvexHullMetric),
-            ("Entropy of Angles", self.entropyOfAnglesMetric),
-            ("Entropy of Distances", self.entropyOfDistancesFromCentroidMetric),
-        ]
     }
 }

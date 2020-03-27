@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject private var pipeline: Pipeline
+    @EnvironmentObject private var pipeline: PrimaryPipeline
 
     var body: some View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
@@ -38,14 +38,7 @@ struct ContentView: View {
     }
 
     private var statisticsView: some View {
-        return SwiftUIGraphStatisticsView(
-            graph: self.pipeline.graph,
-            statisticalAccuracyMetric: self.pipeline.statisticalAccuracyMetric,
-            distanceFromCircumcircleMetric: self.pipeline.distanceFromCircumcircleMetric,
-            distanceFromConvexHullMetric: self.pipeline.distanceFromConvexHullMetric,
-            entropyOfAnglesMetric: self.pipeline.entropyOfAnglesMetric,
-            entropyOfDistancesFromCentroidMetric: self.pipeline.entropyOfDistancesFromCentroidMetric
-        )
+        return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
     }
 
     private func clear() {
