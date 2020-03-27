@@ -66,7 +66,10 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
 
         // Vertices
         for vertex in self.graph.vertices {
-            context.fill(self.graph.position(of: vertex), diameter: 5, color: .black)
+            let position = self.graph.position(of: vertex)
+
+            context.fill(position, diameter: 5 / scale, color: .black)
+            context.draw("\(vertex)", at: position, scale: scale, rotation: rotation)
         }
     }
 }
@@ -102,19 +105,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
                 context.fill(position, diameter: 5 / scale, color: .black)
             }
 
-            let font = UIFont.systemFont(ofSize: 14 / sqrt(scale))
-            let string = NSAttributedString(string: "\(vertex)", attributes: [.font: font])
-            let line = CTLineCreateWithAttributedString(string)
-            let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
-
-            context.textPosition = .zero
-            context.textPosition.x -= size.width / 2
-            context.textPosition.y -= font.capHeight / 2
-            context.saveGState()
-            context.translateBy(x: position.x, y: position.y)
-            context.rotate(by: -rotation.radians)
-            CTLineDraw(line, context)
-            context.restoreGState()
+            context.draw("\(vertex)", at: position, scale: scale, rotation: rotation)
         }
 
         // Forces
@@ -165,6 +156,22 @@ private extension CGContext {
         self.closePath()
         self.setStrokeColor(color.cgColor)
         self.strokePath()
+    }
+
+    func draw(_ text: String, at position: CGPoint, scale: CGFloat, rotation: Angle) {
+        let font = UIFont.systemFont(ofSize: 14 / sqrt(scale))
+        let string = NSAttributedString(string: text, attributes: [.font: font])
+        let line = CTLineCreateWithAttributedString(string)
+        let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
+
+        self.textPosition = .zero
+        self.textPosition.x -= size.width / 2
+        self.textPosition.y -= font.capHeight / 2
+        self.saveGState()
+        self.translateBy(x: position.x, y: position.y)
+        self.rotate(by: -rotation.radians)
+        CTLineDraw(line, self)
+        self.restoreGState()
     }
 }
 

@@ -114,8 +114,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     }
 
     private func scheduleOperation(named name: String, _ operation: @escaping Operation, completion: CompletionHandler? = nil) {
-        dispatchPrecondition(condition: .onQueue(.main))
-
         GraphModificationQueue.schedule({
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
