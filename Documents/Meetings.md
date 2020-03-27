@@ -1,3 +1,5 @@
+__2020-03-26__
+
 - Randomly generate vertex-weighted graphs
     - Parameters
         - bounds
@@ -7,12 +9,24 @@
         - nesting bias
     - Problem: "unnatural" shapes
         - Triangulation creates tight countries on outside
-        - Cramped initial layout: Minimum distance between points? Distribute points evenly? Run force-directed algorithm before applying transformation?
+        - Cramped initial layout: Minimum distance between points? ~~Distribute points evenly?~~ Run force-directed algorithm before applying transformation?
 - Implement entropy-based quality metrics
     - Numbers don't currently appear meaningful
     - Complexity measure was intended for point clouds, we diverted it from its original use: add more points on polygon boundary to get closer to original use, e.g. subdivide edges while length ≥ epsilon?
 - Edge flips can create multiple adjacencies, e.g. A-E in small graph!
 
+TODOs:
+- [ ] Draw generated, untransformed, vertex-weighted graphs
+- [ ] Minimum distance when generating graphs, maybe run force-directed before transforming?
+- [ ] Forbidden edges for edge flips
+- [ ] Improve entropy measures by getting similar edge lengths first
+- [ ] Start writing :)
+
+- For Evaluation:
+    - Just for visualization: beziers for edges, subdivision vertices as control points
+    - Look at "degrees" of countries when presenting results, "graph diameter"
+    - Number of points in convex hull
+    - "Will need user study to see if metrics correspond to human perception"
 
 __2020-03-19__
 
