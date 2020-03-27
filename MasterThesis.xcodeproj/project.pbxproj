@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */; };
+		CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */; };
+		CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */; };
+		CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
 		CB131A52241543AD00B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A51241543AD00B5F5BB /* MultipeerKit */; };
@@ -87,6 +91,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHostingView.swift; sourceTree = "<group>"; };
+		CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphStatisticsView.swift; sourceTree = "<group>"; };
+		CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphView.swift; sourceTree = "<group>"; };
+		CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EitherGraph.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB131A56241544C600B5F5BB /* CLITransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITransmitter.swift; sourceTree = "<group>"; };
@@ -227,6 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
+				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
+				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
 				CBFDDE372429303C005B3048 /* Views */,
 				CBEE493623E1E17B00986877 /* Graph */,
 				CBFDDE2824292AFE005B3048 /* Generator */,
@@ -270,6 +280,7 @@
 			children = (
 				CBEE493723E1E18900986877 /* Face.swift */,
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
+				CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
 				CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */,
 			);
@@ -351,16 +362,17 @@
 		CBFDDE372429303C005B3048 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
 				CBFDDE3A24295328005B3048 /* RootViewController.swift */,
 				CBFDDE3C242954EA005B3048 /* ContentView.swift */,
-				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
 				CBFDDE3E2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift */,
+				CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */,
+				CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */,
+				CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */,
 				CB131A692415A1A400B5F5BB /* GraphView.swift */,
-				CB131A672415991200B5F5BB /* CanvasView.swift */,
-				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
 				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
 				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
+				CB131A672415991200B5F5BB /* CanvasView.swift */,
+				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -522,6 +534,7 @@
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
 				CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
+				CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBF37CF12401844C00AA4846 /* Other.swift in Sources */,
 				CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */,
@@ -530,6 +543,7 @@
 				CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */,
 				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* Transformation.swift in Sources */,
+				CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */,
 				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */,
 				CB131A5D24154A1600B5F5BB /* CLIResponse.swift in Sources */,
@@ -549,7 +563,9 @@
 				CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */,
 				CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */,
 				CBFDDE52242AA454005B3048 /* Errors.swift in Sources */,
+				CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */,
 				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
+				CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */,
 				CBFDDE3F2429559B005B3048 /* ConcreteForceComputerConfigurationView.swift in Sources */,
 				CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */,
 			);

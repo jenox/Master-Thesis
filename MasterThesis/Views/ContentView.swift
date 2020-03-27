@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
-        return GraphViewWrapper(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
+        return SwiftUIGraphView(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
             .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
             .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
@@ -38,7 +38,7 @@ struct ContentView: View {
     }
 
     private var statisticsView: some View {
-        return StatisticsViewWrapper(
+        return SwiftUIGraphStatisticsView(
             graph: self.pipeline.graph,
             statisticalAccuracyMetric: self.pipeline.statisticalAccuracyMetric,
             distanceFromCircumcircleMetric: self.pipeline.distanceFromCircumcircleMetric,
@@ -74,109 +74,5 @@ struct ContentView: View {
 
     private func performRandomEdgeFlip() {
         self.pipeline.performRandomEdgeFlip()
-    }
-}
-
-
-struct GraphViewWrapper: View, UIViewRepresentable {
-    var graph: Graph?
-    var forceComputer: ConcreteForceComputer
-
-    func makeUIView(context: UIViewRepresentableContext<GraphViewWrapper>) -> GraphView {
-        return GraphView(frame: UIScreen.main.bounds, graph: self.graph, forceComputer: self.forceComputer)
-    }
-
-    func updateUIView(_ view: GraphView, context: UIViewRepresentableContext<GraphViewWrapper>) {
-        view.graph = self.graph
-        view.forceComputer = self.forceComputer
-    }
-
-    static func dismantleUIView(_ uiView: GraphView, coordinator: Void) {
-    }
-}
-
-struct StatisticsViewWrapper: View, UIViewRepresentable {
-    var graph: Graph?
-
-    var statisticalAccuracyMetric: StatisticalAccuracy
-    var distanceFromCircumcircleMetric: DistanceFromCircumcircle
-    var distanceFromConvexHullMetric: DistanceFromConvexHull
-    var entropyOfAnglesMetric: EntropyOfAngles
-    var entropyOfDistancesFromCentroidMetric: EntropyOfDistancesFromCentroid
-
-    typealias UIViewType = WrapperView<GraphStatisticsView>
-
-    func makeUIView(context: UIViewRepresentableContext<StatisticsViewWrapper>) -> UIViewType {
-        let view = GraphStatisticsView(graph: self.graph?.faceWeightedGraph, qualityMetrics: self.qualityMetrics)
-
-        return WrapperView(contentView: view)
-    }
-
-    func updateUIView(_ view: UIViewType, context: UIViewRepresentableContext<StatisticsViewWrapper>) {
-        view.contentView.graph = self.graph?.faceWeightedGraph
-        view.contentView.qualityMetrics = self.qualityMetrics
-    }
-
-    static func dismantleUIView(_ uiView: UIViewType, coordinator: Void) {
-    }
-
-    private var qualityMetrics: [(String, QualityEvaluator)] {
-        return [
-            ("Statistical Accuracy", self.statisticalAccuracyMetric),
-            ("Distance from Circumcircle", self.distanceFromCircumcircleMetric),
-            ("Distance from Hull", self.distanceFromConvexHullMetric),
-            ("Entropy of Angles", self.entropyOfAnglesMetric),
-            ("Entropy of Distances", self.entropyOfDistancesFromCentroidMetric),
-        ]
-    }
-}
-
-class WrapperView<ContentView>: UIView where ContentView: UIView {
-    let contentView: ContentView
-    init(contentView: ContentView) {
-        self.contentView = contentView
-        super.init(frame: contentView.bounds)
-        self.addSubview(contentView)
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        self.setContentHuggingPriority(.required, for: .horizontal)
-        self.setContentHuggingPriority(.required, for: .vertical)
-        self.setContentCompressionResistancePriority(.required, for: .horizontal)
-        self.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-
-    override var intrinsicContentSize: CGSize {
-        return contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    }
-}
-
-private extension Graph {
-    var faceWeightedGraph: FaceWeightedGraph? {
-        switch self {
-        case .faceWeighted(let graph): return graph
-        case .vertexWeighted: return nil
-        }
-    }
-}
-
-private extension Optional where Wrapped == Graph {
-    var isVertexWeighted: Bool {
-        guard case .vertexWeighted = self else { return false }
-        return true
-    }
-
-    var isFaceWeighted: Bool {
-        guard case .faceWeighted = self else { return false }
-        return true
-    }
-
-    var isEmpty: Bool {
-        guard case .none = self else { return false }
-        return true
     }
 }

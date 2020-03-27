@@ -9,7 +9,7 @@
 import UIKit
 
 class GraphView: UIView {
-    var graph: Graph? {
+    var graph: EitherGraph? {
         didSet { self.updateCanvasViewRenderer() }
     }
 
@@ -19,7 +19,7 @@ class GraphView: UIView {
 
     private let canvasView: CanvasView = .init()
 
-    init(frame: CGRect, graph: Graph?, forceComputer: ForceComputer) {
+    init(frame: CGRect, graph: EitherGraph?, forceComputer: ForceComputer) {
         self.graph = graph
         self.forceComputer = forceComputer
 

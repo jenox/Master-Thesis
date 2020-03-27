@@ -11,15 +11,6 @@ import UIKit
 protocol CanvasRenderer {
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle)
 }
-struct AnyCanvasRenderer: CanvasRenderer {
-    private let _drawInContextWithScale: (_ context: CGContext, _ scale: CGFloat, _ rotation: Angle) -> Void
-    init(closure: @escaping (_ context: CGContext, _ scale: CGFloat, _ rotation: Angle) -> Void) {
-        self._drawInContextWithScale = closure
-    }
-    func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
-        self._drawInContextWithScale(context, scale, rotation)
-    }
-}
 
 class CanvasView: UIView {
     private let dummy = UIView(frame: .zero)

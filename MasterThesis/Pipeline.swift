@@ -12,13 +12,8 @@ import CoreGraphics
 import CoreFoundation
 import Foundation
 
-enum Graph {
-    case vertexWeighted(VertexWeightedGraph)
-    case faceWeighted(FaceWeightedGraph)
-}
-
 class Pipeline: ObservableObject {
-    @Published private(set) var graph: Graph? = nil
+    @Published private(set) var graph: EitherGraph? = nil
     @Published var generator = DelaunayGraphGenerator(countries: Array("ABCDEFGHIJKLMNOPQ"), nestingRatio: 0.3, nestingBias: 0.5)
     @Published var transformer = NaiveTransformer()
     @Published var forceComputer = ConcreteForceComputer()
@@ -156,7 +151,7 @@ class Pipeline: ObservableObject {
         })
     }
 
-    func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> Graph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    func scheduleReplacementOperation(named name: String, as transform: @escaping () throws -> EitherGraph?, completion: ((Result<Void, Error>) -> Void)? = nil) {
         self.queue.async(execute: {
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
@@ -178,7 +173,7 @@ class Pipeline: ObservableObject {
         })
     }
 
-    func scheduleMutationOperation(named name: String, as transform: @escaping (Graph) throws -> Graph, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    func scheduleMutationOperation(named name: String, as transform: @escaping (EitherGraph) throws -> EitherGraph, completion: ((Result<Void, Error>) -> Void)? = nil) {
         self.queue.async(execute: {
             let result: Result<Void, Error>
             defer { DispatchQueue.main.async(execute: { completion?(result) }) }
