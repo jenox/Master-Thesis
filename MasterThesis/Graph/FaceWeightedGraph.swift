@@ -114,10 +114,7 @@ struct FaceWeightedGraph {
         return self.facePayloads[face]!.weight
     }
 
-    mutating func setWeight(of face: String, to value: Double) throws {
-        struct Error: Swift.Error {}
-
-        guard self.facePayloads[face] != nil else { throw Error() }
+    mutating func setWeight(of face: String, to value: Double) {
         self.facePayloads[face]!.weight = value
     }
 

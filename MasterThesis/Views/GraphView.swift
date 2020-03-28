@@ -188,12 +188,8 @@ private extension CGContext {
 extension UIColor {
     private static let colors = [UIColor.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple, .brown]
 
-    static func color(for vertex: Character) -> UIColor {
-        return self.colors[Int(vertex.unicodeScalars.first!.value + 7) % colors.count]
-    }
-
     static func color(for string: String) -> UIColor {
-        return self.colors[Int(string.unicodeScalars.reduce(7, { $0 + $1.value })) % colors.count]
+        return self.colors[Int(string.unicodeScalars.reduce(7, { $0 + $1.value })) % self.colors.count]
     }
 
     func interpolate(to other: UIColor, fraction: CGFloat) -> UIColor {

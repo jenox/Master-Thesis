@@ -17,6 +17,10 @@ struct OrderedSet<Element>: Collection, ExpressibleByArrayLiteral {
         self.storage.addObjects(from: elements)
     }
 
+    init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Sequence.Element == Element {
+        self.storage.addObjects(from: Array(sequence))
+    }
+
     var startIndex: Int { return 0 }
     var endIndex: Int { return self.storage.count }
     func index(after index: Int) -> Int { return index + 1 }

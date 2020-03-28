@@ -9,13 +9,13 @@
 import Swift
 
 struct DirectedEdge: Hashable, CustomStringConvertible {
-    init(from source: Character, to target: Character) {
+    init(from source: String, to target: String) {
         self.source = source
         self.target = target
     }
 
-    var source: Character
-    var target: Character
+    var source: String
+    var target: String
 
     func inverted() -> DirectedEdge {
         return DirectedEdge(from: self.target, to: self.source)

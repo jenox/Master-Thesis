@@ -11,7 +11,7 @@ import Delaunay
 
 struct DelaunayGraphGenerator: GraphGenerator {
     var bounds: CGRect = .init(x: -256, y: -256, width: 512, height: 512)
-    var countries: [Character]
+    var countries: OrderedSet<String>
     var nestingRatio: Double
     var nestingBias: Double = 0.5
     var weights: ClosedRange<Double> = 1...50
@@ -24,7 +24,7 @@ struct DelaunayGraphGenerator: GraphGenerator {
         precondition(self.countries.count >= 3)
 
         var graph = VertexWeightedGraph()
-        var vertices: [CGPoint: Character] = [:]
+        var vertices: [CGPoint: String] = [:]
 
         let numberOfTopLevelCountries = max(3, Int(round((1 - self.nestingRatio) * Double(self.countries.count))))
 

@@ -9,8 +9,8 @@
 import CoreGraphics
 
 struct UndirectedEdge: Equatable, Hashable {
-    var first: Character
-    var second: Character
+    var first: String
+    var second: String
 
     func hash(into hasher: inout Hasher) {
         Set([self.first, self.second]).hash(into: &hasher)
@@ -24,7 +24,7 @@ struct UndirectedEdge: Equatable, Hashable {
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
 struct VertexWeightedGraph {
-    typealias Vertex = Character
+    typealias Vertex = String
     typealias Weight = Double
 
     init() {}
@@ -123,5 +123,9 @@ struct VertexWeightedGraph {
         let vector = CGVector(from: self.position(of: edge.source), to: self.position(of: edge.target))
 
         return Angle.atan2(vector.dy, vector.dx)
+    }
+
+    mutating func setWeight(of vertex: Vertex, to weight: Weight) {
+        self.data[vertex]!.1 = weight
     }
 }

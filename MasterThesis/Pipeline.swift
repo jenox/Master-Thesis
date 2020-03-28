@@ -166,23 +166,41 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func changeRandomCountryWeight() {
         self.scheduleMutationOperation(named: "random weight change", { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-            guard let face = graph.faces.randomElement() else { throw UnsupportedOperationError() }
-            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-            try graph.setWeight(of: face, to: weight)
+            switch graph {
+            case .vertexWeighted(var graph):
+                guard let country = graph.vertices.randomElement() else { throw UnsupportedOperationError() }
 
-            return .faceWeighted(graph)
+                let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+                graph.setWeight(of: country, to: weight)
+
+                return .vertexWeighted(graph)
+            case .faceWeighted(var graph):
+                guard let country = graph.faces.randomElement() else { throw UnsupportedOperationError() }
+
+                let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+                graph.setWeight(of: country, to: weight)
+
+                return .faceWeighted(graph)
+            }
         })
     }
 
     func changeWeight(of country: String, to weight: Double, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
+            switch graph {
+            case .vertexWeighted(var graph):
+                guard graph.vertices.contains(country) else { throw UnsupportedOperationError() }
 
-            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-            try graph.setWeight(of: country, to: weight)
+                graph.setWeight(of: country, to: weight)
 
-            return .faceWeighted(graph)
+                return .vertexWeighted(graph)
+            case .faceWeighted(var graph):
+                guard graph.faces.contains(country) else { throw UnsupportedOperationError() }
+
+                graph.setWeight(of: country, to: weight)
+
+                return .faceWeighted(graph)
+            }
         }, completion: completion)
     }
 
