@@ -67,9 +67,10 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
         // Vertices
         for vertex in self.graph.vertices {
             let position = self.graph.position(of: vertex)
+            let weight = self.graph.weight(of: vertex)
 
             context.fill(position, diameter: 5 / scale, color: .black)
-            context.draw("\(vertex)", at: position, scale: scale, rotation: rotation)
+            context.draw("\(vertex) | \(formatted: weight)", at: position, scale: scale, rotation: rotation)
         }
     }
 }
@@ -170,8 +171,17 @@ private extension CGContext {
         self.saveGState()
         self.translateBy(x: position.x, y: position.y)
         self.rotate(by: -rotation.radians)
+        self.setFillColor(UIColor.white.cgColor)
+        self.setStrokeColor(UIColor.black.cgColor)
+        self.drawCapsule(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height).insetBy(dx: -5 / sqrt(scale), dy: -2 / sqrt(scale)), using: .fillStroke)
         CTLineDraw(line, self)
         self.restoreGState()
+    }
+
+    func drawCapsule(in rect: CGRect, using mode: CGPathDrawingMode) {
+        self.beginPath()
+        self.addPath(UIBezierPath(roundedRect: rect, cornerRadius: min(rect.width, rect.height) / 2).cgPath)
+        self.drawPath(using: mode)
     }
 }
 
