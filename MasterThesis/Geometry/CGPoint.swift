@@ -7,15 +7,9 @@
 //
 
 import CoreGraphics
+import Geometry
 
 extension CGPoint {
-    static func - (lhs: CGPoint, rhs: CGPoint) -> CGVector { return CGVector(dx: lhs.x - rhs.x, dy: lhs.y - rhs.y) }
-
-    static func += (lhs: inout CGPoint, rhs: CGVector) {
-        lhs.x += rhs.dx
-        lhs.y += rhs.dy
-    }
-
     static func centroid(of points: CGPoint...) -> CGPoint {
         return self.centroid(of: points)
     }

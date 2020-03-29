@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import Geometry
 
 struct NaiveTransformer: Transformer {
     func transform(_ graph: VertexWeightedGraph) throws -> FaceWeightedGraph {

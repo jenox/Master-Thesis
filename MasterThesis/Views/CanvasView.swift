@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Geometry
 
 protocol CanvasRenderer {
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle)

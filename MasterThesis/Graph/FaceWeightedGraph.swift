@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import Geometry
 
 // "Dual" graph: straight line plane, face-weighted
 struct FaceWeightedGraph {
@@ -123,7 +124,7 @@ struct FaceWeightedGraph {
     }
 
     func segment(from vertex1: Vertex, to vertex2: Vertex) -> Segment {
-        return Segment(a: self.position(of: vertex1), b: self.position(of: vertex2))
+        return Segment(from: self.position(of: vertex1), to: self.position(of: vertex2))
     }
 
     func distance(from vertex1: Vertex, to vertex2: Vertex) -> CGFloat {

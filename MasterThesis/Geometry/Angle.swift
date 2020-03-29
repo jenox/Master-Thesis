@@ -7,52 +7,7 @@
 //
 
 import CoreGraphics
-
-struct Angle: Equatable, Hashable {
-    var turns: CGFloat
-}
-
-extension Angle {
-    fileprivate static let tau: CGFloat = 2 * .pi
-
-    public init(radians: CGFloat) {
-        self = Angle(turns: radians / Angle.tau)
-    }
-
-    public static func radians(_ radians: CGFloat) -> Angle {
-        return Angle(radians: radians)
-    }
-
-    public var radians: CGFloat {
-        return self.turns * Angle.tau
-    }
-}
-
-extension Angle {
-    public init(degrees: CGFloat) {
-        self = Angle(turns: degrees / 360)
-    }
-
-    public static func degrees(_ degrees: CGFloat) -> Angle {
-        return Angle(degrees: degrees)
-    }
-
-    public var degrees: CGFloat {
-        return self.turns * 360
-    }
-}
-
-extension Angle: CustomStringConvertible {
-    public var description: String {
-        return "\(self.degrees)°"
-    }
-}
-
-extension Angle: Comparable {
-    static func < (lhs: Self, rhs: Self) -> Bool {
-        return lhs.turns < rhs.turns
-    }
-}
+import Geometry
 
 extension Angle {
 
@@ -160,72 +115,14 @@ extension Angle {
     }
 }
 
-extension Angle {
-    static prefix func +(angle: Angle) -> Angle {
-        return angle
-    }
+func sin(_ angle: Angle) -> CGFloat {
+    return CGFloat(__sinpi(Double(angle.degrees) / 180))
+}
 
-    static prefix func -(angle: Angle) -> Angle {
-        return Angle(turns: -angle.turns)
-    }
+func cos(_ angle: Angle) -> CGFloat {
+    return CGFloat(__cospi(Double(angle.degrees) / 180))
+}
 
-    static func +(lhs: Angle, rhs: Angle) -> Angle {
-        return Angle(turns: lhs.turns + rhs.turns)
-    }
-
-    static func -(lhs: Angle, rhs: Angle) -> Angle {
-        return Angle(turns: lhs.turns - rhs.turns)
-    }
-
-    static func +=(lhs: inout Angle, rhs: Angle) {
-        lhs = lhs + rhs
-    }
-
-    static func -=(lhs: inout Angle, rhs: Angle) {
-        lhs = lhs - rhs
-    }
-
-    static func *(scalar: CGFloat, angle: Angle) -> Angle {
-        return Angle(turns: angle.turns * scalar)
-    }
-
-    static func *(angle: Angle, scalar: CGFloat) -> Angle {
-        return Angle(turns: angle.turns * scalar)
-    }
-
-    static func /(angle: Angle, scalar: CGFloat) -> Angle {
-        return Angle(turns: angle.turns / scalar)
-    }
-
-    static func *=(angle: inout Angle, scalar: CGFloat) {
-        angle = angle * scalar
-    }
-
-    static func /=(angle: inout Angle, scalar: CGFloat) {
-        angle = angle / scalar
-    }
-
-    static func *(scalar: Int, angle: Angle) -> Angle {
-        return angle * CGFloat(scalar)
-    }
-
-    static func *(angle: Angle, scalar: Int) -> Angle {
-        return angle * CGFloat(scalar)
-    }
-
-    static func /(angle: Angle, scalar: Int) -> Angle {
-        return angle / CGFloat(scalar)
-    }
-
-    static func *=(angle: inout Angle, scalar: Int) {
-        angle = angle * scalar
-    }
-
-    static func /=(angle: inout Angle, scalar: Int) {
-        angle = angle / scalar
-    }
-
-    static func /(lhs: Angle, rhs: Angle) -> CGFloat {
-        return lhs.turns / rhs.turns
-    }
+func tan(_ angle: Angle) -> CGFloat {
+    return CGFloat(__tanpi(Double(angle.degrees) / 180))
 }

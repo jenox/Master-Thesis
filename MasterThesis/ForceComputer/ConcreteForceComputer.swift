@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Geometry
 
 struct ConcreteForceComputer: ForceComputer {
     var force1Strength: CGFloat = 25

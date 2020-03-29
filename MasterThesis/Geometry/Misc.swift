@@ -7,22 +7,9 @@
 //
 
 import CoreGraphics
-
-extension Collection where Element == CGPoint {
-    var centroid: CGPoint {
-        let count = self.isEmpty ? 1 : CGFloat(self.count)
-        let x = self.reduce(0, { $0 + $1.x }) / count
-        let y = self.reduce(0, { $0 + $1.y }) / count
-
-        return CGPoint(x: x, y: y)
-    }
-}
+import Geometry
 
 extension CGPoint {
-    func distance(to other: CGPoint) -> CGFloat {
-        return hypot(other.x - self.x, other.y - self.y)
-    }
-
     /// https://stackoverflow.com/a/1501725/796103
     func distance(to segment: Segment) -> CGFloat {
         // Return minimum distance between line segment vw and point p
@@ -38,9 +25,9 @@ extension CGPoint {
     }
 }
 
-struct Segment {
-    var a: CGPoint
-    var b: CGPoint
+extension Segment {
+    var a: CGPoint { start }
+    var b: CGPoint { end }
 
     func intersects(_ other: Segment) -> Bool {
         if self.a == other.a || self.a == other.b { return false }

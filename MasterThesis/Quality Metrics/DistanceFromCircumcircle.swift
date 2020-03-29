@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Geometry
 
 struct DistanceFromCircumcircle: QualityEvaluator {
     func quality(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph) throws -> QualityValue {

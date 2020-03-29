@@ -7,11 +7,9 @@
 //
 
 import CoreGraphics
+import Geometry
 
-struct Circle {
-    var center: CGPoint
-    var radius: CGFloat
-
+extension Circle {
     func contains(_ point: CGPoint) -> Bool {
         return self.center.distance(to: point) <= self.radius * 1.00001
     }

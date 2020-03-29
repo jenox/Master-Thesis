@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Geometry
 
 class PrEdForceApplicator: ForceApplicator {
     func apply(_ forces: [FaceWeightedGraph.Vertex: CGVector], to graph: inout FaceWeightedGraph) {

@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Geometry
 
 struct UndirectedEdge: Equatable, Hashable {
     var first: String

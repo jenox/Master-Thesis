@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Geometry
 import Delaunay
 
 struct DelaunayGraphGenerator: GraphGenerator {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Geometry
 
 class GraphView: UIView {
     var graph: EitherGraph? {
