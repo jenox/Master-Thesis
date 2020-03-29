@@ -20,7 +20,7 @@ struct Polygon: Equatable {
 
     // https://www.mathopenref.com/coordpolygonarea.html
     var area: CGFloat {
-        return self.points.makeAdjacentPairIterator().reduce(0, { $0 + $1.0.x * $1.1.y - $1.0.y * $1.1.x }) / 2
+        return self.points.adjacentPairs(wraparound: true).reduce(0, { $0 + $1.0.x * $1.1.y - $1.0.y * $1.1.x }) / 2
     }
 
     func contains(_ point: CGPoint) -> Bool {

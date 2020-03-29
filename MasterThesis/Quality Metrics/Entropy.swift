@@ -97,7 +97,7 @@ private extension Collection where Element == Double {
 private extension Polygon {
     func withEvenlyDistributedEdgeLengths() -> Polygon {
         let epsilon = 1 as CGFloat
-        let segments = self.points.makeAdjacentPairIterator().map({ Segment(a: $0, b: $1) })
+        let segments = self.points.adjacentPairs(wraparound: true).map(Segment.init)
         let lengths = segments.map(\.length)
         let minimum = max(epsilon, lengths.min()!)
 

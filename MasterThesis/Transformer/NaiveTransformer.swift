@@ -33,7 +33,7 @@ private extension VertexWeightedGraph {
             let x = graph.insertVertex(at: barycenter)
 
             faceVertices[face] = x
-            for (u, v) in face.vertices.makeAdjacentPairIterator() {
+            for (u, v) in face.vertices.adjacentPairs(wraparound: true) {
                 adjacentFaces[UndirectedEdge(first: u, second: v), default: []].append(face)
             }
         }
@@ -78,7 +78,7 @@ private extension VertexWeightedGraph {
         }
 
         // for `({u,v}, {v,w})` in incident edges of G.outerFace
-        for ((u, v), (_, w)) in Array(outerFace.vertices.makeAdjacentPairIterator()).makeAdjacentPairIterator() {
+        for (u,v,w) in outerFace.vertices.adjacentTriplets(wraparound: true) {
 
             // add subdivion vertex `x` at position of `v`
             let x = graph.insertVertex(at: self.position(of: v))
@@ -95,7 +95,7 @@ private extension VertexWeightedGraph {
             let endpoints = self.vertices(adjacentTo: vertex).sorted(by: { self.angle(of: DirectedEdge(from: vertex, to: $0)) })
             var vertices: [FaceWeightedGraph.Vertex] = []
 
-            for (x, y) in endpoints.makeAdjacentPairIterator() {
+            for (x, y) in endpoints.adjacentPairs(wraparound: true) {
                 let face = Face(vertices: [vertex, x, y])
 
                 // For triangles with two edges on outer face we must check orientation!
@@ -108,7 +108,7 @@ private extension VertexWeightedGraph {
                 }
             }
 
-            for (index, (u, v)) in vertices.makeAdjacentPairIterator().enumerated().reversed() {
+            for (index, (u, v)) in vertices.adjacentPairs(wraparound: true).enumerated().reversed() {
                 let x = graph.vertex(adjacentTo: u, and: v)!
                 vertices.insert(x, at: index + 1)
             }

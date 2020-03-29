@@ -96,7 +96,7 @@ struct FaceWeightedGraph {
 
     mutating func defineFace(named name: String, boundedBy boundary: [Vertex], weight: Double) {
         assert(self.facePayloads[name] == nil)
-        assert(boundary.makeAdjacentPairIterator().allSatisfy(self.containsEdge(between:and:)))
+        assert(boundary.adjacentPairs(wraparound: true).allSatisfy(self.containsEdge(between:and:)))
 
         self.faces.append(name)
         self.facePayloads[name] = FacePayload(weight: weight, boundary: boundary)
@@ -192,7 +192,7 @@ struct FaceWeightedGraph {
     }
 
     func firstEdgeCrossing() -> (Segment, Segment)? {
-        for ((u,v),(w,x)) in self.edges.cartesian(with: self.edges) where Set([u,v,w,x]).count == 4 {
+        for ((u,v),(w,x)) in self.edges.strictlyTriangularPairs() where Set([u,v,w,x]).count == 4 {
             let s1 = self.segment(from: u, to: v)
             let s2 = self.segment(from: w, to: x)
             if s1.intersects(s2) {
@@ -215,7 +215,7 @@ struct FaceWeightedGraph {
         let rotated = left.rotated(by: index)
         let boundary = Array(rotated.reversed().prefix(while: right.contains).reversed() + rotated.prefix(while: right.contains))
 
-        assert(boundary.makeAdjacentPairIterator().dropLast().allSatisfy(self.containsEdge(between:and:)))
+        assert(boundary.adjacentPairs(wraparound: false).allSatisfy(self.containsEdge(between:and:)))
         assert(boundary.count(where: { !self.isSubdivisionVertex($0) }) == 2)
         assert(boundary.dropFirst().dropLast().allSatisfy(self.isSubdivisionVertex(_:)))
 

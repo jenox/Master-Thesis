@@ -7,6 +7,7 @@
 //
 
 import Swift
+import Collections
 
 extension Comparable {
     mutating func formMinimum(with other: Self) {

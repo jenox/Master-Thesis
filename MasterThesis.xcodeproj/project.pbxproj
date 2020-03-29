@@ -33,6 +33,8 @@
 		CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
 		CB5A22DE23F3524A00001A2F /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DC23F33C6F00001A2F /* Polygon.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
+		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
+		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
 		CBAC5973242F788200D067A0 /* StringInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolation.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
@@ -113,6 +115,7 @@
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DC23F33C6F00001A2F /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
+		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolation.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,7 +175,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBB8F1252426A3060062D704 /* Delaunay in Frameworks */,
+				CBA25E1524312CD20019C766 /* Geometry in Frameworks */,
 				CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */,
+				CBA25E1324312CD20019C766 /* Collections in Frameworks */,
 				CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,6 +222,7 @@
 		CBDA153423CB670B0070847D = {
 			isa = PBXGroup;
 			children = (
+				CBA25E1124312A7E0019C766 /* Modules */,
 				CBDA153F23CB670B0070847D /* MasterThesis */,
 				CBDA155D23CB88850070847D /* MasterThesisTests */,
 				CB131A4A241543A600B5F5BB /* CLI */,
@@ -424,6 +430,8 @@
 				CB1AA1B924045AA0009028F8 /* SnapKit */,
 				CB131A432415438300B5F5BB /* MultipeerKit */,
 				CBB8F1242426A3060062D704 /* Delaunay */,
+				CBA25E1224312CD20019C766 /* Collections */,
+				CBA25E1424312CD20019C766 /* Geometry */,
 			);
 			productName = MasterThesis;
 			productReference = CBDA153D23CB670B0070847D /* MasterThesis.app */;
@@ -909,6 +917,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB1AA1B824045AA0009028F8 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		CBA25E1224312CD20019C766 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Collections;
+		};
+		CBA25E1424312CD20019C766 /* Geometry */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Geometry;
 		};
 		CBB8F1242426A3060062D704 /* Delaunay */ = {
 			isa = XCSwiftPackageProductDependency;

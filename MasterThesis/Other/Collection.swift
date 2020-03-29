@@ -16,35 +16,4 @@ extension Collection {
     func count(where predicate: (Element) throws -> Bool) rethrows -> Int {
         return try self.reduce(0, { $0 + (try predicate($1) ? 1 : 0) })
     }
-
-    func makeAdjacentPairIterator() -> AnyIterator<(Element, Element)> {
-        var index = self.startIndex
-
-        return AnyIterator({
-            guard index != self.endIndex else { return nil }
-
-            let nextIndex = self.index(after: index)
-            defer { index = nextIndex }
-
-            if nextIndex != self.endIndex {
-                return (self[index], self[nextIndex])
-            } else if index == self.startIndex {
-                return nil
-            } else {
-                return (self[index], self[self.startIndex])
-            }
-        })
-    }
-
-    func cartesian<T>(with other: T) -> AnySequence<(Element, T.Element)> where T: Collection {
-        var cartesian: [(Element, T.Element)] = []
-
-        for element1 in self {
-            for element2 in other {
-                cartesian.append((element1, element2))
-            }
-        }
-
-        return AnySequence(cartesian)
-    }
 }

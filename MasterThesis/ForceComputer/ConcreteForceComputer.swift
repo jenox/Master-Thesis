@@ -24,8 +24,7 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-vertex repulsion
         if self.force1Strength > 0 {
-            // TODO: we count them twice...
-            for (u, v) in graph.vertices.cartesian(with: graph.vertices) where u != v {
+            for (u, v) in graph.vertices.strictlyTriangularPairs() {
                 let uv = graph.vector(from: u, to: v)
                 let d = uv.length
 
@@ -47,7 +46,7 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-edge repulsion
         if self.force3Strength > 0 {
-            for (u, (v, w)) in graph.vertices.cartesian(with: graph.edges) where u != v && u != w {
+            for (u, (v, w)) in graph.vertices.cartesianProduct(with: graph.edges) where u != v && u != w {
                 let segment = graph.segment(from: v, to: w)
                 let p = segment.closestPoint(to: graph.position(of: u))
 

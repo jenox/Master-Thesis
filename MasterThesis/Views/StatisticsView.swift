@@ -18,7 +18,7 @@ struct Column<RowType> {
 class StatisticsView<RowType>: UIView {
     var columns: [Column<RowType>] {
         didSet {
-            assert(self.columns.count != oldValue.count)
+            assert(self.columns.count == oldValue.count)
             for row in self.stackView.arrangedSubviews {
                 (row as! StatisticsRowView<RowType>).performFormattingUpdate()
             }
