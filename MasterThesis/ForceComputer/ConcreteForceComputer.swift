@@ -24,6 +24,7 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-vertex repulsion
         if self.force1Strength > 0 {
+            // TODO: we count them twice...
             for (u, v) in graph.vertices.cartesian(with: graph.vertices) where u != v {
                 let uv = graph.vector(from: u, to: v)
                 let d = uv.length
