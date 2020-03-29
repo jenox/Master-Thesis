@@ -35,6 +35,7 @@
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
+		CBA25E172431344E0019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E162431344E0019C766 /* Imports.swift */; };
 		CBAC5973242F788200D067A0 /* StringInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolation.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
@@ -116,6 +117,7 @@
 		CB5A22DC23F33C6F00001A2F /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
+		CBA25E162431344E0019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolation.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,6 +246,7 @@
 		CBDA153F23CB670B0070847D /* MasterThesis */ = {
 			isa = PBXGroup;
 			children = (
+				CBA25E162431344E0019C766 /* Imports.swift */,
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
 				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
 				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
@@ -559,6 +562,7 @@
 				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */,
 				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
+				CBA25E172431344E0019C766 /* Imports.swift in Sources */,
 				CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */,
 				CB5A22DD23F33C6F00001A2F /* Polygon.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */,

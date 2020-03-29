@@ -62,7 +62,7 @@ extension Polygon {
         }
 
         // point-point-edge
-        for ((p,q),g) in points.strictlyTriangularPairs().cartesianProduct(with: segments) where Set([p,q,g.start,g.end]).count == 4 {
+        for ((p,q),g) in points.strictlyTriangularPairs().cartesianProduct(with: segments) where allDistinct(p,q,g.start,g.end) {
             let g = Line(through: g.start, and: g.end)
             for center in equidistantPoints(p1: p, p2: q, l1: g) {
                 let radius = [p.distance(to: center), q.distance(to: center), g.distance(to: center)].max()!
@@ -73,7 +73,7 @@ extension Polygon {
         }
 
         // point-edge-edge
-        for (p,(g,h)) in points.cartesianProduct(with: segments.strictlyTriangularPairs()) where Set([p,g.start,g.end,h.start,h.end]).count == 5 {
+        for (p,(g,h)) in points.cartesianProduct(with: segments.strictlyTriangularPairs()) where allDistinct(p,g.start,g.end,h.start,h.end) {
             let g = Line(through: g.start, and: g.end)
             let h = Line(through: h.start, and: h.end)
             for center in equidistantPoints(a: p, g: g, h: h) {
@@ -95,9 +95,8 @@ extension Polygon {
     }
 }
 
-extension CGPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-    }
+private func allDistinct(_ points: CGPoint...) -> Bool {
+    return points.strictlyTriangularPairs().allSatisfy(!=)
 }
 
 private extension Circle {

@@ -24,27 +24,27 @@ struct DelaunayGraphGenerator: GraphGenerator {
         precondition(self.countries.count >= 3)
 
         var graph = VertexWeightedGraph()
-        var vertices: [CGPoint: String] = [:]
+        var vertices: [HashablePoint: String] = [:]
 
         let numberOfTopLevelCountries = max(3, Int(round((1 - self.nestingRatio) * Double(self.countries.count))))
 
         // Create n - k top level points
         for country in self.countries.prefix(numberOfTopLevelCountries) {
             let weight = Double.random(in: self.weights, using: &generator)
-            let position = self.randomPoint(existing: AnyCollection(vertices.keys), using: &generator)
+            let position = self.randomPoint(existing: vertices.keys.map(\.point), using: &generator)
 
-            let oldValue = vertices.updateValue(country, forKey: position)
+            let oldValue = vertices.updateValue(country, forKey: .init(point: position))
             assert(oldValue == nil)
 
             graph.insert(country, at: position, weight: weight)
         }
 
         // Triangulate
-        let triangles = Delaunay().triangulate(vertices.keys.map(Vertex.init))
+        let triangles = Delaunay().triangulate(vertices.keys.map(\.point).map(Vertex.init))
         for triangle in triangles {
-            let v1 = vertices[triangle.v1()]!
-            let v2 = vertices[triangle.v2()]!
-            let v3 = vertices[triangle.v3()]!
+            let v1 = vertices[.init(point: triangle.v1())]!
+            let v2 = vertices[.init(point: triangle.v2())]!
+            let v3 = vertices[.init(point: triangle.v3())]!
 
             for (u, v) in [(v1, v2), (v2, v3), (v3, v1)] {
                 if !graph.containsEdge(between: u, and: v) {
@@ -73,16 +73,16 @@ struct DelaunayGraphGenerator: GraphGenerator {
             ])
 
             graph.insert(country, at: x, weight: self.generateRandomWeight(using: &generator))
-            vertices[x] = country
-            graph.insertEdge(between: vertices[a]!, and: country)
-            graph.insertEdge(between: vertices[b]!, and: country)
-            graph.insertEdge(between: vertices[c]!, and: country)
+            vertices[.init(point: x)] = country
+            graph.insertEdge(between: vertices[.init(point: a)]!, and: country)
+            graph.insertEdge(between: vertices[.init(point: b)]!, and: country)
+            graph.insertEdge(between: vertices[.init(point: c)]!, and: country)
         }
 
         return graph
     }
 
-    private func randomPoint<T>(existing: AnyCollection<CGPoint>, using generator: inout T) -> CGPoint where T: RandomNumberGenerator {
+    private func randomPoint<T>(existing: [CGPoint], using generator: inout T) -> CGPoint where T: RandomNumberGenerator {
         return CGPoint.random(in: self.bounds, using: &generator)
     }
 }
@@ -140,9 +140,11 @@ private extension CGPoint {
     }
 }
 
-extension CGPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        self.x.hash(into: &hasher)
-        self.y.hash(into: &hasher)
+struct HashablePoint: Hashable {
+    var point: CGPoint
+
+    func hash(into hasher: inout Hasher) {
+        self.point.x.hash(into: &hasher)
+        self.point.y.hash(into: &hasher)
     }
 }
