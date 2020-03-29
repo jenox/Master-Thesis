@@ -2,7 +2,7 @@
 //  Circle.swift
 //  MasterThesis
 //
-//  Created by Christian Schnorr on 12.03.20.
+//  Created by Christian Schnorr on 29.03.20.
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
@@ -56,12 +56,12 @@ extension Circle {
         // For each point not in the two-point circle
         for r in points where !circle.contains(r) {
             let pq = q - p
-            let cross: CGFloat = pq.cross(r - p)
+            let prod: CGFloat = cross(pq, r - p)
 
             if let circle = Circle.circumcircle(of: p, q, r) {
-                if cross > 0 && (left == nil || pq.cross(circle.center - p) > pq.cross(left!.center - p)) {
+                if prod > 0 && (left == nil || cross(pq, circle.center - p) > cross(pq, left!.center - p)) {
                     left = circle
-                } else if cross < 0 && (right == nil || pq.cross(circle.center - p) < pq.cross(right!.center - p)) {
+                } else if prod < 0 && (right == nil || cross(pq, circle.center - p) < cross(pq, right!.center - p)) {
                     right = circle
                 }
             }

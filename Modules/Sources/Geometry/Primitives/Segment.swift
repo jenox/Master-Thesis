@@ -33,3 +33,9 @@ public struct Segment {
     public var start: CGPoint
     public var end: CGPoint
 }
+
+public extension Segment {
+    var length: CGFloat {
+        return self.start.distance(to: self.end)
+    }
+}

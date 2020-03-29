@@ -88,27 +88,46 @@ public extension CGVector {
     static func /= (lhs: inout CGVector, rhs: Int) {
         lhs = lhs / rhs
     }
-
-
-
-
-    
-    /// Dot product.
-    static func * (lhs: CGVector, rhs: CGVector) -> CGFloat {
-        return lhs.dx * rhs.dx + lhs.dy * rhs.dy
-    }
 }
 
 public extension CGVector {
+    init(from source: CGPoint, to target: CGPoint) {
+        self = CGVector(dx: target.x - source.x, dy: target.y - source.y)
+    }
+
     var length: CGFloat {
         return hypot(self.dx, self.dy)
     }
 
     var normalized: CGVector {
-        return self / self.length
+        let length = self.length
+        guard length > 0 else { return .zero }
+
+        return CGVector(dx: self.dx / self.length, dy: self.dy / self.length)
     }
 
-    func rotated90Deg() -> CGVector {
-        return CGVector(dx: -self.dy, dy: self.dx)
+    func scalarProjection(onto other: CGVector) -> CGFloat {
+        return dot(self, other) / other.length
     }
+
+    // https://en.wikipedia.org/wiki/Vector_projection
+    func projected(onto other: CGVector) -> CGVector {
+        return dot(self, other) / dot(other, other) * other
+    }
+
+    func rejected(from other: CGVector) -> CGVector {
+        return other - self.projected(onto: other)
+    }
+}
+
+public func abs(_ vector: CGVector) -> CGFloat {
+    return hypot(vector.dx, vector.dy)
+}
+
+public func dot(_ lhs: CGVector, _ rhs: CGVector) -> CGFloat {
+    return lhs.dx * rhs.dx + lhs.dy * rhs.dy
+}
+
+public func cross(_ lhs: CGVector, _ rhs: CGVector) -> CGFloat {
+    return lhs.dx * rhs.dy - lhs.dy * rhs.dx
 }

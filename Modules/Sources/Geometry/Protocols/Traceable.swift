@@ -27,3 +27,9 @@ import CoreGraphics
 public protocol Traceable {
     func point(at t: CGFloat) -> CGPoint
 }
+
+extension Segment: Traceable {
+    public func point(at t: CGFloat) -> CGPoint {
+        return self.start + t * (self.end - self.start)
+    }
+}

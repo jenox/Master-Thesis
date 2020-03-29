@@ -104,7 +104,7 @@ private extension Polygon {
 
         var points: [CGPoint] = []
         for segment in segments {
-            guard segment.length >= epsilon else { points.append(segment.a); continue }
+            guard segment.length >= epsilon else { points.append(segment.start); continue }
 
             let factor = segment.length / minimum
             let error1 = minimum / (segment.length / ceil(factor)) - 1

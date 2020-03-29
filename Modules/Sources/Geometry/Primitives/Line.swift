@@ -43,6 +43,7 @@ public struct Line {
 }
 
 public extension Line {
+    @available(*, deprecated)
     func distance(to point: CGPoint) -> CGFloat {
         // Return minimum distance between line segment vw and point p
         let l2 = pow(self.a.distance(to: self.b), 2)  // i.e. |w-v|^2 -  avoid a sqrt
@@ -51,12 +52,13 @@ public extension Line {
         // We find projection of point p onto the line.
         // It falls where t = [(p-v) . (w-v)] / |w-v|^2
         // We clamp t from [0,1] to handle points outside the segment vw.
-        let t = ((point - self.a) * (self.b - self.a)) / l2
+        let t = dot((point - self.a), (self.b - self.a)) / l2
         let projection = self.a + t * (self.b - self.a) // Projection falls on the segment
         return point.distance(to: projection)
     }
 
     /// https://en.wikipedia.org/wiki/Line-line_intersection#Given_two_points_on_each_line
+    @available(*, deprecated)
     func intersection(with other: Line) -> CGPoint? {
         let (x1, y1) = (self.a.x, self.a.y)
         let (x2, y2) = (self.b.x, self.b.y)

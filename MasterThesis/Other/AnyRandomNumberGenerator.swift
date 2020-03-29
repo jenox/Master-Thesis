@@ -9,7 +9,8 @@
 import Swift
 
 struct AnyRandomNumberGenerator: RandomNumberGenerator {
-    var generator: RandomNumberGenerator
+    private(set) var generator: RandomNumberGenerator
+
     init<T>(_ generator: T) where T: RandomNumberGenerator {
         self.generator = generator
     }

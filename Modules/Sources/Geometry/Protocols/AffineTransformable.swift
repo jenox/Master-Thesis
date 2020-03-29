@@ -31,15 +31,11 @@ public protocol AffineTransformable {
 }
 
 public extension AffineTransformable {
-    func offsetBy(tx: CGFloat, ty: CGFloat) -> TransformedSelf {
-        return self.applying(.init(translationX: tx, y: ty))
-    }
-
     func offset(by offset: CGVector) -> TransformedSelf {
         return self.applying(.init(translationX: offset.dx, y: offset.dy))
     }
 
-    func translatedBy(tx: CGFloat, ty: CGFloat) -> TransformedSelf {
+    func offsetBy(tx: CGFloat, ty: CGFloat) -> TransformedSelf {
         return self.applying(.init(translationX: tx, y: ty))
     }
 
@@ -47,12 +43,24 @@ public extension AffineTransformable {
         return self.applying(.init(translationX: translation.dx, y: translation.dy))
     }
 
-    func scaledBy(sx: CGFloat, sy: CGFloat) -> TransformedSelf {
-        return self.applying(.init(scaleX: sx, y: sy))
+    func translatedBy(tx: CGFloat, ty: CGFloat) -> TransformedSelf {
+        return self.applying(.init(translationX: tx, y: ty))
     }
 
     func scaled(by scale: CGFloat) -> TransformedSelf {
         return self.applying(.init(scaleX: scale, y: scale))
+    }
+
+    func scaledBy(sx: CGFloat, sy: CGFloat) -> TransformedSelf {
+        return self.applying(.init(scaleX: sx, y: sy))
+    }
+
+    func rotated(by radians: CGFloat) -> TransformedSelf {
+        return self.applying(.init(rotationAngle: radians))
+    }
+
+    func rotated(by angle: Angle) -> TransformedSelf {
+        return self.applying(.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0))
     }
 }
 

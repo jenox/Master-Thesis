@@ -5,6 +5,7 @@
 //  Created by Christian Schnorr on 29.03.20.
 //
 
+/*
 import CoreGraphics
 import Collections
 import class UIKit.UIBezierPath
@@ -100,10 +101,6 @@ private func allDistinct(_ points: CGPoint...) -> Bool {
 }
 
 private extension Circle {
-    func contains(_ point: CGPoint) -> Bool {
-        return self.center.distance(to: point) <= self.radius * 1.00001
-    }
-
     func intersects(_ segment: Segment) -> Bool {
         return self.contains(segment.start) == self.contains(segment.end) && self.contains(segment.start) == self.contains(segment.closestPoint(to: self.center))
     }
@@ -147,45 +144,12 @@ private extension Segment {
         return closest.distance(to: circle.center) >= circle.radius * 0.99
     }
 
-    func closestPoint(to other: CGPoint) -> CGPoint {
-        // Return minimum distance between line segment vw and point p
-        let l2 = pow(self.start.distance(to: self.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
-        guard (l2 != 0.0) else { return self.start } // v == w case
-        // Consider the line extending the segment, parameterized as v + t (w - v).
-        // We find projection of point p onto the line.
-        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
-        // We clamp t from [0,1] to handle points outside the segment vw.
-        let t = max(0, min(1, ((other - self.start) * (self.end - self.start)) / l2))
-        return self.point(at: t)
-    }
-
-    func point(at progress: CGFloat) -> CGPoint {
-        return CGPoint(
-            x: self.start.x + progress * (self.end.x - self.start.x),
-            y: self.start.y + progress * (self.end.y - self.start.y)
-        )
-    }
-
     func distance(to point: CGPoint) -> CGFloat {
         return point.distance(to: self)
     }
 }
 
 private extension CGPoint {
-    /// https://stackoverflow.com/a/1501725/796103
-    func distance(to segment: Segment) -> CGFloat {
-        // Return minimum distance between line segment vw and point p
-        let l2 = pow(segment.start.distance(to: segment.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
-        if (l2 == 0.0) { return self.distance(to: segment.start) } // v == w case
-        // Consider the line extending the segment, parameterized as v + t (w - v).
-        // We find projection of point p onto the line.
-        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
-        // We clamp t from [0,1] to handle points outside the segment vw.
-        let t = max(0, min(1, ((self - segment.start) * (segment.end - segment.start)) / l2))
-        let projection = segment.start + t * (segment.end - segment.start) // Projection falls on the segment
-        return self.distance(to: projection)
-    }
-
     static func random<T>(in bounds: CGRect, using generator: inout T) -> CGPoint where T: RandomNumberGenerator {
         let x = CGFloat.random(in: bounds.minX...bounds.maxX, using: &generator)
         let y = CGFloat.random(in: bounds.minY...bounds.maxY, using: &generator)
@@ -195,11 +159,8 @@ private extension CGPoint {
 }
 
 private extension Collection {
-    func min<T>(by closure: (Element) throws -> T) rethrows -> Element? where T: Comparable {
-        return try self.map({ ($0, try closure($0)) }).min(by: { $0.1 < $1.1 })?.0
-    }
-
     func max<T>(by closure: (Element) throws -> T) rethrows -> Element? where T: Comparable {
         return try self.map({ ($0, try closure($0)) }).max(by: { $0.1 < $1.1 })?.0
     }
 }
+*/

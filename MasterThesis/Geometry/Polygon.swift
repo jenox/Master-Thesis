@@ -2,7 +2,7 @@
 //  Polygon.swift
 //  MasterThesis
 //
-//  Created by Christian Schnorr on 11.02.20.
+//  Created by Christian Schnorr on 29.03.20.
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
@@ -10,7 +10,6 @@ import CoreGraphics
 import Geometry
 
 extension Polygon {
-
     // https://www.mathopenref.com/coordpolygonarea.html
     var area: CGFloat {
         return self.points.adjacentPairs(wraparound: true).reduce(0, { $0 + $1.0.x * $1.1.y - $1.0.y * $1.1.x }) / 2
@@ -37,9 +36,5 @@ extension Polygon {
 
         let outside = (Angle.atan2(vq.dy, vq.dx) - Angle.atan2(vp.dy, vp.dx)).counterclockwise
         return (vp.rotated(by: outside / 2).normalized, outside)
-    }
-
-    func normal(at index: Int) -> CGVector {
-        return normalAndAngle(at: index).normal
     }
 }
