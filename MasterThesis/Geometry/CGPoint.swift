@@ -33,19 +33,4 @@ extension CGPoint {
 
         return segment.start + fraction * ab
     }
-
-    /// https://stackoverflow.com/a/1501725/796103
-    @available(*, deprecated)
-    func distance(to segment: Segment) -> CGFloat {
-        // Return minimum distance between line segment vw and point p
-        let l2 = pow(segment.start.distance(to: segment.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
-        if (l2 == 0.0) { return self.distance(to: segment.start) } // v == w case
-        // Consider the line extending the segment, parameterized as v + t (w - v).
-        // We find projection of point p onto the line.
-        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
-        // We clamp t from [0,1] to handle points outside the segment vw.
-        let t = max(0, min(1, dot((self - segment.start), (segment.end - segment.start)) / l2))
-        let projection = segment.start + t * (segment.end - segment.start) // Projection falls on the segment
-        return self.distance(to: projection)
-    }
 }

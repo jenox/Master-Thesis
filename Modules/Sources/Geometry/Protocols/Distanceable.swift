@@ -33,3 +33,40 @@ extension CGPoint: Distanceable {
         return hypot(point.x - self.x, point.y - self.y)
     }
 }
+
+extension Line: Distanceable {
+    public func distance(to point: CGPoint) -> CGFloat {
+        // Return minimum distance between line segment vw and point p
+        let l2 = pow(self.a.distance(to: self.b), 2)  // i.e. |w-v|^2 -  avoid a sqrt
+        if (l2 == 0.0) { return self.a.distance(to: point) } // v == w case
+        // Consider the line extending the segment, parameterized as v + t (w - v).
+        // We find projection of point p onto the line.
+        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+        // We clamp t from [0,1] to handle points outside the segment vw.
+        let t = dot((point - self.a), (self.b - self.a)) / l2
+        let projection = self.a + t * (self.b - self.a) // Projection falls on the segment
+        return point.distance(to: projection)
+    }
+}
+
+extension Segment: Distanceable {
+    /// https://stackoverflow.com/a/1501725/796103
+    public func distance(to point: CGPoint) -> CGFloat {
+        // Return minimum distance between line segment vw and point p
+        let l2 = pow(self.start.distance(to: self.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
+        if (l2 == 0.0) { return point.distance(to: self.start) } // v == w case
+        // Consider the line extending the segment, parameterized as v + t (w - v).
+        // We find projection of point p onto the line.
+        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+        // We clamp t from [0,1] to handle points outside the segment vw.
+        let t = (dot((point - self.start), (self.end - self.start)) / l2).clamped(to: 0...1)
+        let projection = self.start + t * (self.end - self.start) // Projection falls on the segment
+        return point.distance(to: projection)
+    }
+}
+
+private extension Comparable {
+    func clamped(to interval: ClosedRange<Self>) -> Self {
+        return min(max(self, interval.lowerBound), interval.upperBound)
+    }
+}
