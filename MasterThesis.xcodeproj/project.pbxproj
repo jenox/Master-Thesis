@@ -40,6 +40,11 @@
 		CBA25E2024314E8D0019C766 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1F24314E8D0019C766 /* Circle.swift */; };
 		CBA25E2224314ECF0019C766 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2124314ECF0019C766 /* CGPoint.swift */; };
 		CBA25E2624314EE10019C766 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
+		CBA25E28243156260019C766 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1B24314E320019C766 /* Polygon.swift */; };
+		CBA25E29243156430019C766 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
+		CBA25E2B2431569C0019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2A2431569C0019C766 /* Collections */; };
+		CBA25E2D2431569C0019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2C2431569C0019C766 /* Geometry */; };
+		CBA25E2F243156F80019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2E243156F80019C766 /* Imports.swift */; };
 		CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
@@ -120,6 +125,7 @@
 		CBA25E1F24314E8D0019C766 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		CBA25E2124314ECF0019C766 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		CBA25E2524314EE10019C766 /* CGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
+		CBA25E2E243156F80019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolations.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +191,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBA25E2D2431569C0019C766 /* Geometry in Frameworks */,
+				CBA25E2B2431569C0019C766 /* Collections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +238,21 @@
 			path = Geometry;
 			sourceTree = "<group>";
 		};
+		CBA25E27243155010019C766 /* Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
+				CBFDDE51242AA454005B3048 /* Errors.swift */,
+				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
+				CBFDDE2824292AFE005B3048 /* Generator */,
+				CBFDDE3024292E0F005B3048 /* Transformer */,
+				CBFDDE2E24292DDB005B3048 /* ForceComputer */,
+				CBFDDE2F24292DDD005B3048 /* ForceApplicator */,
+				CBFDDE2B24292D4D005B3048 /* Quality Metrics */,
+			);
+			path = Pipeline;
+			sourceTree = "<group>";
+		};
 		CBDA153423CB670B0070847D = {
 			isa = PBXGroup;
 			children = (
@@ -257,15 +280,9 @@
 			children = (
 				CBA25E162431344E0019C766 /* Imports.swift */,
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
-				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
-				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
-				CBFDDE372429303C005B3048 /* Views */,
 				CBEE493623E1E17B00986877 /* Graph */,
-				CBFDDE2824292AFE005B3048 /* Generator */,
-				CBFDDE3024292E0F005B3048 /* Transformer */,
-				CBFDDE2E24292DDB005B3048 /* ForceComputer */,
-				CBFDDE2F24292DDD005B3048 /* ForceApplicator */,
-				CBFDDE2B24292D4D005B3048 /* Quality Metrics */,
+				CBA25E27243155010019C766 /* Pipeline */,
+				CBFDDE372429303C005B3048 /* Views */,
 				CB456EA6241AB7AA00008E87 /* DataStructures */,
 				CBA25E1A24314E150019C766 /* Geometry */,
 				CBF37CE824014BD800AA4846 /* Other */,
@@ -289,6 +306,7 @@
 		CBDA155D23CB88850070847D /* MasterThesisTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBA25E2E243156F80019C766 /* Imports.swift */,
 				CBDA155E23CB88850070847D /* MasterThesisTests.swift */,
 				CBEE493923E1E1BC00986877 /* FaceTests.swift */,
 				CB5A22DF23F352B800001A2F /* PolygonTests.swift */,
@@ -312,7 +330,6 @@
 		CBF37CE824014BD800AA4846 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				CBFDDE51242AA454005B3048 /* Errors.swift */,
 				CBDA156F23CBA70B0070847D /* Collection.swift */,
 				CBF37CF02401844C00AA4846 /* Comparable.swift */,
 				CBA25E1824314DE20019C766 /* Result.swift */,
@@ -450,6 +467,10 @@
 			dependencies = (
 			);
 			name = MasterThesisTests;
+			packageProductDependencies = (
+				CBA25E2A2431569C0019C766 /* Collections */,
+				CBA25E2C2431569C0019C766 /* Geometry */,
+			);
 			productName = MasterThesisTests;
 			productReference = CBDA155C23CB88850070847D /* MasterThesisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -593,10 +614,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */,
+				CBA25E2F243156F80019C766 /* Imports.swift in Sources */,
 				CBDA157123CBA7440070847D /* Collection.swift in Sources */,
+				CBA25E29243156430019C766 /* CGVector.swift in Sources */,
 				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
 				CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */,
 				CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */,
+				CBA25E28243156260019C766 /* Polygon.swift in Sources */,
 				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
 				CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */,
 				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
@@ -921,6 +945,14 @@
 			productName = Collections;
 		};
 		CBA25E1424312CD20019C766 /* Geometry */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Geometry;
+		};
+		CBA25E2A2431569C0019C766 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Collections;
+		};
+		CBA25E2C2431569C0019C766 /* Geometry */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Geometry;
 		};

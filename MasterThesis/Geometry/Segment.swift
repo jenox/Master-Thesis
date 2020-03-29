@@ -17,7 +17,6 @@ extension Segment {
         return check_inter(a: self.start, b: self.end, c: other.start, d: other.end)
     }
 
-    @available(*, deprecated)
     func closestPoint(to other: CGPoint) -> CGPoint {
         // Return minimum distance between line segment vw and point p
         let l2 = pow(self.start.distance(to: self.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
