@@ -43,7 +43,7 @@ struct VertexWeightedGraph {
         self.adjacencies[vertex] = []
     }
 
-    mutating func containsEdge(between endpoint1: Vertex, and endpoint2: Vertex) -> Bool {
+    func containsEdge(between endpoint1: Vertex, and endpoint2: Vertex) -> Bool {
         return self.vertices(adjacentTo: endpoint1).contains(endpoint2)
     }
 
@@ -54,6 +54,15 @@ struct VertexWeightedGraph {
         self.edges.append((endpoint1, endpoint2))
         self.adjacencies[endpoint1]!.append(endpoint2)
         self.adjacencies[endpoint2]!.append(endpoint1)
+    }
+
+    mutating func removeEdge(between u: Vertex, and v: Vertex) {
+        precondition(u != v)
+        precondition(self.vertices(adjacentTo: u).contains(v))
+
+        self.edges.removeAll(where: { $0 == (u,v) || $0 == (v,u) })
+        self.adjacencies[u]!.removeAll(where: { $0 == v })
+        self.adjacencies[v]!.removeAll(where: { $0 == u })
     }
 
     func vertices(adjacentTo vertex: Vertex) -> [Vertex] {

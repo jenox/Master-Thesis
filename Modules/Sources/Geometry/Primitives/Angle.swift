@@ -66,6 +66,10 @@ public extension Angle {
     }
 }
 
+public extension Angle {
+    static let zero: Angle = .init(turns: 0)
+}
+
 extension Angle: CustomStringConvertible {
     public var description: String {
         return "\(self.degrees)°"
@@ -244,13 +248,11 @@ public extension Angle {
     }
 
     /// [-180°, 180°)
-    @available(*, deprecated)
     init(from a: CGVector, to b: CGVector) {
         self = (Angle.atan2(b.dy, b.dx) - Angle.atan2(a.dy, a.dx)).normalized
     }
 
     /// [-180°, 180°)
-    @available(*, deprecated)
     init(from start: CGPoint, by vertex: CGPoint, to end: CGPoint) {
         let vp = CGVector(from: vertex, to: start)
         let vq = CGVector(from: vertex, to: end)

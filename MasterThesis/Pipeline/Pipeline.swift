@@ -206,48 +206,27 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func flipRandomAdjacency() {
         self.scheduleMutationOperation(named: "random edge flip", { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-
-            var boundaries: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Vertex>] = [:]
-            var adjacencies: [FaceWeightedGraph.Face: Set<FaceWeightedGraph.Face>] = [:]
-
-            for face in graph.faces {
-                boundaries[face] = Set(graph.boundary(of: face))
+            switch graph {
+            case .vertexWeighted(var graph):
+                try graph.flipRandomEdge(using: &self.randomNumberGenerator)
+                return .vertexWeighted(graph)
+            case .faceWeighted(var graph):
+                try graph.flipRandomAdjacency(using: &self.randomNumberGenerator)
+                return .faceWeighted(graph)
             }
-
-            for (u, v) in graph.edges {
-                let faces = graph.faces.filter({ boundaries[$0]!.contains(u) && boundaries[$0]!.contains(v) })
-                precondition(faces.count == 1 || faces.count == 2)
-
-                if faces.count == 2 {
-                    adjacencies[faces[0], default: []].insert(faces[1])
-                    adjacencies[faces[1], default: []].insert(faces[0])
-                }
-            }
-
-            let linearized = adjacencies.flatMap({ key, value in value.map({ (key, $0) }) })
-            let filtered = linearized.filter({ (u,v) in
-                let boundary = graph.boundary(between: u, and: v)!
-                let count1 = graph.faces.filter({ boundaries[$0]!.contains(boundary.first!) }).count
-                let count2 = graph.faces.filter({ boundaries[$0]!.contains(boundary.last!) }).count
-                return count1 == 3 && count2 == 3
-            })
-
-            guard let selected = filtered.randomElement() else { throw UnsupportedOperationError() }
-
-            try graph.flipBorder(between: selected.0, and: selected.1)
-
-            return .faceWeighted(graph)
         })
     }
 
     func flipAdjacency(between first: String, and second: String, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-
-            try graph.flipBorder(between: first, and: second)
-
-            return .faceWeighted(graph)
+            switch graph {
+            case .vertexWeighted(var graph):
+                try graph.flipEdge(between: first, and: second)
+                return .vertexWeighted(graph)
+            case .faceWeighted(var graph):
+                try graph.flipAdjanency(between: first, and: second)
+                return .faceWeighted(graph)
+            }
         }, completion: completion)
     }
 }

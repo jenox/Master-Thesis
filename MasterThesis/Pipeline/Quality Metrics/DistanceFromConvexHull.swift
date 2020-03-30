@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Collections
 import Geometry
 
 struct DistanceFromConvexHull: QualityEvaluator {
@@ -18,31 +19,24 @@ struct DistanceFromConvexHull: QualityEvaluator {
     }
 }
 
-// https://rosettacode.org/wiki/Convex_hull#Swift
+// Graham's scan
 private func calculateConvexHull(fromPoints points: [CGPoint]) -> [CGPoint] {
-    guard points.count >= 3 else {
-        return points
-    }
+    guard points.count >= 3 else { return points }
 
-    var hull = [CGPoint]()
-    let (leftPointIdx, _) = points.enumerated().min(by: { $0.element.x < $1.element.x })!
+    precondition(Polygon(points: points).area >= 0)
 
-    var p = leftPointIdx
-    var q = 0
+    let index = points.firstIndexOfMinimum(by: \.x)!
+    var stack: [CGPoint] = []
 
-    repeat {
-        hull.append(points[p])
-
-        q = (p + 1) % points.count
-
-        for i in 0..<points.count where calculateOrientation(points[p], points[i], points[q]) == .counterClockwise {
-            q = i
+    for p in points.rotated(shiftingToStart: index) {
+        while stack.count >= 2, calculateOrientation(stack[stack.count - 2], stack[stack.count - 1], p) == .clockwise {
+            stack.removeLast()
         }
 
-        p = q
-    } while p != leftPointIdx
+        stack.append(p)
+    }
 
-    return hull
+    return stack
 }
 
 private func calculateOrientation(_ p: CGPoint, _ q: CGPoint, _ r: CGPoint) -> Orientation {

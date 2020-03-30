@@ -66,7 +66,11 @@ extension RotatedCollection: Collection {
     //    }
 }
 
-// TODO: Conditional BidirectionalCollection conformance.
+extension RotatedCollection: BidirectionalCollection where Base: BidirectionalCollection {
+    public func index(before index: Index) -> Index {
+        return self._indices.index(before: index)
+    }
+}
 // TODO: Conditional RandomAccessCollection conformance.
 
 extension Collection {
