@@ -15,6 +15,7 @@ struct FaceWeightedGraph {
     init() {}
 
     typealias Face = String
+    typealias Weight = Double
 
     struct Vertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
         private static var nextID: Int = 0

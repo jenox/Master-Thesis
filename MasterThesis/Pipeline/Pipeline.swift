@@ -157,9 +157,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     func transform() {
         self.scheduleMutationOperation(named: "transform", { graph in
             guard case .vertexWeighted(let untransformed) = graph else { throw UnsupportedOperationError() }
-
             let transformed = try self.transformer.transform(untransformed)
-
             return .faceWeighted(transformed)
         })
     }
@@ -169,17 +167,13 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             switch graph {
             case .vertexWeighted(var graph):
                 guard let country = graph.vertices.randomElement() else { throw UnsupportedOperationError() }
-
                 let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-                graph.setWeight(of: country, to: weight)
-
+                try graph.adjustWeight(of: country, to: weight)
                 return .vertexWeighted(graph)
             case .faceWeighted(var graph):
                 guard let country = graph.faces.randomElement() else { throw UnsupportedOperationError() }
-
                 let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-                graph.setWeight(of: country, to: weight)
-
+                try graph.adjustWeight(of: country, to: weight)
                 return .faceWeighted(graph)
             }
         })
@@ -190,15 +184,11 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             switch graph {
             case .vertexWeighted(var graph):
                 guard graph.vertices.contains(country) else { throw UnsupportedOperationError() }
-
-                graph.setWeight(of: country, to: weight)
-
+                try graph.adjustWeight(of: country, to: weight)
                 return .vertexWeighted(graph)
             case .faceWeighted(var graph):
                 guard graph.faces.contains(country) else { throw UnsupportedOperationError() }
-
-                graph.setWeight(of: country, to: weight)
-
+                try graph.adjustWeight(of: country, to: weight)
                 return .faceWeighted(graph)
             }
         }, completion: completion)
