@@ -9,19 +9,19 @@
 import Swift
 
 struct DirectedEdge: Hashable, CustomStringConvertible {
-    init(from source: String, to target: String) {
+    init(from source: ClusterName, to target: ClusterName) {
         self.source = source
         self.target = target
     }
 
-    var source: String
-    var target: String
+    var source: ClusterName
+    var target: ClusterName
 
     func inverted() -> DirectedEdge {
         return DirectedEdge(from: self.target, to: self.source)
     }
 
     var description: String {
-        return "\(self.source) -> \(self.target)"
+        return "\(self.source.rawValue) -> \(self.target.rawValue)"
     }
 }

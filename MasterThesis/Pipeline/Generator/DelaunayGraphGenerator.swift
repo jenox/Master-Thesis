@@ -12,26 +12,26 @@ import Delaunay
 
 struct DelaunayGraphGenerator: GraphGenerator {
     var bounds: CGRect = .init(x: -256, y: -256, width: 512, height: 512)
-    var countries: OrderedSet<String>
+    var countries: OrderedSet<ClusterName>
     var nestingRatio: Double
     var nestingBias: Double = 0.5
-    var weights: ClosedRange<Double> = 1...50
+    var weights: ClosedRange<ClusterWeight> = 1...50
 
-    func generateRandomWeight<T>(using generator: inout T) -> Double where T : RandomNumberGenerator {
-        return .random(in: self.weights, using: &generator)
+    func generateRandomWeight<T>(using generator: inout T) -> ClusterWeight where T : RandomNumberGenerator {
+        return .init(rawValue: .random(in: self.weights.lowerBound.rawValue...self.weights.upperBound.rawValue, using: &generator))
     }
 
     func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator {
         precondition(self.countries.count >= 3)
 
         var graph = VertexWeightedGraph()
-        var vertices: [HashablePoint: String] = [:]
+        var vertices: [HashablePoint: ClusterName] = [:]
 
         let numberOfTopLevelCountries = max(3, Int(round((1 - self.nestingRatio) * Double(self.countries.count))))
 
         // Create n - k top level points
         for country in self.countries.prefix(numberOfTopLevelCountries) {
-            let weight = Double.random(in: self.weights, using: &generator)
+            let weight = self.generateRandomWeight(using: &generator)
             let position = self.randomPoint(existing: vertices.keys.map(\.point), using: &generator)
 
             let oldValue = vertices.updateValue(country, forKey: .init(point: position))

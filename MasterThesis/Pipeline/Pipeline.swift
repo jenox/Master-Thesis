@@ -179,7 +179,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    func changeWeight(of country: String, to weight: Double, completion: @escaping CompletionHandler) {
+    func changeWeight(of country: ClusterName, to weight: ClusterWeight, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
             switch graph {
             case .vertexWeighted(var graph):
@@ -207,7 +207,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    func flipAdjacency(between first: String, and second: String, completion: @escaping CompletionHandler) {
+    func flipAdjacency(between first: ClusterName, and second: ClusterName, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
             switch graph {
             case .vertexWeighted(var graph):

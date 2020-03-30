@@ -114,7 +114,7 @@ private extension VertexWeightedGraph {
                 vertices.insert(x, at: index + 1)
             }
 
-            graph.defineFace(named: "\(vertex)", boundedBy: vertices, weight: self.weight(of: vertex))
+            graph.defineFace(named: vertex, boundedBy: vertices, weight: self.weight(of: vertex))
         }
 
         return graph

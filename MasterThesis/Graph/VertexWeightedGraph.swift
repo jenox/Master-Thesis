@@ -10,8 +10,8 @@ import CoreGraphics
 import Geometry
 
 struct UndirectedEdge: Equatable, Hashable {
-    var first: String
-    var second: String
+    var first: ClusterName
+    var second: ClusterName
 
     func hash(into hasher: inout Hasher) {
         Set([self.first, self.second]).hash(into: &hasher)
@@ -25,8 +25,8 @@ struct UndirectedEdge: Equatable, Hashable {
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
 struct VertexWeightedGraph {
-    typealias Vertex = String
-    typealias Weight = Double
+    typealias Vertex = ClusterName
+    typealias Weight = ClusterWeight
 
     init() {}
 

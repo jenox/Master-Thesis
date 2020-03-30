@@ -10,30 +10,31 @@ import Foundation
 import CoreGraphics
 import Geometry
 
+struct FaceWeightedGraphVertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+    private static var nextID: Int = 0
+    private let id: Int
+
+    init(integerLiteral value: Int) {
+        self.id = value
+    }
+
+    init() {
+        self.id = Self.nextID
+        Self.nextID += 1
+    }
+
+    var description: String {
+        return "\(self.id)"
+    }
+}
+
 // "Dual" graph: straight line plane, face-weighted
 struct FaceWeightedGraph {
     init() {}
 
-    typealias Face = String
-    typealias Weight = Double
-
-    struct Vertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
-        private static var nextID: Int = 0
-        private let id: Int
-
-        init(integerLiteral value: Int) {
-            self.id = value
-        }
-
-        init() {
-            self.id = Self.nextID
-            Self.nextID += 1
-        }
-
-        var description: String {
-            return "\(self.id)"
-        }
-    }
+    typealias Vertex = FaceWeightedGraphVertex
+    typealias Face = ClusterName
+    typealias Weight = ClusterWeight
 
     private struct VertexPayload {
         var position: CGPoint
@@ -41,7 +42,7 @@ struct FaceWeightedGraph {
     }
 
     private struct FacePayload {
-        var weight: Double
+        var weight: Weight
         var boundary: [Vertex]
     }
 
@@ -96,7 +97,7 @@ struct FaceWeightedGraph {
         return vertices.first
     }
 
-    mutating func defineFace(named name: String, boundedBy boundary: [Vertex], weight: Double) {
+    mutating func defineFace(named name: Face, boundedBy boundary: [Vertex], weight: Weight) {
         assert(self.facePayloads[name] == nil)
         assert(boundary.adjacentPairs(wraparound: true).allSatisfy(self.containsEdge(between:and:)))
 
@@ -104,23 +105,23 @@ struct FaceWeightedGraph {
         self.facePayloads[name] = FacePayload(weight: weight, boundary: boundary)
     }
 
-    func polygon(for face: String) -> Polygon {
+    func polygon(for face: Face) -> Polygon {
         return Polygon(points: self.boundary(of: face).map(self.position(of:)))
     }
 
-    func area(of face: String) -> Double {
+    func area(of face: Face) -> Double {
         return Double(self.polygon(for: face).area)
     }
 
-    func weight(of face: String) -> Double {
+    func weight(of face: Face) -> Weight {
         return self.facePayloads[face]!.weight
     }
 
-    mutating func setWeight(of face: String, to value: Double) {
+    mutating func setWeight(of face: Face, to value: Weight) {
         self.facePayloads[face]!.weight = value
     }
 
-    func boundary(of face: String) -> [Vertex] {
+    func boundary(of face: Face) -> [Vertex] {
         return self.facePayloads[face]!.boundary
     }
 
@@ -209,7 +210,7 @@ struct FaceWeightedGraph {
         return self.firstEdgeCrossing() == nil
     }
 
-    func boundary(between left: String, and right: String) -> [Vertex]? {
+    func boundary(between left: Face, and right: Face) -> [Vertex]? {
         let left = self.boundary(of: left)
         let right = Set(self.boundary(of: right))
         guard let index = left.firstIndex(where: right.contains) else { return nil }
@@ -224,7 +225,7 @@ struct FaceWeightedGraph {
         return boundary
     }
 
-    mutating func flipBorder(between left: String, and right: String) throws {
+    mutating func flipBorder(between left: Face, and right: Face) throws {
         var shared = self.boundary(between: left, and: right)!
         print("Boundary of \(left) and \(right): \(shared)")
 

@@ -42,7 +42,7 @@ class GraphStatisticsView: UIView {
     }
 
     private class func column(named name: String, value: @escaping (FaceWeightedGraph?, FaceWeightedGraph.Face) throws -> String) -> Column<(FaceWeightedGraph?, FaceWeightedGraph.Face)> {
-        return .init(title: name, value: { try value($0.0, $0.1) }, backgroundColor: { UIColor.color(for: $0.1) })
+        return .init(title: name, value: { try value($0.0, $0.1) }, backgroundColor: \.1.color)
     }
 
     private class func column(for qualityMetric: (name: String, evaluator: QualityEvaluator)) -> Column<(FaceWeightedGraph?, FaceWeightedGraph.Face)> {
@@ -52,23 +52,23 @@ class GraphStatisticsView: UIView {
             case .double(let value): return self.format(double: value)
             case .percentage(let value): return self.format(percentage: value)
             }
-        }, backgroundColor: { UIColor.color(for: $0.1) })
+        }, backgroundColor: \.1.color)
     }
 
     private class func name(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
-        return face
+        return face.rawValue
     }
 
     private class func weight(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
         guard let graph = graph else { return "" }
 
-        return Self.format(double: graph.weight(of: face))
+        return Self.format(double: graph.weight(of: face).rawValue)
     }
 
     private class func normalizedArea(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
         guard let graph = graph else { return "" }
 
-        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +)
+        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
         let area = graph.area(of: face)
         let normalizedArea = (area / totalarea) * totalweight

@@ -20,7 +20,7 @@ struct ConcreteForceComputer: ForceComputer {
         var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
         graph.vertices.forEach({ forces[$0] = .zero })
 
-        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +)
+        let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
 
         // Vertex-vertex repulsion
@@ -61,7 +61,7 @@ struct ConcreteForceComputer: ForceComputer {
         // Pressure
         if self.force4Strength > 0 {
             for face in graph.faces {
-                let weight = graph.weight(of: face)
+                let weight = graph.weight(of: face).rawValue
                 let area = graph.area(of: face)
                 let pressure = CGFloat((weight / totalweight) / (area / totalarea))
 

@@ -71,7 +71,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
             let weight = self.graph.weight(of: vertex)
 
             context.fill(position, diameter: 5 / scale, color: .black)
-            context.draw("\(vertex) | \(formatted: weight) \(self.graph.position(of: vertex))", at: position, scale: scale, rotation: rotation)
+            context.draw("\(vertex) | \(formatted: weight.rawValue) \(self.graph.position(of: vertex))", at: position, scale: scale, rotation: rotation)
         }
     }
 }
@@ -86,7 +86,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
 
         // Face backgrounds
         for face in self.graph.faces {
-            let color = UIColor.color(for: face).interpolate(to: .white, fraction: 0.75)
+            let color = face.color.interpolate(to: .white, fraction: 0.75)
             let polygon = self.graph.polygon(for: face)
 
             context.fill(polygon, with: color)
@@ -186,13 +186,15 @@ private extension CGContext {
     }
 }
 
-extension UIColor {
+extension ClusterName {
     private static let colors = [UIColor.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple, .brown]
 
-    static func color(for string: String) -> UIColor {
-        return self.colors[Int(string.unicodeScalars.reduce(7, { $0 + $1.value })) % self.colors.count]
+    var color: UIColor {
+        return Self.colors[Int(rawValue.unicodeScalars.reduce(7, { $0 + $1.value })) % Self.colors.count]
     }
+}
 
+extension UIColor {
     func interpolate(to other: UIColor, fraction: CGFloat) -> UIColor {
         var r1: CGFloat = 0
         var g1: CGFloat = 0

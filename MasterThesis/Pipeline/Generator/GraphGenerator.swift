@@ -9,6 +9,6 @@
 import Swift
 
 protocol GraphGenerator {
-    func generateRandomWeight<T>(using generator: inout T) -> Double where T: RandomNumberGenerator
+    func generateRandomWeight<T>(using generator: inout T) -> ClusterWeight where T: RandomNumberGenerator
     func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator
 }
