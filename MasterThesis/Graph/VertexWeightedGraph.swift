@@ -24,7 +24,7 @@ struct UndirectedEdge: Equatable, Hashable {
 
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
-struct VertexWeightedGraph {
+struct VertexWeightedGraph: StraightLineGraph {
     typealias Vertex = ClusterName
     typealias Weight = ClusterWeight
 
@@ -69,6 +69,24 @@ struct VertexWeightedGraph {
         return self.adjacencies[vertex]!
     }
 
+    func position(of vertex: Vertex) -> CGPoint {
+        return self.data[vertex]!.0
+    }
+
+    mutating func move(_ vertex: ClusterName, to position: CGPoint) {
+        self.data[vertex]!.0 = position
+    }
+
+    func weight(of vertex: Vertex) -> Weight {
+        return self.data[vertex]!.1
+    }
+
+    mutating func setWeight(of vertex: Vertex, to weight: Weight) {
+        self.data[vertex]!.1 = weight
+    }
+}
+
+extension VertexWeightedGraph {
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
     // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
     // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
@@ -87,8 +105,8 @@ struct VertexWeightedGraph {
             var last = edge
 
             while true {
-                let candidates = Set(self.vertices(adjacentTo: last.target).map({ DirectedEdge(from: last.target, to: $0) })).intersection(edges).subtracting([last.inverted()])
-                let best = candidates.min(by: { (self.angle(of: $0) - self.angle(of: last.inverted())).counterclockwise })!
+                let candidates = Set(edges.filter({ $0.source == last.target && $0.target != last.source }))
+                let best = candidates.min(by: { self.angle(from: last.source, by: last.target, to: $0.target).counterclockwise })!
 
                 last = best
                 edges.remove(best)
@@ -103,39 +121,9 @@ struct VertexWeightedGraph {
         }
 
         // outer face has negative area!
-        let index = faces.partition(by: { self.area(of: $0) >= 0 })
+        let index = faces.partition(by: { self.polygon(on: $0.vertices).area >= 0 })
         precondition(index == 1)
 
         return (inner: Array(faces.dropFirst()), outer: faces[0])
-    }
-
-    func position(of vertex: Vertex) -> CGPoint {
-        return self.data[vertex]!.0
-    }
-
-    func weight(of vertex: Vertex) -> Weight {
-        return self.data[vertex]!.1
-    }
-
-    func area(of face: Face<Vertex>) -> CGFloat {
-        let positions = face.vertices.map({ self.position(of: $0) })
-
-        var sum = positions.last!.x * positions.first!.y - positions.last!.y * positions.first!.x
-
-        for (a, b) in zip(positions, positions.dropFirst()) {
-            sum += a.x * b.y - a.y * b.x
-        }
-
-        return sum / 2
-    }
-
-    func angle(of edge: DirectedEdge) -> Angle {
-        let vector = CGVector(from: self.position(of: edge.source), to: self.position(of: edge.target))
-
-        return Angle.atan2(vector.dy, vector.dx)
-    }
-
-    mutating func setWeight(of vertex: Vertex, to weight: Weight) {
-        self.data[vertex]!.1 = weight
     }
 }

@@ -93,7 +93,7 @@ private extension VertexWeightedGraph {
 
         // Determine and register faces on computed dual graph
         for vertex in self.vertices {
-            let endpoints = self.vertices(adjacentTo: vertex).sorted(by: { self.angle(of: DirectedEdge(from: vertex, to: $0)) })
+            let endpoints = self.vertices(adjacentTo: vertex).sorted(by: { self.angle(from: vertex, to: $0) })
             var vertices: [FaceWeightedGraph.Vertex] = []
 
             for (x, y) in endpoints.adjacentPairs(wraparound: true) {

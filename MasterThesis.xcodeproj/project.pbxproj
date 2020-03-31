@@ -49,6 +49,7 @@
 		CBA25E46243289520019C766 /* Pipeline+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E45243289520019C766 /* Pipeline+Weight.swift */; };
 		CBA25E482432920C0019C766 /* ClusterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E472432920C0019C766 /* ClusterName.swift */; };
 		CBA25E4A243292120019C766 /* ClusterWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E49243292120019C766 /* ClusterWeight.swift */; };
+		CBA25E4C2433DABC0019C766 /* GraphProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */; };
 		CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
@@ -134,6 +135,7 @@
 		CBA25E45243289520019C766 /* Pipeline+Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Weight.swift"; sourceTree = "<group>"; };
 		CBA25E472432920C0019C766 /* ClusterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterName.swift; sourceTree = "<group>"; };
 		CBA25E49243292120019C766 /* ClusterWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterWeight.swift; sourceTree = "<group>"; };
+		CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProtocol.swift; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolations.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,6 +335,7 @@
 				CBEE493723E1E18900986877 /* Face.swift */,
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
 				CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */,
+				CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
 				CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */,
 			);
@@ -575,6 +578,7 @@
 				CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */,
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
 				CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */,
+				CBA25E4C2433DABC0019C766 /* GraphProtocol.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
