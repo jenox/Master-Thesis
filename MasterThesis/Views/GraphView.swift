@@ -71,7 +71,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
             let weight = self.graph.weight(of: vertex)
 
             context.fill(position, diameter: 5 / scale, color: .black)
-            context.draw("\(vertex) | \(formatted: weight.rawValue) \(self.graph.position(of: vertex))", at: position, scale: scale, rotation: rotation)
+            context.draw("\(vertex.rawValue) | \(formatted: weight.rawValue) \(self.graph.position(of: vertex))", at: position, scale: scale, rotation: rotation)
         }
     }
 }

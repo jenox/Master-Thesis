@@ -227,7 +227,7 @@ struct FaceWeightedGraph {
 
     mutating func flipBorder(between left: Face, and right: Face) throws {
         var shared = self.boundary(between: left, and: right)!
-        print("Boundary of \(left) and \(right): \(shared)")
+        print("Boundary of \(left.rawValue) and \(right.rawValue): \(shared)")
 
         while shared.count >= 3 {
             // contract edge x-y; a,b other neighbors to x
