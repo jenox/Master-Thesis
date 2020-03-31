@@ -62,19 +62,18 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
 
         self.scheduleMutationOperation(named: "step", { graph in
-            guard case .faceWeighted(var graph) = graph else { throw UnsupportedOperationError() }
-
-            for (u, v) in graph.edges {
-                guard graph.contains(u) && graph.contains(v) else { continue } // may have been removed in previous contract operation
-                guard graph.distance(from: u, to: v) < 2 else { continue } // must be close enough
-
-                graph.contractEdgeIfPossible(between: u, and: v)
+            switch graph {
+            case .vertexWeighted(var graph):
+                let forces = try self.forceComputer.forces(in: graph)
+                try self.forceApplicator.apply(forces, to: &graph)
+                return .vertexWeighted(graph)
+            case .faceWeighted(var graph):
+                try graph.willStepOnce()
+                let forces = try self.forceComputer.forces(in: graph)
+                try self.forceApplicator.apply(forces, to: &graph)
+                try graph.didStepOnce()
+                return .faceWeighted(graph)
             }
-
-            let forces = try self.forceComputer.forces(in: graph)
-            try self.forceApplicator.apply(forces, to: &graph)
-
-            return .faceWeighted(graph)
         }, completion: { result in
             if result.isSuccess {
                 if self.isRunning && !self.hasScheduledNextSteppingBlock {

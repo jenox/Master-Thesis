@@ -44,7 +44,7 @@ class GraphView: UIView {
     private func updateCanvasViewRenderer() {
         switch self.graph {
         case .vertexWeighted(let graph):
-            self.canvasView.renderer = VertexWeightedGraphRenderer(graph: graph)
+            self.canvasView.renderer = VertexWeightedGraphRenderer(graph: graph, forceComputer: self.forceComputer)
         case .faceWeighted(let graph):
             self.canvasView.renderer = FaceWeightedGraphRenderer(graph: graph, forceComputer: self.forceComputer)
         case .none:
@@ -55,6 +55,7 @@ class GraphView: UIView {
 
 private struct VertexWeightedGraphRenderer: CanvasRenderer {
     var graph: VertexWeightedGraph
+    var forceComputer: ForceComputer
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         let context = UIGraphicsGetCurrentContext()!
@@ -71,7 +72,16 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
             let weight = self.graph.weight(of: vertex)
 
             context.fill(position, diameter: 5 / scale, color: .black)
-            context.draw("\(vertex.rawValue) | \(formatted: weight.rawValue) \(self.graph.position(of: vertex))", at: position, scale: scale, rotation: rotation)
+            context.draw("\(vertex.rawValue) | \(formatted: weight.rawValue)", at: position, scale: scale, rotation: rotation)
+        }
+
+        // Forces
+        for (vertex, force) in (try? self.forceComputer.forces(in: self.graph)) ?? [:] {
+            context.beginPath()
+            context.move(to: self.graph.position(of: vertex))
+            context.addLine(to: context.currentPointOfPath + 10 * force)
+            context.setStrokeColor(UIColor.red.cgColor)
+            context.strokePath()
         }
     }
 }
@@ -111,7 +121,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
         }
 
         // Forces
-        for (vertex, force) in try! self.forceComputer.forces(in: self.graph) {
+        for (vertex, force) in (try? self.forceComputer.forces(in: self.graph)) ?? [:] {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)

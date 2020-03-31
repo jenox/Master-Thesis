@@ -31,6 +31,7 @@
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
+		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
 		CBA25E172431344E0019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E162431344E0019C766 /* Imports.swift */; };
@@ -122,6 +123,7 @@
 		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
+		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		CBA25E162431344E0019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBA25E1824314DE20019C766 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
+				CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */,
 				CBA25E45243289520019C766 /* Pipeline+Weight.swift */,
 				CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */,
 				CBFDDE51242AA454005B3048 /* Errors.swift */,
@@ -585,6 +588,7 @@
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
 				CBA25E482432920C0019C766 /* ClusterName.swift in Sources */,
+				CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */,
 				CBA25E1924314DE20019C766 /* Result.swift in Sources */,
 				CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,

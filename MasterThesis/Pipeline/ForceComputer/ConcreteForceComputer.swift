@@ -16,9 +16,48 @@ struct ConcreteForceComputer: ForceComputer {
     var force4Strength: CGFloat = 1
     var force5Strength: CGFloat = 1
 
+    func forces(in graph: VertexWeightedGraph) -> [VertexWeightedGraph.Vertex: CGVector] {
+        var forces = Dictionary(uniqueKeys: graph.vertices, initialValue: CGVector.zero)
+
+        // Vertex-vertex repulsion
+        for (u, v) in graph.vertices.strictlyTriangularPairs() {
+            let uv = graph.vector(from: u, to: v)
+            let d = uv.length
+
+            forces[u]! -= 1000 / pow(d, 2) * uv.normalized
+            forces[v]! += 1000 / pow(d, 2) * uv.normalized
+        }
+
+        // Vertex-vertex attraction
+        for (u, v) in graph.edges {
+            let uv = graph.vector(from: u, to: v)
+            let d = uv.length
+
+            forces[u]! += 1 * log(d / 100) * uv.normalized
+            forces[v]! -= 1 * log(d / 100) * uv.normalized
+        }
+
+        // Vertex-edge repulsion to avoid degenerate triangles
+        for (u, (v, w)) in graph.vertices.cartesianProduct(with: graph.edges) where u != v && u != w {
+            let segment = graph.segment(from: v, to: w)
+            let p = segment.closestPoint(to: graph.position(of: u))
+
+            let up = graph.vector(from: u, to: p)
+            let d = up.length
+
+            forces[u]! -= 1000 / pow(d, 2) * up.normalized
+        }
+
+        // Gravity
+        for v in graph.vertices {
+            forces[v]! += 0.001 * graph.vector(from: v, to: .zero)
+        }
+
+        return forces
+    }
+
     func forces(in graph: FaceWeightedGraph) -> [FaceWeightedGraph.Vertex: CGVector] {
-        var forces: [FaceWeightedGraph.Vertex: CGVector] = [:]
-        graph.vertices.forEach({ forces[$0] = .zero })
+        var forces = Dictionary(uniqueKeys: graph.vertices, initialValue: CGVector.zero)
 
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
@@ -121,5 +160,11 @@ struct ConcreteForceComputer: ForceComputer {
 //        }
 
         return forces
+    }
+}
+
+private extension Dictionary {
+    init<S>(uniqueKeys keys: S, initialValue: Value) where S: Sequence, S.Element == Key {
+        self.init(uniqueKeysWithValues: zip(keys, sequence(first: initialValue, next: { $0 })))
     }
 }

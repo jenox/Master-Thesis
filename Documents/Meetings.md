@@ -19,7 +19,7 @@ __2020-03-26__
 
 TODOs:
 - [x] Draw generated, untransformed, vertex-weighted graphs
-- [ ] Minimum distance when generating graphs, maybe run force-directed before transforming?
+- [x] Minimum distance when generating graphs, maybe run force-directed before transforming?
 - [x] Forbidden edges for edge flips
 - [x] Improve entropy measures by getting similar edge lengths first
 - [ ] Start writing :)
