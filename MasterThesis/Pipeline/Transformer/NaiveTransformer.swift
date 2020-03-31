@@ -121,6 +121,19 @@ private extension VertexWeightedGraph {
     }
 }
 
+private struct UndirectedEdge: Equatable, Hashable {
+    var first: ClusterName
+    var second: ClusterName
+
+    func hash(into hasher: inout Hasher) {
+        Set([self.first, self.second]).hash(into: &hasher)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return Set([lhs.first, lhs.second]) == Set([rhs.first, rhs.second])
+    }
+}
+
 private extension Collection {
     func sorted<T>(by transform: (Element) throws -> T) rethrows -> [Element] where T: Comparable {
         return try self.map({ ($0, try transform($0)) }).sorted(by: { $0.1 < $1.1 }).map({ $0.0 })

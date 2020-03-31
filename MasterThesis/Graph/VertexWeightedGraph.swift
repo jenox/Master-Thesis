@@ -9,19 +9,6 @@
 import CoreGraphics
 import Geometry
 
-struct UndirectedEdge: Equatable, Hashable {
-    var first: ClusterName
-    var second: ClusterName
-
-    func hash(into hasher: inout Hasher) {
-        Set([self.first, self.second]).hash(into: &hasher)
-    }
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return Set([lhs.first, lhs.second]) == Set([rhs.first, rhs.second])
-    }
-}
-
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
 struct VertexWeightedGraph: StraightLineGraph {
