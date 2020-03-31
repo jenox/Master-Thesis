@@ -10,10 +10,12 @@ import CoreGraphics
 import Geometry
 
 protocol StraightLineGraph {
-    associatedtype Vertex
+    associatedtype Vertex: Hashable
     associatedtype Vertices: Collection where Vertices.Element == Vertex
+    associatedtype Edges: Collection where Edges.Element == (Vertex, Vertex)
 
     var vertices: Vertices { get }
+    var edges: Edges { get }
 
     func position(of vertex: Vertex) -> CGPoint
     mutating func move(_ vertex: Vertex, to position: CGPoint)

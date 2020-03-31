@@ -10,7 +10,7 @@ import CoreGraphics
 import Geometry
 
 class PrEdForceApplicator: ForceApplicator {
-    func apply(_ forces: [FaceWeightedGraph.Vertex: CGVector], to graph: inout FaceWeightedGraph) {
+    func apply<Graph>(_ forces: [Graph.Vertex: CGVector], to graph: inout Graph) where Graph: StraightLineGraph {
         let upperBounds = self.computeMaximumAmplitudes(in: graph)
 
         for (vertex, force) in forces where force != .zero {
@@ -25,8 +25,8 @@ class PrEdForceApplicator: ForceApplicator {
         }
     }
 
-    private func computeMaximumAmplitudes(in graph: FaceWeightedGraph) -> [FaceWeightedGraph.Vertex: UpperBounds] {
-        var upperBounds: [FaceWeightedGraph.Vertex: UpperBounds] = [:]
+    private func computeMaximumAmplitudes<Graph>(in graph: Graph) -> [Graph.Vertex: UpperBounds] where Graph: StraightLineGraph {
+        var upperBounds: [Graph.Vertex: UpperBounds] = [:]
         for vertex in graph.vertices {
             upperBounds[vertex] = UpperBounds(numberOfArcs: 8)
         }

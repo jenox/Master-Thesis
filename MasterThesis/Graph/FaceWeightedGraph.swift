@@ -29,7 +29,7 @@ struct FaceWeightedGraphVertex: Hashable, CustomStringConvertible, ExpressibleBy
 }
 
 // "Dual" graph: straight line plane, face-weighted
-struct FaceWeightedGraph {
+struct FaceWeightedGraph: StraightLineGraph {
     init() {}
 
     typealias Vertex = FaceWeightedGraphVertex
@@ -62,18 +62,6 @@ struct FaceWeightedGraph {
         return vertex
     }
 
-    mutating func displace(_ vertex: Vertex, by displacement: CGVector) {
-        self.vertexPayloads[vertex]!.position += displacement
-    }
-
-    mutating func move(_ vertex: Vertex, to position: CGPoint) {
-        self.vertexPayloads[vertex]!.position = position
-    }
-
-    func position(of vertex: Vertex) -> CGPoint {
-        return self.vertexPayloads[vertex]!.position
-    }
-
     mutating func insertEdge(between vertex1: Vertex, and vertex2: Vertex) {
         assert(!self.vertexPayloads[vertex1]!.adjacencies.contains(vertex2))
         assert(!self.vertexPayloads[vertex2]!.adjacencies.contains(vertex1))
@@ -95,6 +83,14 @@ struct FaceWeightedGraph {
         let vertices = Set(self.vertexPayloads[first]!.adjacencies).intersection(self.vertexPayloads[second]!.adjacencies)
         assert(vertices.count <= 1)
         return vertices.first
+    }
+
+    func position(of vertex: Vertex) -> CGPoint {
+        return self.vertexPayloads[vertex]!.position
+    }
+
+    mutating func move(_ vertex: Vertex, to position: CGPoint) {
+        self.vertexPayloads[vertex]!.position = position
     }
 
     mutating func defineFace(named name: Face, boundedBy boundary: [Vertex], weight: Weight) {
@@ -123,22 +119,6 @@ struct FaceWeightedGraph {
 
     func boundary(of face: Face) -> [Vertex] {
         return self.facePayloads[face]!.boundary
-    }
-
-    func segment(from vertex1: Vertex, to vertex2: Vertex) -> Segment {
-        return Segment(from: self.position(of: vertex1), to: self.position(of: vertex2))
-    }
-
-    func distance(from vertex1: Vertex, to vertex2: Vertex) -> CGFloat {
-        return self.position(of: vertex1).distance(to: self.position(of: vertex2))
-    }
-
-    func vector(from vertex: Vertex, to point: CGPoint) -> CGVector {
-        return CGVector(from: self.position(of: vertex), to: point)
-    }
-
-    func vector(from vertex1: Vertex, to vertex2: Vertex) -> CGVector {
-        return CGVector(from: self.position(of: vertex1), to: self.position(of: vertex2))
     }
 
     func degree(of vertex: Vertex) -> Int {
