@@ -1,4 +1,14 @@
+__2020-04-02__
+
 - Because our polygons have low number of vertices, edges are relatively long and we place a lot of subdivision vertices on there, resulting in 180deg angles dominating heavily!
+
+TODOs:
+- [ ] Pick shortest edge from graph as a whole -> numbers compare at least!
+- [ ] Or constant value + normalized across graph size? e.g. 1% of whole drawing width
+- [ ] Start with related work chapter
+
+- Potential point for evaluation: "start over"  keep track of untransformed (not straight line, but embedded) graph + make straight line + transform again
+
 
 __2020-03-26__
 

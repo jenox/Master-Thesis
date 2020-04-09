@@ -11,17 +11,16 @@
 \input{Template/References}
 \input{Template/Language}
 
+\includeonly{Sources/01-Introduction,Sources/06-Bibliography}
+
 \begin{document}
 \selectlanguage{american}
-\frontmatter\pagenumbering{roman}
 \include{Sources/00-Front}
-\blankpage
 \mainmatter\pagenumbering{arabic}
-Contents
-%\include{Sources/01-Introduction}
-%\include{Sources/02-Generalized-Coordinates}
-%\include{Sources/03-Minimizing-Potential-Energy}
-%\include{Sources/04-Drawing-Graphs-With-Circular-Arcs}
-%\include{Sources/05-Future-Work}
+\include{Sources/01-Introduction}
+\include{Sources/02-Pipeline}
+\include{Sources/03-Implementation}
+\include{Sources/04-Evaluation}
+\include{Sources/05-Future-Work}
 \include{Sources/06-Bibliography}
 \end{document}
