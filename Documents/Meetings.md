@@ -1,3 +1,14 @@
+__2020-04-09__
+
+- Group-Level Graph Visualization Taxonomy
+- Node, Node-Link, and Node-Link-Group Diagrams: An Evaluation
+- Comparing Node‐Link and Node‐Link‐Group Visualizations From An Enjoyment Perspective
+
+TODOs:
+- [x] need "maps are easier to read"
+- [x] talk about visualization of clustered graphs
+
+
 __2020-04-02__
 
 - Because our polygons have low number of vertices, edges are relatively long and we place a lot of subdivision vertices on there, resulting in 180deg angles dominating heavily!
