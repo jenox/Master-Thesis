@@ -1,56 +1,6 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
-% Visualizing dynamic clustered data using area-proportional maps
-
-\section{Motivation}
-\label{sect:motivation}
-
-We live in a world with an abundance of data. Data for which it is no longer possible for humans alone to work through, to make sense of, and data that is only going to increase in volume in the years to come. As the amount of data we work with grows, it becomes increasingly important to properly visualize the data in order to gain key understandings and to communicate those with others. It is crucial to make use of this visual perception channel as it has the highest information bandwidth of all our senses. In fact, humans acquire more information through vision alone than through all other senses combined \cite{ware2019information}.
-
-As the amount of data that needs to be visualized keeps growing while the human ability to process data remains constant, it becomes increasingly important to capture the most relevant aspects of the data \cite{dachsbacher2019visualisierung}. In the field of graph theory and graph drawing, for example, for larger graphs, global structures such as clusters and their relationships become increasingly important while local features such as individual edges loose importance.
-
-\new{
-Saket \etal{} \cite{saket2014group} propose a set of tasks that assess a user's ability to detect clustering information in graph visualizations. They evaluated these tasks across different types of diagrams \cite{saket2014node} and found that node-link-group diagrams, \ie{} diagrams in which there is an explicit representation of clusters, outperform both node and node-link diagrams on group-based tasks and do not negatively affect the performance of other tasks. According to another study by Saket \etal{} \cite{saket2016comparing}, node-link-group diagrams are also more enjoyable for users to work with. In this thesis, we make use of the map metaphor and encode the clustering information by placing all vertices of a cluster in the same \quoted{country} of a map.
-}
-
-But in today's world it's not only big data that we're dealing with. Data is also changing at a much greater pace than before. Visualizations that were accurate a moment ago may be outdated now. For many applications it is therefore crucial to visualize how data evolves over time \emdash{} maybe even more so than a snapshot of the data at a single point in time.
-
-A core motivating application for this thesis is visualizing an \emph{opinion network} \cite{betz2019applying} and in particular visualizing how it evolves over time: An opinion network is represented as a weighted graph whose vertices are so-called \emph{opinion vectors} and the edge weights represent the similarity between two opinion vectors. Betz \etal{} cluster the vertices to group similar opinions together, visualize the graph as a map in which each cluster corresponds to a country, and draw the original graph on top of this map. Naturally, such an opinion network is dynamic in a sense where new opinions can be incorporated or individual opinions can change over time. Therefore clusters can grow or shrink, appear or disappear, merge or split, and we are interested in visualizing this underlying process over time.
-
-\cite{dobbins2018forall}
-
-\section{Related Work}
-\label{sect:related-work}
-
-%three core components/requirements/objectives:
-%- area-proportional maps
-%- dynamic aspect
-%- natural shapes
-
-% skewed, distorted, deformed
-% variable of interest, statistic
-
-While a vertex-weighted cluster graph is the intuitive representation of the data we want to visualize, we'll end up doing most of the work in the following chapters on the dual problem: We transform the vertex-weighted cluster graph into its dual graph. The weights then apply to the faces of dual graphs and we are looking to draw the dual such that the faces have some prescribed area. A drawing of the dual essentially is a \emph{contact representation} of the original graph: iff two faces share part of their boundaries, the corresponding vertices in the original graph are adjacent.
-
-\emph{Area-universal graphs} are graphs that can realize any area assignment to its inner faces with straight-line edges. Research on area-universality give us important theoretical bounds on the statistical accuracy we can achieve with polygonal countries: Back in 1992, Thomassen \cite{thomassen1992plane} showed that plane cubic graphs are area-universal. This means that we can achieve perfect statistical accuracy with straight-line edges for the dual of any triangulated graph. Kleist \cite{kleist2018drawing} \cite{kleist2019planar} showed that the 1-subdivision of any plane graph is area-universal. Therefore with just one bend per edge, any plane graph can be drawn with any prescribed face areas. Biedl and Velázquez \cite{biedl2013drawing} showed that the class of 3-trees and subgraphs thereof are area-universal, providing a constructive proof based on barycentric coordinates.
-
-Drawing graphs with prescribed face areas is also closely related to so-called \emph{cartograms}. Cartograms are maps in which geographic regions appear skewed such that their areas are proportional to some statistic, \eg{} the population or gross domestic product of a country. Cartograms have been studied for more than 50 years \cite{tobler2004thirty} and there are many fundamentally different approaches to generate different kinds of cartograms \cite{nusrat2016state}. The effectiveness of cartograms related to human perception has been evaluated extensively \cite{nusrat2018evaluating} and the following three quantitative metrics are most commonly used to judge the quality of cartograms \cite{nusrat2016state} \cite{alam2015quantitative} \cite{nusrat2018evaluating}:
-%
-\begin{itemize}
-	\item \emph{Statistical accuracy}: How closely do the modified geographic areas represent the variable of interest?
-	\item \emph{Topological accuracy}: How well is the map topology, \ie{} the adjacency relationship between geographic regions, preserved?
-	\item \emph{Geographic accuracy}: How closely do the distorted geographic shapes and positions resemble their original?
-\end{itemize}
-
-Although cartograms are traditionally used to visualize demographic data on real geographic maps, they are closely related to the problem at hand: visualizing clusters such that their areas are proportional to their sizes, \ie{} the number of vertices. Statistical and topological accuracy still apply, but geographical accuracy becomes a meaningless quality metric because the visualization isn't based on any natural geographic map and there are no \quoted{original} versions of the country shapes.
-
-Nusrat and Kobourov \cite{nusrat2016state} give an overview of many different algorithms for generating cartograms and discuss how they stack up against one another.
-
-Gastner and Newman \cite{gastner2004diffusion} propose a physical model based on diffusion to generate cartograms: They rasterize the original map into a two-dimensional matrix with the values being the initial densities, \ie{} the statistical values divided by the regions' areas at any given point. This matrix is then used to precompute the gradient of the diffusion field and the pathlines of these \quoted{density particles} as they diffuse through the map and equalize the overall density. The pathlines essentially map locations on the original map to their location in the diffused map and can be used to draw the distorted, density-equalizing map. Due to the rasterization and heavy precomputation of pathlines, this algorithm isn't well-suited for our dynamic setting in which densities can change.
-
-Kämper \etal{} \cite{kamper2013circular} start with a polygonal map and transform every edge into a circular arc that can bend to realize the desired areas of individual regions. They use a max-flow-based formulation on the dual graph of the map to find out how the area should be distributed among the regions and solve for the circular arc radii. However the degree to which the edges can bend is heavily restricted since the circular arcs may not touch or cross, making it difficult for circular arc cartograms to achieve good statistical accuracies.
-
-Alam \etal{} \cite{alam2013computing} show how air-pressure-based models for the general floorplan problem such as \cite{izumi1998air} and \cite{felsner2013exploiting} can be applied to generating cartograms. Each region is assigned a target area based on the statistic we want to visualize. One can then compute the pressure in each region based on its current area and target area at different steps in the algorithm and use it to iteratively grow and/or shrink the regions until the target areas are achieved. These ideas motivate the force-directed formulation of our problem in a later chapter.
-
-GMap \cite{gansner2009gmap} is an algorithm that visualizes graphs as geographical maps. In a first step, it embeds the graph in the plane using a traditional force-directed graph drawing algorithm. The embedded vertices are then clustered using a geometric clustering algorithms such as k-means. Using the initial drawing and the clustering, a map is created based on a Voronoi diagram of the vertices. By drawing the input graph first and then clustering it based on the drawing, we potentially lose out on structure in the abstract graph that wasn't captured by the drawing, that an abstract graph clustering algorithm may have picked up. In this thesis we therefore cluster the graph and extract important features before embedding the graph in the plane. In a follow-up paper, Mashima \etal{} \cite{mashima2011visualizing} build upon GMap to visualize dynamic input graphs while maintaining the mental map of a viewer.
+\input{Sources/01-01-Motivation}
+\input{Sources/01-02-Related-Work}
+\input{Sources/01-03-Structure-of-this-Thesis}

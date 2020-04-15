@@ -1,4 +1,12 @@
 \chapter{Pipeline}
 \label{chap:pipeline}
 
-\lipsum
+In this chapter we define the overall structure of our pipeline: the phases we need to walk through to generate area-proportional maps and how these phases fit together, \ie{} what kind of data is passed between them. We start with a simple, linear pipeline that turns a static input graph into a map-like visualization and later expand that pipeline to support dynamic input graphs as well.
+
+The individual phases of the pipeline act as black boxes that \emdash{} while implementing some interface \emdash{} impose no requirements on \emph{how} said interface is satisfied. This results in a very modular, loosely-coupled architecture and allows for the implementations of individual phases to be substituted and combined arbitrarily.
+
+\todo{Separate chapter for preliminaries or definitions as we go? e.g. map graph, planar graph, dual, weak dual, combinatorial embedding, geometric embedding, triangulated, subdivision, contraction...}
+
+\input{Sources/02-01-Pipeline-for-Static-Input}
+\clearpage
+\input{Sources/02-02-Pipeline-for-Dynamic-Input}

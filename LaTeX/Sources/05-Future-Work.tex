@@ -1,4 +1,14 @@
 \chapter{Future Work}
 \label{chap:future-work}
 
-\lipsum
+\begin{itemize}
+	\item relax requirements on clustered graph, e.g. allow countries on outer face that are adjacent to only one country (found in application and on natural maps)
+	\item implement more dynamic operations
+	\item improve implementation of individual phases / black boxes \begin{itemize}
+		\item improve initial layout: can start out with perfect statistical accuracy with just one bend per edge (Kleist) (always!) or even without bends at all (thomassen) if we don't relax requirements too much
+		\item improve on forces or use different optimization method altogether
+		\item improve on precise mathematical formulation of shapes we are looking for. and optimization working towards that.
+	\end{itemize}
+	\item evaluate how our quality metrics relate to human perception and the map metaphor
+	\item evaluate how quality metrics differ when applying incremental changes vs starting from scratch. this is where "geographical accuracy" from cartograms comes into play.
+\end{itemize}

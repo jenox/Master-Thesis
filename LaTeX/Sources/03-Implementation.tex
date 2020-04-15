@@ -1,4 +1,50 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-\lipsum
+\begin{itemize}
+	\item Concrete implementations for clustering, filtering and embedding are out of scope
+	\item We focus on the transformation and assume we have a triangulated vertex-weighted graph already
+	\item Current implementation also assumes the embedding to be straight-line
+\end{itemize}
+
+
+
+\section{Computing the Boundary Graph}
+
+\begin{itemize}
+	\item Idea
+	\item Figure
+	\item Pseudocode: \url{https://github.com/jenox/Master-Thesis/blob/master/Documents/Algorithms.md}
+	\item Runtime?
+	\item Correctness?
+	\item Why do we not use Thomassen?
+	\item Why do we not use Kleist?
+\end{itemize}
+
+
+
+\section{Applying Dynamic Operations}
+
+\subsection{Change Cluster Weight}
+
+\begin{itemize}
+	\item Just run optimization again
+\end{itemize}
+
+\subsection{Flip Cluster Adjacency}
+
+\begin{itemize}
+	\item Idea
+	\item Figure
+	\item Pseudocode
+\end{itemize}
+
+
+
+\section{Optimization Phase}
+
+\begin{itemize}
+	\item Using forces
+	\item Different components
+	\item Merge vertices when getting too close
+\end{itemize}
