@@ -1,3 +1,18 @@
+__2020-04-16__
+
+- [ ] introduction: people like to read maps. people are familiar with it. people know how to interpret them. + references
+- [ ] add preliminaries chapter: definitions. include definition for contact representation, area-proportional contact representation + cite contact rep papers. area universalily: how many corners do i need? cite alam: https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=contact+representation+optimal+alam&btnG=
+- [x] Rename “Pipeline” -> change section titles to somewhat refer to title of thesis
+- [x] “Pipeline’ can still be used as figure caption
+- [ ] Pipeline: Have a small running example
+- [x] remove “phase” from section titles?
+- [x] include “dual” in transformation phase name, e.g. “transformation from primal to dual”
+- [-] Phase names: Clustering primal graph, filtering and embedding cluster graph, optimization -> visualization?
+- [x] “cluster graph” instead of “clustered graph”
+- [x] Dynamic pipeline: write that optimization/visualization doesn’t change
+- [x] Implementation: match 3.1 and 3.2 to theory part titles
+
+
 __2020-04-09__
 
 - Group-Level Graph Visualization Taxonomy

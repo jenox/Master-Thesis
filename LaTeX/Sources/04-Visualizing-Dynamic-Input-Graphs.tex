@@ -1,0 +1,48 @@
+\chapter{Visualizing Dynamic Input Graphs}
+\label{chap:visualizing-dynamic-input-graphs}
+
+Extending the approach discussed in the previous section to dynamic input graphs is challenging primarily because we must try to preserve the viewer's mental map as the underlying data changes over time. We want the visualization at different points in time to be similar enough so that the viewer can clearly tell what parts have changed \cite{mashima2011visualizing}, yet allow for the required changes in geography and topology. Still, changes between visualizations of consecutive points in time should minimize movement and allow for smooth animations therebetween.
+
+The pipeline for static inputs discussed in the previous section does not satisfy these requirements. Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization: The filtering \& embedding and transformation phases in particular have way too many degrees of freedom in choosing which edges to visualize, how to combinatorially embed the graph, and how to geometrically embed the boundary graph. We therefore extend the pipeline in a way that allows for small, incremental updates to be propagated through the individual phases. A rough sketch of the extended pipeline is depicted in \cref{fig:dynamic-pipeline}.
+
+%Note that the final visualization phase does not need to be adjusted for the dynamic case, the implementation from the static case can be reused without any modifications.
+
+\begin{figure}[H]
+	\centering\includegraphics[width=0.9\textwidth]{Resources/DynamicPipeline.png}
+	\caption{Overview of the algorithmic pipeline for dynamic input graphs.}
+	\label{fig:dynamic-pipeline}
+\end{figure}
+
+\todo{Explain why we need TWO graphs as input here, rather than in first/each section.}
+
+\todo{Explain why the final visualization phase doesn't need to be adjusted for the dynamic case.}
+
+
+Extending the pipeline to allow propagation of small changes of the input graph has numerous other benefits:
+%
+\begin{itemize}
+	\item It enables lots of optimizations in the implementations of the individual phases as only the aspects that have actually changed need to be processed and incorporated.
+	\item It efficiently supports dynamic input in an online setting, \ie{} a setting in which the incremental changes aren't known in advance, for example when visualizing live data.
+	\item It makes the dynamic pipeline highly parallelizable: when a later phase is processing changes, an earlier phase can already start processing the new changes independently. For iterative implementations of the optimization phase this benefit is even greater, as dynamic updates can be incorporated at any point during the optimization, even if the optimization has not yet converged.
+\end{itemize}
+
+\todo{Explain what primitive operations we support and why this is enough?}
+
+Our pipeline supports the following primitive operations on the input graph:
+%
+\begin{itemize}
+	\setlength\itemsep{-0.5em}
+	\item add a vertex with arbitrary adjacencies
+	\item remove a vertex and all its incident edges
+	\item add arbitrary edges
+	\item remove arbitrary edges
+\end{itemize}
+%
+By composing multiple of these operations we can express more complicated operations. In fact, for arbitrary graphs $G_1$ and $G_2$ there exists a sequence of primitive operations that, when applied to $G_1$, yields $G_2$. Finding such a sequence that transform a graph into a different graph is trivial but out of scope of this thesis. Many real-world applications such as the visualization of a dynamic opinion network from \cref{sect:motivation} even produce such a sequence directly.
+
+\clearpage
+\input{Sources/04-01-Incremental-Clustering}
+\clearpage
+\input{Sources/04-02-Incremental-Filtering-and-Embedding}
+\clearpage
+\input{Sources/04-03-Incremental-Transformation-to-Dual}

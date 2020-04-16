@@ -1,0 +1,19 @@
+\chapter{Visualizing Static Input Graphs}
+\label{chap:visualizing-static-input-graphs}
+
+For static input graphs our pipeline looks as follows: In a first step, we determine clusters of vertices in the input graph and their relationships (similarities). We then pick the most important relationships we want our visualization to show and determine some combinatorial arrangement of the clusters. We transform this embedding into an equivalent contact representation whose faces are represent the clusters and whose adjacencies represent the clusters' relationships. Eventually, we optimize the contact representation such that the areas are (close to) proportional to the cluster weights, \ie{} the number of vertices in the clusters. The contact representation essentially is the area-proportional map we want to create.
+
+The following figure depicts a rough sketch of the phases and intermediate products of the pipeline for static inputs:
+
+\begin{figure}[H]
+	\centering\includegraphics[height=140px]{Resources/Pipeline-Static.png}
+	\caption{Overview of the algorithmic pipeline for static input graphs.}
+	\label{fig:pipeline-static}
+\end{figure}
+
+We will now discuss the individual phases of the pipeline in greater detail.
+
+\input{Sources/03-01-Clustering}
+\input{Sources/03-02-Filtering-and-Embedding}
+\input{Sources/03-03-Transformation-to-Dual}
+\input{Sources/03-04-Optimization}
