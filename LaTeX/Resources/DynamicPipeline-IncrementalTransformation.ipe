@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200416232747" modified="D:20200416235906"/>
+<info created="D:20200416232747" modified="D:20200418015425"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -263,7 +263,7 @@ h
 384 528 l
 h
 </path>
-<text layer="text" matrix="1 0 0 1 -120 208" transformations="translations" pos="400 556" stroke="black" type="minipage" width="120" height="12.891" depth="7.92" valign="bottom">\centering{sequence of operations on\\embedded boundary graph}</text>
+<text layer="text" matrix="1 0 0 1 -120 208" transformations="translations" pos="400 556" stroke="black" type="minipage" width="120" height="6.926" depth="1.93" valign="bottom">\centering{embedded boundary graph}</text>
 <text matrix="1 0 0 1 -136 288" transformations="translations" pos="160 476" stroke="black" type="minipage" width="112" height="12.891" depth="7.92" valign="bottom">\centering{sequence of operations on\\embedded filtered graph}</text>
 <text matrix="1 0 0 1 -112 256" transformations="translations" pos="256 504" stroke="black" type="minipage" width="128" height="11.924" depth="6.95" valign="center">\centering{Incremental\\Transformation}</text>
 <path layer="arrows" matrix="1 0 0 1 -112 256" stroke="black" rarrow="arc/normal">

@@ -3,42 +3,49 @@
 
 Extending the approach discussed in the previous section to dynamic input graphs is challenging primarily because we must try to preserve the viewer's mental map as the underlying data changes over time. We want the visualization at different points in time to be similar enough so that the viewer can clearly tell what parts have changed \cite{mashima2011visualizing}, yet allow for the required changes in geography and topology. Still, changes between visualizations of consecutive points in time should minimize movement and allow for smooth animations therebetween.
 
-The pipeline for static inputs discussed in the previous section does not satisfy these requirements. Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization: The filtering \& embedding and transformation phases in particular have way too many degrees of freedom in choosing which edges to visualize, how to combinatorially embed the graph, and how to geometrically embed the boundary graph. We therefore extend the pipeline in a way that allows for small, incremental updates to be propagated through the individual phases. A rough sketch of the extended pipeline is depicted in \cref{fig:dynamic-pipeline}.
-
-%Note that the final visualization phase does not need to be adjusted for the dynamic case, the implementation from the static case can be reused without any modifications.
+The pipeline for static inputs discussed in the previous section does not satisfy these requirements. Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization, destroying the viewer's mental map: The filtering \& embedding and transformation phases in particular have way too many degrees of freedom in choosing which edges to preserve, how to combinatorially embed the graph, and how to geometrically embed the boundary graph. We therefore extend the pipeline in a way that allows for small, incremental changes to be propagated through the individual phases and to be applied to the phases' products, preserving the viewer's mental map. A rough sketch of the extended pipeline is depicted in \cref{fig:dynamic-pipeline}.
 
 \begin{figure}[H]
-	\centering\includegraphics[width=0.9\textwidth]{Resources/DynamicPipeline.png}
+	\centering\includegraphics[width=0.9\textwidth]{Resources/DynamicPipeline.pdf}
 	\caption{Overview of the algorithmic pipeline for dynamic input graphs.}
 	\label{fig:dynamic-pipeline}
 \end{figure}
 
-\todo{Explain why we need TWO graphs as input here, rather than in first/each section.}
+The incremental versions of the clustering, filtering and embedding, and transformation phases propagate the incremental changes through the pipeline by adapting the operations for the different intermediate graphs: The incremental clustering phase tells us what effects a change of the input graph, as expressed by a sequence of operations on said graph, has on its cluster graph. The incremental filtering and embedding phase then tells us how those changes of the cluster graph in turn affect the embedded filtered graph. Eventually, the incremental transformation phase outputs an embedded boundary graph for the embedded filtered graph with the respective operations applied.
 
-\todo{Explain why the final visualization phase doesn't need to be adjusted for the dynamic case.}
+All of these phases tell us how to modify the graph output by their non-incremental counterparts using a sequence of operations or output a modified version of said graph directly. Note that a sequence of operations is only meaningful in combination with a graph that these operations can be applied to. However, we don't allow the incremental clustering and filtering \& embedding phases to output the intermediate graphs themselves. This would open us up to the possibility of the sequences of operations being incompatible with the graphs produced by the pipeline earlier. Recall that we already ran through the pipeline at least once and have a contact representation and intermediate products for the original input graph, and we now want to find out how changes of the original input graph translate to changes of the intermediate products and the eventual contact representation. We therefore provide the output graphs of the non-incremental phases as additional input to their incremental counterparts such that the incremental phases can tailor their output to whatever the pipeline has produced for earlier versions of the input graph.
 
+The eventual optimization phase doesn't need to be adjusted for the dynamic case \emdash{} it simply obtains its input from the incremental transformation phase rather than from the regular transformation phase. Instead of optimizing a polygonal contact representation produced from an embedded filtered graph from scratch, it improves upon a contact representation that has previously been optimized and had a couple of tweaks made to it afterwards.
 
-Extending the pipeline to allow propagation of small changes of the input graph has numerous other benefits:
+Extending the pipeline to allow the propagation of small, incremental changes of the input graph has numerous benefits other than the ability to preserve the viewer's mental map:
 %
 \begin{itemize}
-	\item It enables lots of optimizations in the implementations of the individual phases as only the aspects that have actually changed need to be processed and incorporated.
+	\item It allows highly efficient implementations of the incremental parts of the pipeline as only the aspects that have actually changed in the input graph or intermediate products need to be processed and incorporated further along the pipeline.
+	\item It makes the dynamic pipeline highly parallelizable: when a later phase is processing changes, an earlier phase can already start processing new changes independently. For iterative implementations of the optimization phase this benefit is even greater, as dynamic updates can be incorporated at any point during the optimization, even if the optimization has not yet converged.
 	\item It efficiently supports dynamic input in an online setting, \ie{} a setting in which the incremental changes aren't known in advance, for example when visualizing live data.
-	\item It makes the dynamic pipeline highly parallelizable: when a later phase is processing changes, an earlier phase can already start processing the new changes independently. For iterative implementations of the optimization phase this benefit is even greater, as dynamic updates can be incorporated at any point during the optimization, even if the optimization has not yet converged.
 \end{itemize}
 
-\todo{Explain what primitive operations we support and why this is enough?}
+Because the dynamic pipeline is only able to incorporate a predefined class of operations, we must ensure that we can create any version of the input graph by applying some sequence of operations to the initial version of said graph, \ie{}
+%
+\begin{equation*}
+	\forall G_i \colon \exists n \in \mathbb{N} \colon \exists (\text{op}_i)_{i=1}^{n_i} \colon \quad G_i = \text{apply}((\text{op}_i)_{i=1}^{n_i}, G_0),
+\end{equation*}
+%
+where $\text{apply}(\cdot, G_0)$ applies a sequence of operations to the graph $G_0$. Otherwise it might not be possible to adapt the produced contact representation for a later version of the input graph.
 
-Our pipeline supports the following primitive operations on the input graph:
+We shall therefore support the following class of operations on the input graph:
 %
 \begin{itemize}
 	\setlength\itemsep{-0.5em}
 	\item add a vertex with arbitrary adjacencies
 	\item remove a vertex and all its incident edges
-	\item add arbitrary edges
-	\item remove arbitrary edges
+	\item add a set of edges
+	\item remove a set of edges
 \end{itemize}
 %
-By composing multiple of these operations we can express more complicated operations. In fact, for arbitrary graphs $G_1$ and $G_2$ there exists a sequence of primitive operations that, when applied to $G_1$, yields $G_2$. Finding such a sequence that transform a graph into a different graph is trivial but out of scope of this thesis. Many real-world applications such as the visualization of a dynamic opinion network from \cref{sect:motivation} even produce such a sequence directly.
+By applying a sequence of these primitive operations we can clearly turn an arbitrary graph $G_0 \coloneqq (V_0, E_0)$ into any other graph $G_i \coloneqq (V_i, E_i)$. Finding such a sequence for a pair of graphs $(G_0, G_1)$ is trivial: we can first remove vertices $V_0 \setminus V_1$ and edges $E_0 \setminus E_1$ and then add vertices $V_1 \setminus V_0$ and edges $E_1 \setminus E_0$.
+
+Many real-world applications, such as the visualization of a dynamic opinion network from \cref{sect:motivation}, produce such a sequence of operations directly. For applications that don't, we support a secondary interface that works with two versions of the input graph, the original version $G_0$ and an updated version $G_i$, and computes a valid sequence of operations that turns $G_0$ into $G_i$ as described above.
 
 \clearpage
 \input{Sources/04-01-Incremental-Clustering}

@@ -11,7 +11,8 @@ The incremental clustering phase translates changes of the input graph to change
 
 The cluster graph of the previous version of the input graph is needed because the output sequence is tailored to a specific cluster graph. It has to be specified as input rather than being part of the output because we want to continue propagating the changes through the pipeline and apply it to a product of a non-incremental phase eventually. If we didn't specify these products as input to the incremental phases, the sequence of operations might not be compatible with the products of the non-incremental phases.
 
-We assume that in concrete implementations, the cluster graph preserves enough information about the input graph to allow for incremental clustering. For example, the cluster graph might keep track of which vertices of input graph its clusters contain. \todo{Or do we want to formalize that with explicit mathematical definitions of cluster graph etc.?}
+We assume that in concrete implementations, the cluster graph preserves enough information about the input graph to allow for incremental clustering. For example, the cluster graph might keep track of which vertices of input graph its clusters contain.
+\todo{Or do we want to formalize that with explicit mathematical definitions of cluster graph etc.?}
 
 The following operations on the cluster graph can be output and are sufficient to turn any cluster graph into a different one:
 %
