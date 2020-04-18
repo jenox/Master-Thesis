@@ -45,7 +45,7 @@ We shall therefore support the following class of operations on the input graph:
 %
 By applying a sequence of these primitive operations we can clearly turn an arbitrary graph $G_0 \coloneqq (V_0, E_0)$ into any other graph $G_i \coloneqq (V_i, E_i)$. Finding such a sequence for a pair of graphs $(G_0, G_1)$ is trivial: we can first remove vertices $V_0 \setminus V_1$ and edges $E_0 \setminus E_1$ and then add vertices $V_1 \setminus V_0$ and edges $E_1 \setminus E_0$.
 
-Many real-world applications, such as the visualization of a dynamic opinion network from \cref{sect:motivation}, produce such a sequence of operations directly. For applications that don't, we support a secondary interface that works with two versions of the input graph, the original version $G_0$ and an updated version $G_i$, and computes a valid sequence of operations that turns $G_0$ into $G_i$ as described above.
+Many real-world applications, such as the visualization of a dynamic opinion network from \cref{sect:motivation}, produce such a sequence of operations directly. For applications that don't, we can trivially prepend a phase that takes two versions of the input graph, the original version $G_0$ and an updated version $G_i$, computes a valid sequence of operations that turns $G_0$ into $G_i$ as described above, and feeds the original input graph and the sequence of operations to the incremental clustering phase.
 
 \clearpage
 \input{Sources/04-01-Incremental-Clustering}
