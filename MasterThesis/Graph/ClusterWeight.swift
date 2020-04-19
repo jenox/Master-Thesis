@@ -29,3 +29,9 @@ extension ClusterWeight: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral 
         self.rawValue = value
     }
 }
+
+extension ClusterWeight: CustomStringConvertible {
+    var description: String {
+        return "\(self.rawValue)"
+    }
+}

@@ -21,3 +21,9 @@ extension ClusterName: ExpressibleByStringLiteral {
         self.rawValue = String(value)
     }
 }
+
+extension ClusterName: CustomStringConvertible {
+    var description: String {
+        return self.rawValue
+    }
+}
