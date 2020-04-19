@@ -1,50 +1,17 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-\begin{itemize}
-	\item Concrete implementations for clustering, filtering and embedding are out of scope
-	\item We focus on the transformation and assume we have a triangulated vertex-weighted graph already
-	\item Current implementation also assumes the embedding to be straight-line
-\end{itemize}
+In this chapter, we provide possible implementations for the different phases of the pipeline.
 
+The pipeline from \cref{chap:visualizing-static-input-graphs} and \cref{chap:visualizing-dynamic-input-graphs} is intentionally defined very broadly in order to remain applicable to a wide range of use cases and to show the different different steps that need to be taken to visualize a dynamic input graph from start to finish.
 
+For our implementation and the evaluation the following chapter, however, we assume that we are given an embedded filtered graph already and focus on the (incremental) transformation to its dual and the optimization thereof. Implementations for the clustering and filtering \& embedding phases are out of scope of this thesis: There exist plentiful graph clustering and planar embedding algorithms already that have been studied and evaluated in great detail. Providing our own implementations would not add any value to the pipeline proposed here.
 
-\section{Transformation to Dual}
+We start by looking at a simple algorithm to create the initial contact representation and how it compares to the theoretical results of Thomassen \cite{thomassen1992plane} and Kleist \cite{kleist2018drawing} \cite{kleist2019planar} in \cref{sect:implementation-transformation}. In \cref{sect:implementation-incremental-transformation} we then show how the different dynamic operations defined in \cref{sect:incremental-transformation-to-dual} can be incorporated into an existing contact representation. We conclude by showing a possible implementation of the optimization phase in \cref{sect:implementation-optimization} that improves the statistical accuracy of the contact representation, amongst other things.
 
-\begin{itemize}
-	\item Idea
-	\item Figure
-	\item Pseudocode: \url{https://github.com/jenox/Master-Thesis/blob/master/Documents/Algorithms.md}
-	\item Runtime?
-	\item Correctness?
-	\item Why do we not use Thomassen?
-	\item Why do we not use Kleist?
-\end{itemize}
-
-
-
-\section{Incremental Transformation to Dual}
-
-\subsection{Change Cluster Weight}
-
-\begin{itemize}
-	\item Just run optimization again
-\end{itemize}
-
-\subsection{Flip Cluster Adjacency}
-
-\begin{itemize}
-	\item Idea
-	\item Figure
-	\item Pseudocode
-\end{itemize}
-
-
-
-\section{Optimization}
-
-\begin{itemize}
-	\item Using forces
-	\item Different components
-	\item Merge vertices when getting too close
-\end{itemize}
+\clearpage
+\input{Sources/05-01-Transformation-to-Dual}
+\clearpage
+\input{Sources/05-02-Incremental-Transformation-to-Dual}
+\clearpage
+\input{Sources/05-03-Optimization}

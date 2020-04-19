@@ -11,9 +11,11 @@ The incremental filtering and embedding phase continues propagating the changes 
 
 Again, we assume that in concrete implementations, an embedded filtered graph preserves enough information about the graphs it was created from to allow for changes of the underlying cluster graph to be incorporated in this phase.
 
-We support the following class of primitive operations on embedded filtered graphs. For all primitive operations that create new vertices or edges the weights can be chosen arbitrarily:
+We support the following class of primitive operations on embedded filtered graphs. For all primitive operations that create new vertices or edges the weights can be chosen arbitrarily.
 %
 \begin{itemize}
+	\item \textbf{Update vertex or edge weight:} We can set existing vertices' or edges' weights to arbitrary new values.
+
 	\item \textbf{Insert vertex in an internal face:} We can place a new vertex inside one of the internal faces (which are triangles). In order to preserve the internal triangulatedness of the graph, edges to the three vertices on said face must be added in conjunction and the edges must be embedded such that they do not cross. This operation essentially replaces an internal face with three new triangles.
 \begin{figure}[H]
 	\centering
@@ -22,7 +24,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexInside-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexInside-Invalid.pdf}}
-	\caption{Inserting a vertex in an internal face of a embedded filtered graph (a) correctly (b) and incorrectly, introducing a crossing of the edges $\{b,v\}$, $\{c,v\}$ (c).}
+	\caption{Inserting a vertex in an internal face of a embedded filtered graph (a) correctly (vertex $v$, b) and incorrectly, introducing a crossing of the edges $\{b,v\}$, $\{c,v\}$ (vertex $v$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -35,7 +37,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexOutside-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexOutside-Invalid.pdf}}
-	\caption{Inserting a vertex in the outer face of an embedded filtered graph (a) correctly (b) and incorrectly, creating a 4-hole $abcv$ (c).}
+	\caption{Inserting a vertex in the outer face of an embedded filtered graph (a) correctly (vertex $v$, b) and incorrectly, creating a 4-hole $abcv$ (vertex $v$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -47,7 +49,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveInternalVertex-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveInternalVertex-Invalid.pdf}}
-	\caption{Removing an internal vertex of an embedded filtered graph (a) correctly (b) and incorrectly, creating a 4-hole $abec$ (c).}
+	\caption{Removing an internal vertex of an embedded filtered graph (a) correctly (vertex $e$, b) and incorrectly, creating a 4-hole $abec$ (vertex $d$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -59,7 +61,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterVertex-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterVertex-Invalid.pdf}}
-	\caption{Removing a vertex on the outer face of an embedded filtered graph (a) correctly (b) and incorrectly, creating a cut vertex $b$ (c).}
+	\caption{Removing a vertex on the outer face of an embedded filtered graph (a) correctly (vertex $d$, b) and incorrectly, creating a cut vertex $b$ (vertex $c$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -72,7 +74,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-FlipInternalEdge-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-FlipInternalEdge-Invalid.pdf}}
-	\caption{Flipping an internal edge of an embedded filtered graph (a) correctly (b) and incorrectly, creating a duplicate adjacency between $a$ and $d$ (c).}
+	\caption{Flipping an internal edge of an embedded filtered graph (a) correctly (edge $\{d,c\}$, b) and incorrectly, creating a duplicate adjacency between $a$ and $d$ (edge $\{b,c\}$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -84,7 +86,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertOuterEdge-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertOuterEdge-Invalid.pdf}}
-	\caption{Inserting an edge on the outer face of an embedded filtered graph (a) correctly (b) and incorrectly, creating a 4-hole $bcde$ (c).}
+	\caption{Inserting an edge on the outer face of an embedded filtered graph (a) correctly (edge $\{e,c\}$, b) and incorrectly, creating a 4-hole $bcde$ ($\{e,d\}$, c).}
 	\label{fig:transformation}
 \end{figure}
 
@@ -96,9 +98,7 @@ We support the following class of primitive operations on embedded filtered grap
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterEdge-Valid.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterEdge-Invalid.pdf}}
-	\caption{Removing an edge on the outer face of an embedded filtered graph (a) correctly (b) and incorrectly, creating a 4-hole $bcde$ (c).}
+	\caption{Removing an edge on the outer face of an embedded filtered graph (a) correctly (b, edge $\{e,d\}$) and incorrectly, creating a 4-hole $bcde$ (edge $\{e,c\}$, c).}
 	\label{fig:transformation}
 \end{figure}
-
-	\item \textbf{Update vertex or edge weight:} Of course, we can also set existing vertices' or edges' weights to arbitrary new values.
 \end{itemize}
