@@ -12,7 +12,6 @@ The \emph{dual} of a plane graph $G$ is a pseudograph $G^*$ that has a vertex fo
 %The dual $G^*$ of a plane graph $G$ is itself plane and an embedding can trivially be derived from an embedding of the primal graph $G$.
 
 The \emph{weak dual} $G^-$ of a plane graph is its dual without the vertex corresponding to the primal outer face \cite{fleischner1974}. We define the \emph{augmented dual} $G^+$ of a plane graph $G$ as the pseudograph obtained by first adding a new vertex in the outer face of $G$ and connecting it to all vertices on the outer face and then forming the dual. By definition, the weak dual of the augmented dual of a plane graph is the primal graph again, \ie{} $(G^+)^- = G$ \cite{fleischner1974}.
-\todo{Is there a known name for the inverse of \quoted{weak dual}? I couldn't find anything.}
 
 Using the terminology from above, the filtered graph embedding is the weak dual of the boundary graph embedding with its degree-2-vertices smoothed out. In this phase of the pipeline, we aim to go in the opposite direction though: we are given a filtered graph embedding and want to create a corresponding boundary graph embedding with straight-line edges. We start by forming its augmented dual, as illustrated in the following figure:
 
