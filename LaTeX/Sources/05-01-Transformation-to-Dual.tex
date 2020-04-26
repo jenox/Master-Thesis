@@ -8,9 +8,11 @@ We therefore propose a simple algorithm that is trivial to implement and leaves 
 
 The underlying idea is as follows: We place vertices on edges of the outer face (those edges form new triangular faces after adding the helper vertex from \cref{sect:transformation-to-dual}) and inside the internal faces. We then connect these vertices if their corresponding faces are incident. Connecting two vertices may require additional subdivision vertices in order not to introduce edge crossings \emdash{} we use a single subdivision vertex per edge.
 
-In a preliminary step, we tweak the embedding of the filtered graph to use straight-line edges. Such an embedding exists for every plane graph according to Fáry's theorem \cite{fary1948straight} and was independently proved by Wagner \cite{wagner1936bemerkungen} and Stein \cite{stein1951convex}. There exist numerous algorithms to construct such an embedding \cite{vismara} such as the shift method \cite{fraysseix1990draw} or the Schnyder realizer method \cite{schnyder1990embedding} \todo{Tamara mentioned a very simple algorithm with exponential area?}.
+In a preliminary step, we tweak the embedding of the filtered graph to use straight-line edges. Such an embedding exists for every plane graph according to Fáry's theorem \cite{fary1948straight} and was independently proved by Wagner \cite{wagner1936bemerkungen} and Stein \cite{stein1951convex}. There exist numerous algorithms to construct such an embedding \cite{vismara} such as the shift method \cite{fraysseix1990draw} or the Schnyder realizer method \cite{schnyder1990embedding} \todo{Tamara mentioned a very simple algorithm with exponential area? \url{https://en.wikipedia.org/wiki/Tutte_embedding}}.
 
 \clearpage
+\todo{instead of number of adjacent faces, check if incident to outer face.}
+
 \begin{algorithm}[H]
   \caption{Transformation to Dual}
   \label{algo:transformation-to-dual}

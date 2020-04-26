@@ -64,6 +64,7 @@ When graphs are weighted, we typically include the weight functions in the graph
 
 \paragraph{Graph Drawings}
 
+% http://www.planarity.org/Klein_elementary_graph_theory.pdf uses "geometric embedding"
 \begin{definition}
 	A \emph{drawing} or \emph{topological embedding} of a graph $G = (V, E)$ maps its vertices to distinct points in the plane and its edges to continuous curves between its endpoints in the plane.
 	The graph $G$ is called \emph{planar} if it permits a drawing in which its edges don't self-intersect and don't cross other edges, \ie{} the edges only intersect in their endpoints.
@@ -112,10 +113,10 @@ An example for a plane graph and its dual is illustrated in \cref{fig:preliminar
 
 \begin{definition}
 	A planar graph $G$ can be represented as a so-called \emph{contact graph}. In such a representation, the vertices are represented by pairwise internally disjoint regions in the plane and edges are implicitly defined between vertices whose regions touch \cite{alam2013linear}.
-	Such an arrangement of regions is called a \emph{contact representation} of $G$.
+	Such an arrangement of regions is called a \emph{contact representation} of $G$. If all regions are simple polygons, it is also called a \emph{polygonal contact representation}.
 	A contact representation can be \emph{weighted}, assigning a real weight to all of its faces, and is said to \emph{proportional} if the regions' areas are proportional to said weights \cite{alam2013linear}.
 	A contact representation is said to be \emph{hole-free} if it contains no area that isn't part of any of the regions \cite{alam2013linear}.
-	Given a plane graph $G$, a contact representation with axis-aligned rectilinear polygons is called a \emph{rectilinear dual} of $G$ \cite{alam2013computing}.
+	Given a plane graph $G$, a contact representation of $G$ with axis-aligned rectilinear polygons is called a \emph{rectilinear dual} of $G$ \cite{alam2013computing}.
 \end{definition}
 
 \begin{figure}[H]
