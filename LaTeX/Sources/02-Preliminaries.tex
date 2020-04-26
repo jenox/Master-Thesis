@@ -1,11 +1,11 @@
 \chapter{Preliminaries}
 \label{chap:preliminaries}
 
-\todo{I'm unsure about the overall structure of this chapter: it's a little dry as it stands right now. Do we really want formal definition environments? Do we need some more discussion of the concepts outside of the formal definitions? Do we need citations for the more exotic and/or controversial definitions (as for rectilinear dual)?}
+\tamara{I'm unsure about the overall structure of this chapter: it's a little dry as it stands right now. Do we really want formal definition environments? Do we need some more discussion of the concepts outside of the formal definitions? Do we need citations for the more exotic and/or controversial definitions (as for rectilinear dual)?}
 
-\todo{I would like to keep this chapter as a \quoted{refresher} of things one could reasonably already know, and define my own things such as \emph{polygonal dual} and \emph{approximate proportional contact representations} in the following chapters once I need them. Is this ok?}
+\tamara{I would like to keep this chapter as a \quoted{refresher} of things one could reasonably already know, and define my own things such as \emph{polygonal dual} and \emph{approximate proportional contact representations} in the following chapters once I need them. Is this ok?}
 
-\todo{Do we need more figures in this chapter?}
+\tamara{Do we need more figures in this chapter?}
 
 % https://math.stackexchange.com/questions/566565/are-if-and-iff-interchangeable-in-definitions
 
@@ -53,8 +53,13 @@ When graphs are weighted, we typically include the weight functions in the graph
 	$H$ is a \emph{1-subdivision} of $G$ if it can be obtained from $G$ by subdividing every edge exactly once.
 \end{definition}
 
+% https://en.wikipedia.org/wiki/Homeomorphism_(graph_theory)#Subdivision_and_smoothing
 \begin{definition}
-	Similarly, an edge $\{u,v\}$ can be \emph{contracted} by deleting it and \quoted{merging} its endpoints.
+	Similarly, a vertex $v$ of degree 2 can be \emph{smoothed}, replacing it and its incident edges with a new edge $\{u,w\}$ between its original neighbors.
+\end{definition}
+
+\begin{definition}
+	One can also \emph{contact} an edge $\{u,v\}$, deleting it and \quoted{merging} its endpoints.
 	This removes the edges $E_- \coloneqq \{ \{x,y\} \in E \vert u \in \{x,y\} \lor v \in \{x,y\} \}$ and creates new edges $E_+ \coloneqq \{ \{uv,x\} \vert \{u,x\} \in E \lor \{v,x\} \in E \}$, producing a new graph $G^\prime = (V^\prime, E^\prime)$ with $V^\prime = V - u - v + uv$ and $E^\prime = E - E_- + E_+$.
 %	Contracting an edge $\{u,v\}$ is only permitted if $u$ and $v$ don't have any neighbors in common.
 % Path contraction? https://en.wikipedia.org/wiki/Edge_contraction#Path_contraction
@@ -92,9 +97,9 @@ When graphs are weighted, we typically include the weight functions in the graph
 Combinatorial embeddings uniquely determine the faces (which edges bound them, not their geometry) any drawing with same combinatorial embedding would have.
 
 \begin{definition}
-	A \emph{multigraph} is a graph that is can have multiple edges between a pair of vertices as well as so-called loops, \ie{} edges connecting a vertex to itself.
+	A \emph{multigraph} is a graph that, as opposed to a simple graph, is can have multiple edges between a pair of vertices as well as so-called loops, \ie{} edges connecting a vertex to itself.
 	The \emph{dual graph} of a plane graph $G$ is a plane pseudograph that has a vertex for every face of $G$ and edges connecting the vertices corresponding to the incident faces of each edge in the graph $G$. The dual graph is embedded in such a way that the dual edges cross their primal edges, but don't cross each other. The dual graph of a plane graph $G$, often abbreviated as just \emph{dual}, is denoted as $G^*$.
-%	The \emph{weak dual graph} $G^-$ of a plane graph is its dual without the vertex corresponding to the $G$'s outer face\cite{fleischner1974}.
+	The \emph{weak dual graph} $G^-$ of a plane graph is its dual without the vertex corresponding to the $G$'s outer face\cite{fleischner1974}.
 \end{definition}
 
 \begin{figure}[H]
@@ -130,8 +135,7 @@ An example for a plane graph and its dual is illustrated in \cref{fig:preliminar
 	\label{fig:preliminaries-rectilinear-dual}
 \end{figure}
 
-Note that the name \quoted{dual} is fitting here because vertices of the original graph turn into faces, or regions of the rectilinear dual. In fact, we can regard the rectilinear dual as a plane graph itself: the polygons' corners are vertices, connected by edges as determined by the polygons' sides.
-Note that one can interpret the rectilinear dual as a plane graph itself, as illustrated in \cref{fig:preliminaries-rectilinear-dual}. We use the term rectilinear dual for the actual arrangement of rectilinear polygons and the induced plane graph interchangeably.
+Note that the name \quoted{dual} is fitting here because vertices of the original graph turn into faces, or regions of the rectilinear dual. In fact, we can regard the rectilinear dual as a plane graph itself: the polygons' corners are vertices, connected by edges as determined by the polygons' sides. Also note that one can interpret the rectilinear dual as a plane graph itself, as illustrated in \cref{fig:preliminaries-rectilinear-dual}. We use the term rectilinear dual to refer to the the actual arrangement of rectilinear polygons and the induced plane graph interchangeably.
 
 In the remainder of this thesis, we assume contact representations to be hole-free unless otherwise noted.
 
