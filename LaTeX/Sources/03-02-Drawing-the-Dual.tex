@@ -1,9 +1,53 @@
 \section{Drawing the Polygonal Dual}
 \label{sect:drawing-the-polygonal-dual}
 
+In the second step of the pipeline, we apply a force-directed graph drawing algorithm to the initial map graph $G_\text{init}$ produced by \cref{alg:transformation-to-dual} to generate the approximately area-proportional map graph $G_\text{prop}$.
+
+In a force-directed algorithm, we interpret a graph's vertices as particles in a physical system. Based on the structure of the graph and the relative position of the particles, we define define various forces that act to bring the system to a stable equilibrium position in which its potential energy is at a local minimum. In these equilibrium positions, the system is in a somewhat relaxed state that, in the context of graph drawing, generally is a visually appealing drawing of the graph. We find an equilibrium position by iteratively computing the net force acting on each particle and displacing it by a small amount in the direction of the net force, based on its absolute value.
+
+\tamara{Can/should I add more theory on the physical aspect here?}
+
+\paragraph{Forces}
+
+We define the forces that exist in our particle system with two goals in mind: First, the faces of the graph (the regions of the map) to have an area ought to be close to proportional to some prescribed value. And second, we want the faces to be \emph{locally fat}. Our intuitive understanding of local fatness is that a region shouldn't have drawn-out, tight corridors. We formalize and discuss different quantifiable measures that aim to capture the local fatness of regions in \cref{chap:evaluation}. Note that both of these are nice-to-have goals though. Planarity of the resulting drawing, on the other hand, is a hard requirement that must be preserved at all costs.
+
+Let us now discuss the concrete force components that act to bring our particle system to an equilibrium position.
+\tamara{Do you have a better idea than putting this in a bulleted list? Do we want figures for pressure and angle?}
+%
 \begin{itemize}
-	\item Using forces
-	\item motivated by pressure things
-	\item Different components
-	\item Merge vertices when getting too close
+	\item \textbf{Air Pressure:}
+	This force works towards the statistical accuracy of the generated map. It is responsible for growing faces that are currently compressed and shrinking faces that are currently larger than they should be. We want this force and the overall drawing to be agnostic to constant factors of the face weights and therefore compute the normalized pressure $P(f)$ in a face $f$ as
+	$$P(f) \coloneqq \frac{w(f)}{A(f)} \cdot \frac{\sum\limits_{g \in F}{A(g)}}{\sum\limits_{g \in F}{w(g)}}$$
+	where $A(f)$ is the area currently covered by some face $f$ and $w(f)$ its weight. A value greater than $1$ indicates that a regions wants to grow, a value less than $1$ indicates that it wants to shrink.
+	We define the the exerted force to be logarithmic in $P(f)$ such that the sign of $\log(P(f))$ determines whether the force points outwards or inwards and distribute the force proportionally along all edges bounding the face:
+	$$\vec{F}_P(f,e) \coloneqq 10 \cdot \log(P(f)) \cdot \frac{l(e)}{l(f)} \cdot \vec{n}_e$$
+	Here, $l(e)$ is the length of the edge $e$, $l(f)$ is the length of the boundary of the face $f$, as $\vec{n}_e$ is the outward-pointing normal vector of the edge $e$. $\vec{F}_P(f,e)$ is applied to both endpoints of $e$ for all face-and-incident-edge-pairs $(f,e)$.
+
+    \item \textbf{Angle:}
+    This force attempts to create uniform internal angles in the individual faces. Because it works against extreme angles (close  to $0^\circ$ or close to $360^\circ$), it is a key factor preventing tight corridors and therefore achieving local fatness of the regions. \todo{Maybe define $\angle_f$ up here? Plus more text!}
+    $$\vec{F}_\angle(f,v) \coloneqq 1 \cdot \left\{\begin{array}{lr}
+    	\frac{\angle_v - \angle_f}{360^\circ - \angle_f}, & \text{if } \angle_v \geq \angle_f\\
+    	\frac{\angle_v - \angle_f}{\angle_f}, & \text{otherwise}\end{array}
+    \right\} \cdot \vec{n}_v$$
+    Here, $\angle_v$ is the internal angle at vertex $v$, $\angle_f$ is the internal angle a regular $\abs{f}$-gon would have, and $\vec{n}_v$ is the normalized outward-pointing bisecting vector at $v$. We apply $\vec{F}_\angle(f,v)$ to all faces $f$ and vertices $v$ on their boundary.
+
+    \item \textbf{Vertex-edge repulsion:}
+    It prevents
+    \todo{}
+
+    \item \textbf{Vertex-vertex repulsion:}
+    Thinking of the vertices as charged particles that push each other away allows us to space them out and prevents them from clumping together. This is very important because in order to preserve planarity, vertices that are very close to others will have their movement restricted severely, possibly hindering us from satisfying our aesthetic criteria. For a pair of vertices $u, v$ we define a repulsive force based on Coulomb's law that is exerted along the line connecting pairs of vertices and whose magnitude depends on their distance $d(u,v)$.
+
+	\item \textbf{Vertex-vertex attraction:}
+	\todo{}
 \end{itemize}
+
+The constant factors of the force components above were determined experimentally.
+
+\paragraph{Preventing Edge Crossings}
+
+pred implementation to prevent creation of edge crossings.
+
+still if too close, vertices when getting too close (smoothen subdivision vertices if we can without creating crossings)
+
+\paragraph{Cooling}

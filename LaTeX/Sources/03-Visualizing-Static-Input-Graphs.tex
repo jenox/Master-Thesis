@@ -12,15 +12,14 @@ Unlike OpMap and GMap, which have similar goals, clustering the larger graph is 
 \end{definition}
 
 \begin{definition}
-	Given a plane graph $G$, a contact representation of $G$ with simple polygons is called a \emph{polygonal dual} of $G$.
-%	If $G$ is vertex-weighted, its polygonal duals inherit its weight function.
+	Given a plane graph $G$, a contact representation of $G$ with simple polygons is called a \emph{polygonal dual} of $G$. A polygonal dual respects the combinatorial embedding of $G$, \ie{}
 \end{definition}
 
-Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
+Unless otherwise noted, we assume that polygonal duals respect the combinatorial embedding of their primal graphs and that two regions share at most one continuous border, \ie{} the points where two regions meet lie on a single polyline. Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
 
 \tamara{Does \quoted{plane combinatorial embedding of a 2-connected} sound strange? I want to emphasize that I'm only looking for a planar embedding of the graph and not a drawing / plane graph.}
 
-With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$. We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$. $G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices. We then turn $G_\text{init}$ into an approximately area-proportional contact representation of $G_\text{emb}$'s embedding with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$. This is done by displacing its vertices while preserving the graphs's planarity. We implement this step using a force-directed algorithm.
+With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$. We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$. $G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices. We then turn $G_\text{init}$ into an approximately area-proportional, polygonal contact representation of $G_\text{emb}$ with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$. This is done by displacing its vertices while preserving the graphs's planarity. We implement this step using a force-directed algorithm.
 
 \begin{figure}[H]
 	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Thesis-Static.pdf}

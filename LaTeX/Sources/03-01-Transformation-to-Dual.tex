@@ -72,7 +72,7 @@ In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-
 
 \begin{algorithm}[H]
   \caption{Transformation to Polygonal Dual}
-  \label{algo:transformation-to-dual}
+  \label{alg:transformation-to-dual}
   \SetKwData{Endpoints}{endpoints}
   \SetKwFunction{Appending}{appending}
   \SetArgSty{textrm}
@@ -147,7 +147,7 @@ In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-
 
 To show the algorithm's correctness, we work with a helper graph, the \emph{augmented graph} $G_\text{aug}$, that can be obtained from $G_\text{emb}$ by adding a new helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face of $G_\text{emb}$, in order, without introducing edge crossings. This is the same graph as used in the definition of the augmented dual in \cref{def:augmented-dual}. Therefore $G_\text{aug}^* = G_\text{emb}^+$.
 
-The polygonal dual of $G_\text{emb}$ produced by \cref{algo:transformation-to-dual} consists of five kinds of vertices: inner face vertices (\cref{line:transformation-innerfacevertex}), outer edge vertices (\cref{line:transformation-outeredgevertex}), subdivision vertices between two inner face vertices (\cref{line:transformation-subdivisionvertex1}), subdivision vertices between an inner face vertex and an outer edge vertex (\cref{line:transformation-subdivisionvertex2}), and subdivision vertices between two outer edge vertex (\cref{line:transformation-subdivisionvertex3}). The inner face and outer edge vertices correspond to faces in the augmented graph and have degree 3, the subdivision vertices are essentially bends in the dual edges of the augmented graph and therefore have degree 2. The following figure illustrates an example:
+The polygonal dual of $G_\text{emb}$ produced by \cref{alg:transformation-to-dual} consists of five kinds of vertices: inner face vertices (\cref{line:transformation-innerfacevertex}), outer edge vertices (\cref{line:transformation-outeredgevertex}), subdivision vertices between two inner face vertices (\cref{line:transformation-subdivisionvertex1}), subdivision vertices between an inner face vertex and an outer edge vertex (\cref{line:transformation-subdivisionvertex2}), and subdivision vertices between two outer edge vertex (\cref{line:transformation-subdivisionvertex3}). The inner face and outer edge vertices correspond to faces in the augmented graph and have degree 3, the subdivision vertices are essentially bends in the dual edges of the augmented graph and therefore have degree 2. The following figure illustrates an example:
 %
 \begin{figure}[H]
 	\centering
@@ -156,7 +156,7 @@ The polygonal dual of $G_\text{emb}$ produced by \cref{algo:transformation-to-du
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-Augmented.pdf}\label{subfig:transformation-algorithm-augmented}}
 	\quad
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-Dual.pdf}\label{subfig:transformation-algorithm-dual}}
-	\caption{An embedded cluster graph $G_\text{emb}$ (a), its augmented graph $G_\text{aug}$ (b), and its polygonal dual $G_\text{init}$ as produced by \cref{algo:transformation-to-dual} (c).}
+	\caption{An embedded cluster graph $G_\text{emb}$ (a), its augmented graph $G_\text{aug}$ (b), and its polygonal dual $G_\text{init}$ as produced by \cref{alg:transformation-to-dual} (c).}
 	\label{fig:transformation-algorithm}
 \end{figure}
 
@@ -175,9 +175,9 @@ Every edge $\{u,v\}$ in $G_\text{emb}$ induces a dual edge in $G_\text{emb}^+$. 
 	\item Helper edges $\{v,\cdot\}$ that are added to vertices $v$ on the outer face of $G_\text{emb}$ in $G_\text{aug}$: These edges are incident to two new triangular faces in $G_\text{aug}$, namely the faces formed using $\{u,v\}$ and $\{v,w\}$, assuming $u$ and $w$ are the two neighbors of $v$ on the outer face of $G_\text{emb}$. Their dual edges in $G_\text{emb}^+$ therefore connect the vertices $v_{\{u,v\}}$ and $v_{\{v,w\}}$. We draw these dual edges with a bend in \cref{line:transformation-subdivisionvertex3}.
 \end{itemize}
 
-Due to our choice of bend locations, the generated embedding is planar. This is because all edges together partition the segments from the faces' barycenters to their incident edges' midpoints and the boundary of the outer face. However, since we use the vertices on the outer face of $G_\text{emb}$ as bend locations, no vertex may appear on the outer face more than once and $G_\text{emb}$ must therefore be 2-connected.
+Due to our choice of bend locations, the generated embedding is planar: We draw edges from the barycenter of all faces to the midpoints of their incident edges (in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end}); these edges cannot possibly cross. The remainder of the edges (in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end}) partition the boundary of the outer face of $G_\text{emb}$. Obviously, these two classes of edges do not cross and $G_\text{init}$ is therefore planar.
 
-Once the algorithm has computed $G_\text{init}$, we construct an explicit representation of its faces. We do so for $G_\text{emb}^+$ first (loop in \cref{line:transformation-enumerateedges}) and then insert the subdivision vertices (loop in \cref{line:transformation-insertsubdivisions}). The face in $G_\text{emb}^+$ that corresponds to a vertex $v$ of $G_\text{emb}$ is bounded by vertices corresponding to internal faces of $G_\text{emb}$ that contain $v$, plus the vertices corresponding to the additional triangular faces in $G_\text{aug}$ in case $v$ lies on outer face of $G_\text{emb}$. By iterating over adjacent pairs $(e_1, e_2)$ of incident edges in counterclockwise order, we can tell if $e_1$ and $e_2$ bound an internal face of $G_\text{emb}$ or if, in the case of vertices on the outer face of $G_\text{emb}$, the edges wrap around on the outside. For the wraparound case, the area sign check in \cref{line:transformation-checktriangle} is important, because $u,v,w$ might still form a triangle, albeit one with negative area, as is the case for vertex $d$ in the example from \cref{fig:transformation-algorithm}.
+Once the algorithm has computed $G_\text{init}$, we construct an explicit representation of its faces. We do so for $G_\text{emb}^+$ first (loop in \cref{line:transformation-enumerateedges}) and then insert the subdivision vertices (loop in \cref{line:transformation-insertsubdivisions}). The face in $G_\text{emb}^+$ that corresponds to a vertex $v$ of $G_\text{emb}$ is bounded by vertices corresponding to internal faces of $G_\text{emb}$ that contain $v$, plus the vertices corresponding to the additional triangular faces in $G_\text{aug}$ in case $v$ lies on outer face of $G_\text{emb}$. Iterating over adjacent pairs $(e_1, e_2)$ of incident edges in counterclockwise order correctly detects the internal faces between $e_1$ and $e_2$ and the case where $e_1$ and $e_2$ wrap around on the outside, in order. The area sign check \cref{line:transformation-checktriangle} such that the wraparound case isn't misclassified as an internal face. This would be the case for internal faces of $G_\text{emb}$ with two edges on the outer face, as is the case for vertex $v \coloneqq d$ and edges $e_1 \coloneqq \{d,b\}, e_2 \coloneqq \{d,c\}$ in \cref{fig:transformation-algorithm}.
 
 
 
