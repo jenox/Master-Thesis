@@ -23,7 +23,7 @@ Note that polygonal duals are a generalization of rectilinear duals and that, an
 With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$. We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$. $G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices. We then turn $G_\text{init}$ into an approximately area-proportional contact representation of $G_\text{emb}$'s embedding with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$. This is done by displacing its vertices while preserving the graphs's planarity. We implement this step using a force-directed algorithm.
 
 \begin{figure}[H]
-	\centering\includegraphics[width=0.9\textwidth]{Resources/StaticPipeline-Thesis.pdf}
+	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Thesis-Static.pdf}
 	\caption{Overview of the algorithmic pipeline for static input graphs.}
 	\label{fig:static-pipeline-thesis}
 \end{figure}
@@ -40,9 +40,9 @@ Let's break down the requirements we impose on the cluster graph $G_\text{emb}$ 
 Many real-world applications, such as visualizing opinion networks, do not produce an embedded cluster graph directly. In order for our framework to be applicable, one may need to prepend a clustering phase that turns an arbitrary input graph $G_\text{in}$ into a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph that can then be processed by our framework:
 %
 \begin{figure}[H]
-	\centering\includegraphics[width=0.9\textwidth]{Resources/StaticPipeline-Augmented.pdf}
+	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Application-Static.pdf}
 	\caption{Overview of a possible algorithmic pipeline for generic applications.}
-	\label{fig:static-pipeline-augmented}
+	\label{fig:static-pipeline-application}
 \end{figure}
 
 We will now discuss our implementation of the transformation and drawing phases of the pipeline in detail.

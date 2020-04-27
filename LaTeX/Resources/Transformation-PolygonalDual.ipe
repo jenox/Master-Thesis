@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200426141411" modified="D:20200426141710"/>
+<info created="D:20200426141411" modified="D:20200427021011"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -513,16 +513,21 @@ h
 <tiling name="rising" angle="30" step="4" width="1"/>
 </ipestyle>
 <page>
-<layer name="alpha"/>
-<layer name="delta"/>
-<layer name="epsilon"/>
-<layer name="eta"/>
-<layer name="beta"/>
-<layer name="gamma"/>
-<layer name="zeta"/>
-<layer name="theta"/>
-<view layers="beta gamma zeta theta" active="eta"/>
-<path layer="gamma" fill="flatred">
+<layer name="dual_faces"/>
+<layer name="dual_edges"/>
+<layer name="dual_vertices"/>
+<layer name="dual_labels"/>
+<layer name="smoothed_vertices"/>
+<layer name="smoothed_faces"/>
+<layer name="smoothed_edges"/>
+<layer name="smoothed_labels"/>
+<layer name="primal_edges"/>
+<layer name="primal_vertices"/>
+<layer name="primal_labels"/>
+<view layers="dual_faces dual_edges dual_vertices dual_labels" active="primal_labels"/>
+<view layers="smoothed_vertices smoothed_faces smoothed_edges smoothed_labels" active="primal_labels"/>
+<view layers="primal_edges primal_vertices primal_labels" active="primal_labels"/>
+<path layer="smoothed_faces" fill="flatred">
 48 432 m
 80 352 l
 96 400 l
@@ -556,7 +561,7 @@ h
 128 432 l
 h
 </path>
-<path layer="alpha" fill="flatred">
+<path layer="dual_faces" fill="flatred">
 32 432 m
 32 352 l
 96 352 l
@@ -601,7 +606,7 @@ h
 128 464 l
 h
 </path>
-<use layer="beta" name="mark/disk(sx)" pos="48 432" size="normal" stroke="black"/>
+<use layer="smoothed_vertices" name="mark/disk(sx)" pos="48 432" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="96 400" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="128 416" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="128 432" size="normal" stroke="black"/>
@@ -609,7 +614,7 @@ h
 <use name="mark/disk(sx)" pos="176 432" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="144 368" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="80 352" size="normal" stroke="black"/>
-<path layer="delta" stroke="black">
+<path layer="dual_edges" stroke="black">
 32 432 m
 32 352 l
 96 352 l
@@ -646,7 +651,7 @@ h
 128 464 l
 h
 </path>
-<use layer="epsilon" name="mark/disk(sx)" pos="48 432" size="normal" stroke="black"/>
+<use layer="dual_vertices" name="mark/disk(sx)" pos="48 432" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="48 464" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="112 464" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="112 480" size="normal" stroke="black"/>
@@ -667,7 +672,7 @@ h
 <use name="mark/disk(sx)" pos="32 352" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="32 432" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="144 416" size="normal" stroke="black"/>
-<path layer="zeta" stroke="black">
+<path layer="smoothed_edges" stroke="black">
 48 432 m
 80 352 l
 96 400 l
@@ -693,15 +698,51 @@ h
 128 432 l
 h
 </path>
-<text layer="theta" matrix="1 0 0 1 -178.944 -19.3229" transformations="translations" pos="256 416" stroke="black" type="label" width="6.145" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">a</text>
+<text layer="smoothed_labels" matrix="1 0 0 1 -178.944 -19.3229" transformations="translations" pos="256 416" stroke="black" type="label" width="6.145" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">a</text>
 <text matrix="1 0 0 1 -142.432 47.4693" transformations="translations" pos="240 384" stroke="black" type="label" width="4.977" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">b</text>
 <text matrix="1 0 0 1 -157.376 15.1712" transformations="translations" pos="272 368" stroke="black" type="label" width="5.038" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">c</text>
 <text matrix="1 0 0 1 -139.102 11.1039" transformations="translations" pos="288 400" stroke="black" type="label" width="6.083" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">d</text>
 <text matrix="1 0 0 1 -184.674 58.2941" transformations="translations" pos="320 384" stroke="black" type="label" width="5.425" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">e</text>
-<text layer="eta" matrix="1 0 0 1 -189.383 -23.8814" transformations="translations" pos="256 416" stroke="black" type="label" halign="center" valign="center" size="large" style="math">a</text>
-<text matrix="1 0 0 1 -146.084 63.846" transformations="translations" pos="240 384" stroke="black" type="label" halign="center" valign="center" size="large" style="math">b</text>
-<text matrix="1 0 0 1 -152.956 2.18099" transformations="translations" pos="272 368" stroke="black" type="label" halign="center" valign="center" size="large" style="math">c</text>
-<text matrix="1 0 0 1 -120.629 0.750129" transformations="translations" pos="288 400" stroke="black" type="label" halign="center" valign="center" size="large" style="math">d</text>
-<text matrix="1 0 0 1 -169.063 70.0386" transformations="translations" pos="320 384" stroke="black" type="label" halign="center" valign="center" size="large" style="math">e</text>
+<text layer="dual_labels" matrix="1 0 0 1 -189.383 -23.8814" transformations="translations" pos="256 416" stroke="black" type="label" width="6.145" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">a</text>
+<text matrix="1 0 0 1 -146.084 63.846" transformations="translations" pos="240 384" stroke="black" type="label" width="4.977" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">b</text>
+<text matrix="1 0 0 1 -152.956 2.18099" transformations="translations" pos="272 368" stroke="black" type="label" width="5.038" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">c</text>
+<text matrix="1 0 0 1 -120.629 0.750129" transformations="translations" pos="288 400" stroke="black" type="label" width="6.083" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">d</text>
+<text matrix="1 0 0 1 -169.063 70.0386" transformations="translations" pos="320 384" stroke="black" type="label" width="5.425" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">e</text>
+<path layer="primal_edges" matrix="1 0 0 1 0 -320" stroke="black" fill="white">
+128 768 m
+64 704 l
+64 768 m
+128 768 l
+128 768 m
+128 704 l
+64 704 m
+128 704 l
+64 768 m
+64 704 l
+128 768 m
+176 736 l
+176 736 m
+128 704 l
+</path>
+<path layer="primal_vertices" matrix="1 0 0 1 32 -32" stroke="black" fill="flatyellow">
+12 0 0 12 96 416 e
+</path>
+<path matrix="1 0 0 1 32 -32" stroke="black" fill="flatorange">
+12 0 0 12 144 448 e
+</path>
+<path matrix="1 0 0 1 32 -32" stroke="black" fill="flatgreen">
+12 0 0 12 96 480 e
+</path>
+<path matrix="1 0 0 1 32 -32" stroke="black" fill="flatred">
+12 0 0 12 32 480 e
+</path>
+<path matrix="1 0 0 1 32 -32" stroke="black" fill="flatblue">
+12 0 0 12 32 416 e
+</path>
+<text layer="primal_labels" matrix="1 0 0 1 0 -320" transformations="translations" pos="64 768" stroke="black" type="label" width="5.266" height="4.289" depth="0" halign="center" valign="center" style="math">a</text>
+<text matrix="1 0 0 1 0 -320" transformations="translations" pos="128 768" stroke="black" type="label" width="4.276" height="6.918" depth="0" halign="center" valign="center" style="math">b</text>
+<text matrix="1 0 0 1 0 -320" transformations="translations" pos="64 704" stroke="black" type="label" width="4.311" height="4.289" depth="0" halign="center" valign="center" style="math">c</text>
+<text matrix="1 0 0 1 0 -320" transformations="translations" pos="128 704" stroke="black" type="label" width="5.185" height="6.918" depth="0" halign="center" valign="center" style="math">d</text>
+<text matrix="1 0 0 1 0 -320" transformations="translations" pos="176 736" stroke="black" type="label" width="4.639" height="4.289" depth="0" halign="center" valign="center" style="math">e</text>
 </page>
 </ipe>
