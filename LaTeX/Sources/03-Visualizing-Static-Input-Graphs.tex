@@ -32,7 +32,7 @@ Let's break down the requirements we impose on the cluster graph $G_\text{emb}$ 
 \begin{itemize}
 	\item $G_\text{emb}$ is given in combination with a plane combinatorial embedding. $G_\text{emb}$ must be planar such that there exists a contact representation of $G_\text{emb}$. We require a combinatorial embedding of $G_\text{emb}$ such that the \quoted{arrangement} of the clusters or of the regions on the eventual map is predetermined. This becomes important in \cref{chap:visualizing-dynamic-input-graphs} where we start incorporating dynamic updates into the embedded cluster graph and the map graphs.
 	\item $G_\text{emb}$ is internally triangulated such that the map graphs $G_\text{init}$ and $G_\text{prop}$ are hole-free. Applying the map metaphor, this translates to there not being any lakes or rivers separating countries on the map. \cref{fig:preliminaries-rectilinear-dual} illustrates how internal faces on 4 or more vertices creates holes in contact representations.
-	\item $G_\text{emb}$ is 2-connected such that, in combination with the internal triangulatedness, no vertex appears on outer face multiple times. This is required for how we compute the initial map graph and will be discussed in detail in \cref{sect:transformation-to-polygonal-dual}.
+	\item $G_\text{emb}$ is 2-connected such that, in combination with the internal triangulatedness, no vertex appears on outer face multiple times. This is required for how we compute the initial map graph and will be discussed in detail in \cref{sect:transformation-to-dual}.
 	\item $G_\text{emb}$ is vertex-weighted such that the initial map graph $G_\text{init}$ can inherit its vertex weights and we know what areas the polygonal regions are supposed to have in $G_\text{prop}$.
 \end{itemize}
 

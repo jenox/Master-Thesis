@@ -1,5 +1,5 @@
 \section{Transformation to Polygonal Dual}
-\label{sect:transformation-to-polygonal-dual}
+\label{sect:transformation-to-dual}
 
 In this step of the pipeline, we take an embedded cluster graph $G_\text{emb}$ and form a polygonal dual of $G_\text{emb}$, our initial map graph $G_\text{init}$.
 
@@ -54,7 +54,7 @@ In our case, however, $G_\text{emb}^+$ is simple, \ie{} there are no loops or mu
 
 In addition to having a planar straight-line embedding, $G_\text{emb}^+$ is also a cubic graph, \ie{} one in which all vertices have degree 3. This is because $G_\text{emb}$ with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual. According to the results of Thomassen \cite{thomassen1992plane}, $G_\text{emb}^+$ is therefore area-universal. This means that regardless of the concrete face weights that $G_\text{emb}$ prescribes, there exists a planar straight-line embedding of $G_\text{emb}^+$ realizing those weights/areas.
 
-Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already. Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics. Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-polygonal-dual}.
+Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already. Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics. Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-dual}.
 
 
 

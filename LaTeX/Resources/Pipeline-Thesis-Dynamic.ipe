@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200416230914" modified="D:20200418015340"/>
+<info created="D:20200428223515" modified="D:20200428225948"/>
+<preamble>\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -438,6 +441,8 @@ h
 <arrowsize name="large" value="10"/>
 <arrowsize name="small" value="5"/>
 <arrowsize name="tiny" value="3"/>
+<color name="black" value="0"/>
+<color name="white" value="1"/>
 <color name="red" value="1 0 0"/>
 <color name="green" value="0 1 0"/>
 <color name="blue" value="0 0 1"/>
@@ -464,6 +469,15 @@ h
 <color name="lightgray" value="0.827"/>
 <color name="lightgreen" value="0.565 0.933 0.565"/>
 <color name="lightyellow" value="1 1 0.878"/>
+<color name="flatred" value="1 0.7 0.7"/>
+<color name="flatgreen" value="0.7 1 0.7"/>
+<color name="flatblue" value="0.7 0.7 1"/>
+<color name="flatyellow" value="1 1 0.7"/>
+<color name="flatorange" value="1 0.85 0.7"/>
+<color name="flatcyan" value="0.7 1 1"/>
+<color name="flatdarkgray" value="0.7"/>
+<color name="flatgray" value="0.8"/>
+<color name="flatlightgray" value="0.9"/>
 <dashstyle name="dashed" value="[4] 0"/>
 <dashstyle name="dotted" value="[1 3] 0"/>
 <dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
@@ -502,143 +516,66 @@ h
 <tiling name="rising" angle="30" step="4" width="1"/>
 </ipestyle>
 <page>
-<layer name="arrow_titles"/>
-<layer name="box_titles"/>
-<layer name="box_backgrounds"/>
-<layer name="arrows"/>
-<view layers="arrow_titles box_titles box_backgrounds arrows" active="arrows"/>
-<path layer="box_backgrounds" stroke="black" fill="white">
-128 320 m
-128 288 l
-192 288 l
-192 320 l
+<layer name="alpha"/>
+<layer name="beta"/>
+<layer name="gamma"/>
+<view layers="alpha beta gamma" active="gamma"/>
+<path layer="beta" matrix="1 0 0 1 0 64" stroke="black" fill="flatlightgray">
+160 416 m
+160 384 l
+240 384 l
+240 416 l
 h
 </path>
-<path matrix="1 0 0 1 48 0" stroke="black" fill="white">
-224 320 m
-224 288 l
-336 288 l
-336 320 l
+<path matrix="1 0 0 1 0 32" stroke="black" fill="flatlightgray">
+160 368 m
+160 336 l
+240 336 l
+240 368 l
 h
 </path>
-<path matrix="1 0 0 1 96 0" stroke="black" fill="white">
-368 320 m
-368 288 l
-448 288 l
-448 320 l
+<path matrix="1 0 0 1 -48 32" stroke="black" fill="flatlightgray">
+400 368 m
+400 336 l
+464 336 l
+464 368 l
 h
 </path>
-<path matrix="1 0 0 1 160 0" stroke="black" fill="white">
-480 320 m
-480 288 l
-544 288 l
-544 320 l
-h
+<text layer="alpha" matrix="1 0 0 1 32 -16" transformations="translations" pos="128 480" stroke="black" type="minipage" width="80" height="11.924" depth="6.95" valign="center">\centering{Incremental\\Transformation}</text>
+<text matrix="1 0 0 1 16 -96" transformations="translations" pos="336 480" stroke="black" type="minipage" width="64" height="6.865" depth="1.88" valign="center">\centering{Drawing}</text>
+<text matrix="1 0 0 1 32 -48" transformations="translations" pos="128 432" stroke="black" type="minipage" width="80" height="5.958" depth="0.96" valign="center">\centering{Transformation}</text>
+<text matrix="1 0 0 1 -108 -60" transformations="translations" pos="352 448" stroke="black" type="minipage" width="104" height="6.926" depth="1.93" valign="bottom">\centering{initial map graph $G_\text{init}$}</text>
+<text matrix="1 0 0 1 -228 28" transformations="translations" pos="448 400" stroke="black" type="minipage" width="136" height="7.379" depth="2.39" valign="bottom">\centering{proportional map graph $G_\text{prop}$}</text>
+<text matrix="1 0 0 1 -428 20" transformations="translations" pos="448 368" stroke="black" type="minipage" width="136" height="6.926" depth="1.93" valign="bottom">\centering{embedded cluster graph $G_\text{emb}$}</text>
+<text matrix="1 0 0 1 -444 4" transformations="translations" pos="464 464" stroke="black" type="minipage" width="136" height="12.891" depth="7.92" valign="bottom">\centering{sequence of operations on embedded cluster graph $G_\text{emb}$}</text>
+<text matrix="1 0 0 1 -184 68" transformations="translations" pos="448 400" stroke="black" type="minipage" width="104" height="7.569" depth="2.59" valign="bottom">\centering{initial map graph $G_\text{init}^\prime$}</text>
+<text matrix="1 0 0 1 12 68" transformations="translations" pos="408 320" stroke="black" type="minipage" width="136" height="8.149" depth="3.16" valign="bottom">\centering{proportional map graph $G_\text{prop}^\prime$}</text>
+<path layer="gamma" matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+448 384 m
+592 384 l
 </path>
-<path matrix="1 0 0 1 96 16" stroke="black" fill="white">
-368 384 m
-368 352 l
-448 352 l
-448 384 l
-h
+<path matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+272 384 m
+384 384 l
 </path>
-<path matrix="1 0 0 1 48 16" stroke="black" fill="white">
-224 384 m
-224 352 l
-336 352 l
-336 384 l
-h
-</path>
-<path matrix="1 0 0 1 0 16" stroke="black" fill="white">
-128 384 m
-128 352 l
-192 352 l
+<path matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+48 384 m
 192 384 l
-h
 </path>
-<text layer="box_titles" matrix="1 0 0 1 64 -432" transformations="translations" pos="64 736" stroke="black" type="minipage" width="64" height="6.926" depth="1.93" halign="center" valign="center">\centering{Clustering}</text>
-<text matrix="1 0 0 1 -128 -352" transformations="translations" pos="256 736" stroke="black" type="minipage" width="64" height="12.891" depth="7.92" halign="center" valign="center">\centering{Incremental\\Clustering}</text>
-<text matrix="1 0 0 1 16 -384" transformations="translations" pos="256 688" stroke="black" type="minipage" width="112" height="6.926" depth="1.93" halign="center" valign="center">\centering{Filtering \&amp; Embedding}</text>
-<text matrix="1 0 0 1 -144 -352" transformations="translations" pos="416 736" stroke="black" type="minipage" width="112" height="12.891" depth="7.92" halign="center" valign="center">\centering{Incremental\\Filtering \&amp; Embedding}</text>
-<text matrix="1 0 0 1 48 -384" transformations="translations" pos="416 688" stroke="black" type="minipage" width="80" height="5.958" depth="0.96" halign="center" valign="center">\centering{Transformation}</text>
-<text matrix="1 0 0 1 80 -256" transformations="translations" pos="384 640" stroke="black" type="minipage" width="80" height="11.924" depth="6.95" halign="center" valign="center">\centering{Incremental\\Transformation}</text>
-<text matrix="1 0 0 1 208 -288" transformations="translations" pos="432 592" stroke="black" type="minipage" width="64" height="6.865" depth="1.88" halign="center" valign="center">\centering{Optimization}</text>
-<text layer="arrow_titles" matrix="1 0 0 1 -48 -204" transformations="translations" pos="112 544" stroke="black" type="minipage" width="64" height="6.926" depth="1.93" halign="center" valign="bottom">\centering{input graph}</text>
-<text matrix="1 0 0 1 -88 -220" transformations="translations" pos="288 560" stroke="black" type="minipage" width="64" height="6.926" depth="1.93" halign="center" valign="bottom">\centering{cluster graph}</text>
-<text matrix="1 0 0 1 176 -156" transformations="translations" pos="192 496" stroke="black" type="minipage" width="112" height="6.926" depth="1.93" halign="center" valign="bottom">\centering{embedded filtered graph}</text>
-<text matrix="1 0 0 1 192 -156" transformations="translations" pos="336 496" stroke="black" type="minipage" width="128" height="6.926" depth="1.93" halign="center" valign="bottom">\centering{embedded boundary graph}</text>
-<text matrix="1 0 0 1 -16 -364" transformations="translations" pos="48 784" stroke="black" type="minipage" width="112" height="12.891" depth="7.92" halign="center" valign="bottom">\centering{sequence of operations\\on input graph}</text>
-<text matrix="1 0 0 1 0 -364" transformations="translations" pos="176 784" stroke="black" type="minipage" width="112" height="12.891" depth="7.92" halign="center" valign="bottom">\centering{sequence of operations\\on cluster graph}</text>
-<text matrix="1 0 0 1 48 -364" transformations="translations" pos="320 784" stroke="black" type="minipage" width="112" height="12.891" depth="7.92" halign="center" valign="bottom">\centering{sequence of operations on\\embedded filtered graph}</text>
-<text matrix="1 0 0 1 104 -396" transformations="translations" pos="448 784" stroke="black" type="minipage" width="128" height="6.926" depth="1.93" halign="center" valign="bottom">\centering{embedded boundary graph}</text>
-<path layer="arrows" stroke="black" arrow="arc/normal">
-176 320 m
-176 368 l
+<path matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+48 464 m
+192 464 l
 </path>
-<path stroke="black" arrow="arc/normal">
-368 320 m
-368 368 l
+<path matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+272 464 m
+424 464 l
+424 400 l
 </path>
-<path stroke="black" arrow="arc/normal">
-528 320 m
-528 368 l
-</path>
-<path stroke="black" arrow="arc/normal">
-176 400 m
-176 416 l
-288 416 l
-288 400 l
-</path>
-<path stroke="black" arrow="arc/normal">
-368 400 m
-368 416 l
-480 416 l
-480 400 l
-</path>
-<path stroke="black" arrow="arc/normal">
-32 336 m
-144 336 l
-144 320 l
-</path>
-<path stroke="black" arrow="arc/normal">
-32 416 m
-144 416 l
-144 400 l
-</path>
-<path stroke="black" arrow="arc/normal">
-672 288 m
-672 240 l
-</path>
-<text layer="arrow_titles" matrix="1 0 0 1 48 32" transformations="translations" pos="512 240" stroke="black" type="minipage" width="104" height="12.891" depth="7.92" valign="top">\begin{flushright}
-area-proportional\\
-contact representation
-\end{flushright}</text>
-<path layer="arrows" stroke="black" arrow="arc/normal">
-176 336 m
-288 336 l
-288 368 l
-</path>
-<path stroke="black" arrow="arc/normal">
-288 336 m
-288 320 l
-</path>
-<path stroke="black" arrow="arc/normal">
-368 336 m
-480 336 l
-480 368 l
-</path>
-<path stroke="black" arrow="arc/normal">
-480 336 m
-480 320 l
-</path>
-<path stroke="black" arrow="arc/normal">
-144 336 m
-144 368 l
-</path>
-<path stroke="black" arrow="arc/normal">
-544 384 m
-672 384 l
-672 320 l
+<path matrix="1 0 0 1 -32 0" stroke="black" arrow="normal/normal">
+408 400 m
+408 424 l
+232 424 l
+232 448 l
 </path>
 </page>
 </ipe>
