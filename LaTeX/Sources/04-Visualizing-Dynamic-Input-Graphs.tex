@@ -31,101 +31,23 @@ Extending the pipeline to allow the propagation of small, incremental changes of
 	\item It efficiently supports dynamic input in an online setting, \ie{} a setting in which the incremental changes aren't known in advance, for example when visualizing live data.
 \end{itemize}
 
-\clearpage
-\todo{Just listing these operations here and having implementation right afterwards doesn't seem make sense. How about just listing names, inline, in text, and saying in the following sections, we look at these operations in detail: what preconditions, and how to apply?}
-Our pipeline supports the following classes of primitive operations on the cluster graph:
-%
-\begin{itemize}
-	\item \textbf{Update vertex weight:} Obviously, we can set existing vertices' weights to arbitrary new values.
 
-	\item \textbf{Insert vertex in an internal face:} We can place a new vertex with arbitrary weight inside one of the internal faces (which are triangles). In order to preserve the internal triangulatedness of the graph, edges to the three vertices on said face must be added in conjunction and the edges must be embedded such that they do not cross. This operation essentially replaces an internal face with three new triangles.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexInside-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexInside-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexInside-Invalid.pdf}}
-	\caption{Inserting a vertex in an internal face of a embedded filtered graph (a) correctly (vertex $v$, b) and incorrectly, introducing a crossing of the edges $\{b,v\}$, $\{c,v\}$ (vertex $v$, c).}
-	\label{fig:transformation}
-\end{figure}
 
-	\item \textbf{Insert vertex in outer face:} We can also place a new vertex with arbitrary weight inside the outer face. The new vertex must be connected to at least two vertices on the outer face (to preserve 2-connectivity), and its adjacent vertices must form a simple path along the original outer face (to preserve internal triangulatedness).
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexOutside-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexOutside-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertVertexOutside-Invalid.pdf}}
-	\caption{Inserting a vertex in the outer face of an embedded filtered graph (a) correctly (vertex $v$, b) and incorrectly, creating a 4-hole $abcv$ (vertex $v$, c).}
-	\label{fig:transformation}
-\end{figure}
+\paragraph{Supported Operations}
 
-	\clearpage
-	\item \textbf{Remove internal vertex:} We can only remove internal vertices along with their incident edges if they have degree 3. Such vertices are incident to three pairwise incident triangular faces and their removal would fuse the three triangles together to form a new triangular face.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveInternalVertex-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveInternalVertex-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveInternalVertex-Invalid.pdf}}
-	\caption{Removing an internal vertex of an embedded filtered graph (a) correctly (vertex $e$, b) and incorrectly, creating a 4-hole $abec$ (vertex $d$, c).}
-	\label{fig:transformation}
-\end{figure}
+Our pipeline supports numerous classes of primitive operations on the cluster graph, such as inserting and removing vertices and edges, flipping edges, or simply changing a cluster's weight. By composing multiple primitive operations in a sequence, more drastic changes can be made to the cluster graph. In our pipeline, the operations are applied one by one nonetheless.
 
-	\item \textbf{Remove vertex on outer face:} Vertices on the outer face can be removed along with their incident edges as long as the resulting graph remains 2-connected.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterVertex-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterVertex-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterVertex-Invalid.pdf}}
-	\caption{Removing a vertex on the outer face of an embedded filtered graph (a) correctly (vertex $d$, b) and incorrectly, creating a cut vertex $b$ (vertex $c$, c).}
-	\label{fig:transformation}
-\end{figure}
+The simplest operation of all is changing a vertex $v$'s weight: We simply take the previous proportional map graph $G_\text{prop}$, update the weight of the face $f_v$ corresponding to the vertex $v$, and declare that as the new initial map graph $G_\text{init}^\prime$. $G_\text{init}^\prime$ then runs through the drawing phase again to account for the updated face weights.
 
-	\item \textbf{Flip internal edge:} Internal edges $\{u, v\}$ can be flipped unless their two incident triangles \quoted{tips} $w, x$ are already adjacent. This operation replaces the edge $\{u, v\}$ with the edge $\{w, x\}$ and would therefore create an unwanted duplicate adjacency if $w$ and $x$ were already adjacent.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-FlipInternalEdge-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-FlipInternalEdge-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-FlipInternalEdge-Invalid.pdf}}
-	\caption{Flipping an internal edge of an embedded filtered graph (a) correctly (edge $\{d,c\}$, b) and incorrectly, creating a duplicate adjacency between $a$ and $d$ (edge $\{b,c\}$, c).}
-	\label{fig:transformation}
-\end{figure}
-
-	\clearpage
-	\item \textbf{Insert edge on outer face:} Edges between nonadjacent vertices $u, v$ on the outer face may only be inserted if they preserve the graph's internal triangulatedness, \ie{} they don't create holes in the graph. Adding such an edge creates a new internal face and is therefore only possible iff $u$ and $v$ have a neighbor in common.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertOuterEdge-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertOuterEdge-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-InsertOuterEdge-Invalid.pdf}}
-	\caption{Inserting an edge on the outer face of an embedded filtered graph (a) correctly (edge $\{e,c\}$, b) and incorrectly, creating a 4-hole $bcde$ ($\{e,d\}$, c).}
-	\label{fig:transformation}
-\end{figure}
-
-	\item \textbf{Remove edge on outer face:} Similarly, we can remove an edge $\{u, v\}$ on the outer face only if it doesn't create holes in the graph. This is the case iff $u$ and $v$ share a neighbor. The graph must also remain 2-connected.
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterEdge-Initial.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterEdge-Valid.pdf}}
-	\quad
-	\subfigure[]{\includegraphics[height=30mm]{Resources/IncrementalFilteringAndEmbedding-RemoveOuterEdge-Invalid.pdf}}
-	\caption{Removing an edge on the outer face of an embedded filtered graph (a) correctly (b, edge $\{e,d\}$) and incorrectly, creating a 4-hole $bcde$ (edge $\{e,c\}$, c).}
-	\label{fig:transformation}
-\end{figure}
-\end{itemize}
-
-In the following discussion of our implementation of the incremental transformation phase, we will see how these operations can be applied to an existing map graph.
+Implementing the remaining operations is a little more challenging as part of the incremental transformation, and we'll discuss those in great detail in the following sections.
 
 \clearpage
-\input{Sources/04-01-Incremental-Transformation-to-Dual.tex}
+\input{Sources/04-01-Inserting-Vertices}
+\clearpage
+\input{Sources/04-02-Removing-Vertices}
+\clearpage
+\input{Sources/04-03-Inserting-Edges}
+\clearpage
+\input{Sources/04-04-Removing-Edges}
+\clearpage
+\input{Sources/04-05-Flip-Internal-Edge}
