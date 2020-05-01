@@ -1,41 +1,49 @@
 \section{Removing Vertices}
 \label{sect:removing-vertices}
 
-same distinguishment: internal vs external, reverses the insert inside/outside.
+Clusters in the underlying data set can also fade and eventually cease to exist. In this case, we want to remove existing vertices of the cluster graph. We make the same distinction here as when inserting vertices: we can remove internal vertices or vertices that lie on the cluster graph's outer face. 
 
 
 
 \paragraph{Removing Internal Vertices}
 
-can only remove internal if degree 3. if higher degree we would create hole. need to flip edges first.\cref{sect:flipping-edges}
+When removing an internal vertex, we must ensure that the cluster graph remains internally triangulated. This is only the case if the vertex we want to remove has degree 3 as removing vertices with greater degree would create holes. If one wants to a vertex with degree 4 or higher, one must first tweak the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}. A valid removal of an internal vertex is illustrated in \cref{fig:remove-internal-vertex-example}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=30mm]{Resources/RemoveInternalVertex.png}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-4.pdf}}
 	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) removing the internal vertex $x$ with degree 3.}
 	\label{fig:remove-internal-vertex-example}
 \end{figure}
 
 \begin{itemize}
 	\item compute boundary (path) with the three incident faces: $u$-$x$, $v$-$x$, $w$-$x$
-	\item contract these boundaries into single-edge-boundaries (why is this possible?)
-	\item we then have a plain triangle
-	\item replace triangle with single point in its barycenter
+	\item let one of the incident faces annex the area :D
 \end{itemize}
 
- % either hack, assign area to another face by removing one of three boundaries. or: contract boundaries until they are 1 long each -> face is triangle. then place new vertex in barycenter + connect.
+\lipsum
 
 
 
 \paragraph{Removing External Vertices}
 
-when removing vertices on the outer face along with its incident edges, we must ensure that the graph remains 2-connected afterwards.
-
-as long as that's given, removing such a vertex is easy though. we just remove the respective face's boundary with the outer face.
+When removing vertices on the outer face along with its incident edges, we must ensure that the graph remains 2-connected afterwards. \cref{fig:remove-external-vertex-example} illustrates a valid removal of a vertex on the outer face.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=30mm]{Resources/RemoveInternalVertex.png}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-4.pdf}}
 	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) removing the vertex $x$ on the outer face.}
 	\label{fig:remove-external-vertex-example}
 \end{figure}
@@ -44,3 +52,5 @@ as long as that's given, removing such a vertex is easy though. we just remove t
 	\item find boundary of respective face with outer face
 	\item remove all internal/subdivision vertices and edges on this path
 \end{itemize}
+
+\lipsum

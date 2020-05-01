@@ -39,7 +39,7 @@ Our pipeline supports numerous classes of primitive operations on the cluster gr
 
 The simplest operation of all is changing a vertex $v$'s weight: We simply take the previous proportional map graph $G_\text{prop}$, update the weight of the face $f_v$ corresponding to the vertex $v$, and declare that as the new initial map graph $G_\text{init}^\prime$. $G_\text{init}^\prime$ then runs through the drawing phase again to account for the updated face weights.
 
-Implementing the remaining operations is a little more challenging as part of the incremental transformation, and we'll discuss those in great detail in the following sections.
+Implementing the remaining operations as part of the incremental transformation is a little more challenging, and we'll discuss those in great detail in the following sections.
 
 \clearpage
 \input{Sources/04-01-Inserting-Vertices}
