@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200430174333" modified="D:20200501113356"/>
+<info created="D:20200430174333" modified="D:20200501220607"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -282,43 +282,51 @@ h
 <view layers="delta" active="delta"/>
 <view layers="beta" active="beta"/>
 <view layers="alpha" active="alpha"/>
-<path layer="beta" matrix="1 0 0 1 -32 128" fill="flatyellow">
-112 320 m
-64 320 l
-64 224 l
-112 224 l
-112 256 l
-96 256 l
-96 288 l
-112 288 l
-112 320 l
-112 320 l
-112 320 l
+<path layer="alpha" fill="flatred">
+32 448 m
+32 416 l
+128 416 l
+128 448 l
 h
 </path>
-<path matrix="1 0 0 1 -32 128" fill="flatred">
-112 320 m
-160 320 l
-160 272 l
-128 272 l
-128 288 l
-112 288 l
-112 320 l
-112 320 l
-112 320 l
+<path fill="flatblue">
+32 384 m
+32 352 l
+128 352 l
+128 384 l
 h
 </path>
-<path matrix="1 0 0 1 -32 128" fill="flatblue">
-128 272 m
-160 272 l
-160 224 l
-112 224 l
-112 256 l
-128 256 l
-128 272 l
-128 272 l
-128 272 l
-128 272 l
+<path fill="flatyellow">
+32 416 m
+32 384 l
+64 384 l
+64 416 l
+h
+</path>
+<path layer="beta" fill="flatblue">
+32 384 m
+32 352 l
+128 352 l
+128 400 l
+96 400 l
+96 384 l
+h
+</path>
+<text matrix="1 0 0 1 -160 56" transformations="translations" pos="240 312" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
+<path fill="flatred">
+32 416 m
+32 448 l
+128 448 l
+128 400 l
+96 400 l
+96 416 l
+h
+</path>
+<path fill="flatyellow">
+32 416 m
+32 384 l
+64 384 l
+64 416 l
 h
 </path>
 <path matrix="1 0 0 1 -32 128" fill="flatgreen">
@@ -332,34 +340,9 @@ h
 </path>
 <text matrix="1 0 0 1 -160 88" transformations="translations" pos="240 312" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v
 </text>
-<text matrix="1 0 0 1 -136 64" transformations="translations" pos="240 312" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
 <text matrix="1 0 0 1 -192 88" transformations="translations" pos="240 312" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
-<text matrix="1 0 0 1 -136 112" transformations="translations" pos="240 312" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
-<path layer="alpha" matrix="1 0 0 1 -192 160" fill="flatyellow">
-272 288 m
-224 288 l
-224 192 l
-272 192 l
-272 224 l
-256 224 l
-256 256 l
-272 256 l
-272 288 l
-272 288 l
-272 288 l
-272 288 l
-h
-</path>
-<path matrix="1 0 0 1 -192 160" fill="flatred">
-272 288 m
-272 256 l
-320 256 l
-320 288 l
-272 288 l
-272 288 l
-h
-</path>
-<path matrix="1 0 0 1 -192 160" fill="flatgreen">
+<text matrix="1 0 0 1 -160 120" transformations="translations" pos="240 312" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
+<path layer="alpha" matrix="1 0 0 1 -192 160" fill="flatgreen">
 256 256 m
 256 224 l
 320 224 l
@@ -368,19 +351,10 @@ h
 256 256 l
 h
 </path>
-<path matrix="1 0 0 1 -192 160" fill="flatblue">
-272 224 m
-272 192 l
-320 192 l
-320 224 l
-272 224 l
-272 224 l
-h
-</path>
-<text matrix="1 0 0 1 8 128" transformations="translations" pos="96 304" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
+<text matrix="1 0 0 1 -16 128" transformations="translations" pos="96 304" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
 <text matrix="1 0 0 1 -48 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
 <text matrix="1 0 0 1 0 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
-<text matrix="1 0 0 1 8 64" transformations="translations" pos="96 304" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
+<text matrix="1 0 0 1 -16 64" transformations="translations" pos="96 304" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
 <path layer="gamma" matrix="1 0 0 1 -48 0" stroke="black">
 148.287 384 m
 92.8616 384 l
@@ -457,44 +431,27 @@ h
 <path matrix="1 0 0 1 -68 208" stroke="black" fill="flatyellow">
 16 0 0 16 112 176 e
 </path>
-<text matrix="1 0 0 1 -52.88 79.971" transformations="translations" pos="96 304" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
-<text matrix="1 0 0 1 3.849 79.976" transformations="translations" pos="96 304" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
+<text matrix="1 0 0 1 -52 80" transformations="translations" pos="96 304" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
+<text matrix="1 0 0 1 4.287 80" transformations="translations" pos="96 304" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
 <path layer="beta" matrix="1 0 0 1 -32 128" stroke="0">
-112 320 m
-64 320 l
+64 256 m
 64 224 l
-112 224 l
-112 256 l
-96 256 l
-96 288 l
-112 288 l
-112 320 l
-112 320 l
-112 320 l
-112 320 l
+160 224 l
+160 272 l
+128 272 l
+128 256 l
 h
-112 320 m
+64 288 m
+64 320 l
 160 320 l
 160 272 l
 128 272 l
 128 288 l
-112 288 l
-112 320 l
-112 320 l
-112 320 l
-112 320 l
 h
-128 272 m
-160 272 l
-160 224 l
-112 224 l
-112 256 l
-128 256 l
-128 272 l
-128 272 l
-128 272 l
-128 272 l
-128 272 l
+64 288 m
+64 256 l
+96 256 l
+96 288 l
 h
 96 288 m
 96 256 l
@@ -502,31 +459,23 @@ h
 128 288 l
 96 288 l
 96 288 l
-96 288 l
 h
 </path>
 <path layer="alpha" matrix="1 0 0 1 -192 160" stroke="0">
-272 288 m
-224 288 l
-224 192 l
-272 192 l
-272 224 l
-256 224 l
-256 256 l
-272 256 l
-272 288 l
-272 288 l
-272 288 l
-272 288 l
-272 288 l
-h
-272 288 m
-272 256 l
+224 288 m
+224 256 l
 320 256 l
 320 288 l
-272 288 l
-272 288 l
-272 288 l
+h
+224 224 m
+224 192 l
+320 192 l
+320 224 l
+h
+224 256 m
+224 224 l
+256 224 l
+256 256 l
 h
 256 256 m
 256 224 l
@@ -534,15 +483,6 @@ h
 320 256 l
 256 256 l
 256 256 l
-256 256 l
-h
-272 224 m
-272 192 l
-320 192 l
-320 224 l
-272 224 l
-272 224 l
-272 224 l
 h
 </path>
 </page>

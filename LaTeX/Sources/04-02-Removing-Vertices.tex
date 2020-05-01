@@ -7,19 +7,19 @@ Clusters in the underlying data set can also fade and eventually cease to exist.
 
 \paragraph{Removing Internal Vertices}
 
-When removing an internal vertex, we must ensure that the cluster graph remains internally triangulated. This is only the case if the vertex we want to remove has degree 3 as removing vertices with greater degree would create holes. If one wants to a vertex with degree 4 or higher, one must first tweak the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}. A valid removal of an internal vertex is illustrated in \cref{fig:remove-internal-vertex-example}.
+When removing an internal vertex, we must ensure that the cluster graph remains internally triangulated. This is only the case if the vertex we want to remove has degree 3 as removing vertices with greater degree would create holes. If one wants to a vertex with degree 4 or higher, one must first tweak the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}. A valid removal of an internal vertex is illustrated in \cref{fig:remove-vertex-example-internal}.
 
 \begin{figure}[H]
 	\centering
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-1.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-Internal-1.pdf}}
 	\quad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-2.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-Internal-2.pdf}}
 	\qquad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-3.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-Internal-3.pdf}}
 	\quad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveInternalVertex-Example-4.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-Internal-4.pdf}}
 	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) removing the internal vertex $x$ with degree 3.}
-	\label{fig:remove-internal-vertex-example}
+	\label{fig:remove-vertex-example-internal}
 \end{figure}
 
 \begin{itemize}
@@ -33,19 +33,19 @@ When removing an internal vertex, we must ensure that the cluster graph remains 
 
 \paragraph{Removing External Vertices}
 
-When removing vertices on the outer face along with its incident edges, we must ensure that the graph remains 2-connected afterwards. \cref{fig:remove-external-vertex-example} illustrates a valid removal of a vertex on the outer face.
+When removing vertices on the outer face along with its incident edges, we must ensure that the graph remains 2-connected afterwards. \cref{fig:remove-vertex-example-external} illustrates a valid removal of a vertex on the outer face.
 
 \begin{figure}[H]
 	\centering
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-1.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-External-1.pdf}}
 	\quad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-2.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-External-2.pdf}}
 	\qquad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-3.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-External-3.pdf}}
 	\quad
-	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveExternalVertex-Example-4.pdf}}
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-Example-External-4.pdf}}
 	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) removing the vertex $x$ on the outer face.}
-	\label{fig:remove-external-vertex-example}
+	\label{fig:remove-vertex-example-external}
 \end{figure}
 
 \begin{itemize}

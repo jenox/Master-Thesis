@@ -1,0 +1,117 @@
+\section{Flipping Edges}
+\label{sect:flipping-edges}
+
+Let us now discuss the aforementioned edge flip. An internal edge $\{u,v\}$ is incident to two different internal faces $f$, $g$. Let $x$ and $y$ denote the third vertex bounding $f$ and $g$, respectively. It is $x \neq y$ because the cluster graph is simple. Flipping the edge $\{u,v\}$ would replace it with the edge $\{x,y\}$. This operation is therefore only permitted if $x$ and $y$ are not already adjacent \emdash{} otherwise we would introduce a duplicate adjacency. A valid edge flip operation is illustrated in \cref{fig:flip-edge-example-internal}.
+
+%let p1 denote first bend on boundary after p3
+%include yellow face in 4.10? make alternating clearer. make angle thing clearer and what happens if more than 180. why do we repeat on other side?
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Internal-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Internal-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Internal-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Internal-4.pdf}}
+	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) flipping the internal edge $\{u,v\}$.}
+	\label{fig:flip-edge-example-internal}
+\end{figure}
+
+An edge flip in a cluster graph translates to region adjacencies being flipped in its dual. Given a polygonal dual of some cluster graph, we apply an edge flip in two phases. First, we contract the region boundary we want to remove into a single point, creating a degenerate contact representation in which 4 regions meet in a point. In the second phase, we create a region boundary in the opposite direction, getting rid of the degeneracy at the point the original boundary has been contracted into.
+
+%Let us \todo{} using the example of \cref{fig:flip-edge-example-internal}.
+%We now provide a detailed description using the example of \cref{fig:flip-edge-example-internal}.
+%We start by computing the path $P_{uv} = (p_0, \dots, p_n)$ forming the boundary between the faces $u$ and $v$.
+
+Let $u$ and $v$ be two adjacent faces whose boundary we want to contract and $P_{uv}$ the non-empty path that constitutes the boundary between $u$ and $v$. We position the contact representation such that $u$ is left of the boundary and $v$ is right of the $u$-$v$-boundary. At both endpoints of the boundary, $u$ and $v$ meet with a third face. We denote the face directly above the boundary by $x$ and the face directly below the boundary by $y$, as illustrated in \cref{fig:flip-edge-example-internal}. To contract the $u$-$v$-boundary into a single point, we repeatedly contract a peripheral edge on the boundary until the last edge has been contracted. We do so on alternating ends, \ie{} we start by contracting the bottommost edge, then the topmost, etc.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryBelow-1.pdf}\label{subfig:flip-edge-contract-boundary-below-1}}
+	\quad
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryBelow-2.pdf}\label{subfig:flip-edge-contract-boundary-below-2}}
+	\quad
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryBelow-3.pdf}\label{subfig:flip-edge-contract-boundary-below-3}}
+	\caption{A contact representation before (a) and after (c) contracting the peripheral edge $\{p_{uv},p_{uvy}\}$ on the $u$-$v$ boundary away from $y$. (b) shows the construction of potential subdivision vertices.}
+	\label{fig:flip-edge-contract-boundary-below}
+\end{figure}
+
+\Cref{fig:flip-edge-contract-boundary-below} shows how we contract the bottommost edge of the boundary upwards without introducing edge crossings. We describe only this construction in text; the downward contraction works virtually the same way but is illustrated in \cref{fig:flip-edge-contract-boundary-above} nonetheless. Let $p_{uvy}$ denote the vertex where the faces $u$, $v$, and $y$ meet and $p_{uy}$ and $p_{vy}$ the subdivision vertices on the $u$-$y$- and $v$-$y$-boundaries that are incident to $p_{uvy}$, respectively. If the $u$-$y$- or $v$-$y$-boundary consists of only one edge, we subdivide it at its midpoint first. Let $p_{uv}$ be the subdivision vertex on the $u$-$v$-boundary that is incident to $p_{uvy}$ or $p_{uvx}$ the topmost vertex of the boundary. To reduce the length of the $u$-$v$ boundary by one, we'd want to remove $p_{uvy}$ along with its incident edges and add edges from $p_{uv}$ (or $p_{uvx}$ if the boundary only has 1 edge remaining) to both $p_{uy}$ and $p_{vy}$. These edges may introduce crossings though, as illustrated by the dashed lines in \cref{subfig:flip-edge-contract-boundary-above-2} and \cref{subfig:flip-edge-contract-boundary-below-2}. With just one bend on each of the edges, we can guarantee that no edge crossings are created:
+
+\begin{itemize}
+	\item If adding the edge between $p_{uv}$ and $p_{ay}$ does not introduce a crossing, we simply add the edge. (face $u$ in \cref{subfig:flip-edge-contract-boundary-below-2})
+	\item Otherwise, if the internal angle of face $a$ at $p_{uvy}$ is half a turn or more, we place the bend at $p_{uvy}$, \ie{} we insert the edge $\{p_{uv},p_{ay}\}$ and subdivide it with a new vertex $q_{ay}$ at the position of $p_{uvy}$. Note that at most one of the faces can have an internal angle at $p_{uvy}$ that is $180^\circ$ or more. (face $v$ in \cref{subfig:flip-edge-contract-boundary-above-2})
+	\item Otherwise, we search for a bend location in the form of a subdivision vertex $q_{ay}$ somewhere on the outward-pointing bisector of the angle $\angle_{p_{ay}p_{uvy}p_{uv}}$ (dotted lines in \cref{subfig:flip-edge-contract-boundary-below-2} and \cref{subfig:flip-edge-contract-boundary-above-2}). We start looking at the point where the bisector intersects the segment from $p_{uv}$ to $p_{ay}$ and repeatedly divide the remaining distance to $p_{uvy}$ in half until we find a bend location for which the bent edge from $p_{uv}$ to $p_{ay}$ would not introduce edge crossings. As the candidate location moves infinitesimally close to $p_{uvy}$, we are guaranteed to find one that doesn't introduce crossings. (\cref{subfig:flip-edge-contract-boundary-below-3} and \cref{subfig:flip-edge-contract-boundary-above-3})
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryAbove-1.pdf}\label{subfig:flip-edge-contract-boundary-above-1}}
+	\quad
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryAbove-2.pdf}\label{subfig:flip-edge-contract-boundary-above-2}}
+	\quad
+	\subfigure[]{\includegraphics[width=40mm]{Resources/FlipEdge-ContractBoundaryAbove-3.pdf}\label{subfig:flip-edge-contract-boundary-above-3}}
+	\caption{A contact representation before (a) and after (c) contracting the last edge $\{p_{uvx},p_{uvy}\}$ on the $u$-$v$ boundary away from $y$. (b) shows the construction of potential subdivision vertices.}
+	\label{fig:flip-edge-contract-boundary-above}
+\end{figure}
+
+Once the $u$-$v$-boundary has been contracted into a single vertex $p_{uvxy}$ where all four faces $u$, $v$, $x$, and $y$ now meet, as shown in \cref{subfig:flip-edge-contract-boundary-above-3}, we need to resolve the degeneracy and create a boundary in the opposite direction, \ie{} an $x$-$y$-boundary.
+Let $p_{ux}$, $p_{uy}$, $p_{vx}$, and $p_{vy}$ denote the subdivision vertices on the respective boundaries that are incident to $p_{uvxy}$. Again, if a boundary consists of only one edge, we subdivide it at its midpoint first such that all $p_{ab}$ exist.
+We are now looking to stretch the vertex $p_{uvxy}$ back into a non-degenerate $x$-$y$ boundary as illustrated in \cref{fig:flip-edge-create-boundary}. Analogous to above, we search for a position in face $u$ ($v$) where we can place a vertex $q_u$ ($q_v$) and add edges to $p_{uvxy}$, $p_{ux}$, and $p_{uy}$ ($p_{uvxy}$, $p_{vx}$, and $p_{vy}$) without introducing crossings. We start at the intersection of the segment between $p_{ux}$ and $p_{uy}$ (between $p_{vx}$ and $p_{vy}$) and the bisector of $\angle_{p_{ux}p_{uvxy}p_{uy}}$ ($\angle_{p_{vx}p_{uvxy}p_{vy}}$) and repeatedly divide the distance to $p_{uvxy}$ in half until we find a valid position. Once we have found such a position, we insert the vertex $q_u$ ($q_v$) along with the aforementioned edges and remove the edges $\{p_{uvxy},p_{ux}\}$ and $\{p_{uvxy},p_{uy}\}$ ($\{p_{uvxy},p_{vx}\}$ and $\{p_{uvxy},p_{vy}\}$). In case $\measuredangle_{p_{ux}p_{uvxy}p_{uy}} \geq 180^\circ$ ($\measuredangle_{p_{vx}p_{uvxy}p_{vy}} \geq 180^\circ$), we won't find such a position and shall not make an adjustment on that side. But again, this event cannot occur for both $u$ and $v$ at the same time. We therefore always create a $x$-$y$-boundary that consists of at least one edge.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[width=45mm]{Resources/FlipEdge-StretchBoundary-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[width=45mm]{Resources/FlipEdge-StretchBoundary-2.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[width=45mm]{Resources/FlipEdge-StretchBoundary-3.pdf}}
+	\caption{A contact representation before (a) and after (c) creating a non-degenerate yellow-blue adjacency. (b) shows the construction of potential subdivision vertices.}
+	\label{fig:flip-edge-create-boundary}
+\end{figure}
+
+
+
+\paragraph{Inserting and Removing Edges}
+
+As clusters in our data set grow increasingly similar, we may want to indicate this similarity with new edges between existing clusters in the cluster graph. Similarly, clusters can grow apart and we may want to remove edges between clusters in the cluster graph. However, because the cluster graph is internally triangulated, we cannot insert any more edges on the inside of the graph. Removing an internal edge isn't permitted either, as that would create a hole in the cluster graph. We can therefore only insert edges in the outer face and remove edges on the outer face.
+
+Inserting an edge in the outer face is also only possible if it preserves the internal triangulatedness of the cluster graph. Inserting an edge $\{u,w\}$ in the outer face is therefore only permitted if $u$ and $w$ have a neighbor $v$ in common such that adding the edge forms a new triangular face with $v$. In case the outer face is bounded by exactly four vertices prior to inserting the edge $\{u,w\}$, it must be made explicit which of the resulting triangular faces is supposed to be the outer face. A valid edge insertion is illustrated in \cref{fig:flip-edge-example-insert}.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Insert-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Insert-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Insert-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Insert-4.pdf}}
+	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) inserting the edge $\{u,w\}$ to form an internal triangular face with $v$.}
+	\label{fig:flip-edge-example-insert}
+\end{figure}
+
+Removing an edge $\{u,w\}$ on the outer face of the cluster graph is only permitted if the cluster graph remains $2$-connected. This is the case iff both $u$ and $w$ have degree $d(\cdot) \geq 3$. \Cref{fig:flip-edge-example-remove} illustrates a valid edge removal.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Remove-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Remove-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Remove-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Remove-4.pdf}}
+	\caption{A cluster graph and a polygonal dual thereof, before (a, b) and after (c, d) removing the edge $\{u,w\}$.}
+	\label{fig:flip-edge-example-remove}
+\end{figure}
+
+Both of these operations are a special case of the generic edge flip discussed above with a quirk: instead of 4 internal faces, they involve involve 3 internal faces and the implicit outer face.
+
+In the example from \cref{fig:flip-edge-example-insert}, by inserting the edge $\{u,w\}$, we make $v$ into an internal vertex, in turn removing $v$'s boundary with the outer face in the dual and creating a $u$-$w$ boundary. Recall that in the construction of the augmented dual from \cref{def:augmented-dual} we insert a helper vertex in the outer face and add edges to all vertices on the outer face. This helper vertex and its adjacencies corresponds to the outer face and its boundaries in the dual. When inserting an edge in the outer face, we are essentially flipping the edge between $v$ and the helper vertex to be $\{u,w\}$.
+
+Similarly, when removing an edge $\{u,w\}$ on the outer face as in \cref{fig:flip-edge-example-remove}, a previously-internal vertex $v$ moves to the outer face. In the dual, this gets rid of the $u$-$w$-boundary and in turn create sa boundary between $v$ and the implicit outer face. We can think of it as flipping the edge $\{u,w\}$ to an edge between $v$ and the helper vertex representing the outer face of the dual.
+
+The constructions in \crefrange{fig:flip-edge-contract-boundary-below}{fig:flip-edge-create-boundary} translate 1-to-1 to the case where either $u$ or $v$ is the implicit outer face.
