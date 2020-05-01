@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200429171351" modified="D:20200429223818"/>
+<info created="D:20200429171351" modified="D:20200501230744"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -519,8 +519,8 @@ h
 <layer name="4"/>
 <layer name="primal"/>
 <view layers="1 primal" active="primal"/>
-<view layers="2" active="2"/>
-<view layers="3 primal" active="primal"/>
+<view layers="3 primal" active="2"/>
+<view layers="2" active="primal"/>
 <view layers="4" active="4"/>
 <path layer="1" matrix="1 0 0 1 -16 -304" stroke="black">
 64 704 m
