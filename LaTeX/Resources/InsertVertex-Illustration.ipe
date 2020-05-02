@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200430174333" modified="D:20200430221205"/>
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200430174333" modified="D:20200502170939"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -246,7 +246,7 @@ h
 <layer name="newlabels"/>
 <layer name="dotted"/>
 <view layers="boundary oldfaces oldedges oldlabels" active="oldedges"/>
-<view layers="boundary oldfaces oldedges oldlabels dashed" active="dotted"/>
+<view layers="boundary oldfaces oldedges oldlabels dashed" active="dashed"/>
 <view layers="boundary newfaces newedges newlabels dotted" active="dotted"/>
 <path layer="newfaces" fill="flatyellow">
 192 224 m
@@ -358,7 +358,6 @@ h
 <use name="mark/disk(sx)" pos="320 256" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="276 240" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="272 192" size="normal" stroke="black"/>
-<use layer="dotted" name="mark/disk(sx)" pos="296 224" size="small" stroke="black"/>
 <text layer="newlabels" matrix="1 0 0 1 80 -48" transformations="translations" pos="160 320" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
 <text matrix="1 0 0 1 32 32" transformations="translations" pos="176 160" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
 <text matrix="1 0 0 1 -36 36" transformations="translations" pos="320 184" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
@@ -369,14 +368,6 @@ h
 <path layer="dashed" stroke="black" dash="dashed">
 192 224 m
 320 256 l
-</path>
-<path layer="dotted" stroke="black" dash="dotted">
-256 256 m
-296 224 l
-</path>
-<path stroke="black" dash="dotted">
-320 256 m
-272 192 l
 </path>
 <text layer="oldlabels" matrix="1 0 0 1 36 -88" transformations="translations" pos="156 304" stroke="black" type="label" width="14.456" height="4.297" depth="1.93" halign="center" valign="center" style="math">p_{uv}</text>
 <text matrix="1 0 0 1 96 -140" transformations="translations" pos="170 326" stroke="black" type="label" width="15.697" height="4.297" depth="1.93" halign="center" valign="center" style="math">p_{vw}</text>
@@ -438,5 +429,16 @@ h
 <use name="mark/disk(sx)" pos="288 176" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="336 272" size="normal" stroke="black"/>
 <use name="mark/disk(sx)" pos="176 224" size="normal" stroke="black"/>
+<use layer="dashed" name="mark/disk(sx)" pos="233.628 207.349" size="small" stroke="black"/>
+<use name="mark/disk(sx)" pos="296.365 224.486" size="small" stroke="black"/>
+<path stroke="black" dash="dotted">
+233.628 207.349 m
+256 256 l
+296.365 224.486 l
+</path>
+<path layer="dotted" stroke="black" dash="dotted">
+256 256 m
+272 192 l
+</path>
 </page>
 </ipe>

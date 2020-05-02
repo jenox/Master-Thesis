@@ -1,7 +1,7 @@
 \section{Inserting Vertices}
 \label{sect:inserting-vertices}
 
-When a new cluster appears in our underlying data set, we want to add a new vertex to the cluster graph. We distinguish between adding a new vertex on the inside and adding a new vertex on the outside because different rules apply.
+When a new cluster appears in our underlying data set, we want to be able to add a new vertex to the cluster graph and have that translate to an existing polygonal dual thereof. We distinguish between adding a new vertex on the inside and adding a new vertex on the outside because different rules apply.
 
 
 
@@ -22,7 +22,7 @@ All internal faces of the cluster graph are triangles. If we add a vertex in one
 	\label{fig:insert-vertex-example-inside}
 \end{figure}
 
-Let $u$, $v$, and $w$ be the vertices bounding an internal face of the cluster graph in counterclockwise order and $x$ the new vertex we want to add inside said face. We compute the paths that form the $u$-$v$-, $v$-$w$-, and $w$-$u$-boundaries in the polygonal dual. Let $p_{uvw}$ denote the vertex where the three faces corresponding to $u$, $v$, and $w$ meet. Let $p_{uv}$, $p_{vw}$, and $p_{wu}$ denote the first subdivision vertex on the boundary between faces $u$ and $v$, $v$ and $w$, and $w$ and $u$, respectively, starting from $p_{uwv}$. If one of the boundaries consist of only one edge, we place a subdivision vertex at its midpoint first. \Cref{subfig:insert-vertex-illustration-1} shows how these vertices might look for the example from above.
+Let $u$, $v$, and $w$ be the vertices bounding an internal face of the cluster graph in counterclockwise order and $x$ the new vertex we want to add inside said face. We compute the paths that form the $u$-$v$-, $v$-$w$-, and $w$-$u$-boundaries in the polygonal dual. Let $p_{uvw}$ denote the unique vertex these paths have in common and let $p_{uv}$, $p_{vw}$, and $p_{wu}$ denote the subdivision vertex on the respective boundary that is incident to $p_{uwv}$. If one of the boundaries consist of only one edge, we place a subdivision vertex at its midpoint first. \Cref{subfig:insert-vertex-illustration-1} shows how these vertices might look for the example from above.
 
 \begin{figure}[H]
 	\centering
@@ -35,25 +35,25 @@ Let $u$, $v$, and $w$ be the vertices bounding an internal face of the cluster g
 	\label{fig:insert-vertex-illustration}
 \end{figure}
 
-Having determined the subdivision vertices $p_{uv}$, $p_{vw}$, and $p_{wu}$, we now want to remove the vertex $p_{uvw}$ and insert edges between the subdivision vertices instead to bound a new face for $d$ (dashed lines in \cref{subfig:insert-vertex-illustration-2}). Doing so naïvely may introduce edge crossings and we generally need to add bends in the form of subdivision vertices to those edges. We distinguish three cases, all of which are illustrated in the figure:
+Having determined the subdivision vertices $p_{uv}$, $p_{vw}$, and $p_{wu}$, we now want to remove the vertex $p_{uvw}$ along with its incident edges and insert edges between the subdivision vertices instead to bound a new face for $x$, as illustrated by the dashed lines in \cref{subfig:insert-vertex-illustration-2}. Doing so naïvely may introduce edge crossings though and we generally need to add bends in the form of subdivision vertices to those edges. For all rotated tuples $(a,b,c)$ of $(u,v,w)$, we distinguish three cases, all of which are illustrated in the figure:
+%
+\tamara{I want to say $\forall (a,b,c) \in \{(u,v,w), (v,w,u), (w,u,v)\}$, is that clear?}
 %
 \begin{itemize}
 	\item If we can place an edge between $p_{ab}$ and $p_{bc}$ without introducing an edge crossing, we do not need to bend the edge (face $v$ in \cref{subfig:insert-vertex-illustration-3}).
-	\item Otherwise, if the internal angle of face $a$ at $p_{abc}$ is more than half a turn, we place the bend $q_a$ at $p_{abc}$ (face $u$ in \cref{subfig:insert-vertex-illustration-3}).
-	\item Otherwise we search for a bend location $q_a$ somewhere on the line segment from the midpoint of $p_{ab}$ and $p_{bc}$ to $p_{abc}$. We start at the midpoint of $p_{ab}$ and $p_{bc}$ and repeatedly divide the remaining distance to $p_{abc}$ in half until we find a bend location for which the bent edge from $p_{ab}$ to $p_{bc}$ would not create edge crossings (face $w$ in \cref{subfig:insert-vertex-illustration-3}).
+	\item Otherwise, if the internal angle of face $a$ at $p_{abc}$, $\angle_{p_{ab}p_{abc}p_{bc}}$, is half a turn or more, we bend the edge using a subdivision vertex $q_a$ at $p_{abc}$. (face $u$ in \cref{subfig:insert-vertex-illustration-3})
+	\item Otherwise, we search for a bend location in the form of a subdivision vertex $q_a$ on the outward-pointing bisector of the angle $\angle_{p_{ab}p_{abc}p_{bc}}$ (dotted lines in \cref{subfig:insert-vertex-illustration-2}). We start at the point where the bisector intersects the line segment from $p_{ab}$ to $p_{bc}$ and keep dividing the remaining distance to $p_{abc}$ in half until we find a bend location for which the bent edge from $p_{ab}$ to $p_{bc}$ would not introduce edge crossings. (face $w$ in \cref{subfig:insert-vertex-illustration-3})
 \end{itemize}
 
-Considering at most one angle at $p_{uvw}$ can be more than half a turn, we place at most one bend there. By removing the vertex $p_{uvw}$ and inserting the edges $\{p_{uv},p_{vw}\}$, $\{p_{vw},p_{wu}\}$, and $\{p_{wu},p_{uv}\}$, potentially with bends $p_v$, $p_w$, and $p_u$, we create an internal face for $x$.
+Considering at most one the internal angles at $p_{uvw}$ can be half a turn or more, we place at most one subdivision vertex there. By removing the vertex $p_{uvw}$ and inserting the edges $\{p_{uv},p_{vw}\}$, $\{p_{vw},p_{wu}\}$, and $\{p_{wu},p_{uv}\}$, potentially with bends $q_v$, $q_w$, and $q_u$, we create an internal face for $x$ without introducing edge crossings.
 
 
 
 \paragraph{Inserting Vertices Outside}
 
-\todo{Same but different!}
-
 Alternatively, we can add a new vertex in the outer face of the cluster graph. Such a vertex must be connected to at least two vertices on the outer face to preserve the graph's 2-connectivity and its neighbors must form a path on the original boundary of the cluster graph in order not to create holes and thereby violate its internal triangulatedness.
 
-We restrict ourselves to adding new vertices in the outer face that are made incident to exactly 2 neighboring vertices. Let $\{u,v\}$ be an edge on the outer face, then we support adding a new vertex $x$ in the outer face and connecting it to both $u$ and $v$. \Cref{fig:insert-vertex-example-outside} illustrates a valid vertex insertion into the outer face.
+We restrict ourselves to adding new vertices in the outer face that are made incident to exactly 2 neighboring vertices here. Additional edges can be inserted separately afterwards. Let $\{u,v\}$ be an edge on the outer face, then we support adding a new vertex $x$ in the outer face and connecting it to both $u$ and $v$. \Cref{fig:insert-vertex-example-outside} illustrates a valid vertex insertion into the outer face.
 
 \begin{figure}[H]
 	\centering
@@ -68,24 +68,23 @@ We restrict ourselves to adding new vertices in the outer face that are made inc
 	\label{fig:insert-vertex-example-outside}
 \end{figure}
 
-Let $u$ and $v$ be the adjacent vertices on the outer face of the cluster graph and $x$ the new vertex we want to add in the outer face.
-Let $p_{uv}$ denote the vertex where the faces $u$ and $v$ meet the outer face of the polygonal dual.
-We define $p_u$ and $p_v$ as the first subdivision vertex we encounter when starting at $p_{uv}$ and following the boundary of $u$ and $v$ with the outer face, respectively.
-If one of the boundaries consist of only one edge, we place a subdivision vertex at its midpoint and use that vertex as $p_u$/$p_v$.
-\Cref{subfig:insert-vertex-outside-illustration-1} shows how these vertices might look for the example from above.
-%
+This operation is really just a special case of the vertex insertion discussed above: in the polygonal dual, instead of creating a new face between three internal faces, we need to create a new face between two internal faces and the implicit outer face.
 
-%\begin{figure}[H]
-%	\centering
-%	\subfigure[]{\includegraphics[width=45mm]{Resources/InsertVertexOutside-Illustration-1.pdf}\label{subfig:insert-vertex-outside-illustration-1}}
-%	\quad
-%	\subfigure[]{\includegraphics[width=45mm]{Resources/InsertVertexOutside-Illustration-2.pdf}\label{subfig:insert-vertex-outside-illustration-2}}
-%	\quad
-%	\subfigure[]{\includegraphics[width=45mm]{Resources/InsertVertexOutside-Illustration-3.pdf}\label{subfig:insert-vertex-outside-illustration-3}}
-%	\caption{Inserting a face $x$ at the point where the faces $u$ and $v$ meet the outer face.}
-%	\label{fig:insert-vertex-outside-illustration}
-%\end{figure}
+Recall that the polygonal dual is a subdivision of the augmented dual $G_\text{emb}^+$ of the cluster graph $G_\text{emb}$. In the construction of the augmented dual from \cref{def:augmented-dual}, we insert a helper vertex incident to all vertices on the outer face of the primal graph and then form the regular dual. That is why the polygonal dual has an internal face for each of the vertices in $G_\text{emb}^+$. But the polygonal dual also has an implicit outer face \emdash{} an ocean in the context of maps \emdash{} that corresponds to the helper vertex inserted during the construction of the augmented dual, as illustrated in \cref{fig:insert-vertex-duality}.
 
-With $p_u$ and $p_v$ determined, we can create the face $x$ by inserting a path to connect $p_u$ and $p_v$ without introducing edge crossings. Simply inserting an edge between $p_u$ and $p_v$ generally isn't enough, as illustrated in \cref{subfig:insert-vertex-outside-illustration-2}. However, with a single bend in the form of a subdivision vertex $q$, we can guarantee that no edge crossings are being created.
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[height=26mm]{Resources/InsertVertex-Duality-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=26mm]{Resources/InsertVertex-Duality-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=26mm]{Resources/InsertVertex-Duality-3.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=26mm]{Resources/InsertVertex-Duality-4.pdf}}
+	\caption{A cluster graph and a polygonal dual thereof with explicit helper vertex $v^+$ and outer face, before (a, c) and after (b, d) inserting the vertex $x$ in the triangle $u$ and $v$ form with $v^+$.}
+	\label{fig:insert-vertex-duality}
+\end{figure}
 
-We search for a bend location on the outward-pointing bisector of the angle $\measuredangle_{p_up_{uv}p_v}$, starting at some fixed distance $\epsilon > 0$ and halving the distance until we find a valid location. As the possible bend location moves infinitesimally close to $p_{uv}$, we are guaranteed to find one that doesn't introduce edge crossings. By inserting a vertex at $q$ along with edges $\{q,p_u\}$ and $\{q,p_v\}$, we create an internal face for $x$, as illustrated in \cref{subfig:insert-vertex-outside-illustration-3}.
+Also recall that the cluster graph with this helper vertex is a triangulated graph. Two arbitrary adjacent vertices on the outer face of $G_\text{emb}$ form a triangular face with the helper vertex. Inserting a new vertex $x$ in the outer face as described above is therefore equivalent to inserting $x$ in the triangular face $u$ and $v$ form with the helper vertex, or, in the dual, inserting a face at the point where the faces $u$ and $v$ meet the implicit outer face.
+
+The construction outlined above translates 1-to-1 to inserting a vertex in the outer face, except one of the three neighboring faces is the implicit outer face.

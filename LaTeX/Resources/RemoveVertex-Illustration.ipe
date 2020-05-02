@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200430174333" modified="D:20200501175628"/>
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200430174333" modified="D:20200502185915"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -589,5 +589,13 @@ h
 <text layer="newlabels" matrix="1 0 0 1 4 -8" transformations="translations" pos="64 384" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
 <text matrix="1 0 0 1 -4 0" transformations="translations" pos="176 400" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
 <text matrix="1 0 0 1 -20 12" transformations="translations" pos="160 336" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
+<path layer="vertices" matrix="1 0 0 1 -96 -352" stroke="black" dash="dotted">
+192 656 m
+224 656
+208 704
+216 736
+248 712
+288 720 c
+</path>
 </page>
 </ipe>
