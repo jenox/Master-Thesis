@@ -12,14 +12,12 @@ Unlike OpMap and GMap, which have similar goals, clustering the larger graph is 
 \end{definition}
 
 \begin{definition}
-	Given a plane graph $G$, a contact representation of $G$ with simple polygons is called a \emph{polygonal dual} of $G$. A polygonal dual respects the combinatorial embedding of $G$, \ie{} \todo{}.
+	Given a plane graph $G$, a contact representation of $G$ with simple polygons is called a \emph{polygonal dual} of $G$. A polygonal dual respects the combinatorial embedding and outer face of $G$, \ie{} the regions corresponding to vertices that lie on the outer face of $G$ have a boundary with the implicit outer face of the polygonal dual, and the cyclic order of incident faces is as prescribed by the combinatorial embedding of $G$.
 \end{definition}
 
-Unless otherwise noted, we assume that polygonal duals respect the combinatorial embedding of their primal graphs and that two regions share at most one continuous border, \ie{} the points where two regions meet lie on a single polyline. Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
+Unless otherwise noted, we assume that polygonal duals respect the combinatorial embedding and outer face of their primal graphs and that two regions share at most one continuous border, \ie{} the points where two regions meet lie on a single polyline. Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
 
-With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$. We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$. $G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices. We then turn $G_\text{init}$ into an approximately area-proportional, polygonal contact representation of $G_\text{emb}$ with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$. This is done by displacing its vertices while preserving the graphs's planarity. We implement this step using a force-directed algorithm.
-
-\tamara{Does \quoted{plane combinatorial embedding of a 2-connected} sound strange? I want to emphasize that I'm only looking for a planar embedding of the graph and not a drawing / plane graph.}
+With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$. We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$. $G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices. We then turn $G_\text{init}$ into an approximately area-proportional, polygonal contact representation of $G_\text{emb}$ with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$. This is done by displacing its vertices while preserving the graphs's planarity. We implement this step using a force-directed algorithm.
 
 \begin{figure}[H]
 	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Thesis-Static.pdf}
@@ -30,13 +28,13 @@ With these definitions in place, we can formalize the structure of our algorithm
 Let's break down the requirements we impose on the cluster graph $G_\text{emb}$ and its embedding:
 
 \begin{itemize}
-	\item $G_\text{emb}$ is given in combination with a plane combinatorial embedding. $G_\text{emb}$ must be planar such that there exists a contact representation of $G_\text{emb}$. We require a combinatorial embedding of $G_\text{emb}$ such that the \quoted{arrangement} of the clusters or of the regions on the eventual map is predetermined. This becomes important in \cref{chap:visualizing-dynamic-input-graphs} where we start incorporating dynamic updates into the embedded cluster graph and the map graphs.
+	\item $G_\text{emb}$ is given as a plane graph. $G_\text{emb}$ must be planar such that there exists a contact representation of $G_\text{emb}$. We require a combinatorial embedding of $G_\text{emb}$ with prescribed outer face such that the \quoted{arrangement} of the clusters or of the regions on the eventual map is predetermined. This becomes important in \cref{chap:visualizing-dynamic-input-graphs} where we start incorporating dynamic updates into the embedded cluster graph and the map graphs.
 	\item $G_\text{emb}$ is internally triangulated such that the map graphs $G_\text{init}$ and $G_\text{prop}$ are hole-free. Applying the map metaphor, this translates to there not being any lakes or rivers separating countries on the map. \cref{fig:preliminaries-rectilinear-dual} illustrates how internal faces on 4 or more vertices creates holes in contact representations.
 	\item $G_\text{emb}$ is 2-connected such that, in combination with the internal triangulatedness, no vertex appears on outer face multiple times. This is required for how we compute the initial map graph and will be discussed in detail in \cref{sect:transformation-to-dual}.
 	\item $G_\text{emb}$ is vertex-weighted such that the initial map graph $G_\text{init}$ can inherit its vertex weights and we know what areas the polygonal regions are supposed to have in $G_\text{prop}$.
 \end{itemize}
 
-Many real-world applications, such as visualizing opinion networks, do not produce an embedded cluster graph directly. In order for our framework to be applicable, one may need to prepend a clustering phase that turns an arbitrary input graph $G_\text{in}$ into a plane combinatorial embedding of a 2-connected, internally triangulated, and vertex-weighted graph that can then be processed by our framework:
+Many real-world applications, such as visualizing opinion networks, do not produce an embedded cluster graph directly. In order for our framework to be applicable, one may need to prepend a clustering phase that turns an arbitrary input graph $G_\text{in}$ into a plane 2-connected, internally triangulated, and vertex-weighted graph that can then be processed by our framework:
 %
 \begin{figure}[H]
 	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Application-Static.pdf}

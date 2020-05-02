@@ -72,7 +72,7 @@ When graphs are weighted, we typically include the weight functions in the graph
 % http://www.planarity.org/Klein_elementary_graph_theory.pdf uses "geometric embedding"
 \begin{definition}
 	A \emph{drawing} or \emph{topological embedding} of a graph $G = (V, E)$ maps its vertices to distinct points in the plane and its edges to continuous curves between its endpoints in the plane.
-	The graph $G$ is called \emph{planar} if it permits a drawing in which its edges don't self-intersect and don't cross other edges, \ie{} the edges only intersect in their endpoints.
+	The graph $G$ is called \emph{planar} if it permits a drawing in which its edges don't self-intersect and don't cross other edges, \ie{} the graph's edges only intersect in their endpoints.
 	Such a drawing is called a \emph{planar embedding} of $G$. If all edges of $G$ are line segments, we also call it a \emph{planar straight-line embedding}.
 	We also use the term \emph{plane graph} to refer to planar graph in combination with a concrete planar embedding.
 \end{definition}
@@ -94,7 +94,7 @@ When graphs are weighted, we typically include the weight functions in the graph
 	Given a plane graph $G$, its topological embedding defines the cyclic order of the edges incident to a vertex $v$ for all its vertices. The cyclic orders of all vertices of the graph together are called a \emph{combinatorial embedding} of the planar graph $G$.
 \end{definition}
 
-Combinatorial embeddings uniquely determine the faces (which edges bound them, not their geometry) any drawing with same combinatorial embedding would have.
+Combinatorial embeddings uniquely determine the faces (which edges bound them, not their geometry) any drawing with same combinatorial embedding would have, but don't prescribe which of the faces is the outer face in a drawing.
 
 \begin{definition}
 	A \emph{multigraph} is a graph that, as opposed to a simple graph, is can have multiple edges between a pair of vertices as well as so-called loops, \ie{} edges connecting a vertex to itself.
@@ -108,7 +108,7 @@ Combinatorial embeddings uniquely determine the faces (which edges bound them, n
 	\label{fig:preliminaries-dual}
 \end{figure}
 
-An example for a plane graph and its dual is illustrated in \cref{fig:preliminaries-dual}. Forming the dual of a plane graph essentially turns vertices into faces and vice versa and \quoted{flips} the edges of the plane graph as illustrated in \cref{fig:preliminaries-dual}. Note that no matter how the dual graph is embedded (topologically), its combinatorial embedding is uniquely determined by the original plane graph. When forming the dual of the dual of a plane graph, we get back the original plane graph, \ie{} $(G^*)^* = G$. Since combinatorial embeddings uniquely determine the faces, we can also form the dual directly from a combinatorial embedding.
+An example for a plane graph and its dual is illustrated in \cref{fig:preliminaries-dual}. Forming the dual of a plane graph essentially turns vertices into faces and vice versa and \quoted{flips} the edges of the plane graph as illustrated in \cref{fig:preliminaries-dual}. Note that no matter how the dual graph is embedded (topologically), its combinatorial embedding and outer face are uniquely determined by the original plane graph. When forming the dual of the dual of a plane graph, we get back the original plane graph, \ie{} $(G^*)^* = G$.
 
 % TODO: Do we even need weak dual, augmented dual?
 
@@ -144,7 +144,7 @@ In the remainder of this thesis, we assume contact representations to be hole-fr
 \paragraph{Area Universality}
 
 \begin{definition}
-	A plane graph $G$ with internal faces $F_\text{int}$ is \emph{area universal} if, for every area assignment of its internal faces $A \colon F_\text{int} \to \mathbb{R}_+$, there exists a planar straight-line drawing of $G$ with the same combinatorial embedding such that all internal faces $f_\text{int}$ have the area $A(f_\text{int})$ as prescribed by $A$.
+	A plane graph $G$ with internal faces $F_\text{int}$ is \emph{area universal} if, for every area assignment of its internal faces $A \colon F_\text{int} \to \mathbb{R}_+$, there exists a planar straight-line drawing of $G$ with the same combinatorial embedding and outer face such that all internal faces $f_\text{int}$ have the area $A(f_\text{int})$ as prescribed by $A$.
 \end{definition}
 
 Recall that Thomassen \cite{thomassen1992plane} showed that all (planar embeddings of) cubic graphs, \ie{} graphs in which all vertices have degree 3, are area-universal, and that Kleist \cite{kleist2019planar} showed that all plane 1-subdivisions of planar graphs are area-universal, too.
