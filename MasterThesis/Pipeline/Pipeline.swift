@@ -61,8 +61,8 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             self.hasScheduledNextSteppingBlock = false
         })
 
-        self.scheduleMutationOperation(named: "step", { graph in
-            switch graph {
+        self.scheduleOperation(named: "step", {
+            switch self.graph {
             case .vertexWeighted(var graph):
                 let forces = try self.forceComputer.forces(in: graph)
                 try self.forceApplicator.apply(forces, to: &graph)
@@ -73,6 +73,8 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
                 try self.forceApplicator.apply(forces, to: &graph)
                 try graph.didStepOnce()
                 return .faceWeighted(graph)
+            case .none:
+                throw UnsupportedOperationError()
             }
         }, completion: { result in
             if result.isSuccess {
@@ -89,7 +91,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     // MARK: - Abstract Operations
 
     private typealias ReplacementOperation = () throws -> EitherGraph?
-    private typealias MutationOperation = (EitherGraph) throws -> EitherGraph
+    private typealias MutationOperation = (inout PolygonalDual) throws -> Void
     typealias CompletionHandler = (Result<Void, Error>) -> Void
 
     private func scheduleReplacementOperation(named name: String, _ operation: @escaping ReplacementOperation, completion: CompletionHandler? = nil) {
@@ -100,8 +102,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     private func scheduleMutationOperation(named name: String, _ operation: @escaping MutationOperation, completion: CompletionHandler? = nil) {
         self.scheduleOperation(named: name, {
-            guard let graph = self.graph else { throw UnsupportedOperationError() }
-            return try operation(graph)
+            guard case .faceWeighted(var graph) = self.graph else { throw UnsupportedOperationError() }
+            try operation(&graph)
+            return .faceWeighted(graph)
         }, completion: completion)
     }
 
@@ -152,8 +155,8 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     }
 
     func transform() {
-        self.scheduleMutationOperation(named: "transform", { graph in
-            guard case .vertexWeighted(let untransformed) = graph else { throw UnsupportedOperationError() }
+        self.scheduleOperation(named: "transform", {
+            guard case .vertexWeighted(let untransformed) = self.graph else { throw UnsupportedOperationError() }
             let transformed = try self.transformer.transform(untransformed)
             return .faceWeighted(transformed)
         })
@@ -161,33 +164,16 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func changeRandomCountryWeight() {
         self.scheduleMutationOperation(named: "random weight change", { graph in
-            switch graph {
-            case .vertexWeighted(var graph):
-                guard let country = graph.vertices.randomElement() else { throw UnsupportedOperationError() }
-                let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-                try graph.adjustWeight(of: country, to: weight)
-                return .vertexWeighted(graph)
-            case .faceWeighted(var graph):
-                guard let country = graph.faces.randomElement() else { throw UnsupportedOperationError() }
-                let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-                try graph.adjustWeight(of: country, to: weight)
-                return .faceWeighted(graph)
-            }
+            guard let country = graph.faces.randomElement() else { throw UnsupportedOperationError() }
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+            try graph.adjustWeight(of: country, to: weight)
         })
     }
 
     func changeWeight(of country: ClusterName, to weight: ClusterWeight, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
-            switch graph {
-            case .vertexWeighted(var graph):
-                guard graph.vertices.contains(country) else { throw UnsupportedOperationError() }
-                try graph.adjustWeight(of: country, to: weight)
-                return .vertexWeighted(graph)
-            case .faceWeighted(var graph):
-                guard graph.faces.contains(country) else { throw UnsupportedOperationError() }
-                try graph.adjustWeight(of: country, to: weight)
-                return .faceWeighted(graph)
-            }
+            guard graph.faces.contains(country) else { throw UnsupportedOperationError() }
+            try graph.adjustWeight(of: country, to: weight)
         }, completion: completion)
     }
 
@@ -205,27 +191,13 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func flipRandomInternalEdge() {
         self.scheduleMutationOperation(named: "random edge flip", { graph in
-            switch graph {
-            case .vertexWeighted(var graph):
-                try graph.flipRandomEdge(using: &self.randomNumberGenerator)
-                return .vertexWeighted(graph)
-            case .faceWeighted(var graph):
-                try graph.flipRandomAdjacency(using: &self.randomNumberGenerator)
-                return .faceWeighted(graph)
-            }
+            try graph.flipRandomAdjacency(using: &self.randomNumberGenerator)
         })
     }
 
     func flipAdjacency(between first: ClusterName, and second: ClusterName, completion: @escaping CompletionHandler) {
         self.scheduleMutationOperation(named: "edge flip", { graph in
-            switch graph {
-            case .vertexWeighted(var graph):
-                try graph.flipEdge(between: first, and: second)
-                return .vertexWeighted(graph)
-            case .faceWeighted(var graph):
-                try graph.flipAdjanency(between: first, and: second)
-                return .faceWeighted(graph)
-            }
+            try graph.flipAdjanency(between: first, and: second)
         }, completion: completion)
     }
 
