@@ -105,8 +105,8 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
         }
 
         // Edges
-        for (endpoint1, endpoint2) in self.graph.edges {
-            context.stroke(from: self.graph.position(of: endpoint1), to: self.graph.position(of: endpoint2), color: .black)
+        for (u, v) in self.graph.edges where u < v {
+            context.stroke(from: self.graph.position(of: u), to: self.graph.position(of: v), color: .black)
         }
 
         // Vertices

@@ -8,7 +8,11 @@
 
 import Swift
 
-struct UniquelyIdentifiedVertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+struct UniquelyIdentifiedVertex: Hashable, Comparable, CustomStringConvertible, ExpressibleByIntegerLiteral {
+    static func < (lhs: UniquelyIdentifiedVertex, rhs: UniquelyIdentifiedVertex) -> Bool {
+        return lhs.id < rhs.id
+    }
+
     private static var nextID: Int = 0
     private let id: Int
 

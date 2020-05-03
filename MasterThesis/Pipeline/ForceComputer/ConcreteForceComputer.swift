@@ -75,7 +75,7 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-vertex attraction
         if self.force2Strength > 0 {
-            for (u, v) in graph.edges {
+            for (u, v) in graph.edges where u < v {
                 let uv = graph.vector(from: u, to: v)
                 let d = uv.length
 
@@ -86,7 +86,7 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-edge repulsion
         if self.force3Strength > 0 {
-            for (u, (v, w)) in graph.vertices.cartesianProduct(with: graph.edges) where u != v && u != w {
+            for (u, (v, w)) in graph.vertices.cartesianProduct(with: graph.edges) where v < w && u != v && u != w {
                 let segment = graph.segment(from: v, to: w)
                 let p = segment.closestPoint(to: graph.position(of: u))
 
@@ -132,32 +132,6 @@ struct ConcreteForceComputer: ForceComputer {
                 }
             }
         }
-
-//        for face in graph.faces {
-//            let boundary = graph.boundary(of: face)
-//            for (index, vertex) in boundary.enumerated() {
-//                if graph.vertices(adjacentTo: vertex).count == 2 {
-//                    let (left, right) = Face(vertices: boundary).neighbors(of: vertex)
-//                    let pos = graph.position(of: vertex)
-//                    let pos1 = graph.position(of: left)
-//                    let pos2 = graph.position(of: right)
-//
-//                    let polygon = graph.polygon(for: face)
-//                    let vector = polygon.normal(at: index).rotated(by: .init(degrees: 90))
-//
-//                    forces[vertex]! += 5 * log(pos.distance(to: pos1) / pos.distance(to: pos2)) * vector
-//                }
-//            }
-//        }
-
-//        for (u, v) in graph.edges {
-//            guard !graph.isSubdivisionVertex(u) else { continue }
-//            guard !graph.isSubdivisionVertex(v) else { continue }
-//
-//            let distance = graph.distance(from: u, to: v)
-//            forces[u]! += 0.05 * graph.vector(from: u, to: v).normalized / distance
-//            forces[v]! += 0.05 * graph.vector(from: u, to: v).normalized / distance
-//        }
 
         return forces
     }
