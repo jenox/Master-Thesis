@@ -89,6 +89,30 @@ extension StraightLineGraph {
         return (internal: Array(faces.dropFirst()), outer: faces[0])
     }
 
+    func faces(incidentTo vertex: Vertex) -> [Face<Vertex>] {
+        var faces: [Face<Vertex>] = []
+        var markedEdges: DirectedEdgeSet<Vertex> = []
+
+        for neighbor in self.vertices(adjacentTo: vertex) {
+            var boundingVertices = [vertex, neighbor]
+            markedEdges.insert((vertex, neighbor))
+
+            while boundingVertices.first != boundingVertices.last {
+                let neighbors = self.vertices(adjacentTo: boundingVertices[boundingVertices.count - 1])
+                let incoming = neighbors.firstIndex(of: boundingVertices[boundingVertices.count - 2])!
+                let outgoing = (incoming == 0 ? neighbors.count : incoming) - 1
+
+                markedEdges.insert((boundingVertices.last!, neighbors[outgoing]))
+                boundingVertices.append(neighbors[outgoing])
+            }
+
+            boundingVertices.removeLast()
+            faces.append(.init(vertices: boundingVertices))
+        }
+
+        return faces
+    }
+
     func internalFaces(incidentTo edge: (Vertex, Vertex)) -> [Face<Vertex>] {
         var faces: [Face<Vertex>] = []
         var markedEdges: DirectedEdgeSet<Vertex> = []

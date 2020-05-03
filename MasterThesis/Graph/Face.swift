@@ -63,6 +63,15 @@ struct Face<T>: Hashable where T: Hashable {
         // Suboptimal implementation
         Set(self.vertices).hash(into: &hasher)
     }
+
+    func smoothing(vertex: T) -> Face<T> {
+        guard let index = self.vertices.firstIndex(of: vertex) else { preconditionFailure() }
+
+        var vertices = self.vertices
+        vertices.remove(at: index)
+
+        return Face(vertices: vertices)
+    }
 }
 
 private extension Array {

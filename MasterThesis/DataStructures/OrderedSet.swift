@@ -50,6 +50,14 @@ public struct OrderedSet<Element> where Element: Hashable {
         self.storage.remove(element)
     }
 
+    mutating func replace(_ oldElement: Element, with newElement: Element) {
+        guard let index = self.firstIndex(of: oldElement) else { preconditionFailure() }
+
+        self.ensureValueSemantics()
+
+        self.storage.replaceObject(at: index, with: newElement)
+    }
+
     private mutating func ensureValueSemantics() {
         if !isKnownUniquelyReferenced(&self.storage) {
             self.storage = NSMutableOrderedSet(orderedSet: self.storage)

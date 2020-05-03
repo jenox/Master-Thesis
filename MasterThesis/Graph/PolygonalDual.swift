@@ -58,15 +58,25 @@ extension PolygonalDual {
         case .success:
             break
         case .failure(let error):
-            fatalError("Integrity violation: \(error)")
+            print("Integrity violation:", error)
+            fatalError()
         }
     }
 
     func validateIntegrity() -> Result<Void, PolygonalDualIntergrityViolation> {
-        guard self.vertices.count >= 3 else { return .failure(.tooFewVertices) }
+        let time = CFAbsoluteTimeGetCurrent()
+        defer { print("validate", CFAbsoluteTimeGetCurrent() - time) }
+
+        guard self.vertices.count >= 3 else { return .failure(.fatal) }
+        guard Set(self.vertices) == Set(self.vertexPayloads.keys) else { return .failure(.fatal) }
+        guard Set(self.faces) == Set(self.facePayloads.keys) else { return .failure(.fatal) }
 
         for vertex in self.vertices {
             guard 2...3 ~= self.vertexPayloads[vertex]!.neighbors.count else { return .failure(.invalidVertexDegree) }
+        }
+
+        for vertex in self.vertices {
+            guard self.degree(of: vertex) == self.faces(incidentTo: vertex).count else { return .failure(.invalidVertexDegree) }
         }
 
         // symmetric adjacencies
@@ -79,21 +89,21 @@ extension PolygonalDual {
         let boundaries = self.facePayloads.map({ $0.value.boundary })
         let (internalFaces, outerFace) = self.internalFacesAndOuterFace()
 
-        guard internalFaces.count == boundaries.count else { return .failure(.corruptFaceRepresentation) }
+        guard internalFaces.count == boundaries.count else { return .failure(.corruptFaceRepresentation1) }
 
         // edges on cached boundaries
         for boundary in boundaries {
             for (u,v) in boundary.adjacentPairs(wraparound: true) {
-                guard self.vertexPayloads[u]!.neighbors.contains(v) else { return .failure(.corruptFaceRepresentation) }
+                guard self.vertexPayloads[u]!.neighbors.contains(v) else { return .failure(.corruptFaceRepresentation2) }
             }
 
-            guard internalFaces.contains(MasterThesis.Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation) }
+            guard internalFaces.contains(MasterThesis.Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation3) }
         }
 
         for face in internalFaces {
-            guard self.polygon(on: face.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces) }
+            guard self.polygon(on: face.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces1) }
         }
-        guard self.polygon(on: outerFace.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces) }
+        guard self.polygon(on: outerFace.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces2) }
 
         // edge crossings? or is this already covered by simpleness?
 
@@ -102,11 +112,14 @@ extension PolygonalDual {
 }
 
 enum PolygonalDualIntergrityViolation: Error {
-    case tooFewVertices
+    case fatal
     case invalidVertexDegree
     case asymmetricAdjacencies
-    case corruptFaceRepresentation
-    case nonSimplePolygonalFaces
+    case corruptFaceRepresentation1
+    case corruptFaceRepresentation2
+    case corruptFaceRepresentation3
+    case nonSimplePolygonalFaces1
+    case nonSimplePolygonalFaces2
     case edgeCrossing
 }
 
@@ -199,44 +212,54 @@ extension PolygonalDual {
     }
 }
 
+
+// MARK: - Edge Contraction
+
+extension PolygonalDual {
+    mutating func smooth(_ v: Vertex) throws {
+        let neighbors = self.vertices(adjacentTo: v)
+        let faces = self.faces(incidentTo: v)
+
+        precondition(neighbors.count == 2)
+        precondition(faces.count == 2)
+        let (u, w) = (neighbors[0], neighbors[1])
+
+        // No crossings
+        guard self.polygon(on: faces[0].smoothing(vertex: v).vertices).isSimple else { throw UnsupportedOperationError() }
+        guard self.polygon(on: faces[1].smoothing(vertex: v).vertices).isSimple else { throw UnsupportedOperationError() }
+
+        // Ensure cyclic order stays the same
+        let uw = self.angle(from: u, to: w).counterclockwise
+        let wu = self.angle(from: w, to: u).counterclockwise
+        var nu = self.vertexPayloads[u]!.neighbors
+        var nw = self.vertexPayloads[w]!.neighbors
+        let iu = nu.firstIndex(of: v)!
+        let iw = nw.firstIndex(of: v)!
+        nu.remove(v)
+        nw.remove(v)
+        let ju = nu.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > uw }) ?? nu.endIndex
+        let jw = nw.firstIndex(where: { self.angle(from: w, to: $0).counterclockwise > wu }) ?? nw.endIndex
+        guard iu == ju else { throw UnsupportedOperationError() }
+        guard iw == jw else { throw UnsupportedOperationError() }
+
+        self.vertices.remove(v)
+        self.vertexPayloads[v] = nil
+        self.vertexPayloads[u]!.neighbors.replace(v, with: w)
+        self.vertexPayloads[w]!.neighbors.replace(v, with: u)
+
+        for (face, payload) in self.facePayloads {
+            if let index = payload.boundary.firstIndex(of: v) {
+                var boundary = payload.boundary
+                boundary.remove(at: index)
+                self.facePayloads[face]!.boundary = boundary
+            }
+        }
+
+        self.ensureIntegrity()
+    }
+}
+
 //extension PolygonalDual {
-//    mutating func contractEdgeIfPossible(between a: Vertex, and b: Vertex) {
-//        assert(self.vertex(adjacentTo: a, and: b) == nil)
-//
-//        // cannot contract edge between 2 3-degree vertices
-//        // we have u-v-w with v having no further neighbors
-//        guard let v = [a, b].first(where: { self.degree(of: $0) == 2 }) else { return }
-//        let u = v == a ? b : a
-//        let w = self.vertices(adjacentTo: v).first(where: { $0 != u })!
-//
-//        // TODO: must be able to be contracted WITHOUT introducing crossings
-//
-//        // contract v "into" u
-//        var copy = self
-//        copy.edges.deleteFirst(of: (u,v), (v,u), by: ==)
-//        copy.edges.replaceFirst(of: (v,w), (w,v), with: (u,w), by: ==)
-//        copy.vertices.deleteFirst(of: v, by: ==)
-//        copy.vertexPayloads[v] = nil
-//        copy.vertexPayloads[u]!.adjacencies.replaceFirst(of: v, with: w, by: ==)
-//        copy.vertexPayloads[w]!.adjacencies.replaceFirst(of: v, with: u, by: ==)
-//
-//        guard copy.isCrossingFree() else {
-//            print("Could not contract edge \(a)-\(b): would create edge crossing!")
-//            return
-//        }
-//
-//        print("Contracting edge \(a)-\(b)...")
-//
-//        self = copy
-//
-//        // Fix faces
-//        for (face, payload) in self.facePayloads {
-//            if let index = payload.boundary.firstIndex(of: v) {
-//                self.facePayloads[face]!.boundary.remove(at: index)
-//            }
-//        }
-//    }
-//
 //    func firstEdgeCrossing() -> (Segment, Segment)? {
 //        for ((u,v),(w,x)) in self.edges.strictlyTriangularPairs() where Set([u,v,w,x]).count == 4 {
 //            let s1 = self.segment(from: u, to: v)
