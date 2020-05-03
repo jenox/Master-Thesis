@@ -8,4 +8,13 @@
 
 import Foundation
 
-struct UnsupportedOperationError: Error {}
+
+struct UnsupportedOperationError: Error {
+    init(file: StaticString = #file, line: Int = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    let file: StaticString
+    let line: Int
+}

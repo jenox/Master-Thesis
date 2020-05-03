@@ -28,6 +28,10 @@ extension Segment {
         let t = max(0, min(1, dot((other - self.start), (self.end - self.start)) / l2))
         return self.point(at: t)
     }
+
+    var midpoint: CGPoint {
+        return CGPoint.centroid(of: self.start, self.end)
+    }
 }
 
 // https://cp-algorithms.com/geometry/check-segments-intersection.html

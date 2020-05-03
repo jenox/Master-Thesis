@@ -18,12 +18,12 @@ struct Face<T>: Hashable where T: Hashable {
 
     let vertices: [T]
 
-    func neighbors(of vertex: T) -> (T, T) {
+    func neighbors(of vertex: T) -> (before: T, after: T) {
         let index = self.vertices.firstIndex(of: vertex)!
 
         return (
-            self.vertices[(index + 1) % self.vertices.count],
-            self.vertices[(index + self.vertices.count - 1) % self.vertices.count]
+            self.vertices[(index + self.vertices.count - 1) % self.vertices.count],
+            self.vertices[(index + 1) % self.vertices.count]
         )
     }
 
@@ -69,6 +69,13 @@ struct Face<T>: Hashable where T: Hashable {
 
         var vertices = self.vertices
         vertices.remove(at: index)
+
+        return Face(vertices: vertices)
+    }
+
+    func inserting(_ vertex: T, at index: Int) -> Face<T> {
+        var vertices = self.vertices
+        vertices.insert(vertex, at: index)
 
         return Face(vertices: vertices)
     }

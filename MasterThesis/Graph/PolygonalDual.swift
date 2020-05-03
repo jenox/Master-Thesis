@@ -19,10 +19,10 @@ struct PolygonalDual {
     typealias VertexPayload = (neighbors: OrderedSet<Vertex>, position: CGPoint)
     typealias FacePayload = (boundary: [Vertex], weight: Weight)
 
-    private(set) var vertices: OrderedSet<Vertex> = []
-    private(set) fileprivate var vertexPayloads: [Vertex: VertexPayload] = [:]
-    private(set) var faces: OrderedSet<Face> = []
-    private(set) fileprivate var facePayloads: [Face: FacePayload] = [:]
+    var vertices: OrderedSet<Vertex> = []
+    var vertexPayloads: [Vertex: VertexPayload] = [:]
+    var faces: OrderedSet<Face> = []
+    var facePayloads: [Face: FacePayload] = [:]
 }
 
 extension PolygonalDual {
@@ -54,7 +54,7 @@ extension PolygonalDual {
 
 extension PolygonalDual {
     func ensureIntegrity() {
-        switch validateIntegrity() {
+        switch self.validateIntegrity() {
         case .success:
             break
         case .failure(let error):
@@ -64,9 +64,6 @@ extension PolygonalDual {
     }
 
     func validateIntegrity() -> Result<Void, PolygonalDualIntergrityViolation> {
-        let time = CFAbsoluteTimeGetCurrent()
-        defer { print("validate", CFAbsoluteTimeGetCurrent() - time) }
-
         guard self.vertices.count >= 3 else { return .failure(.fatal) }
         guard Set(self.vertices) == Set(self.vertexPayloads.keys) else { return .failure(.fatal) }
         guard Set(self.faces) == Set(self.facePayloads.keys) else { return .failure(.fatal) }
@@ -213,9 +210,29 @@ extension PolygonalDual {
 }
 
 
-// MARK: - Edge Contraction
+// MARK: - Subdivision & Smoothing
 
 extension PolygonalDual {
+    mutating func subdivideEdge(between u: Vertex, and w: Vertex) -> Vertex {
+        precondition(self.vertices(adjacentTo: u).contains(w))
+
+        let v = self.insertVertex(at: self.segment(from: u, to: w).midpoint)
+
+        self.vertexPayloads[u]!.neighbors.replace(w, with: v)
+        self.vertexPayloads[v]!.neighbors = [u, w]
+        self.vertexPayloads[w]!.neighbors.replace(u, with: v)
+
+        for (face, payload) in self.facePayloads {
+            if let index = MasterThesis.Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
+                self.facePayloads[face]!.boundary.insert(v, at: index + 1)
+            }
+        }
+
+        self.ensureIntegrity()
+
+        return v
+    }
+
     mutating func smooth(_ v: Vertex) throws {
         let neighbors = self.vertices(adjacentTo: v)
         let faces = self.faces(incidentTo: v)
@@ -239,8 +256,10 @@ extension PolygonalDual {
         nw.remove(v)
         let ju = nu.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > uw }) ?? nu.endIndex
         let jw = nw.firstIndex(where: { self.angle(from: w, to: $0).counterclockwise > wu }) ?? nw.endIndex
-        guard iu == ju else { throw UnsupportedOperationError() }
-        guard iw == jw else { throw UnsupportedOperationError() }
+//        print(u, uw, nu.map({ ($0, self.angle(from: u, to: $0).counterclockwise) }), iu, ju)
+//        print(w, wu, nw.map({ ($0, self.angle(from: w, to: $0).counterclockwise) }), iw, jw)
+        guard abs(iu - ju) % nu.count == 0 else { throw UnsupportedOperationError() }
+        guard abs(iw - jw) % nu.count == 0 else { throw UnsupportedOperationError() }
 
         self.vertices.remove(v)
         self.vertexPayloads[v] = nil
@@ -249,9 +268,7 @@ extension PolygonalDual {
 
         for (face, payload) in self.facePayloads {
             if let index = payload.boundary.firstIndex(of: v) {
-                var boundary = payload.boundary
-                boundary.remove(at: index)
-                self.facePayloads[face]!.boundary = boundary
+                self.facePayloads[face]!.boundary.remove(at: index)
             }
         }
 

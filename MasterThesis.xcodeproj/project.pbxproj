@@ -57,6 +57,7 @@
 		CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */; };
 		CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
+		CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
 		CBDA154723CB670C0070847D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154623CB670C0070847D /* Assets.xcassets */; };
 		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
@@ -146,6 +147,7 @@
 		CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineGraph.swift; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolations.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
+		CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+InsertVertex.swift"; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBDA154623CB670C0070847D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
 				CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */,
 				CBA25E45243289520019C766 /* Pipeline+Weight.swift */,
+				CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */,
 				CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */,
 				CBFDDE51242AA454005B3048 /* Errors.swift */,
 				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
@@ -591,6 +594,7 @@
 				CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */,
+				CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,

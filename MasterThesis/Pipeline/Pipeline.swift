@@ -178,6 +178,13 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     }
 
     func insertRandomVertexInside() {
+        self.scheduleMutationOperation(named: "insert vertex inside", { graph in
+            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let name = possibleNames.first(where: { !graph.faces.contains($0) })!
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+
+            try graph.insertRandomVertexInside(name: name, weight: weight)
+        })
     }
 
     func insertRandomVertexOutside() {

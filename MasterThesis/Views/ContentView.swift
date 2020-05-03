@@ -30,8 +30,8 @@ struct ContentView: View {
             Button(action: self.loadLarge, label: { Text("Load Large") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.pipeline.generate, label: { Text("Generate") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.pipeline.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
-            self.actions
-        }).frame(width: 180, height: nil, alignment: .center)
+            self.dynamicOperationsView.disabled(!self.pipeline.graph.isFaceWeighted)
+        }).frame(width: 190, height: nil, alignment: .center)
     }
 
     private var forceConfigurationView: some View {
@@ -42,16 +42,16 @@ struct ContentView: View {
         return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
     }
 
-    var actions: some View {
+    private var dynamicOperationsView: some View {
         return Group(content: {
-            Button(action: self.pipeline.changeRandomCountryWeight, label: { Text("Change Weight") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.insertRandomVertexInside, label: { Text("Insert Vertex Inside") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.insertRandomVertexOutside, label: { Text("Insert Vertex Outside") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.removeRandomInternalVertex, label: { Text("Remove Internal Vertex") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.removeRandomExternalVertex, label: { Text("Remove External Vertex") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.flipRandomInternalEdge, label: { Text("Flip Internal Edge") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.insertRandomEdgeOutside, label: { Text("Insert Edge Outside") }).disabled(self.pipeline.graph.isEmpty)
-            Button(action: self.pipeline.removeRandomEdgeOutside, label: { Text("Remove Edge Outside") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: self.pipeline.changeRandomCountryWeight, label: { Text("Change Weight") })
+            Button(action: self.pipeline.insertRandomVertexInside, label: { Text("Insert Vertex Inside") })
+            Button(action: self.pipeline.insertRandomVertexOutside, label: { Text("Insert Vertex Outside") })
+            Button(action: self.pipeline.removeRandomInternalVertex, label: { Text("Remove Internal Vertex") })
+            Button(action: self.pipeline.removeRandomExternalVertex, label: { Text("Remove External Vertex") })
+            Button(action: self.pipeline.flipRandomInternalEdge, label: { Text("Flip Internal Edge") })
+            Button(action: self.pipeline.insertRandomEdgeOutside, label: { Text("Insert Edge Outside") })
+            Button(action: self.pipeline.removeRandomEdgeOutside, label: { Text("Remove Edge Outside") })
         })
     }
 

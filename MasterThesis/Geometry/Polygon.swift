@@ -37,4 +37,18 @@ extension Polygon {
         let outside = (Angle.atan2(vq.dy, vq.dx) - Angle.atan2(vp.dy, vp.dx)).counterclockwise
         return (vp.rotated(by: outside / 2).normalized, outside)
     }
+
+    func removingPoint(at index: Int) -> Polygon {
+        var points = self.points
+        points.remove(at: index)
+
+        return Polygon(points: points)
+    }
+
+    func movingPoint(at index: Int, to position: CGPoint, progress: CGFloat) -> Polygon {
+        var points = self.points
+        points[index] += progress * CGVector(from: points[index], to: position)
+
+        return Polygon(points: points)
+    }
 }
