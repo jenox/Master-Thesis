@@ -29,7 +29,7 @@ struct ConcreteForceComputer: ForceComputer {
         }
 
         // Vertex-vertex attraction
-        for (u, v) in graph.edges {
+        for (u, v) in graph.edges where u.rawValue < v.rawValue {
             let uv = graph.vector(from: u, to: v)
             let d = uv.length
 

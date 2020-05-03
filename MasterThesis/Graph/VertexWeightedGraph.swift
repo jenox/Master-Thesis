@@ -9,25 +9,80 @@
 import CoreGraphics
 import Geometry
 
+struct VertexWeightedGraphEdges {
+    fileprivate init(graph: VertexWeightedGraph) {
+        self.graph = graph
+    }
+    private let graph: VertexWeightedGraph
+}
+
+extension VertexWeightedGraphEdges: Collection {
+    typealias Element = (VertexWeightedGraph.Vertex, VertexWeightedGraph.Vertex)
+    typealias Iterator = IndexingIterator<VertexWeightedGraphEdges>
+    typealias SubSequence = Slice<VertexWeightedGraphEdges>
+    typealias Indices = DefaultIndices<VertexWeightedGraphEdges>
+
+    struct Index: Comparable {
+        var sourceIndex: Int
+        var incidentEdgeIndex: Int
+
+        static func < (lhs: Index, rhs: Index) -> Bool {
+            return (lhs.sourceIndex, lhs.incidentEdgeIndex) < (rhs.sourceIndex, rhs.incidentEdgeIndex)
+        }
+    }
+
+    var startIndex: Index {
+        let index = Index(sourceIndex: 0, incidentEdgeIndex: 0)
+        return self.wraparound(index)
+    }
+
+    var endIndex: Index {
+        return Index(sourceIndex: self.graph.vertices.count, incidentEdgeIndex: 0)
+    }
+
+    func index(after index: Index) -> Index {
+        let index = Index(sourceIndex: index.sourceIndex, incidentEdgeIndex: index.incidentEdgeIndex + 1)
+        return self.wraparound(index)
+    }
+
+    subscript(position: Index) -> Element {
+        let source = self.graph.vertices[position.sourceIndex]
+        let target = self.graph.vertices(adjacentTo: source)[position.incidentEdgeIndex]
+
+        return (source, target)
+    }
+
+    private func wraparound(_ index: Index) -> Index {
+        var index = index
+
+        while index.sourceIndex < self.graph.vertices.count && index.incidentEdgeIndex == self.graph.vertices(adjacentTo: self.graph.vertices[index.sourceIndex]).count {
+            index = Index(sourceIndex: index.sourceIndex + 1, incidentEdgeIndex: 0)
+        }
+        return index
+    }
+}
+
 // Input graph: straight-line plane, vertex-weighted
 // internally triangulated, 2-connected
-struct VertexWeightedGraph: StraightLineGraph {
+struct VertexWeightedGraph {
     typealias Vertex = ClusterName
     typealias Weight = ClusterWeight
+    fileprivate typealias Payload = (neighbors: OrderedSet<Vertex>, position: CGPoint, weight: Weight)
 
     init() {}
 
-    private(set) var vertices: [Vertex] = []
-    private(set) var edges: [(Vertex, Vertex)] = []
-    private var data: [Vertex: (CGPoint, Weight)] = [:]
-    private var adjacencies: [Vertex: [Vertex]] = [:]
+    fileprivate(set) var vertices: OrderedSet<Vertex> = []
+    fileprivate var payload: [Vertex: Payload] = [:]
+
+    var edges: VertexWeightedGraphEdges {
+        return VertexWeightedGraphEdges(graph: self)
+    }
 
     mutating func insert(_ vertex: Vertex, at position: CGPoint, weight: Weight) {
-        precondition(self.data[vertex] == nil)
+        precondition(self.payload[vertex] == nil)
 
-        self.vertices.append(vertex)
-        self.data[vertex] = (position, weight)
-        self.adjacencies[vertex] = []
+        self.vertices.insert(vertex)
+        self.payload[vertex] = ([], position, weight)
     }
 
     func containsEdge(between endpoint1: Vertex, and endpoint2: Vertex) -> Bool {
@@ -38,79 +93,49 @@ struct VertexWeightedGraph: StraightLineGraph {
         precondition(endpoint1 != endpoint2)
         precondition(!self.vertices(adjacentTo: endpoint1).contains(endpoint2))
 
-        self.edges.append((endpoint1, endpoint2))
-        self.adjacencies[endpoint1]!.append(endpoint2)
-        self.adjacencies[endpoint2]!.append(endpoint1)
+        self.insertEdge(from: endpoint1, to: endpoint2)
+        self.insertEdge(from: endpoint2, to: endpoint1)
+    }
+
+    private mutating func insertEdge(from u: Vertex, to v: Vertex) {
+        let angle = self.angle(from: u, to: v).counterclockwise
+
+        var neighbors = self.payload[u]!.neighbors
+        let index = neighbors.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > angle }) ?? neighbors.endIndex
+        neighbors.insert(v, at: index)
+        self.payload[u]!.neighbors = neighbors
     }
 
     mutating func removeEdge(between u: Vertex, and v: Vertex) {
         precondition(u != v)
         precondition(self.vertices(adjacentTo: u).contains(v))
 
-        self.edges.removeAll(where: { $0 == (u,v) || $0 == (v,u) })
-        self.adjacencies[u]!.removeAll(where: { $0 == v })
-        self.adjacencies[v]!.removeAll(where: { $0 == u })
+        self.payload[u]!.neighbors.remove(v)
+        self.payload[v]!.neighbors.remove(u)
     }
 
-    func vertices(adjacentTo vertex: Vertex) -> [Vertex] {
-        return self.adjacencies[vertex]!
-    }
-
-    func position(of vertex: Vertex) -> CGPoint {
-        return self.data[vertex]!.0
-    }
-
-    mutating func move(_ vertex: ClusterName, to position: CGPoint) {
-        self.data[vertex]!.0 = position
+    func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
+        return self.payload[vertex]!.neighbors
     }
 
     func weight(of vertex: Vertex) -> Weight {
-        return self.data[vertex]!.1
+        return self.payload[vertex]!.weight
     }
 
     mutating func setWeight(of vertex: Vertex, to weight: Weight) {
-        self.data[vertex]!.1 = weight
+        self.payload[vertex]!.weight = weight
     }
 }
 
-extension VertexWeightedGraph {
-    // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
-    // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
-    // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
-    var faces: (inner: [Face<Vertex>], outer: Face<Vertex>) {
-        var faces: [Face<Vertex>] = []
-        var edges: OrderedSet<DirectedEdge> = []
+extension VertexWeightedGraph: StraightLineGraph {
+    typealias Vertices = OrderedSet<Vertex>
+    typealias Edges = VertexWeightedGraphEdges
 
-        for vertex in self.vertices {
-            for neighbor in self.vertices(adjacentTo: vertex) {
-                edges.insert(DirectedEdge(from: vertex, to: neighbor))
-            }
-        }
+    func position(of vertex: Vertex) -> CGPoint {
+        return self.payload[vertex]!.position
+    }
 
-        while let edge = edges.popFirst() {
-            var vertices: [Vertex] = [edge.source, edge.target]
-            var last = edge
-
-            while true {
-                let candidates = Set(edges.filter({ $0.source == last.target && $0.target != last.source }))
-                let best = candidates.min(by: { self.angle(from: last.source, by: last.target, to: $0.target).counterclockwise })!
-
-                last = best
-                edges.remove(best)
-
-                if vertices.contains(best.target) {
-                    faces.append(Face(vertices: vertices.reversed()))
-                    break
-                } else {
-                    vertices.append(best.target)
-                }
-            }
-        }
-
-        // outer face has negative area!
-        let index = faces.partition(by: { self.polygon(on: $0.vertices).area >= 0 })
-        precondition(index == 1)
-
-        return (inner: Array(faces.dropFirst()), outer: faces[0])
+    mutating func move(_ vertex: Vertex, to position: CGPoint) {
+        self.payload[vertex]!.position = position
     }
 }

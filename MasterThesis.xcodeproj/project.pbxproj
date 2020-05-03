@@ -29,6 +29,7 @@
 		CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A692415A1A400B5F5BB /* GraphView.swift */; };
 		CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
+		CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
@@ -50,7 +51,7 @@
 		CBA25E46243289520019C766 /* Pipeline+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E45243289520019C766 /* Pipeline+Weight.swift */; };
 		CBA25E482432920C0019C766 /* ClusterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E472432920C0019C766 /* ClusterName.swift */; };
 		CBA25E4A243292120019C766 /* ClusterWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E49243292120019C766 /* ClusterWeight.swift */; };
-		CBA25E4C2433DABC0019C766 /* GraphProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */; };
+		CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */; };
 		CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
@@ -67,7 +68,6 @@
 		CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
 		CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */; };
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
-		CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493923E1E1BC00986877 /* FaceTests.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */; };
 		CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */; };
@@ -121,6 +121,7 @@
 		CB131A672415991200B5F5BB /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		CB131A692415A1A400B5F5BB /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
+		CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeSet.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
@@ -137,7 +138,7 @@
 		CBA25E45243289520019C766 /* Pipeline+Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Weight.swift"; sourceTree = "<group>"; };
 		CBA25E472432920C0019C766 /* ClusterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterName.swift; sourceTree = "<group>"; };
 		CBA25E49243292120019C766 /* ClusterWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterWeight.swift; sourceTree = "<group>"; };
-		CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProtocol.swift; sourceTree = "<group>"; };
+		CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineGraph.swift; sourceTree = "<group>"; };
 		CBAC5972242F788200D067A0 /* StringInterpolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolations.swift; sourceTree = "<group>"; };
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,7 +156,6 @@
 		CBE405AD2427D99D009E3922 /* GraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerator.swift; sourceTree = "<group>"; };
 		CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
-		CBEE493923E1E1BC00986877 /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaiveTransformer.swift; sourceTree = "<group>"; };
 		CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicator.swift; sourceTree = "<group>"; };
 		CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteForceComputer.swift; sourceTree = "<group>"; };
@@ -234,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				CB456EA7241AB7B300008E87 /* OrderedSet.swift */,
+				CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */,
 			);
 			path = DataStructures;
 			sourceTree = "<group>";
@@ -323,7 +324,6 @@
 			children = (
 				CBA25E2E243156F80019C766 /* Imports.swift */,
 				CBDA155E23CB88850070847D /* MasterThesisTests.swift */,
-				CBEE493923E1E1BC00986877 /* FaceTests.swift */,
 				CB5A22DF23F352B800001A2F /* PolygonTests.swift */,
 				CBDA156023CB88850070847D /* Info.plist */,
 			);
@@ -338,7 +338,7 @@
 				CBEE493723E1E18900986877 /* Face.swift */,
 				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
 				CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */,
-				CBA25E4B2433DABC0019C766 /* GraphProtocol.swift */,
+				CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
 				CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */,
 			);
@@ -580,8 +580,9 @@
 				CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */,
 				CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */,
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
+				CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */,
 				CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */,
-				CBA25E4C2433DABC0019C766 /* GraphProtocol.swift in Sources */,
+				CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
@@ -646,7 +647,6 @@
 				CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */,
 				CBA25E28243156260019C766 /* Polygon.swift in Sources */,
 				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
-				CBEE493A23E1E1BC00986877 /* FaceTests.swift in Sources */,
 				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

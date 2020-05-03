@@ -17,6 +17,42 @@ struct NaiveTransformer: Transformer {
 }
 
 private extension VertexWeightedGraph {
+    // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
+    // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
+    // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
+    /// Traps if not simple, connected, or planar.
+    var faces: (inner: [Face<Vertex>], outer: Face<Vertex>) {
+        var faces: [Face<Vertex>] = []
+        var markedEdges: DirectedEdgeSet<Vertex> = []
+
+        for (u, v) in self.edges where !markedEdges.contains((u, v)) {
+            assert(u != v)
+
+            var boundingVertices = [u, v]
+            markedEdges.insert((u, v))
+
+            while boundingVertices.first != boundingVertices.last {
+                let neighbors = self.vertices(adjacentTo: boundingVertices[boundingVertices.count - 1])
+                let incoming = neighbors.firstIndex(of: boundingVertices[boundingVertices.count - 2])!
+                let outgoing = (incoming == 0 ? neighbors.count : incoming) - 1
+
+                markedEdges.insert((boundingVertices.last!, neighbors[outgoing]))
+                boundingVertices.append(neighbors[outgoing])
+            }
+
+            faces.append(.init(vertices: boundingVertices.dropLast()))
+        }
+
+        // https://stackoverflow.com/a/22017359/796103
+        guard self.vertices.count - markedEdges.count / 2 + faces.count == 2 else { fatalError() }
+
+        let index = faces.partition(by: { self.polygon(on: $0.vertices).area >= 0 })
+        precondition(index == 1)
+        return (inner: Array(faces.dropFirst()), outer: faces[0])
+    }
+}
+
+private extension VertexWeightedGraph {
     func subdividedDual() -> FaceWeightedGraph {
         let (faces, outerFace) = self.faces
 
@@ -40,7 +76,7 @@ private extension VertexWeightedGraph {
         }
 
         // for `{u,v}` in G.edges
-        for (u, v) in self.edges {
+        for (u, v) in self.edges where u.rawValue < v.rawValue {
             let midpoint = CGPoint.centroid(of: [u, v].map(self.position(of:)))
             let adjacentFaces = adjacentFaces[UndirectedEdge(first: u, second: v)]!
 

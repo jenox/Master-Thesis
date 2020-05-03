@@ -16,7 +16,7 @@ extension VertexWeightedGraph {
     }
 
     mutating func flipRandomEdge<T>(using generator: inout T) throws where T: RandomNumberGenerator {
-        let flippableEdges = self.edges.filter({ self.incidentTriangleVertices(between: $0, and: $1) != nil })
+        let flippableEdges = self.edges.filter({ $0.rawValue < $1.rawValue && self.incidentTriangleVertices(between: $0, and: $1) != nil })
 
         guard let (u, v) = flippableEdges.randomElement(using: &generator) else { throw UnsupportedOperationError() }
 

@@ -62,7 +62,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
         context.setLineWidth(1 / scale)
 
         // Edges
-        for (u, v) in self.graph.edges {
+        for (u, v) in self.graph.edges where u.rawValue < v.rawValue {
             context.stroke(from: self.graph.position(of: u), to: self.graph.position(of: v), color: .black)
         }
 

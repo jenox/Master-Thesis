@@ -8,23 +8,17 @@
 
 import Foundation
 
-struct OrderedSet<Element>: Collection, ExpressibleByArrayLiteral {
-    private var storage = NSMutableOrderedSet()
+public struct OrderedSet<Element> where Element: Hashable {
+    private var storage: NSMutableOrderedSet
 
-    init() {}
-
-    init(arrayLiteral elements: Element...) {
-        self.storage.addObjects(from: elements)
+    public init() {
+        self.storage = NSMutableOrderedSet()
     }
 
-    init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Sequence.Element == Element {
+    public init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Sequence.Element == Element {
+        self.storage = NSMutableOrderedSet()
         self.storage.addObjects(from: Array(sequence))
     }
-
-    var startIndex: Int { return 0 }
-    var endIndex: Int { return self.storage.count }
-    func index(after index: Int) -> Int { return index + 1 }
-    subscript(position: Int) -> Element { return self.storage[position] as! Element }
 
     mutating func insert(_ element: Element) {
         self.ensureValueSemantics()
@@ -32,13 +26,21 @@ struct OrderedSet<Element>: Collection, ExpressibleByArrayLiteral {
         self.storage.add(element)
     }
 
-    mutating func popFirst() -> Element? {
+    mutating func insert(_ element: Element, at index: Index) {
+        self.storage.insert(element, at: index)
+    }
+
+    func contains(_ element: Element) -> Bool {
+        return self.storage.contains(element)
+    }
+
+    mutating func popLast() -> Element? {
+        guard let index = self.indices.last else { return nil }
+
         self.ensureValueSemantics()
 
-        guard !self.isEmpty else { return nil }
-
-        let element = self.storage[0] as! Element
-        self.storage.removeObject(at: 0)
+        let element = self.storage[index] as! Element
+        self.storage.removeObject(at: index)
         return element
     }
 
@@ -52,5 +54,52 @@ struct OrderedSet<Element>: Collection, ExpressibleByArrayLiteral {
         if !isKnownUniquelyReferenced(&self.storage) {
             self.storage = NSMutableOrderedSet(orderedSet: self.storage)
         }
+    }
+}
+
+extension OrderedSet: RandomAccessCollection {
+    public var startIndex: Int {
+        return 0
+    }
+
+    public var endIndex: Int {
+        return self.storage.count
+    }
+
+    public func index(after index: Int) -> Int {
+        return index + 1
+    }
+
+    public func index(before index: Int) -> Int {
+        return index - 1
+    }
+
+    public func index(_ index: Int, offsetBy distance: Int) -> Int {
+        return index + distance
+    }
+
+    public func distance(from start: Int, to end: Int) -> Int {
+        return end - start
+    }
+
+    public subscript(position: Int) -> Element {
+        return self.storage[position] as! Element
+    }
+
+    public func firstIndex(of element: Element) -> Int? {
+        let index = self.storage.index(of: element)
+
+        return index != NSNotFound ? index : nil
+    }
+
+    public func lastIndex(of element: Element) -> Int? {
+        return self.firstIndex(of: element)
+    }
+}
+
+extension OrderedSet: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: Element...) {
+        self.storage = NSMutableOrderedSet()
+        self.storage.addObjects(from: elements)
     }
 }
