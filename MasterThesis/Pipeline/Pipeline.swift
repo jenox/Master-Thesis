@@ -169,12 +169,12 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             return .faceWeighted(transformed)
         })
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            self.scheduleMutationOperation(named: "move", { graph in
-                graph.displace(graph.vertices[0], by: CGVector(dx: 0, dy: 25))
-                graph.displace(graph.vertices[10], by: CGVector(dx: -15, dy: 70))
-            })
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+//            self.scheduleMutationOperation(named: "move", { graph in
+//                graph.displace(graph.vertices[0], by: CGVector(dx: 0, dy: 25))
+//                graph.displace(graph.vertices[10], by: CGVector(dx: -15, dy: 70))
+//            })
+//        })
     }
 
     func changeRandomCountryWeight() {
@@ -198,11 +198,18 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
 
-            try graph.insertRandomVertexInside(name: name, weight: weight)
+            try graph.insertFaceForRandomVertexInside(named: name, weight: weight, using: &self.randomNumberGenerator)
         })
     }
 
     func insertRandomVertexOutside() {
+        self.scheduleMutationOperation(named: "insert vertex inside", { graph in
+            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let name = possibleNames.first(where: { !graph.faces.contains($0) })!
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+
+            try graph.insertFaceForRandomVertexOutside(named: name, weight: weight, using: &self.randomNumberGenerator)
+        })
     }
 
     func removeRandomInternalVertex() {

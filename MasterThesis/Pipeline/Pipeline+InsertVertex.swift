@@ -11,13 +11,35 @@ import CoreGraphics
 import Geometry
 
 extension PolygonalDual {
-    mutating func insertRandomVertexInside(name: ClusterName, weight: ClusterWeight) throws {
-        guard let vertex = self.possibleInsertionPoints().inside.first else { throw UnsupportedOperationError() }
-        print("inserting \(name) at \(vertex)")
+    mutating func insertFaceForRandomVertexInside<T>(
+        named name: ClusterName,
+        weight: ClusterWeight,
+        using generator: inout T
+    ) throws where T: RandomNumberGenerator {
+        guard let vertex = self.possibleInsertionPoints().inside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
 
+        try! self.insertFace(named: name, at: vertex, weight: weight, using: &generator)
+    }
+
+    mutating func insertFaceForRandomVertexOutside<T>(
+        named name: ClusterName,
+        weight: ClusterWeight,
+        using generator: inout T
+    ) throws where T: RandomNumberGenerator {
+        guard let vertex = self.possibleInsertionPoints().outside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+
+        try! self.insertFace(named: name, at: vertex, weight: weight, using: &generator)
+    }
+
+    mutating func insertFace<T>(
+        named name: ClusterName,
+        at vertex: Vertex,
+        weight: ClusterWeight,
+        using generator: inout T
+    ) throws where T: RandomNumberGenerator {
         var faces = self.faces(incidentTo: vertex)
-        assert(faces.count == 3)
-        assert(faces.allSatisfy({ $0.vertices.first == vertex }))
+        guard faces.count == 3 else { throw UnsupportedOperationError() }
+        guard faces.allSatisfy({ $0.vertices.first == vertex }) else { throw UnsupportedOperationError() }
         var neighbors = faces.map({ $0.vertices[1] })
 
         // Ensure the closest vertices are subdivision vertices
@@ -25,7 +47,6 @@ extension PolygonalDual {
             neighbors[index] = self.subdivideEdge(between: vertex, and: neighbor)
             faces[index] = faces[index].inserting(neighbors[index], at: 1)
         }
-        print(neighbors)
 
         var boundary: [Vertex] = []
 
@@ -35,15 +56,11 @@ extension PolygonalDual {
             let polygon = self.polygon(on: face.vertices)
             let angle = .degrees(360) - polygon.normalAndAngle(at: 0).angle
 
-            print(face, x, y)
             if angle > .degrees(180) {
-                print(">180")
                 boundary.append(self.insertVertex(at: self.position(of: vertex)))
             } else if polygon.removingPoint(at: 0).isSimple {
-                print("ok")
                 // no-op
             } else {
-                print("search")
                 let midpoint = self.segment(from: x, to: y).midpoint
                 let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
                 let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
@@ -65,12 +82,9 @@ extension PolygonalDual {
         for (face, payload) in self.facePayloads {
             if let index = payload.boundary.firstIndex(of: vertex) {
                 let (before, after) = MasterThesis.Face(vertices: payload.boundary).neighbors(of: vertex)
-                print(face, payload.boundary, before, after)
                 if let subdivision = newface.vertices.first(where: { newface.neighbors(of: $0) == (after, before) }) {
-                    print("replaced")
                     self.facePayloads[face]!.boundary[index] = subdivision
                 } else {
-                    print("removed")
                     self.facePayloads[face]!.boundary.remove(at: index)
                 }
             }
