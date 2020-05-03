@@ -191,7 +191,19 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         }, completion: completion)
     }
 
-    func flipRandomAdjacency() {
+    func insertRandomVertexInside() {
+    }
+
+    func insertRandomVertexOutside() {
+    }
+
+    func removeRandomInternalVertex() {
+    }
+
+    func removeRandomExternalVertex() {
+    }
+
+    func flipRandomInternalEdge() {
         self.scheduleMutationOperation(named: "random edge flip", { graph in
             switch graph {
             case .vertexWeighted(var graph):
@@ -215,6 +227,12 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
                 return .faceWeighted(graph)
             }
         }, completion: completion)
+    }
+
+    func insertRandomEdgeOutside() {
+    }
+
+    func removeRandomEdgeOutside() {
     }
 }
 
