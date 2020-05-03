@@ -62,14 +62,31 @@ struct ConcreteForceComputer: ForceComputer {
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
 
+        var verticesToCheck: [PolygonalDual.Vertex: OrderedSet<PolygonalDual.Vertex>] = [:]
+        var edgesToCheck: [PolygonalDual.Vertex: DirectedEdgeSet<PolygonalDual.Vertex>] = [:]
+        for face in graph.allFaces() {
+            for vertex in face.vertices {
+                for (u,v) in face.vertices.adjacentPairs(wraparound: true) where vertex != u && vertex != v {
+                    edgesToCheck[vertex, default: []].insert((u,v))
+                }
+                for v in face.vertices where v != vertex {
+                    verticesToCheck[vertex, default: []].insert(v)
+                }
+            }
+        }
+
         // Vertex-vertex repulsion
         if self.force1Strength > 0 {
-            for (u, v) in graph.vertices.strictlyTriangularPairs() {
-                let uv = graph.vector(from: u, to: v)
-                let d = uv.length
+            for (u, vs) in verticesToCheck {
+                for v in vs {
+                    precondition(u != v)
 
-                forces[u]! -= self.force1Strength / pow(d, 2) * uv.normalized
-                forces[v]! += self.force1Strength / pow(d, 2) * uv.normalized
+                    let uv = graph.vector(from: u, to: v)
+                    let d = uv.length
+
+                    forces[u]! -= self.force1Strength / pow(d, 2) * uv.normalized
+                    forces[v]! += self.force1Strength / pow(d, 2) * uv.normalized
+                }
             }
         }
 
@@ -86,14 +103,18 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Vertex-edge repulsion
         if self.force3Strength > 0 {
-            for (u, (v, w)) in graph.vertices.cartesianProduct(with: graph.edges) where v < w && u != v && u != w {
-                let segment = graph.segment(from: v, to: w)
-                let p = segment.closestPoint(to: graph.position(of: u))
+            for (u, edges) in edgesToCheck {
+                for (v,w) in edges {
+                    precondition(u != v && u != w)
 
-                let up = graph.vector(from: u, to: p)
-                let d = up.length
+                    let segment = graph.segment(from: v, to: w)
+                    let p = segment.closestPoint(to: graph.position(of: u))
 
-                forces[u]! -= self.force3Strength / pow(d, 2) * up.normalized
+                    let up = graph.vector(from: u, to: p)
+                    let d = up.length
+
+                    forces[u]! -= self.force3Strength / pow(d, 2) * up.normalized
+                }
             }
         }
 

@@ -88,39 +88,31 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     // MARK: - Abstract Operations
 
-    private typealias Operation = () throws -> Void
     private typealias ReplacementOperation = () throws -> EitherGraph?
     private typealias MutationOperation = (EitherGraph) throws -> EitherGraph
     typealias CompletionHandler = (Result<Void, Error>) -> Void
 
     private func scheduleReplacementOperation(named name: String, _ operation: @escaping ReplacementOperation, completion: CompletionHandler? = nil) {
         self.scheduleOperation(named: name, {
-            let graph = try operation()
-            DispatchQueue.main.sync(execute: {
-                self.graph = graph
-            })
+            return try operation()
         }, completion: completion)
     }
 
     private func scheduleMutationOperation(named name: String, _ operation: @escaping MutationOperation, completion: CompletionHandler? = nil) {
         self.scheduleOperation(named: name, {
-            guard var graph = self.graph else { throw UnsupportedOperationError() }
-            graph = try operation(graph)
-            DispatchQueue.main.sync(execute: {
-                self.graph = graph
-            })
+            guard let graph = self.graph else { throw UnsupportedOperationError() }
+            return try operation(graph)
         }, completion: completion)
     }
 
-    private func scheduleOperation(named name: String, _ operation: @escaping Operation, completion: CompletionHandler? = nil) {
+    private func scheduleOperation(named name: String, _ operation: @escaping ReplacementOperation, completion: CompletionHandler? = nil) {
         GraphModificationQueue.schedule({
-            let result: Result<Void, Error>
-            defer { DispatchQueue.main.async(execute: { completion?(result) }) }
+            let result: Result<EitherGraph?, Error>
+            defer { DispatchQueue.main.async(execute: { completion?(result.map({ _ in () })) }) }
 
             let before = CFAbsoluteTimeGetCurrent()
             do {
-                try operation()
-                result = .success(())
+                result = .success(try operation())
             } catch let error {
                 result = .failure(error)
             }
@@ -129,6 +121,12 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let verb = result.isSuccess ? "Performed" : "Failed"
             let duration = "\(String(format: "%.3f", 1e3 * (after - before)))ms"
             print("\(verb) operation “\(name)” in \(duration)")
+
+            if case .success(let graph) = result {
+                DispatchQueue.main.sync(execute: {
+                    self.graph = graph
+                })
+            }
         })
     }
 
