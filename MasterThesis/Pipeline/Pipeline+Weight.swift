@@ -16,10 +16,11 @@ extension VertexWeightedGraph {
     }
 }
 
-extension FaceWeightedGraph {
+// FIXME:
+extension PolygonalDual {
     mutating func adjustWeight(of face: Face, to value: Weight) throws {
-        guard self.faces.contains(face) else { throw UnsupportedOperationError() }
-
-        self.setWeight(of: face, to: value)
+//        guard self.faces.contains(face) else { throw UnsupportedOperationError() }
+//
+//        self.setWeight(of: face, to: value)
     }
 }

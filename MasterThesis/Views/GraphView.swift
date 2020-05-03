@@ -87,7 +87,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
 }
 
 private struct FaceWeightedGraphRenderer: CanvasRenderer {
-    var graph: FaceWeightedGraph
+    var graph: PolygonalDual
     var forceComputer: ForceComputer
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {

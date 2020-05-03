@@ -10,5 +10,5 @@ import CoreGraphics
 
 protocol ForceComputer {
     func forces(in graph: VertexWeightedGraph) throws -> [VertexWeightedGraph.Vertex: CGVector]
-    func forces(in graph: FaceWeightedGraph) throws -> [FaceWeightedGraph.Vertex: CGVector]
+    func forces(in graph: PolygonalDual) throws -> [PolygonalDual.Vertex: CGVector]
 }

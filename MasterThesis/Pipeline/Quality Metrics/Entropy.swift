@@ -10,7 +10,7 @@ import CoreGraphics
 import Geometry
 
 struct EntropyOfAngles: QualityEvaluator {
-    func quality(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph) throws -> QualityValue {
+    func quality(of face: PolygonalDual.Face, in graph: PolygonalDual) throws -> QualityValue {
         let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
         let angles = polygon.points.indices.map(polygon.normalAndAngle(at:)).map({ Angle(turns: 1) - $0.angle })
 
@@ -19,7 +19,7 @@ struct EntropyOfAngles: QualityEvaluator {
 }
 
 struct EntropyOfDistancesFromCentroid: QualityEvaluator {
-    func quality(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph) throws -> QualityValue {
+    func quality(of face: PolygonalDual.Face, in graph: PolygonalDual) throws -> QualityValue {
         let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
         let centroid = CGPoint.centroid(of: polygon.points)
         let distances = polygon.points.map(centroid.distance(to:))

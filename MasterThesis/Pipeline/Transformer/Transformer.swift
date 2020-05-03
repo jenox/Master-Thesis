@@ -9,5 +9,5 @@
 import Swift
 
 protocol Transformer {
-    func transform(_ graph: VertexWeightedGraph) throws -> FaceWeightedGraph
+    func transform(_ graph: VertexWeightedGraph) throws -> PolygonalDual
 }

@@ -10,29 +10,13 @@ import Foundation
 import CoreGraphics
 import Geometry
 
-struct FaceWeightedGraphVertex: Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
-    private static var nextID: Int = 0
-    private let id: Int
 
-    init(integerLiteral value: Int) {
-        self.id = value
-    }
-
-    init() {
-        self.id = Self.nextID
-        Self.nextID += 1
-    }
-
-    var description: String {
-        return "\(self.id)"
-    }
-}
 
 // "Dual" graph: straight line plane, face-weighted
-struct FaceWeightedGraph: StraightLineGraph {
+struct _FaceWeightedGraph: StraightLineGraph {
     init() {}
 
-    typealias Vertex = FaceWeightedGraphVertex
+    typealias Vertex = UniquelyIdentifiedVertex
     typealias Face = ClusterName
     typealias Weight = ClusterWeight
 

@@ -30,6 +30,9 @@
 		CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */; };
+		CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
+		CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
+		CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
@@ -66,7 +69,7 @@
 		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
 		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
-		CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */; };
+		CBE6F138241A8D8A00BCC6E2 /* _FaceWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE6F137241A8D8A00BCC6E2 /* _FaceWeightedGraph.swift */; };
 		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
 		CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */; };
@@ -122,6 +125,9 @@
 		CB131A692415A1A400B5F5BB /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeSet.swift; sourceTree = "<group>"; };
+		CB2D53DA245F187700317BD6 /* PolygonalDual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalDual.swift; sourceTree = "<group>"; };
+		CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeIterator.swift; sourceTree = "<group>"; };
+		CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniquelyIdentifiedVertex.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
@@ -154,7 +160,7 @@
 		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
 		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBE405AD2427D99D009E3922 /* GraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerator.swift; sourceTree = "<group>"; };
-		CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceWeightedGraph.swift; sourceTree = "<group>"; };
+		CBE6F137241A8D8A00BCC6E2 /* _FaceWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _FaceWeightedGraph.swift; sourceTree = "<group>"; };
 		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaiveTransformer.swift; sourceTree = "<group>"; };
 		CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicator.swift; sourceTree = "<group>"; };
@@ -340,7 +346,10 @@
 				CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */,
 				CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */,
 				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
-				CBE6F137241A8D8A00BCC6E2 /* FaceWeightedGraph.swift */,
+				CBE6F137241A8D8A00BCC6E2 /* _FaceWeightedGraph.swift */,
+				CB2D53DA245F187700317BD6 /* PolygonalDual.swift */,
+				CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */,
+				CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -590,6 +599,7 @@
 				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
 				CBA25E482432920C0019C766 /* ClusterName.swift in Sources */,
 				CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */,
+				CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */,
 				CBA25E1924314DE20019C766 /* Result.swift in Sources */,
 				CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
@@ -602,7 +612,7 @@
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */,
 				CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */,
-				CBE6F138241A8D8A00BCC6E2 /* FaceWeightedGraph.swift in Sources */,
+				CBE6F138241A8D8A00BCC6E2 /* _FaceWeightedGraph.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */,
 				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
 				CBA25E172431344E0019C766 /* Imports.swift in Sources */,
@@ -612,12 +622,14 @@
 				CBA25E2224314ECF0019C766 /* CGPoint.swift in Sources */,
 				CBA25E1E24314E360019C766 /* Segment.swift in Sources */,
 				CBEE493823E1E18900986877 /* Face.swift in Sources */,
+				CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */,
 				CB131A66241598FE00B5F5BB /* CustomStringConvertibles.swift in Sources */,
 				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
 				CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */,
 				CB131A682415991200B5F5BB /* CanvasView.swift in Sources */,
 				CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */,
 				CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */,
+				CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */,
 				CBA25E2624314EE10019C766 /* CGVector.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */,

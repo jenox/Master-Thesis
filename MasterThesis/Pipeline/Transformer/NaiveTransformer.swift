@@ -11,19 +11,19 @@ import CoreGraphics
 import Geometry
 
 struct NaiveTransformer: Transformer {
-    func transform(_ graph: VertexWeightedGraph) throws -> FaceWeightedGraph {
+    func transform(_ graph: VertexWeightedGraph) throws -> PolygonalDual {
         return graph.subdividedDual()
     }
 }
 
 private extension VertexWeightedGraph {
-    func subdividedDual() -> FaceWeightedGraph {
+    func subdividedDual() -> PolygonalDual {
         let (faces, outerFace) = self.faces
 
-        var graph = FaceWeightedGraph()
+        var graph = PolygonalDual()
 
-        var faceVertices: [Face<VertexWeightedGraph.Vertex>: FaceWeightedGraph.Vertex] = [:]
-        var outerEdgeVertices: [UndirectedEdge: FaceWeightedGraph.Vertex] = [:]
+        var faceVertices: [Face<VertexWeightedGraph.Vertex>: PolygonalDual.Vertex] = [:]
+        var outerEdgeVertices: [UndirectedEdge: PolygonalDual.Vertex] = [:]
         var adjacentFaces: [UndirectedEdge: [Face<VertexWeightedGraph.Vertex>]] = [:]
 
         // for `f` in G.innerFaces
@@ -94,7 +94,7 @@ private extension VertexWeightedGraph {
         // Determine and register faces on computed dual graph
         for vertex in self.vertices {
             let endpoints = self.vertices(adjacentTo: vertex)
-            var vertices: [FaceWeightedGraph.Vertex] = []
+            var vertices: [PolygonalDual.Vertex] = []
 
             for (x, y) in endpoints.adjacentPairs(wraparound: true) {
                 let face = Face(vertices: [vertex, x, y])

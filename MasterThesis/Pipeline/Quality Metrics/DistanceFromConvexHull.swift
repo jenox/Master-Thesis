@@ -11,7 +11,7 @@ import Collections
 import Geometry
 
 struct DistanceFromConvexHull: QualityEvaluator {
-    func quality(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph) throws -> QualityValue {
+    func quality(of face: PolygonalDual.Face, in graph: PolygonalDual) throws -> QualityValue {
         let polygon = graph.polygon(for: face)
         let hull = Polygon(points: calculateConvexHull(fromPoints: polygon.points))
 

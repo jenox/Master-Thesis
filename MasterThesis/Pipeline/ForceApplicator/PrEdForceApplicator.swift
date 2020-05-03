@@ -31,6 +31,7 @@ class PrEdForceApplicator: ForceApplicator {
             upperBounds[vertex] = UpperBounds(numberOfArcs: 8)
         }
 
+        // FIXME: performance. now looking at every edge twice. can we just check every vertex with its incident faces?
         for (v, (a, b)) in graph.vertices.cartesianProduct(with: graph.edges) where v != a && v != b {
             if let projected = graph.position(of: v).projected(onto: graph.segment(from: a, to: b)) {
                 let vector = graph.vector(from: v, to: projected)

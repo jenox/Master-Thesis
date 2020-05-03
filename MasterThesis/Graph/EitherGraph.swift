@@ -10,11 +10,11 @@ import Swift
 
 enum EitherGraph {
     case vertexWeighted(VertexWeightedGraph)
-    case faceWeighted(FaceWeightedGraph)
+    case faceWeighted(PolygonalDual)
 }
 
 extension EitherGraph {
-    var faceWeightedGraph: FaceWeightedGraph? {
+    var faceWeightedGraph: PolygonalDual? {
         switch self {
         case .faceWeighted(let graph): return graph
         case .vertexWeighted: return nil

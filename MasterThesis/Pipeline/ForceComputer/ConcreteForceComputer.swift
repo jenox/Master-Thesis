@@ -56,7 +56,7 @@ struct ConcreteForceComputer: ForceComputer {
         return forces
     }
 
-    func forces(in graph: FaceWeightedGraph) -> [FaceWeightedGraph.Vertex: CGVector] {
+    func forces(in graph: PolygonalDual) -> [PolygonalDual.Vertex: CGVector] {
         var forces = Dictionary(uniqueKeys: graph.vertices, initialValue: CGVector.zero)
 
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue

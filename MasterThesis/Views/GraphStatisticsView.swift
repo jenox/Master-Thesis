@@ -9,7 +9,9 @@
 import UIKit
 
 class GraphStatisticsView: UIView {
-    var graph: FaceWeightedGraph? {
+    typealias Graph = PolygonalDual
+
+    var graph: Graph? {
         didSet { self.statisticsView.rows = self.graph?.faces.map({ (self.graph, $0) }) ?? [] }
     }
 
@@ -17,9 +19,9 @@ class GraphStatisticsView: UIView {
         didSet { self.statisticsView.columns[3...] = ArraySlice(self.qualityMetrics.map(Self.column(for:))) }
     }
 
-    private let statisticsView: StatisticsView<(FaceWeightedGraph?, FaceWeightedGraph.Face)>
+    private let statisticsView: StatisticsView<(Graph?, Graph.Face)>
 
-    init(graph: FaceWeightedGraph?, qualityMetrics: [(String, QualityEvaluator)]) {
+    init(graph: Graph?, qualityMetrics: [(String, QualityEvaluator)]) {
         self.graph = graph
         self.qualityMetrics = qualityMetrics
 
@@ -41,11 +43,11 @@ class GraphStatisticsView: UIView {
         fatalError()
     }
 
-    private class func column(named name: String, value: @escaping (FaceWeightedGraph?, FaceWeightedGraph.Face) throws -> String) -> Column<(FaceWeightedGraph?, FaceWeightedGraph.Face)> {
+    private class func column(named name: String, value: @escaping (Graph?, Graph.Face) throws -> String) -> Column<(Graph?, Graph.Face)> {
         return .init(title: name, value: { try value($0.0, $0.1) }, backgroundColor: \.1.color)
     }
 
-    private class func column(for qualityMetric: (name: String, evaluator: QualityEvaluator)) -> Column<(FaceWeightedGraph?, FaceWeightedGraph.Face)> {
+    private class func column(for qualityMetric: (name: String, evaluator: QualityEvaluator)) -> Column<(Graph?, Graph.Face)> {
         return .init(title: qualityMetric.name, value: { graph, face in
             switch try qualityMetric.evaluator.quality(of: face, in: graph!) {
             case .integer(let value): return self.format(integer: value)
@@ -55,17 +57,17 @@ class GraphStatisticsView: UIView {
         }, backgroundColor: \.1.color)
     }
 
-    private class func name(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
+    private class func name(of face: Graph.Face, in graph: Graph?) -> String {
         return face.rawValue
     }
 
-    private class func weight(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
+    private class func weight(of face: Graph.Face, in graph: Graph?) -> String {
         guard let graph = graph else { return "" }
 
         return Self.format(double: graph.weight(of: face).rawValue)
     }
 
-    private class func normalizedArea(of face: FaceWeightedGraph.Face, in graph: FaceWeightedGraph?) -> String {
+    private class func normalizedArea(of face: Graph.Face, in graph: Graph?) -> String {
         guard let graph = graph else { return "" }
 
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
