@@ -91,6 +91,8 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
     var forceComputer: ForceComputer
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
+        self.graph.ensureIntegrity()
+
         let context = UIGraphicsGetCurrentContext()!
         context.setLineWidth(1 / scale)
 

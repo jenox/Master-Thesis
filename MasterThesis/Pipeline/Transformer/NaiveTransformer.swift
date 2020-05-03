@@ -18,7 +18,7 @@ struct NaiveTransformer: Transformer {
 
 private extension VertexWeightedGraph {
     func subdividedDual() -> PolygonalDual {
-        let (faces, outerFace) = self.faces
+        let (faces, outerFace) = self.internalFacesAndOuterFace()
 
         var graph = PolygonalDual()
 
@@ -116,6 +116,8 @@ private extension VertexWeightedGraph {
 
             graph.defineFace(named: vertex, boundedBy: vertices, weight: self.weight(of: vertex))
         }
+
+        graph.ensureIntegrity()
 
         return graph
     }

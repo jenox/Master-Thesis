@@ -53,6 +53,74 @@ extension PolygonalDual {
 }
 
 extension PolygonalDual {
+    func ensureIntegrity() {
+        switch validateIntegrity() {
+        case .success:
+            break
+        case .failure(let error):
+            fatalError("Integrity violation: \(error)")
+        }
+    }
+
+    func validateIntegrity() -> Result<Void, PolygonalDualIntergrityViolation> {
+        guard self.vertices.count >= 3 else { return .failure(.tooFewVertices) }
+
+        for vertex in self.vertices {
+            guard 2...3 ~= self.vertexPayloads[vertex]!.neighbors.count else { return .failure(.invalidVertexDegree) }
+        }
+
+        // symmetric adjacencies
+        for vertex in self.vertices {
+            for neighbor in self.vertexPayloads[vertex]!.neighbors {
+                guard self.vertexPayloads[neighbor]!.neighbors.contains(vertex) else { return .failure(.asymmetricAdjacencies) }
+            }
+        }
+
+        let boundaries = self.facePayloads.map({ $0.value.boundary })
+        let (internalFaces, outerFace) = self.internalFacesAndOuterFace()
+
+        guard internalFaces.count == boundaries.count else { return .failure(.corruptFaceRepresentation) }
+
+        // edges on cached boundaries
+        for boundary in boundaries {
+            for (u,v) in boundary.adjacentPairs(wraparound: true) {
+                guard self.vertexPayloads[u]!.neighbors.contains(v) else { return .failure(.corruptFaceRepresentation) }
+            }
+
+            guard internalFaces.contains(MasterThesis.Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation) }
+        }
+
+        for face in internalFaces {
+            guard self.polygon(on: face.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces) }
+        }
+        guard self.polygon(on: outerFace.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces) }
+
+        // edge crossings? or is this already covered by simpleness?
+
+        return .success(())
+    }
+}
+
+enum PolygonalDualIntergrityViolation: Error {
+    case tooFewVertices
+    case invalidVertexDegree
+    case asymmetricAdjacencies
+    case corruptFaceRepresentation
+    case nonSimplePolygonalFaces
+    case edgeCrossing
+}
+
+extension Polygon {
+    /// https://stackoverflow.com/questions/4001745/testing-whether-a-polygon-is-simple-or-complex
+    /// http://geomalgorithms.com/a09-_intersect-3.html#simple_Polygon()
+    var isSimple: Bool {
+        let segments = self.points.adjacentPairs(wraparound: true).map(Segment.init)
+
+        return !segments.cartesianPairs().contains(where: { $0.intersects($1) })
+    }
+}
+
+extension PolygonalDual {
     private mutating func insertEdge(from u: Vertex, to v: Vertex) {
         let angle = self.angle(from: u, to: v).counterclockwise
 
@@ -64,10 +132,6 @@ extension PolygonalDual {
 
     func containsEdge(between u: Vertex, and v: Vertex) -> Bool {
         return self.vertexPayloads[u]!.neighbors.contains(v)
-    }
-
-    func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
-        return self.vertexPayloads[vertex]!.neighbors
     }
 
     func vertex(adjacentTo u: Vertex, and v: Vertex) -> Vertex? {
@@ -84,6 +148,10 @@ extension PolygonalDual: StraightLineGraph {
 
     var edges: DirectedEdgeIterator<Vertex> {
         return DirectedEdgeIterator(vertices: self.vertices, neighbors: self.vertexPayloads.mapValues(\.neighbors))
+    }
+
+    func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
+        return self.vertexPayloads[vertex]!.neighbors
     }
 
     func position(of vertex: Vertex) -> CGPoint {

@@ -31,30 +31,40 @@ class PrEdForceApplicator: ForceApplicator {
             upperBounds[vertex] = UpperBounds(numberOfArcs: 8)
         }
 
-        // FIXME: performance. now looking at every edge twice. can we just check every vertex with its incident faces?
-        for (v, (a, b)) in graph.vertices.cartesianProduct(with: graph.edges) where v != a && v != b {
-            if let projected = graph.position(of: v).projected(onto: graph.segment(from: a, to: b)) {
-                let vector = graph.vector(from: v, to: projected)
-
-                // If vector becomes too short, floating point inaccuracies can
-                // still result in edge crossings being created — restrict
-                // involved vertices altogether
-                if vector.length >= 1e-12 {
-                    upperBounds[v]!.addUpperBound(vector.length / 3, inDirectionOf: vector, padding: 2)
-                    upperBounds[a]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
-                    upperBounds[b]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
-                } else {
-                    upperBounds[v]!.addUpperBound(0)
-                    upperBounds[a]!.addUpperBound(0)
-                    upperBounds[b]!.addUpperBound(0)
+        var edgesToCheck: [Graph.Vertex: DirectedEdgeSet<Graph.Vertex>] = [:]
+        for face in graph.allFaces() {
+            for vertex in face.vertices {
+                for (u,v) in face.vertices.adjacentPairs(wraparound: true) where vertex != u && vertex != v {
+                    edgesToCheck[vertex, default: []].insert((u,v))
                 }
-            } else {
-                let distanceToA = graph.distance(from: v, to: a)
-                let distanceToB = graph.distance(from: v, to: b)
+            }
+        }
 
-                upperBounds[a]!.addUpperBound(distanceToA / 3)
-                upperBounds[b]!.addUpperBound(distanceToB / 3)
-                upperBounds[v]!.addUpperBound(min(distanceToA, distanceToB) / 3)
+        for (v, edges) in edgesToCheck {
+            for (a, b) in edges {
+                if let projected = graph.position(of: v).projected(onto: graph.segment(from: a, to: b)) {
+                    let vector = graph.vector(from: v, to: projected)
+
+                    // If vector becomes too short, floating point inaccuracies can
+                    // still result in edge crossings being created — restrict
+                    // involved vertices altogether
+                    if vector.length >= 1e-12 {
+                        upperBounds[v]!.addUpperBound(vector.length / 3, inDirectionOf: vector, padding: 2)
+                        upperBounds[a]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
+                        upperBounds[b]!.addUpperBound(vector.length / 3, inDirectionOf: -vector, padding: 2)
+                    } else {
+                        upperBounds[v]!.addUpperBound(0)
+                        upperBounds[a]!.addUpperBound(0)
+                        upperBounds[b]!.addUpperBound(0)
+                    }
+                } else {
+                    let distanceToA = graph.distance(from: v, to: a)
+                    let distanceToB = graph.distance(from: v, to: b)
+
+                    upperBounds[a]!.addUpperBound(distanceToA / 3)
+                    upperBounds[b]!.addUpperBound(distanceToB / 3)
+                    upperBounds[v]!.addUpperBound(min(distanceToA, distanceToB) / 3)
+                }
             }
         }
 
