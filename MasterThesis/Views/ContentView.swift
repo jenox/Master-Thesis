@@ -24,6 +24,7 @@ struct ContentView: View {
         let binding = Binding(value: self.pipeline.isRunning, enable: self.pipeline.start, disable: self.pipeline.stop)
 
         return VStack(alignment: .leading, content: {
+            Button(action: self.pipeline.undo, label: { Text("Undo") }).disabled(self.pipeline.previousGraph == nil)
             Toggle(isOn: binding, label: { Text("Step") })
             Button(action: self.pipeline.clear, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
             Button(action: self.loadSmall, label: { Text("Load Small") }).disabled(!self.pipeline.graph.isEmpty)

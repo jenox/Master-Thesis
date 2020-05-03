@@ -39,6 +39,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     // MARK: - Running
 
     @Published private(set) var graph: EitherGraph? = nil { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
+    @Published private(set) var previousGraph: EitherGraph? = nil { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     @Published private(set) var isRunning: Bool = false { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     private var hasScheduledNextSteppingBlock: Bool = false { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
 
@@ -127,6 +128,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
             if case .success(let graph) = result {
                 DispatchQueue.main.sync(execute: {
+                    self.previousGraph = self.graph
                     self.graph = graph
                 })
             }
@@ -135,6 +137,12 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
 
     // MARK: - Concrete Operations
+
+    func undo() {
+        self.scheduleReplacementOperation(named: "undo", {
+            return self.previousGraph
+        })
+    }
 
     func clear() {
         self.scheduleReplacementOperation(named: "clear", {
@@ -159,6 +167,13 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             guard case .vertexWeighted(let untransformed) = self.graph else { throw UnsupportedOperationError() }
             let transformed = try self.transformer.transform(untransformed)
             return .faceWeighted(transformed)
+        })
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            self.scheduleMutationOperation(named: "move", { graph in
+                graph.displace(graph.vertices[0], by: CGVector(dx: 0, dy: 25))
+                graph.displace(graph.vertices[10], by: CGVector(dx: -15, dy: 70))
+            })
         })
     }
 
