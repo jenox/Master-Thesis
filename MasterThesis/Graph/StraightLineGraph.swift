@@ -42,16 +42,6 @@ extension StraightLineGraph {
         return self.vector(from: u, to: v).length
     }
 
-    func angle(from u: Vertex, to v: Vertex) -> Angle {
-        let vector = self.vector(from: u, to: v)
-
-        return Angle.atan2(vector.dy, vector.dx)
-    }
-
-    func angle(from u: Vertex, by v: Vertex, to w: Vertex) -> Angle {
-        return Angle(from: self.position(of: u), by: self.position(of: v), to: self.position(of: w))
-    }
-
     func polygon(on vertices: [Vertex]) -> Polygon {
         return Polygon(points: vertices.map(self.position(of:)))
     }

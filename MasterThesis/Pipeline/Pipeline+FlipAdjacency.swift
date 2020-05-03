@@ -42,9 +42,11 @@ extension VertexWeightedGraph {
         precondition((1...).contains(sharedNeighbors.count))
 
         // We must have a triangle on either side to be able to flip an edge.
-        let mapped = sharedNeighbors.map({ ($0, self.angle(from: v, by: u, to: $0)) })
-        guard let left = mapped.filter({ $0.1 > .zero }).min(by: \.1)?.0 else { return nil }
-        guard let right = mapped.filter({ $0.1 < .zero }).max(by: \.1)?.0 else { return nil }
+        let incidentFaces = self.internalFaces(incidentTo: (u, v))
+        guard incidentFaces.count == 2 else { return nil }
+        guard incidentFaces.allSatisfy({ $0.vertices.count == 3 }) else { return nil }
+        let left = incidentFaces[0].vertices[2]
+        let right = incidentFaces[1].vertices[2]
 
         // The two vertices must not already be connected prior to the flip.
         guard !self.containsEdge(between: left, and: right) else { return nil }
@@ -60,10 +62,6 @@ extension VertexWeightedGraph {
 
     private func sharedNeighbors(between u: Vertex, and v: Vertex) -> Set<Vertex> {
         return Set(self.vertices(adjacentTo: u)).intersection(self.vertices(adjacentTo: v))
-    }
-
-    private func angle(from u: Vertex, by v: Vertex, to w: Vertex) -> Angle {
-        return Angle(from: self.position(of: u), by: self.position(of: v), to: self.position(of: w))
     }
 }
 

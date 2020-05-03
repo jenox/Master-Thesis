@@ -17,42 +17,6 @@ struct NaiveTransformer: Transformer {
 }
 
 private extension VertexWeightedGraph {
-    // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
-    // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
-    // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp
-    /// Traps if not simple, connected, or planar.
-    var faces: (inner: [Face<Vertex>], outer: Face<Vertex>) {
-        var faces: [Face<Vertex>] = []
-        var markedEdges: DirectedEdgeSet<Vertex> = []
-
-        for (u, v) in self.edges where !markedEdges.contains((u, v)) {
-            assert(u != v)
-
-            var boundingVertices = [u, v]
-            markedEdges.insert((u, v))
-
-            while boundingVertices.first != boundingVertices.last {
-                let neighbors = self.vertices(adjacentTo: boundingVertices[boundingVertices.count - 1])
-                let incoming = neighbors.firstIndex(of: boundingVertices[boundingVertices.count - 2])!
-                let outgoing = (incoming == 0 ? neighbors.count : incoming) - 1
-
-                markedEdges.insert((boundingVertices.last!, neighbors[outgoing]))
-                boundingVertices.append(neighbors[outgoing])
-            }
-
-            faces.append(.init(vertices: boundingVertices.dropLast()))
-        }
-
-        // https://stackoverflow.com/a/22017359/796103
-        guard self.vertices.count - markedEdges.count / 2 + faces.count == 2 else { fatalError() }
-
-        let index = faces.partition(by: { self.polygon(on: $0.vertices).area >= 0 })
-        precondition(index == 1)
-        return (inner: Array(faces.dropFirst()), outer: faces[0])
-    }
-}
-
-private extension VertexWeightedGraph {
     func subdividedDual() -> FaceWeightedGraph {
         let (faces, outerFace) = self.faces
 
@@ -129,7 +93,7 @@ private extension VertexWeightedGraph {
 
         // Determine and register faces on computed dual graph
         for vertex in self.vertices {
-            let endpoints = self.vertices(adjacentTo: vertex).sorted(by: { self.angle(from: vertex, to: $0) })
+            let endpoints = self.vertices(adjacentTo: vertex)
             var vertices: [FaceWeightedGraph.Vertex] = []
 
             for (x, y) in endpoints.adjacentPairs(wraparound: true) {
@@ -167,11 +131,5 @@ private struct UndirectedEdge: Equatable, Hashable {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         return Set([lhs.first, lhs.second]) == Set([rhs.first, rhs.second])
-    }
-}
-
-private extension Collection {
-    func sorted<T>(by transform: (Element) throws -> T) rethrows -> [Element] where T: Comparable {
-        return try self.map({ ($0, try transform($0)) }).sorted(by: { $0.1 < $1.1 }).map({ $0.0 })
     }
 }
