@@ -11,32 +11,27 @@ import CoreGraphics
 import Geometry
 
 extension PolygonalDual {
-    mutating func insertFaceForRandomVertexInside<T>(
+    mutating func insertFaceInsideRandomly<T>(
         named name: ClusterName,
         weight: ClusterWeight,
         using generator: inout T
     ) throws where T: RandomNumberGenerator {
         guard let vertex = self.possibleInsertionPoints().inside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
 
-        try! self.insertFace(named: name, at: vertex, weight: weight, using: &generator)
+        try! self.insertFace(named: name, at: vertex, weight: weight)
     }
 
-    mutating func insertFaceForRandomVertexOutside<T>(
+    mutating func insertFaceOutsideRandomly<T>(
         named name: ClusterName,
         weight: ClusterWeight,
         using generator: inout T
     ) throws where T: RandomNumberGenerator {
         guard let vertex = self.possibleInsertionPoints().outside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
 
-        try! self.insertFace(named: name, at: vertex, weight: weight, using: &generator)
+        try! self.insertFace(named: name, at: vertex, weight: weight)
     }
 
-    mutating func insertFace<T>(
-        named name: ClusterName,
-        at vertex: Vertex,
-        weight: ClusterWeight,
-        using generator: inout T
-    ) throws where T: RandomNumberGenerator {
+    mutating func insertFace(named name: ClusterName, at vertex: Vertex, weight: ClusterWeight) throws {
         var faces = self.faces(incidentTo: vertex)
         guard faces.count == 3 else { throw UnsupportedOperationError() }
         guard faces.allSatisfy({ $0.vertices.first == vertex }) else { throw UnsupportedOperationError() }

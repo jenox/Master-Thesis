@@ -198,24 +198,30 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
 
-            try graph.insertFaceForRandomVertexInside(named: name, weight: weight, using: &self.randomNumberGenerator)
+            try graph.insertFaceInsideRandomly(named: name, weight: weight, using: &self.randomNumberGenerator)
         })
     }
 
     func insertRandomVertexOutside() {
-        self.scheduleMutationOperation(named: "insert vertex inside", { graph in
+        self.scheduleMutationOperation(named: "insert vertex outside", { graph in
             let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
 
-            try graph.insertFaceForRandomVertexOutside(named: name, weight: weight, using: &self.randomNumberGenerator)
+            try graph.insertFaceOutsideRandomly(named: name, weight: weight, using: &self.randomNumberGenerator)
         })
     }
 
     func removeRandomInternalVertex() {
+        self.scheduleMutationOperation(named: "remove internal vertex", { graph in
+            try graph.removeRandomInternalFace(using: &self.randomNumberGenerator)
+        })
     }
 
     func removeRandomExternalVertex() {
+        self.scheduleMutationOperation(named: "remove internal vertex", { graph in
+            try graph.removeRandomExternalFace(using: &self.randomNumberGenerator)
+        })
     }
 
     func flipRandomInternalEdge() {

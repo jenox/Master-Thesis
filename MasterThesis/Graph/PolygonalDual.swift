@@ -95,12 +95,15 @@ extension PolygonalDual {
             }
 
             guard internalFaces.contains(MasterThesis.Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation3) }
+            guard self.polygon(on: boundary).area > 0 else { return .failure(.corruptFaceRepresentation4) }
         }
 
         for face in internalFaces {
             guard self.polygon(on: face.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces1) }
+            guard self.polygon(on: face.vertices).area > 0 else { return .failure(.nonSimplePolygonalFaces2) }
         }
-        guard self.polygon(on: outerFace.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces2) }
+        guard self.polygon(on: outerFace.vertices).isSimple else { return .failure(.nonSimplePolygonalFaces3) }
+        guard self.polygon(on: outerFace.vertices).area < 0 else { return .failure(.nonSimplePolygonalFaces4) }
 
         // edge crossings? or is this already covered by simpleness?
 
@@ -115,8 +118,11 @@ enum PolygonalDualIntergrityViolation: Error {
     case corruptFaceRepresentation1
     case corruptFaceRepresentation2
     case corruptFaceRepresentation3
+    case corruptFaceRepresentation4
     case nonSimplePolygonalFaces1
     case nonSimplePolygonalFaces2
+    case nonSimplePolygonalFaces3
+    case nonSimplePolygonalFaces4
     case edgeCrossing
 }
 
