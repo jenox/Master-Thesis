@@ -25,15 +25,15 @@ extension PolygonalDual {
         try! self.removeFace(face)
     }
 
-    mutating func removeFace(_ faceID: Face) throws {
+    mutating func removeFace(_ faceID: FaceID) throws {
 //        print("Removing face “\(faceID)”...")
 
-        let face = MasterThesis.Face(vertices: self.facePayloads[faceID]!.boundary)
+        let face = Face(vertices: self.facePayloads[faceID]!.boundary)
         let joints = face.vertices.filter(self.isJoint(_:))
 
         guard joints.count == 3 else { throw UnsupportedOperationError() }
 
-        var faces: Set<MasterThesis.Face<Vertex>> = []
+        var faces: Set<Face<Vertex>> = []
         faces.formUnion(self.faces(incidentTo: joints[0]))
         faces.formUnion(self.faces(incidentTo: joints[1]))
         faces.formUnion(self.faces(incidentTo: joints[2]))
@@ -64,11 +64,11 @@ extension PolygonalDual {
         self.ensureIntegrity()
     }
 
-    private func categorizeRemovableFaces() -> (internal: [Face], external: [Face]) {
+    private func categorizeRemovableFaces() -> (internal: [FaceID], external: [FaceID]) {
         guard self.faces.count >= 4 else { return ([], []) }
 
-        var `internal`: [Face] = []
-        var external: [Face] = []
+        var `internal`: [FaceID] = []
+        var external: [FaceID] = []
 
         let (internalFaces, outerFace) = self.internalFacesAndOuterFace()
 
@@ -91,15 +91,15 @@ extension PolygonalDual {
         return (internal: `internal`, external: external)
     }
 
-    private func isBend(_ vertex: Vertex) -> Bool {
+    func isBend(_ vertex: Vertex) -> Bool {
         return self.degree(of: vertex) == 2
     }
 
-    private func isJoint(_ vertex: Vertex) -> Bool {
+    func isJoint(_ vertex: Vertex) -> Bool {
         return self.degree(of: vertex) == 3
     }
 
-    private func computeBoundary(between left: [Vertex], and right: [Vertex]) -> (joined: [Vertex], shared: [Vertex])? {
+    func computeBoundary(between left: [Vertex], and right: [Vertex]) -> (joined: [Vertex], shared: [Vertex])? {
         let set = Set(right)
         guard let index = left.firstIndex(where: set.contains(_:)) else { return nil }
 

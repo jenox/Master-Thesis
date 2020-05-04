@@ -13,7 +13,7 @@ struct PolygonalDual {
     init() {}
 
     typealias Vertex = UniquelyIdentifiedVertex
-    typealias Face = ClusterName
+    typealias FaceID = ClusterName
     typealias Weight = ClusterWeight
 
     typealias VertexPayload = (neighbors: OrderedSet<Vertex>, position: CGPoint)
@@ -21,8 +21,8 @@ struct PolygonalDual {
 
     var vertices: OrderedSet<Vertex> = []
     var vertexPayloads: [Vertex: VertexPayload] = [:]
-    var faces: OrderedSet<Face> = []
-    var facePayloads: [Face: FacePayload] = [:]
+    var faces: OrderedSet<FaceID> = []
+    var facePayloads: [FaceID: FacePayload] = [:]
 }
 
 extension PolygonalDual {
@@ -43,7 +43,7 @@ extension PolygonalDual {
         self.insertEdge(from: v, to: u)
     }
 
-    mutating func defineFace(named name: Face, boundedBy boundary: [Vertex], weight: Weight) {
+    mutating func defineFace(named name: FaceID, boundedBy boundary: [Vertex], weight: Weight) {
         assert(self.facePayloads[name] == nil)
         assert(boundary.adjacentPairs(wraparound: true).allSatisfy(self.containsEdge(between:and:)))
 
@@ -94,7 +94,7 @@ extension PolygonalDual {
                 guard self.vertexPayloads[u]!.neighbors.contains(v) else { return .failure(.corruptFaceRepresentation2) }
             }
 
-            guard internalFaces.contains(MasterThesis.Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation3) }
+            guard internalFaces.contains(Face(vertices: boundary)) else { return .failure(.corruptFaceRepresentation3) }
             guard self.polygon(on: boundary).area > 0 else { return .failure(.corruptFaceRepresentation4) }
         }
 
@@ -180,23 +180,23 @@ extension PolygonalDual: StraightLineGraph {
 }
 
 extension PolygonalDual {
-    func polygon(for face: Face) -> Polygon {
+    func polygon(for face: FaceID) -> Polygon {
         return Polygon(points: self.boundary(of: face).map(self.position(of:)))
     }
 
-    func area(of face: Face) -> Double {
+    func area(of face: FaceID) -> Double {
         return Double(self.polygon(for: face).area)
     }
 
-    func weight(of face: Face) -> Weight {
+    func weight(of face: FaceID) -> Weight {
         return self.facePayloads[face]!.weight
     }
 
-    mutating func setWeight(of face: Face, to value: Weight) {
+    mutating func setWeight(of face: FaceID, to value: Weight) {
         self.facePayloads[face]!.weight = value
     }
 
-    func boundary(of face: Face) -> [Vertex] {
+    func boundary(of face: FaceID) -> [Vertex] {
         return self.facePayloads[face]!.boundary
     }
 }
@@ -229,7 +229,7 @@ extension PolygonalDual {
         self.vertexPayloads[w]!.neighbors.replace(u, with: v)
 
         for (face, payload) in self.facePayloads {
-            if let index = MasterThesis.Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
+            if let index = Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
                 self.facePayloads[face]!.boundary.insert(v, at: index + 1)
             }
         }
@@ -356,8 +356,8 @@ extension PolygonalDual {
 //                self.vertexPayloads[a]!.adjacencies.deleteFirst(of: d, by: ==)
 //                self.vertexPayloads[b]!.adjacencies.append(d)
 //
-//                let face = self.faces.first(where: { $0 != left && $0 != right && MasterThesis.Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: d) })!
-//                let index = MasterThesis.Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: d)!
+//                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: d) })!
+//                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: d)!
 //                self.facePayloads[face]!.boundary.insert(b, at: index + 1)
 //            } else if !self.segment(from: a, to: d).intersects(self.segment(from: b, to: c)) {
 //                self.edges.replaceFirst(of: (a,c),(c,a), with: (b,c), by: ==)
@@ -365,8 +365,8 @@ extension PolygonalDual {
 //                self.vertexPayloads[a]!.adjacencies.deleteFirst(of: c, by: ==)
 //                self.vertexPayloads[b]!.adjacencies.append(c)
 //
-//                let face = self.faces.first(where: { $0 != left && $0 != right && MasterThesis.Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: c) })!
-//                let index = MasterThesis.Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: c)!
+//                let face = self.faces.first(where: { $0 != left && $0 != right && Face(vertices: self.boundary(of: $0)).containsEdge(between: a, and: c) })!
+//                let index = Face(vertices: self.boundary(of: face)).indexOfEdge(between: a, and: c)!
 //                self.facePayloads[face]!.boundary.insert(b, at: index + 1)
 //            } else {
 //                fatalError()
@@ -410,7 +410,7 @@ extension PolygonalDual {
 //        self.vertexPayloads[v]!.adjacencies = [u, w]
 //
 //        for (face, payload) in self.facePayloads {
-//            if let index = MasterThesis.Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
+//            if let index = Face(vertices: payload.boundary).indexOfEdge(between: u, and: w) {
 //                self.facePayloads[face]!.boundary.insert(v, at: index + 1)
 //            }
 //        }

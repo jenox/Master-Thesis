@@ -9,81 +9,103 @@
 import CoreGraphics
 import Geometry
 
-extension VertexWeightedGraph {
-    private struct Adjacency {
-        let left: Vertex
-        let right: Vertex
+extension PolygonalDual {
+    mutating func flipRandomAdjacency<T>(using generator: inout T) throws where T: RandomNumberGenerator {
+//        let things = self.faces.strictlyTriangularPairs().filter({ self.thing(between: $0, and: $1) != nil })
+        //
+        //        guard let (f, g) = flippableAdjacencies.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+        //
+        //        try! self.flipAdjanency(between: f, and: g)
+        print(self.faces.strictlyTriangularPairs().compactMap(self.operation(between:and:)))
     }
 
-    mutating func flipRandomEdge<T>(using generator: inout T) throws where T: RandomNumberGenerator {
-        let flippableEdges = self.edges.filter({ $0.rawValue < $1.rawValue && self.incidentTriangleVertices(between: $0, and: $1) != nil })
+    private func operation(between u: FaceID, and v: FaceID) -> Operation? {
+        let bu = self.boundary(of: u)
+        let bv = self.boundary(of: v)
+        let fu = Face(vertices: bu)
+        let fv = Face(vertices: bv)
 
-        guard let (u, v) = flippableEdges.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+        // u = left, v = right
+        // x = above, y = below
 
-        try! self.flipEdge(between: u, and: v)
+        let boundary = self.computeBoundary(between: bu, and: bv)
+        if let boundary = boundary {
+            let fx = self.thirdFace(incidentTo: boundary.shared.last!, thatIsNot: fu, fv)
+            let fy = self.thirdFace(incidentTo: boundary.shared.first!, thatIsNot: fu, fv)
+
+            switch (self.polygon(on: fx.vertices).area > 0, self.polygon(on: fy.vertices).area > 0) {
+            case (false, false):
+                fatalError()
+            case (false, true), (true, false):
+                // outer face is one for both of them!
+                if self.numberOfFaces(incidentTo: u) >= 4 && self.numberOfFaces(incidentTo: v) >= 4 {
+                    print("can remove \(u)-\(v)")
+                } else {
+                    print("cannot remove \(u)-\(v), not both deg ≥ 3")
+                }
+            case (true, true):
+                if self.computeBoundary(between: fx.vertices, and: fy.vertices) == nil {
+                    print("can flip internal \(u)-\(v)")
+                } else {
+                    print("cannot flip internal \(u)-\(v), \(self.name(of: fx)!) and \(self.name(of: fy)!) are already incident")
+                    return .none
+                }
+            }
+        } else {
+            // have function to determine faces incident to some face
+            // have function to check if face is outer face
+            // have function to check if face is incident to outer face
+
+            // ensure u and v lie on the outer face
+            // find faces that are incident to u, v, and the outer face
+            // there can be multiple!
+            // return both as candidates!
+
+            // we might even return proper edge here if one wants to flip an edge that does not exist but its flipped one does? i.e. if one specifies what one wants to have, not what one wants to remove?
+
+            print("uhm", u, v)
+        }
+
+        return .none
     }
 
-    mutating func flipEdge(between u: Vertex, and v: Vertex) throws {
-        guard self.vertices.contains(u) else { throw UnsupportedOperationError() }
-        guard self.vertices.contains(v) else { throw UnsupportedOperationError() }
-        guard let adjacency = self.incidentTriangleVertices(between: u, and: v) else { throw UnsupportedOperationError() }
-
-        precondition(self.containsEdge(between: u, and: v))
-        precondition(!self.containsEdge(between: adjacency.left, and: adjacency.right))
-
-        self.removeEdge(between: u, and: v)
-        self.insertEdge(between: adjacency.left, and: adjacency.right)
+    /// includes outer face
+    private func numberOfFaces(incidentTo face: FaceID) -> Int {
+        let joints = self.boundary(of: face).filter(self.isJoint(_:))
+        return joints.count
     }
 
-    private func incidentTriangleVertices(between u: Vertex, and v: Vertex) -> Adjacency? {
-        guard self.containsEdge(between: u, and: v) else { return nil }
+    private func thirdFace(incidentTo vertex: Vertex, thatIsNot first: Face<Vertex>, _ second: Face<Vertex>) -> Face<Vertex> {
+        precondition(self.isJoint(vertex))
 
-        let sharedNeighbors = self.sharedNeighbors(between: u, and: v)
-        precondition((1...).contains(sharedNeighbors.count))
-
-        // We must have a triangle on either side to be able to flip an edge.
-        let incidentFaces = self.internalFaces(incidentTo: (u, v))
-        guard incidentFaces.count == 2 else { return nil }
-        guard incidentFaces.allSatisfy({ $0.vertices.count == 3 }) else { return nil }
-        let left = incidentFaces[0].vertices[2]
-        let right = incidentFaces[1].vertices[2]
-
-        // The two vertices must not already be connected prior to the flip.
-        guard !self.containsEdge(between: left, and: right) else { return nil }
-
-        // For vertex-weighted graph only: the formed quadrilateral must be
-        // strictly convex. Otherwise, by flipping the edge, we create a
-        // quadrilateral face and potentially introduce crossings.
-        let quadrilateral = Polygon(points: [u, left, v, right].map(self.position(of:)))
-        guard quadrilateral.isStrictlyConvex else { return nil }
-
-        return .init(left: left, right: right)
+        var faces = Set(self.faces(incidentTo: vertex))
+        assert(faces.count == 3)
+        faces.remove(first)
+        faces.remove(second)
+        assert(faces.count == 1)
+        return faces.first!
     }
+}
 
-    private func sharedNeighbors(between u: Vertex, and v: Vertex) -> Set<Vertex> {
-        return Set(self.vertices(adjacentTo: u)).intersection(self.vertices(adjacentTo: v))
-    }
+private enum Operation {
+    case flip(u: ClusterName, v: ClusterName, x: ClusterName, y: ClusterName) // x, y are just precomputed helpers
+    case remove(u: ClusterName, v: ClusterName, w: ClusterName) // v is just precomputed helper
+    case insert(u: ClusterName, v: ClusterName, w: ClusterName) // all 3 required to uniquely determine
 }
 
 // FIXME:
 extension PolygonalDual {
     private struct Adjacency {
-        let left: Face
-        let right: Face
-        let above: Face
-        let below: Face
+        let left: FaceID
+        let right: FaceID
+        let above: FaceID
+        let below: FaceID
         let boundary: [Vertex]
     }
 
-    mutating func flipRandomAdjacency<T>(using generator: inout T) throws where T: RandomNumberGenerator {
-//        let flippableAdjacencies = self.faces.strictlyTriangularPairs().filter({ self.adjacency(between: $0, and: $1) != nil })
-//
-//        guard let (f, g) = flippableAdjacencies.randomElement(using: &generator) else { throw UnsupportedOperationError() }
-//
-//        try! self.flipAdjanency(between: f, and: g)
-    }
 
-    mutating func flipAdjanency(between f: Face, and g: Face) throws {
+
+    mutating func flipAdjanency(between f: FaceID, and g: FaceID) throws {
 //        guard self.faces.contains(f) else { throw UnsupportedOperationError() }
 //        guard self.faces.contains(g) else { throw UnsupportedOperationError() }
 //        guard let adjacency = self.adjacency(between: f, and: g) else { throw UnsupportedOperationError() }
@@ -161,3 +183,65 @@ private extension Polygon {
 //        return array.count == 3 ? (array[0], array[1], array[2]) : nil
 //    }
 //}
+
+
+
+
+
+
+
+extension VertexWeightedGraph {
+    private struct Adjacency {
+        let left: Vertex
+        let right: Vertex
+    }
+
+    mutating func flipRandomEdge<T>(using generator: inout T) throws where T: RandomNumberGenerator {
+        let flippableEdges = self.edges.filter({ $0.rawValue < $1.rawValue && self.incidentTriangleVertices(between: $0, and: $1) != nil })
+
+        guard let (u, v) = flippableEdges.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+
+        try! self.flipEdge(between: u, and: v)
+    }
+
+    mutating func flipEdge(between u: Vertex, and v: Vertex) throws {
+        guard self.vertices.contains(u) else { throw UnsupportedOperationError() }
+        guard self.vertices.contains(v) else { throw UnsupportedOperationError() }
+        guard let adjacency = self.incidentTriangleVertices(between: u, and: v) else { throw UnsupportedOperationError() }
+
+        precondition(self.containsEdge(between: u, and: v))
+        precondition(!self.containsEdge(between: adjacency.left, and: adjacency.right))
+
+        self.removeEdge(between: u, and: v)
+        self.insertEdge(between: adjacency.left, and: adjacency.right)
+    }
+
+    private func incidentTriangleVertices(between u: Vertex, and v: Vertex) -> Adjacency? {
+        guard self.containsEdge(between: u, and: v) else { return nil }
+
+        let sharedNeighbors = self.sharedNeighbors(between: u, and: v)
+        precondition((1...).contains(sharedNeighbors.count))
+
+        // We must have a triangle on either side to be able to flip an edge.
+        let incidentFaces = self.internalFaces(incidentTo: (u, v))
+        guard incidentFaces.count == 2 else { return nil }
+        guard incidentFaces.allSatisfy({ $0.vertices.count == 3 }) else { return nil }
+        let left = incidentFaces[0].vertices[2]
+        let right = incidentFaces[1].vertices[2]
+
+        // The two vertices must not already be connected prior to the flip.
+        guard !self.containsEdge(between: left, and: right) else { return nil }
+
+        // For vertex-weighted graph only: the formed quadrilateral must be
+        // strictly convex. Otherwise, by flipping the edge, we create a
+        // quadrilateral face and potentially introduce crossings.
+        let quadrilateral = Polygon(points: [u, left, v, right].map(self.position(of:)))
+        guard quadrilateral.isStrictlyConvex else { return nil }
+
+        return .init(left: left, right: right)
+    }
+
+    private func sharedNeighbors(between u: Vertex, and v: Vertex) -> Set<Vertex> {
+        return Set(self.vertices(adjacentTo: u)).intersection(self.vertices(adjacentTo: v))
+    }
+}

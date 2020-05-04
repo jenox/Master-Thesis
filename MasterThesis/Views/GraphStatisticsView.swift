@@ -19,7 +19,7 @@ class GraphStatisticsView: UIView {
         didSet { self.statisticsView.columns[3...] = ArraySlice(self.qualityMetrics.map(Self.column(for:))) }
     }
 
-    private let statisticsView: StatisticsView<(Graph?, Graph.Face)>
+    private let statisticsView: StatisticsView<(Graph?, Graph.FaceID)>
 
     init(graph: Graph?, qualityMetrics: [(String, QualityEvaluator)]) {
         self.graph = graph
@@ -43,11 +43,11 @@ class GraphStatisticsView: UIView {
         fatalError()
     }
 
-    private class func column(named name: String, value: @escaping (Graph?, Graph.Face) throws -> String) -> Column<(Graph?, Graph.Face)> {
+    private class func column(named name: String, value: @escaping (Graph?, Graph.FaceID) throws -> String) -> Column<(Graph?, Graph.FaceID)> {
         return .init(title: name, value: { try value($0.0, $0.1) }, backgroundColor: \.1.color)
     }
 
-    private class func column(for qualityMetric: (name: String, evaluator: QualityEvaluator)) -> Column<(Graph?, Graph.Face)> {
+    private class func column(for qualityMetric: (name: String, evaluator: QualityEvaluator)) -> Column<(Graph?, Graph.FaceID)> {
         return .init(title: qualityMetric.name, value: { graph, face in
             switch try qualityMetric.evaluator.quality(of: face, in: graph!) {
             case .integer(let value): return self.format(integer: value)
@@ -57,17 +57,17 @@ class GraphStatisticsView: UIView {
         }, backgroundColor: \.1.color)
     }
 
-    private class func name(of face: Graph.Face, in graph: Graph?) -> String {
+    private class func name(of face: Graph.FaceID, in graph: Graph?) -> String {
         return face.rawValue
     }
 
-    private class func weight(of face: Graph.Face, in graph: Graph?) -> String {
+    private class func weight(of face: Graph.FaceID, in graph: Graph?) -> String {
         guard let graph = graph else { return "" }
 
         return Self.format(double: graph.weight(of: face).rawValue)
     }
 
-    private class func normalizedArea(of face: Graph.Face, in graph: Graph?) -> String {
+    private class func normalizedArea(of face: Graph.FaceID, in graph: Graph?) -> String {
         guard let graph = graph else { return "" }
 
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue

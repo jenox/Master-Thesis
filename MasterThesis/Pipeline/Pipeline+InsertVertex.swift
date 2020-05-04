@@ -73,10 +73,10 @@ extension PolygonalDual {
         for (u,v) in boundary.adjacentPairs(wraparound: true) {
             self.insertEdge(between: u, and: v)
         }
-        let newface = MasterThesis.Face(vertices: boundary)
+        let newface = Face(vertices: boundary)
         for (face, payload) in self.facePayloads {
             if let index = payload.boundary.firstIndex(of: vertex) {
-                let (before, after) = MasterThesis.Face(vertices: payload.boundary).neighbors(of: vertex)
+                let (before, after) = Face(vertices: payload.boundary).neighbors(of: vertex)
                 if let subdivision = newface.vertices.first(where: { newface.neighbors(of: $0) == (after, before) }) {
                     self.facePayloads[face]!.boundary[index] = subdivision
                 } else {

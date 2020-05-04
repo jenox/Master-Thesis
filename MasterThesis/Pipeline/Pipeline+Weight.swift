@@ -17,7 +17,7 @@ extension VertexWeightedGraph {
 }
 
 extension PolygonalDual {
-    mutating func adjustWeight(of face: Face, to value: Weight) throws {
+    mutating func adjustWeight(of face: FaceID, to value: Weight) throws {
         guard self.faces.contains(face) else { throw UnsupportedOperationError() }
 
         self.setWeight(of: face, to: value)
