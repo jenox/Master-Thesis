@@ -32,7 +32,7 @@ extension PolygonalDual {
     }
 
     mutating func insertFace(named name: ClusterName, at vertex: Vertex, weight: ClusterWeight) throws {
-        var faces = self.faces(incidentTo: vertex)
+        var faces = Array(self.faces(incidentTo: vertex))
         guard faces.count == 3 else { throw UnsupportedOperationError() }
         guard faces.allSatisfy({ $0.vertices.first == vertex }) else { throw UnsupportedOperationError() }
         var neighbors = faces.map({ $0.vertices[1] })

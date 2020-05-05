@@ -81,6 +81,16 @@ struct Face<T>: Hashable where T: Hashable {
     }
 }
 
+extension Face: CustomStringConvertible, CustomDebugStringConvertible {
+    var description: String {
+        return "Face(\(Array(self.vertices)))"
+    }
+
+    var debugDescription: String {
+        return "Face(\(Array(self.vertices)))"
+    }
+}
+
 private extension Array {
     func rotated(shiftingToStart index: Index) -> [Element] {
         guard index != 0 else { return self }

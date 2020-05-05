@@ -127,6 +127,11 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             print("\(verb) operation “\(name)” in \(duration)")
 
             if case .success(let graph) = result {
+                if let graph = graph?.faceWeightedGraph {
+                    print(graph.embeddedClusterGraph)
+                    print(graph.embeddedClusterGraph.allFaces())
+                }
+
                 DispatchQueue.main.sync(execute: {
                     self.previousGraph = self.graph
                     self.graph = graph

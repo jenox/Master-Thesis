@@ -59,6 +59,7 @@
 		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
 		CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */; };
 		CBC63AE4246075250057DBFD /* Pipeline+RemoveVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */; };
+		CBC63B0624612E780057DBFD /* EmbeddedClusterGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
 		CBDA154723CB670C0070847D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154623CB670C0070847D /* Assets.xcassets */; };
 		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
@@ -150,6 +151,7 @@
 		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
 		CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+InsertVertex.swift"; sourceTree = "<group>"; };
 		CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+RemoveVertex.swift"; sourceTree = "<group>"; };
+		CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedClusterGraph.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBDA154623CB670C0070847D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				CB2D53DA245F187700317BD6 /* PolygonalDual.swift */,
 				CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */,
 				CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */,
+				CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -636,6 +639,7 @@
 				CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */,
 				CBA25E2624314EE10019C766 /* CGVector.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
+				CBC63B0624612E780057DBFD /* EmbeddedClusterGraph.swift in Sources */,
 				CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */,
 				CBA25E4A243292120019C766 /* ClusterWeight.swift in Sources */,
 				CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */,

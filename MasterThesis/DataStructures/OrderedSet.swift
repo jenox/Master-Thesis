@@ -44,10 +44,13 @@ public struct OrderedSet<Element> where Element: Hashable {
         return element
     }
 
-    mutating func remove(_ element: Element) {
-        self.ensureValueSemantics()
+    @discardableResult
+    mutating func remove(_ element: Element) -> Bool {
+        guard self.storage.contains(element) else { return false }
 
+        self.ensureValueSemantics()
         self.storage.remove(element)
+        return true
     }
 
     mutating func replace(_ oldElement: Element, with newElement: Element) {
@@ -109,5 +112,15 @@ extension OrderedSet: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: Element...) {
         self.storage = NSMutableOrderedSet()
         self.storage.addObjects(from: elements)
+    }
+}
+
+extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        return "\(Array(self))"
+    }
+
+    public var debugDescription: String {
+        return "OrderedSet(\(Array(self)))"
     }
 }
