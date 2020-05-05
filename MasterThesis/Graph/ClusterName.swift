@@ -12,6 +12,12 @@ struct ClusterName: Equatable, Hashable, RawRepresentable {
     let rawValue: String
 }
 
+extension ClusterName: Comparable {
+    static func < (lhs: ClusterName, rhs: ClusterName) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
+}
+
 extension ClusterName: ExpressibleByStringLiteral {
     init(stringLiteral value: String) {
         self.rawValue = value

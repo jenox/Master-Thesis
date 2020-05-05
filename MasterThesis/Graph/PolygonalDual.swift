@@ -202,10 +202,6 @@ extension PolygonalDual {
 }
 
 extension PolygonalDual {
-    func degree(of vertex: Vertex) -> Int {
-        return self.vertices(adjacentTo: vertex).count
-    }
-
     func isSubdivisionVertex(_ vertex: Vertex) -> Bool {
         switch self.degree(of: vertex) {
         case 2: return true

@@ -107,3 +107,19 @@ extension PolygonalDual {
         return (inside: inside, outside: outside)
     }
 }
+
+extension PolygonalDual {
+    var insertionPositionsInside: [(FaceID, FaceID, FaceID)] {
+        let vertices = self.possibleInsertionPoints().inside
+        let faces = vertices.map({ self.faces(incidentTo: $0).compactMap(self.faceID(of:)).destructured3()! })
+
+        return faces
+    }
+
+    var insertionPositionsOutside: [(FaceID, FaceID)] {
+        let vertices = self.possibleInsertionPoints().outside
+        let faces = vertices.map({ self.faces(incidentTo: $0).compactMap(self.faceID(of:)).destructured2()! })
+
+        return faces
+    }
+}

@@ -117,3 +117,13 @@ extension PolygonalDual {
         return (joined, shared)
     }
 }
+
+extension PolygonalDual {
+    var removableFacesWithoutBoundaryToOuterFace: [FaceID] {
+        return self.categorizeRemovableFaces().internal
+    }
+
+    var removableFacesWithBoundaryToOuterFace: [FaceID] {
+        return self.categorizeRemovableFaces().external
+    }
+}

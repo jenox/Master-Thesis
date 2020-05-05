@@ -19,6 +19,10 @@ protocol PlanarGraph {
 }
 
 extension PlanarGraph {
+    func degree(of vertex: Vertex) -> Int {
+        return self.vertices(adjacentTo: vertex).count
+    }
+
     // https://mathoverflow.net/questions/23811/reporting-all-faces-in-a-planar-graph
     // https://mosaic.mpi-cbg.de/docs/Schneider2015.pdf
     // https://www.boost.org/doc/libs/1_36_0/boost/graph/planar_face_traversal.hpp

@@ -167,22 +167,7 @@ private extension Polygon {
 //    }
 //}
 
-//extension Collection {
-//    func destructured1() -> (Element)? {
-//        let array = Array(self)
-//        return array.count == 1 ? (array[0]) : nil
-//    }
-//
-//    func destructured2() -> (Element, Element)? {
-//        let array = Array(self)
-//        return array.count == 2 ? (array[0], array[1]) : nil
-//    }
-//
-//    func destructured3() -> (Element, Element, Element)? {
-//        let array = Array(self)
-//        return array.count == 3 ? (array[0], array[1], array[2]) : nil
-//    }
-//}
+
 
 
 

@@ -43,22 +43,27 @@ extension EmbeddedClusterGraph {
 extension EmbeddedClusterGraph {
     /// We can insert into all (triangular) internal faces.
     var insertionPositionsInside: [(Vertex, Vertex, Vertex)] {
-        fatalError()
+        return self.allFaces().filter({ $0 != .init(vertices: self.outerFace) }).map({ $0.vertices.destructured3()! })
     }
 
-    // we can insert at all external edges
+    /// We can insert at all edges on the outer face.
     var insertionPositionsOutside: [(Vertex, Vertex)] {
         return Array(self.outerFace.adjacentPairs(wraparound: true))
     }
 
-    // only if remains internally triangulated
+    /// We can only remove an internal vertex if the graph remains internally
+    /// triangulated. This is the case if the vertex to be removed has degree 3.
     var removableInternalVertices: [Vertex] {
-        fatalError()
+        return self.vertices.filter({ !self.outerFace.contains($0) && self.degree(of: $0) == 3 })
     }
 
-    // only if remains 2-connected. because we only allow removing degree 2, just check we have 3+ remaining?
+    /// We can only remove an external vertex if the graph remains 2-connected.
+    /// Because we only allow removing vertices with degree 2, this is the case
+    /// if the graph would have 3+ vertices remaining.
     var removableExternalVertices: [Vertex] {
-        fatalError()
+        guard self.vertices.count >= 4 else { return [] }
+
+        return self.outerFace.filter({ self.degree(of: $0) == 2 })
     }
 
     // only if neighbors not already adjacent.
@@ -133,6 +138,23 @@ extension PolygonalDual {
 
     func faceID(of face: _Face) -> FaceID? {
         return self.facePayloads.first(where: { face == .init(vertices: $0.value.boundary) })?.key
+    }
+}
+
+extension Collection {
+    func destructured1() -> (Element)? {
+        let array = Array(self)
+        return array.count == 1 ? (array[0]) : nil
+    }
+
+    func destructured2() -> (Element, Element)? {
+        let array = Array(self)
+        return array.count == 2 ? (array[0], array[1]) : nil
+    }
+
+    func destructured3() -> (Element, Element, Element)? {
+        let array = Array(self)
+        return array.count == 3 ? (array[0], array[1], array[2]) : nil
     }
 }
 
