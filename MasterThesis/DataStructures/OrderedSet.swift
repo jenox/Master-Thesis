@@ -22,11 +22,11 @@ public struct OrderedSet<Element> where Element: Hashable {
 
     mutating func insert(_ element: Element) {
         self.ensureValueSemantics()
-
         self.storage.add(element)
     }
 
     mutating func insert(_ element: Element, at index: Index) {
+        self.ensureValueSemantics()
         self.storage.insert(element, at: index)
     }
 
@@ -57,11 +57,10 @@ public struct OrderedSet<Element> where Element: Hashable {
         guard let index = self.firstIndex(of: oldElement) else { preconditionFailure() }
 
         self.ensureValueSemantics()
-
         self.storage.replaceObject(at: index, with: newElement)
     }
 
-    func subtracting<T>(_ sequence: T) -> OrderedSet<Element> where T: Sequence, T.Element == Element {
+    func subtracting<T>(_ sequence: T) -> Self where T: Sequence, T.Element == Element {
         var copy = self
         for element in sequence {
             copy.remove(element)
