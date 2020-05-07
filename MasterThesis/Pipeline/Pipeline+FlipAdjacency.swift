@@ -10,230 +10,229 @@ import CoreGraphics
 import Geometry
 
 extension PolygonalDual {
-    mutating func flipRandomAdjacency<T>(using generator: inout T) throws where T: RandomNumberGenerator {
-//        let things = self.faces.strictlyTriangularPairs().filter({ self.thing(between: $0, and: $1) != nil })
-        //
-        //        guard let (f, g) = flippableAdjacencies.randomElement(using: &generator) else { throw UnsupportedOperationError() }
-        //
-        //        try! self.flipAdjanency(between: f, and: g)
-        print(self.faces.strictlyTriangularPairs().compactMap(self.operation(between:and:)))
+    struct FlipAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and v: ClusterName) {
+            self.incidentFaces = [u, v]
+
+            precondition(self.incidentFaces.count == 2)
+        }
+
+        let incidentFaces: Set<ClusterName>
     }
 
-    private func operation(between u: FaceID, and v: FaceID) -> Operation? {
+    func possibleFlipAdjacencyOperations() -> Set<FlipAdjacencyOperation> {
+        return Set(self.embeddedClusterGraph.flippableInternalEdges.map(FlipAdjacencyOperation.init))
+    }
+
+    // TODO: for testing, how do we make sure we test all orderings? can't use set!
+    mutating func flipAdjacency(_ operation: FlipAdjacencyOperation) throws {
+        // u = left, v = right
+        // x = above, y = below
+        let (v, u) = operation.incidentFaces.destructured2()!
+
         let bu = self.boundary(of: u)
         let bv = self.boundary(of: v)
         let fu = Face(vertices: bu)
         let fv = Face(vertices: bv)
 
-        // u = left, v = right
-        // x = above, y = below
+        guard let boundary = self.computeBoundary(between: bu, and: bv)?.shared else { throw UnsupportedOperationError() }
+        let fx = self.faces(incidentTo: boundary.last!).subtracting([fu, fv]).destructured1()!
+        let fy = self.faces(incidentTo: boundary.first!).subtracting([fu, fv]).destructured1()!
+        let x = self.faceID(of: fx)!
+        let y = self.faceID(of: fy)!
+        assert(x != y)
+        guard self.computeBoundary(between: fx.vertices, and: fy.vertices) == nil else { throw UnsupportedOperationError() }
 
-        let boundary = self.computeBoundary(between: bu, and: bv)
-        if let boundary = boundary {
-            let fx = self.thirdFace(incidentTo: boundary.shared.last!, thatIsNot: fu, fv)
-            let fy = self.thirdFace(incidentTo: boundary.shared.first!, thatIsNot: fu, fv)
+        print("left", u, "right", v, "above", x, "below", y)
+        print(boundary)
 
-            switch (self.polygon(on: fx.vertices).area > 0, self.polygon(on: fy.vertices).area > 0) {
-            case (false, false):
-                fatalError()
-            case (false, true), (true, false):
-                // outer face is one for both of them!
-                if self.numberOfFaces(incidentTo: u) >= 4 && self.numberOfFaces(incidentTo: v) >= 4 {
-                    print("can remove \(u)-\(v)")
-                } else {
-                    print("cannot remove \(u)-\(v), not both deg ≥ 3")
-                }
-            case (true, true):
-                if self.computeBoundary(between: fx.vertices, and: fy.vertices) == nil {
-                    print("can flip internal \(u)-\(v)")
-                } else {
-                    print("cannot flip internal \(u)-\(v), \(self.name(of: fx)!) and \(self.name(of: fy)!) are already incident")
-                    return .none
-                }
-            }
-        } else {
-            // have function to determine faces incident to some face
-            // have function to check if face is outer face
-            // have function to check if face is incident to outer face
+        let vertex = self.contractBoundary(boundary)
+        self.expandDegenerateBoundary(at: vertex, into: u)
+        self.expandDegenerateBoundary(at: vertex, into: v)
+    }
 
-            // ensure u and v lie on the outer face
-            // find faces that are incident to u, v, and the outer face
-            // there can be multiple!
-            // return both as candidates!
+    private mutating func contractBoundary(_ boundary: [Vertex]) -> Vertex {
+        precondition(boundary.count >= 2)
 
-            // we might even return proper edge here if one wants to flip an edge that does not exist but its flipped one does? i.e. if one specifies what one wants to have, not what one wants to remove?
+        var boundary = boundary
 
-            print("uhm", u, v)
+        print("!", boundary)
+
+        while boundary.count >= 2 {
+            self.contract(boundary[0], into: boundary[1])
+            boundary.reverse()
+            boundary.removeLast()
+            print("!", boundary)
         }
 
-        return .none
+        return boundary.destructured1()!
     }
 
-    /// includes outer face
-    private func numberOfFaces(incidentTo face: FaceID) -> Int {
-        let joints = self.boundary(of: face).filter(self.isJoint(_:))
-        return joints.count
-    }
+    private mutating func contract(_ u: Vertex, into v: Vertex) {
+        precondition(self.vertices(adjacentTo: u).contains(v))
+        precondition(self.degree(of: u) == 3)
+        precondition(self.degree(of: v) >= 2)
 
-    private func thirdFace(incidentTo vertex: Vertex, thatIsNot first: Face<Vertex>, _ second: Face<Vertex>) -> Face<Vertex> {
-        precondition(self.isJoint(vertex))
-
-        var faces = Set(self.faces(incidentTo: vertex))
+        var faces = Array(self.faces(incidentTo: u))
+        assert(faces.allSatisfy({ $0.vertices.first == u }))
         assert(faces.count == 3)
-        faces.remove(first)
-        faces.remove(second)
-        assert(faces.count == 1)
-        return faces.first!
+        faces = Array(faces.rotated(shiftingToStart: faces.first(where: { $0.containsEdge(from: u, to: v) })!))
+        let left = self.faceID(of: faces[0])!
+        let below = self.faceID(of: faces[1])!
+        let right = self.faceID(of: faces[2])!
+
+        // Ensure the closest vertices are subdivision vertices
+        for (index, neighbor) in faces.map({ $0.vertices[1] }).enumerated().dropFirst() where self.degree(of: neighbor) == 3 {
+            let bend = self.subdivideEdge(between: u, and: neighbor)
+            faces[index] = faces[index].inserting(bend, at: 1)
+        }
+
+//        print("left", left, "below", below, "right", right)
+
+        let leftBend: Vertex?
+        do {
+            let polygon = self.polygon(on: faces[0].vertices)
+            let vertex = faces[1].vertices[1]
+
+            if polygon.internalAngle(at: 0).turns > 0.5 {
+//                print("left >= 180")
+                leftBend = self.insertVertex(at: self.position(of: u))
+            } else if polygon.removingPoint(at: 0).isSimple {
+//                print("left easy")
+                leftBend = nil
+            } else {
+                let midpoint = self.segment(from: vertex, to: v).midpoint
+                let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
+                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
+                let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
+
+//                print("left subdidive at", progress)
+                leftBend = self.insertVertex(at: position)
+            }
+        }
+
+        // right
+        let rightBend: Vertex?
+        do {
+            let polygon = self.polygon(on: faces[2].vertices)
+            let vertex = faces[2].vertices[1]
+
+            if polygon.internalAngle(at: 0).turns > 0.5 {
+//                print("right >= 180")
+                rightBend = self.insertVertex(at: self.position(of: u))
+            } else if polygon.removingPoint(at: 0).isSimple {
+//                print("right easy")
+                rightBend = nil
+            } else {
+                let midpoint = self.segment(from: vertex, to: v).midpoint
+                let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
+                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
+                let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
+
+//                print("right subdidive at", progress)
+                rightBend = self.insertVertex(at: position)
+            }
+        }
+
+//        print("left bend", leftBend as Any, "right bend", rightBend as Any)
+
+        self.facePayloads[below]!.boundary.replace(u, with: [rightBend, v, leftBend].compactMap({ $0 }))
+        self.facePayloads[left]!.boundary.replace(u, with: [leftBend].compactMap({ $0 }))
+        self.facePayloads[right]!.boundary.replace(u, with: [rightBend].compactMap({ $0 }))
+        [faces[1].vertices[1], leftBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
+        [faces[2].vertices[1], rightBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
+        self.vertices.remove(u)
+        self.vertexPayloads[u] = nil
+        faces.forEach({ self.vertexPayloads[$0.vertices[1]]!.neighbors.remove(u) })
+    }
+
+    private mutating func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID) {
+        let face = Face(vertices: self.boundary(of: faceID))
+
+        var faces = Array(self.faces(incidentTo: vertex))
+        faces = Array(faces.rotated(shiftingToStart: .init(vertices: self.boundary(of: faceID))))
+        assert(faces.count == 3 || faces.count == 4)
+        let below = self.faceID(of: faces[1])!
+        let above = self.faceID(of: faces.last!)!
+
+        // subdivide such that neighbors are bends
+        var predecessor = face.predecessor(of: vertex)!
+        var successor = face.successor(of: vertex)!
+        assert(predecessor != successor)
+        if !self.isBend(predecessor) { predecessor = self.subdivideEdge(between: vertex, and: predecessor) }
+        if !self.isBend(predecessor) { successor = self.subdivideEdge(between: vertex, and: successor) }
+
+        let boundary = self.boundary(of: faceID)
+        let polygon = self.polygon(on: boundary)
+        let index = boundary.firstIndex(of: vertex)!
+
+        print(predecessor, successor)
+
+        if polygon.internalAngle(at: index).turns > 0.5 {
+            // no-op
+        } else {
+            let midpoint = self.segment(from: predecessor, to: successor).midpoint
+            let progresses = sequence(first: 1 as CGFloat, next: { $0 / 2 })
+            let progress = progresses.first(where: { polygon.movingPoint(at: index, to: midpoint, progress: $0).isSimple })!
+            let position = polygon.movingPoint(at: index, to: midpoint, progress: progress).points[index]
+
+            let q = self.insertVertex(at: position)
+            self.facePayloads[faceID]!.boundary.replace(vertex, with: [q])
+            self.facePayloads[below]!.boundary.insert(q, after: vertex)
+            self.facePayloads[above]!.boundary.insert(q, before: vertex)
+            self.insertEdge(between: q, and: predecessor)
+            self.insertEdge(between: q, and: successor)
+            self.insertEdge(between: q, and: vertex)
+            self.removeEdge(between: vertex, and: predecessor)
+            self.removeEdge(between: vertex, and: successor)
+        }
     }
 }
 
-private enum Operation {
-    case flip(u: ClusterName, v: ClusterName, x: ClusterName, y: ClusterName) // x, y are just precomputed helpers
-    case remove(u: ClusterName, v: ClusterName, w: ClusterName) // v is just precomputed helper
-    case insert(u: ClusterName, v: ClusterName, w: ClusterName) // all 3 required to uniquely determine
-}
-
-// FIXME:
 extension PolygonalDual {
-    private struct Adjacency {
-        let left: FaceID
-        let right: FaceID
-        let above: FaceID
-        let below: FaceID
-        let boundary: [Vertex]
+    struct CreateAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and w: ClusterName, sharedNeighbor: ClusterName) {
+            self.incidentFaces = [u, w]
+            self.sharedNeighbor = sharedNeighbor
+
+            precondition(self.incidentFaces.count == 2)
+            precondition(!self.incidentFaces.contains(sharedNeighbor))
+        }
+
+        let incidentFaces: Set<ClusterName>
+        let sharedNeighbor: ClusterName
     }
 
-
-
-    mutating func flipAdjanency(between f: FaceID, and g: FaceID) throws {
-//        guard self.faces.contains(f) else { throw UnsupportedOperationError() }
-//        guard self.faces.contains(g) else { throw UnsupportedOperationError() }
-//        guard let adjacency = self.adjacency(between: f, and: g) else { throw UnsupportedOperationError() }
-//
-//        try! self.flipBorder(between: adjacency.left, and: adjacency.right)
+    func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
+        return []
+//        return Set(self.embeddedClusterGraph.insertableEdges.map({ CreateAdjacencyOperation(between: $0.0, and: $0.2, sharedNeighbor: $0.1) }))
     }
 
-//    private func adjacency(between left: Face, and right: Face) -> Adjacency? {
-//        guard left != right else { return nil }
-//
-//        let boundaryF = self.boundary(of: left)
-//        let boundaryG = Set(self.boundary(of: right))
-//
-//        guard let index = boundaryF.firstIndex(where: boundaryG.contains) else { return nil }
-//
-//        // Shared boundary
-//        let rotated = boundaryF.rotated(shiftingToStart: index)
-//        let boundary = rotated.suffix(while: boundaryG.contains) + rotated.prefix(while: boundaryG.contains) as [Vertex]
-//
-//        assert(boundary.adjacentPairs(wraparound: false).allSatisfy(self.containsEdge(between:and:)))
-//        assert(boundary.count(where: { !self.isSubdivisionVertex($0) }) == 2)
-//        assert(boundary.dropFirst().dropLast().allSatisfy(self.isSubdivisionVertex(_:)))
-//
-//        let remainingFaces = Set(self.faces).subtracting([left, right])
-//        guard let above = remainingFaces.first(where: { self.boundary(of: $0).contains(boundary.last!) }) else { return nil }
-//        guard let below = remainingFaces.first(where: { self.boundary(of: $0).contains(boundary.first!) }) else { return nil }
-//
-//        // Faces must not already be adjacent!
-//        guard Set(self.boundary(of: above)).isDisjoint(with: self.boundary(of: below)) else { return nil }
-//
-//        return Adjacency(left: left, right: right, above: above, below: below, boundary: boundary)
-//    }
-}
-
-private extension BidirectionalCollection {
-    func suffix(while predicate: (Element) throws -> Bool) rethrows -> AnyCollection<Element> {
-        return AnyCollection(try self.reversed().prefix(while: predicate).reversed())
+    mutating func createAdjacency(_ operation: CreateAdjacencyOperation) throws {
+        throw UnsupportedOperationError()
     }
 }
 
-private extension Polygon {
-    var isStrictlyConvex: Bool {
-        return self.internalAngles.allSatisfy({ $0.turns < 0.5 })
+extension PolygonalDual {
+    struct RemoveAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and v: ClusterName) {
+            self.incidentFaces = [u, v]
+
+            precondition(self.incidentFaces.count == 2)
+        }
+
+        let incidentFaces: Set<ClusterName>
     }
 
-    private var internalAngles: [Angle] {
-        return self.points.adjacentTriplets(wraparound: true).map(Angle.init(from:by:to:)).map(\.counterclockwise)
-    }
-}
-
-//extension Line {
-//    /// http://geomalgorithms.com/a02-_lines.html
-//    func signedDistance(to point: CGPoint) -> CGFloat {
-//        let (x, y) = (point.x, point.y)
-//        let (x0, y0) = (self.a.x, self.a.y)
-//        let (x1, y1) = (self.b.x, self.b.y)
-//
-//        return (x*(y0-y1) + y*(x1-x0) + x0*y1 - x1*y0) / hypot(x1-x0, y1-y0)
-//    }
-//}
-
-
-
-
-
-
-
-
-
-extension VertexWeightedGraph {
-    private struct Adjacency {
-        let left: Vertex
-        let right: Vertex
+    func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {
+        return []
+//        return Set(self.embeddedClusterGraph.removableEdges.map(RemoveAdjacencyOperation.init))
     }
 
-    mutating func flipRandomEdge<T>(using generator: inout T) throws where T: RandomNumberGenerator {
-        let flippableEdges = self.edges.filter({ $0.rawValue < $1.rawValue && self.incidentTriangleVertices(between: $0, and: $1) != nil })
-
-        guard let (u, v) = flippableEdges.randomElement(using: &generator) else { throw UnsupportedOperationError() }
-
-        try! self.flipEdge(between: u, and: v)
-    }
-
-    mutating func flipEdge(between u: Vertex, and v: Vertex) throws {
-        guard self.vertices.contains(u) else { throw UnsupportedOperationError() }
-        guard self.vertices.contains(v) else { throw UnsupportedOperationError() }
-        guard let adjacency = self.incidentTriangleVertices(between: u, and: v) else { throw UnsupportedOperationError() }
-
-        precondition(self.containsEdge(between: u, and: v))
-        precondition(!self.containsEdge(between: adjacency.left, and: adjacency.right))
-
-        self.removeEdge(between: u, and: v)
-        self.insertEdge(between: adjacency.left, and: adjacency.right)
-    }
-
-    private func incidentTriangleVertices(between u: Vertex, and v: Vertex) -> Adjacency? {
-        guard self.containsEdge(between: u, and: v) else { return nil }
-
-        let sharedNeighbors = self.sharedNeighbors(between: u, and: v)
-        precondition((1...).contains(sharedNeighbors.count))
-
-        // We must have a triangle on either side to be able to flip an edge.
-        let incidentFaces = self.internalFaces(incidentTo: (u, v))
-        guard incidentFaces.count == 2 else { return nil }
-        guard incidentFaces.allSatisfy({ $0.vertices.count == 3 }) else { return nil }
-        let left = incidentFaces[0].vertices[2]
-        let right = incidentFaces[1].vertices[2]
-
-        // The two vertices must not already be connected prior to the flip.
-        guard !self.containsEdge(between: left, and: right) else { return nil }
-
-        // For vertex-weighted graph only: the formed quadrilateral must be
-        // strictly convex. Otherwise, by flipping the edge, we create a
-        // quadrilateral face and potentially introduce crossings.
-        let quadrilateral = Polygon(points: [u, left, v, right].map(self.position(of:)))
-        guard quadrilateral.isStrictlyConvex else { return nil }
-
-        return .init(left: left, right: right)
-    }
-
-    private func sharedNeighbors(between u: Vertex, and v: Vertex) -> Set<Vertex> {
-        return Set(self.vertices(adjacentTo: u)).intersection(self.vertices(adjacentTo: v))
+    mutating func removeAdjacency(_ operation: RemoveAdjacencyOperation) throws {
+        throw UnsupportedOperationError()
     }
 }
-
-
-
-
 
 private extension EmbeddedClusterGraph {
     /// We can only flip an internal edge if the graph remains simple. This is
@@ -293,5 +292,29 @@ private extension EmbeddedClusterGraph {
         }
 
         return insertableEdges
+    }
+}
+
+
+extension Array where Element: Equatable {
+    mutating func remove(_ element: Element) {
+        self.remove(at: self.firstIndex(of: element)!)
+    }
+
+    mutating func insert(_ element: Element, before other: Element) {
+        self.insert(element, at: self.firstIndex(of: other)!)
+    }
+
+    mutating func insert(_ element: Element, after other: Element) {
+        self.insert(element, at: self.firstIndex(of: other)! + 1)
+    }
+
+    mutating func insert<T>(_ elements: T, after other: Element) where T: Collection, T.Element == Element {
+        self.insert(contentsOf: elements, at: self.firstIndex(of: other)! + 1)
+    }
+
+    mutating func replace<T>(_ element: Element, with elements: T) where T: Collection, T.Element == Element {
+        let index = self.firstIndex(of: element)!
+        self.replaceSubrange(index...index, with: elements)
     }
 }

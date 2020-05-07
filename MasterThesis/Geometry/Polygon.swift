@@ -38,6 +38,10 @@ extension Polygon {
         return (vp.rotated(by: outside / 2).normalized, outside)
     }
 
+    func internalAngle(at index: Int) -> Angle {
+        return .init(degrees: 360) - self.normalAndAngle(at: index).angle
+    }
+
     func removingPoint(at index: Int) -> Polygon {
         var points = self.points
         points.remove(at: index)

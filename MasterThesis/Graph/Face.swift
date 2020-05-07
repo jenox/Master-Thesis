@@ -43,6 +43,24 @@ struct Face<T>: Hashable where T: Hashable {
         }
     }
 
+    func predecessor(of vertex: T) -> T? {
+        guard let index = self.vertices.firstIndex(of: vertex) else { return nil }
+        return self.vertices[index == 0 ? self.vertices.count - 1 : index - 1]
+    }
+
+    func successor(of vertex: T) -> T? {
+        guard let index = self.vertices.firstIndex(of: vertex) else { return nil }
+        return self.vertices[index + 1 == self.vertices.count ? 0 : index + 1]
+    }
+
+    func containsEdge(from u: T, to v: T) -> Bool {
+        guard let index = self.vertices.firstIndex(of: u) else { return false }
+
+        let successor = index + 1 == self.vertices.count ? 0 : index + 1
+
+        return self.vertices[successor] == v
+    }
+
     func containsEdge(between first: T, and second: T) -> Bool {
         guard let index = self.vertices.firstIndex(of: first) else { return false }
 

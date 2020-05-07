@@ -6,7 +6,6 @@
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
-import Swift
 import CoreGraphics
 import Geometry
 
@@ -107,9 +106,8 @@ private extension PolygonalDual {
             boundary.append(x)
 
             let polygon = self.polygon(on: face.vertices)
-            let angle = .degrees(360) - polygon.normalAndAngle(at: 0).angle
 
-            if angle > .degrees(180) {
+            if polygon.internalAngle(at: 0).turns > 0.5 {
                 boundary.append(self.insertVertex(at: self.position(of: vertex)))
             } else if polygon.removingPoint(at: 0).isSimple {
                 // no-op

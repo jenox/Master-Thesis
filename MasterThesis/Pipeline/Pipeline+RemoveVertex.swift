@@ -6,7 +6,7 @@
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
-import Foundation
+import Swift
 
 extension PolygonalDual {
     struct RemoveFaceWithoutBoundaryToExternalFaceOperation: Equatable, Hashable {
@@ -62,8 +62,7 @@ private extension PolygonalDual {
         let (joined, boundary) = self.computeBoundary(between: face.vertices, and: neighbor.vertices)!
 
         for (u,v) in boundary.adjacentPairs(wraparound: false) {
-            self.vertexPayloads[u]!.neighbors.remove(v)
-            self.vertexPayloads[v]!.neighbors.remove(u)
+            self.removeEdge(between: u, and: v)
         }
         for v in boundary.dropFirst().dropLast() {
             self.vertices.remove(v)

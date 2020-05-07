@@ -61,6 +61,14 @@ public struct OrderedSet<Element> where Element: Hashable {
         self.storage.replaceObject(at: index, with: newElement)
     }
 
+    func subtracting<T>(_ sequence: T) -> OrderedSet<Element> where T: Sequence, T.Element == Element {
+        var copy = self
+        for element in sequence {
+            copy.remove(element)
+        }
+        return copy
+    }
+
     private mutating func ensureValueSemantics() {
         if !isKnownUniquelyReferenced(&self.storage) {
             self.storage = NSMutableOrderedSet(orderedSet: self.storage)
