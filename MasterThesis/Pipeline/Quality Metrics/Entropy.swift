@@ -109,7 +109,6 @@ private extension Polygon {
             let factor = segment.length / minimum
             let error1 = minimum / (segment.length / ceil(factor)) - 1
             let error2 = (segment.length / floor(factor)) / minimum - 1
-            precondition(error1 >= 0 && error2 >= 0)
             let count = error1 < error2 ? Int(ceil(factor)) : Int(floor(factor))
 
             for index in 0..<count {

@@ -78,6 +78,32 @@ extension PlanarGraph {
 
         return faces
     }
+
+    func faces(incidentTo edge: (Vertex, Vertex)) -> (Face<Vertex>, Face<Vertex>) {
+        var faces: [Face<Vertex>] = []
+        var markedEdges: DirectedEdgeSet<Vertex> = []
+
+        for (u, v) in [(edge.0, edge.1), (edge.1, edge.0)] where !markedEdges.contains((u, v)) {
+            assert(u != v)
+
+            var boundingVertices = [u, v]
+            markedEdges.insert((u, v))
+
+            while boundingVertices.first != boundingVertices.last {
+                let neighbors = self.vertices(adjacentTo: boundingVertices[boundingVertices.count - 1])
+                let incoming = neighbors.firstIndex(of: boundingVertices[boundingVertices.count - 2])!
+                let outgoing = (incoming == 0 ? neighbors.count : incoming) - 1
+
+                markedEdges.insert((boundingVertices.last!, neighbors[outgoing]))
+                boundingVertices.append(neighbors[outgoing])
+            }
+
+            boundingVertices.removeLast()
+            faces.append(.init(vertices: boundingVertices))
+        }
+
+        return faces.destructured2()!
+    }
 }
 
 protocol StraightLineGraph: PlanarGraph {

@@ -127,15 +127,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             print("\(verb) operation “\(name)” in \(duration)")
 
             if case .success(let graph) = result {
-                if let graph = graph?.faceWeightedGraph {
-                    print(graph.embeddedClusterGraph)
-                    print(graph.embeddedClusterGraph.allFaces())
-                    print(isEquivalentDisregardingRotation(graph.embeddedClusterGraph.insertionPositionsInside, graph.insertionPositionsInside), graph.embeddedClusterGraph.insertionPositionsInside)
-                    print(isEquivalentDisregardingOrientation(graph.embeddedClusterGraph.insertionPositionsOutside, graph.insertionPositionsOutside), graph.embeddedClusterGraph.insertionPositionsOutside)
-                    print(isEquivalentDisregardingOrdering(graph.embeddedClusterGraph.removableInternalVertices, graph.removableFacesWithoutBoundaryToOuterFace), graph.embeddedClusterGraph.removableInternalVertices)
-                    print(isEquivalentDisregardingOrdering(graph.embeddedClusterGraph.removableExternalVertices, graph.removableFacesWithBoundaryToOuterFace), graph.embeddedClusterGraph.removableExternalVertices)
-                }
-
                 DispatchQueue.main.sync(execute: {
                     self.previousGraph = self.graph
                     self.graph = graph
@@ -177,13 +168,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let transformed = try self.transformer.transform(untransformed)
             return .faceWeighted(transformed)
         })
-
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-//            self.scheduleMutationOperation(named: "move", { graph in
-//                graph.displace(graph.vertices[0], by: CGVector(dx: 0, dy: 25))
-//                graph.displace(graph.vertices[10], by: CGVector(dx: -15, dy: 70))
-//            })
-//        })
     }
 
     func changeRandomCountryWeight() {
@@ -258,20 +242,4 @@ private enum GraphModificationQueue {
     static func schedule(_ closure: @escaping () -> Void, after delay: TimeInterval = 0) {
         self.queue.asyncAfter(deadline: .now() + delay, execute: closure)
     }
-}
-
-func isEquivalentDisregardingOrientation(_ lhs: [(ClusterName, ClusterName)], _ rhs: [(ClusterName, ClusterName)]) -> Bool {
-    let lhs = lhs.map({ ($1 < $0) ? ($1, $0) : ($0, $1) }).sorted(by: <)
-    let rhs = rhs.map({ ($1 < $0) ? ($1, $0) : ($0, $1) }).sorted(by: <)
-    return lhs.elementsEqual(rhs, by: ==)
-}
-
-func isEquivalentDisregardingRotation(_ lhs: [(ClusterName, ClusterName, ClusterName)], _ rhs: [(ClusterName, ClusterName, ClusterName)]) -> Bool {
-    let lhs = lhs.map({ Face(vertices: [$0,$1,$2]) })
-    let rhs = rhs.map({ Face(vertices: [$0,$1,$2]) })
-    return Set(lhs) == Set(rhs)
-}
-
-func isEquivalentDisregardingOrdering(_ lhs: [(ClusterName)], _ rhs: [(ClusterName)]) -> Bool {
-    return lhs.sorted() == rhs.sorted()
 }
