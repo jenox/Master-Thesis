@@ -84,8 +84,8 @@ struct ConcreteForceComputer: ForceComputer {
                     let uv = graph.vector(from: u, to: v)
                     let d = uv.length
 
-                    forces[u]! -= self.force1Strength / pow(d, 2) * uv.normalized
-                    forces[v]! += self.force1Strength / pow(d, 2) * uv.normalized
+                    forces[u]! -= self.force1Strength * sanitize(uv.normalized / pow(d, 2))
+                    forces[v]! += self.force1Strength * sanitize(uv.normalized / pow(d, 2))
                 }
             }
         }
@@ -96,8 +96,8 @@ struct ConcreteForceComputer: ForceComputer {
                 let uv = graph.vector(from: u, to: v)
                 let d = uv.length
 
-                forces[u]! += self.force2Strength * log(d / 100) * uv.normalized
-                forces[v]! -= self.force2Strength * log(d / 100) * uv.normalized
+                forces[u]! += self.force2Strength * sanitize(log(d / 100) * uv.normalized)
+                forces[v]! -= self.force2Strength * sanitize(log(d / 100) * uv.normalized)
             }
         }
 
@@ -113,7 +113,7 @@ struct ConcreteForceComputer: ForceComputer {
                     let up = graph.vector(from: u, to: p)
                     let d = up.length
 
-                    forces[u]! -= self.force3Strength / pow(d, 2) * up.normalized
+                    forces[u]! -= self.force3Strength * sanitize(up.normalized / pow(d, 2))
                 }
             }
         }
@@ -128,7 +128,7 @@ struct ConcreteForceComputer: ForceComputer {
                 let polygon = graph.polygon(for: face)
 
                 for (index, vertex) in graph.boundary(of: face).enumerated() {
-                    forces[vertex]! += self.force4Strength * log(pressure) * polygon.normalAndAngle(at: index).normal
+                    forces[vertex]! += self.force4Strength * sanitize(log(pressure) * polygon.normalAndAngle(at: index).normal)
                 }
             }
         }
@@ -149,13 +149,20 @@ struct ConcreteForceComputer: ForceComputer {
                     let under = (desired - inside) / desired // fraction under
                     let factor = inside > desired ? over : -under
 
-                    forces[vertex]! += self.force5Strength * factor * normal
+                    forces[vertex]! += self.force5Strength * sanitize(factor * normal)
                 }
             }
         }
 
         return forces
     }
+}
+
+private func sanitize(_ vector: CGVector) -> CGVector {
+    if vector.dx.isNaN || vector.dy.isNaN {
+        print("oh noes!")
+    }
+    return vector
 }
 
 private extension Dictionary {
