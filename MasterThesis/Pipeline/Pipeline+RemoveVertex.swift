@@ -18,7 +18,7 @@ extension PolygonalDual {
     }
 
     func possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() -> Set<RemoveFaceWithoutBoundaryToExternalFaceOperation> {
-        return Set(self.embeddedClusterGraph.removableExternalVertices.map(RemoveFaceWithoutBoundaryToExternalFaceOperation.init))
+        return Set(self.embeddedClusterGraph.removableInternalVertices.map(RemoveFaceWithoutBoundaryToExternalFaceOperation.init))
     }
 
     mutating func removeFaceWithoutBoundaryToExternalFace(_ operation: RemoveFaceWithoutBoundaryToExternalFaceOperation) throws {
