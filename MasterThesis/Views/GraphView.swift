@@ -98,7 +98,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
 
         // Face backgrounds
         for face in self.graph.faces {
-            let color = face.color.interpolate(to: .white, fraction: 0.75)
+            let color = face.color.withAlphaComponent(0.25)
             let polygon = self.graph.polygon(for: face)
 
             context.fill(polygon, with: color)
