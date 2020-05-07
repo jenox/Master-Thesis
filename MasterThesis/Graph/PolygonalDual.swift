@@ -61,34 +61,33 @@ extension PolygonalDual {
 }
 
 extension PolygonalDual {
-    func ensureIntegrity() {
-        switch self.validateIntegrity() {
+    func ensureIntegrity(strict: Bool) {
+        switch self.validateIntegrity(strict: strict) {
         case .success:
             break
         case .failure(let error):
             print("Integrity violation:", error)
-            fatalError()
         }
     }
 
-    func validateIntegrity() -> Result<Void, PolygonalDualIntergrityViolation> {
+    func validateIntegrity(strict: Bool) -> Result<Void, PolygonalDualIntergrityViolation> {
         guard self.vertices.count >= 3 else { return .failure(.fatal) }
         guard Set(self.vertices) == Set(self.vertexPayloads.keys) else { return .failure(.fatal) }
         guard Set(self.faces) == Set(self.facePayloads.keys) else { return .failure(.fatal) }
-
-        for vertex in self.vertices {
-            guard 2...3 ~= self.vertexPayloads[vertex]!.neighbors.count else { return .failure(.invalidVertexDegree) }
-        }
-
-        for vertex in self.vertices {
-            guard self.degree(of: vertex) == self.faces(incidentTo: vertex).count else { return .failure(.invalidVertexDegree) }
-        }
 
         // symmetric adjacencies
         for vertex in self.vertices {
             for neighbor in self.vertexPayloads[vertex]!.neighbors {
                 guard self.vertexPayloads[neighbor]!.neighbors.contains(vertex) else { return .failure(.asymmetricAdjacencies) }
             }
+        }
+
+        for vertex in self.vertices {
+            guard (strict ? 2...3 : 2...4) ~= self.vertexPayloads[vertex]!.neighbors.count else { return .failure(.invalidVertexDegree) }
+        }
+
+        for vertex in self.vertices {
+            guard self.degree(of: vertex) == self.faces(incidentTo: vertex).count else { return .failure(.invalidVertexDegree) }
         }
 
         let boundaries = self.facePayloads.map({ $0.value.boundary })
@@ -256,7 +255,7 @@ extension PolygonalDual {
             }
         }
 
-        self.ensureIntegrity()
+        self.ensureIntegrity(strict: false)
 
         return v
     }
@@ -284,8 +283,6 @@ extension PolygonalDual {
         nw.remove(v)
         let ju = nu.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > uw }) ?? nu.endIndex
         let jw = nw.firstIndex(where: { self.angle(from: w, to: $0).counterclockwise > wu }) ?? nw.endIndex
-//        print(u, uw, nu.map({ ($0, self.angle(from: u, to: $0).counterclockwise) }), iu, ju)
-//        print(w, wu, nw.map({ ($0, self.angle(from: w, to: $0).counterclockwise) }), iw, jw)
         guard abs(iu - ju) % nu.count == 0 else { throw UnsupportedOperationError() }
         guard abs(iw - jw) % nu.count == 0 else { throw UnsupportedOperationError() }
 
@@ -300,6 +297,6 @@ extension PolygonalDual {
             }
         }
 
-        self.ensureIntegrity()
+        self.ensureIntegrity(strict: false)
     }
 }

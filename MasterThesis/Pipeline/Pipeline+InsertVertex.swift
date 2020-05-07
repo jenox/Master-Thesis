@@ -143,7 +143,7 @@ private extension PolygonalDual {
         }
 
         self.defineFace(named: name, boundedBy: boundary, weight: weight)
-        self.ensureIntegrity()
+        self.ensureIntegrity(strict: true)
     }
 }
 

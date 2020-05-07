@@ -117,7 +117,7 @@ private extension VertexWeightedGraph {
             graph.defineFace(named: vertex, boundedBy: vertices, weight: self.weight(of: vertex))
         }
 
-        graph.ensureIntegrity()
+        graph.ensureIntegrity(strict: true)
 
         return graph
     }

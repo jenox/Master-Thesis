@@ -46,6 +46,8 @@ extension PolygonalDual {
 
 private extension PolygonalDual {
     mutating func removeFace(_ faceID: FaceID) throws {
+        guard self.faces.contains(faceID) else { throw UnsupportedOperationError() }
+
         let face = Face(vertices: self.facePayloads[faceID]!.boundary)
         let joints = face.vertices.filter(self.isJoint(_:))
 
@@ -76,7 +78,7 @@ private extension PolygonalDual {
             // no-op
         }
 
-        self.ensureIntegrity()
+        self.ensureIntegrity(strict: true)
     }
 }
 

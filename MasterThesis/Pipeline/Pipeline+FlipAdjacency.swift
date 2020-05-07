@@ -30,6 +30,9 @@ extension PolygonalDual {
         // x = above, y = below
         let (v, u) = operation.incidentFaces.destructured2()!
 
+        guard self.faces.contains(u) else { throw UnsupportedOperationError() }
+        guard self.faces.contains(v) else { throw UnsupportedOperationError() }
+
         let bu = self.boundary(of: u)
         let bv = self.boundary(of: v)
         let fu = Face(vertices: bu)
@@ -47,8 +50,10 @@ extension PolygonalDual {
         print(boundary)
 
         let vertex = self.contractBoundary(boundary)
+        self.ensureIntegrity(strict: false)
         self.expandDegenerateBoundary(at: vertex, into: u)
         self.expandDegenerateBoundary(at: vertex, into: v)
+        self.ensureIntegrity(strict: true)
     }
 
     private mutating func contractBoundary(_ boundary: [Vertex]) -> Vertex {
@@ -160,7 +165,7 @@ extension PolygonalDual {
         var successor = face.successor(of: vertex)!
         assert(predecessor != successor)
         if !self.isBend(predecessor) { predecessor = self.subdivideEdge(between: vertex, and: predecessor) }
-        if !self.isBend(predecessor) { successor = self.subdivideEdge(between: vertex, and: successor) }
+        if !self.isBend(successor) { successor = self.subdivideEdge(between: vertex, and: successor) }
 
         let boundary = self.boundary(of: faceID)
         let polygon = self.polygon(on: boundary)
