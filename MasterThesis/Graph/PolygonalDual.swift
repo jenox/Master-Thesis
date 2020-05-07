@@ -202,12 +202,30 @@ extension PolygonalDual {
 }
 
 extension PolygonalDual {
-    func isSubdivisionVertex(_ vertex: Vertex) -> Bool {
-        switch self.degree(of: vertex) {
-        case 2: return true
-        case 3: return false
-        default: fatalError()
-        }
+    func isBend(_ vertex: Vertex) -> Bool {
+        return self.degree(of: vertex) == 2
+    }
+
+    func isJoint(_ vertex: Vertex) -> Bool {
+        return self.degree(of: vertex) == 3
+    }
+
+    func computeBoundary(between left: [Vertex], and right: [Vertex]) -> (joined: [Vertex], shared: [Vertex])? {
+        let set = Set(right)
+        guard let index = left.firstIndex(where: set.contains(_:)) else { return nil }
+
+        let rotated1 = Array(left.rotated(shiftingToStart: index))
+        let count = rotated1.reversed().prefix(while: set.contains(_:)).count
+        let rotated2 = Array(rotated1.rotated(shiftingToStart: (rotated1.count - count) % rotated1.count))
+        let shared = Array(rotated2.prefix(while: set.contains(_:)))
+        let rotated3 = Array(right.rotated(shiftingToStart: right.firstIndex(of: shared.last!)!))
+
+        var joined = [rotated2[0]]
+        joined.append(contentsOf: rotated3.dropFirst(shared.count))
+        joined.append(rotated3[0])
+        joined.append(contentsOf: rotated2.dropFirst(shared.count))
+
+        return (joined, shared)
     }
 }
 

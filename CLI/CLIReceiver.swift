@@ -57,11 +57,11 @@ final class CLIReceiver {
     }
 
     private func changeCountryWeight(_ command: ChangeCountryWeightCommand, completion: @escaping (CLIResponse) -> Void) {
-        pipeline.changeWeight(of: .init(rawValue: command.country), to: .init(rawValue: command.weight), completion: self.wrapCompletionHandler(completion))
+//        pipeline.changeWeight(of: .init(rawValue: command.country), to: .init(rawValue: command.weight), completion: self.wrapCompletionHandler(completion))
     }
 
     private func flipBorder(_ command: FlipBorderCommand, completion: @escaping (CLIResponse) -> Void) {
-        pipeline.flipAdjacency(between: .init(rawValue: command.first), and: .init(rawValue: command.second), completion: self.wrapCompletionHandler(completion))
+//        pipeline.flipAdjacency(between: .init(rawValue: command.first), and: .init(rawValue: command.second), completion: self.wrapCompletionHandler(completion))
     }
 
     private var pipeline: PrimaryPipeline {

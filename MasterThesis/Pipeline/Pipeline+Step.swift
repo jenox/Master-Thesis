@@ -10,7 +10,7 @@ import CoreGraphics
 
 extension PolygonalDual {
     mutating func willStepOnce() throws {
-        for v in self.vertices.filter(self.isSubdivisionVertex(_:)).sorted(by: self.distanceToClosestNeighbor(of:)) {
+        for v in self.vertices.filter(self.isBend(_:)).sorted(by: self.distanceToClosestNeighbor(of:)) {
             guard self.distanceToClosestNeighbor(of: v) < 5 else { break }
 
             try? self.smooth(v)
@@ -22,6 +22,65 @@ extension PolygonalDual {
 
     private func distanceToClosestNeighbor(of v: Vertex) -> CGFloat {
         return self.vertices(adjacentTo: v).map({ self.distance(from: v, to: $0) }).min()!
+    }
+}
+
+extension PolygonalDual {
+    func ensureAllValidOperationsPass() throws {
+        print("Ensuring all possible operations pass...", terminator: " ")
+        var firstError: Error?
+        let before = CFAbsoluteTimeGetCurrent()
+
+        do {
+            for operation in self.possibleInsertFaceInsideOperations(name: "_", weight: 1) {
+                var graph = self
+                try graph.insertFaceInside(operation)
+            }
+            print("✔︎", terminator: "")
+        } catch let error {
+            firstError = error
+            print("✖", terminator: "")
+        }
+
+        do {
+            for operation in self.possibleInsertFaceOutsideOperations(name: "_", weight: 1) {
+                var graph = self
+                try graph.insertFaceOutside(operation)
+            }
+            print("✔︎", terminator: "")
+        } catch let error {
+            firstError = error
+            print("✖", terminator: "")
+        }
+
+        do {
+            for operation in self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() {
+                var graph = self
+                try graph.removeFaceWithoutBoundaryToExternalFace(operation)
+            }
+            print("✔︎", terminator: "")
+        } catch let error {
+            firstError = error
+            print("✖", terminator: "")
+        }
+
+        do {
+            for operation in self.possibleRemoveFaceWithBoundaryToExternalFaceOperations() {
+                var graph = self
+                try graph.removeFaceWithBoundaryToExternalFace(operation)
+            }
+            print("✔︎", terminator: "")
+        } catch let error {
+            firstError = error
+            print("✖", terminator: "")
+        }
+
+        if let error = firstError {
+            throw error
+        }
+
+        let duration = "\(String(format: "%.3f", 1e3 * (CFAbsoluteTimeGetCurrent() - before)))ms"
+        print(" \(duration)")
     }
 }
 

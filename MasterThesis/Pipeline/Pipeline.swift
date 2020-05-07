@@ -128,6 +128,10 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
             if case .success(let graph) = result {
                 DispatchQueue.main.sync(execute: {
+                    if case .faceWeighted(let graph) = graph {
+                        try! graph.ensureAllValidOperationsPass()
+                    }
+
                     self.previousGraph = self.graph
                     self.graph = graph
                 })
@@ -178,20 +182,14 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    func changeWeight(of country: ClusterName, to weight: ClusterWeight, completion: @escaping CompletionHandler) {
-        self.scheduleMutationOperation(named: "edge flip", { graph in
-            guard graph.faces.contains(country) else { throw UnsupportedOperationError() }
-            try graph.adjustWeight(of: country, to: weight)
-        }, completion: completion)
-    }
-
     func insertRandomVertexInside() {
         self.scheduleMutationOperation(named: "insert vertex inside", { graph in
             let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-
-            try graph.insertFaceInsideRandomly(named: name, weight: weight, using: &self.randomNumberGenerator)
+            let operations = graph.possibleInsertFaceInsideOperations(name: name, weight: weight)
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            try! graph.insertFaceInside(operations.randomElement(using: &self.randomNumberGenerator)!)
         })
     }
 
@@ -200,20 +198,25 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-
-            try graph.insertFaceOutsideRandomly(named: name, weight: weight, using: &self.randomNumberGenerator)
+            let operations = graph.possibleInsertFaceOutsideOperations(name: name, weight: weight)
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            try! graph.insertFaceOutside(operations.randomElement(using: &self.randomNumberGenerator)!)
         })
     }
 
     func removeRandomInternalVertex() {
         self.scheduleMutationOperation(named: "remove internal vertex", { graph in
-            try graph.removeRandomInternalFace(using: &self.randomNumberGenerator)
+            let operations = graph.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations()
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            try! graph.removeFaceWithoutBoundaryToExternalFace(operations.randomElement(using: &self.randomNumberGenerator)!)
         })
     }
 
     func removeRandomExternalVertex() {
-        self.scheduleMutationOperation(named: "remove internal vertex", { graph in
-            try graph.removeRandomExternalFace(using: &self.randomNumberGenerator)
+        self.scheduleMutationOperation(named: "remove external vertex", { graph in
+            let operations = graph.possibleRemoveFaceWithBoundaryToExternalFaceOperations()
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            try! graph.removeFaceWithBoundaryToExternalFace(operations.randomElement(using: &self.randomNumberGenerator)!)
         })
     }
 
@@ -221,12 +224,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "random edge flip", { graph in
             try graph.flipRandomAdjacency(using: &self.randomNumberGenerator)
         })
-    }
-
-    func flipAdjacency(between first: ClusterName, and second: ClusterName, completion: @escaping CompletionHandler) {
-        self.scheduleMutationOperation(named: "edge flip", { graph in
-            try graph.flipAdjanency(between: first, and: second)
-        }, completion: completion)
     }
 
     func insertRandomEdgeOutside() {

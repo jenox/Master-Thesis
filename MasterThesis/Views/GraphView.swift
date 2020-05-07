@@ -113,7 +113,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
         for vertex in self.graph.vertices {
             let position = self.graph.position(of: vertex)
 
-            if self.graph.isSubdivisionVertex(vertex) {
+            if self.graph.isBend(vertex) {
                 context.fill(position, diameter: 3 / scale, color: .black)
             } else {
                 context.fill(position, diameter: 5 / scale, color: .black)

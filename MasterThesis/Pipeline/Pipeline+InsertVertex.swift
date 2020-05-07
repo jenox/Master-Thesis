@@ -11,30 +11,88 @@ import CoreGraphics
 import Geometry
 
 extension PolygonalDual {
-    mutating func insertFaceInsideRandomly<T>(
-        named name: ClusterName,
-        weight: ClusterWeight,
-        using generator: inout T
-    ) throws where T: RandomNumberGenerator {
-        guard let vertex = self.possibleInsertionPoints().inside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+    struct InsertFaceInsideOperation: Equatable, Hashable {
+        init(name: ClusterName, weight: ClusterWeight, incidentTo u: ClusterName, _ v: ClusterName, _ w: ClusterName) {
+            self.name = name
+            self.weight = weight
+            self.incidentFaces = [u, v, w]
 
-        try! self.insertFace(named: name, at: vertex, weight: weight)
+            precondition(self.incidentFaces.count == 3)
+        }
+
+        let name: ClusterName
+        let weight: ClusterWeight
+        let incidentFaces: Set<ClusterName>
     }
 
-    mutating func insertFaceOutsideRandomly<T>(
-        named name: ClusterName,
-        weight: ClusterWeight,
-        using generator: inout T
-    ) throws where T: RandomNumberGenerator {
-        guard let vertex = self.possibleInsertionPoints().outside.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+    func possibleInsertFaceInsideOperations(name: ClusterName, weight: ClusterWeight) -> Set<InsertFaceInsideOperation> {
+        var operations: Set<InsertFaceInsideOperation> = []
 
-        try! self.insertFace(named: name, at: vertex, weight: weight)
+        for (u, v, w) in self.embeddedClusterGraph.insertionPositionsInside {
+            operations.insert(.init(name: name, weight: weight, incidentTo: u, v, w))
+        }
+
+        return operations
     }
 
-    mutating func insertFace(named name: ClusterName, at vertex: Vertex, weight: ClusterWeight) throws {
+    mutating func insertFaceInside(_ operation: InsertFaceInsideOperation) throws {
+        let (u, v, w) = operation.incidentFaces.destructured3()!
+
+        var vertices = Set(self.boundary(of: u))
+        vertices.formIntersection(self.boundary(of: v))
+        vertices.formIntersection(self.boundary(of: w))
+
+        guard vertices.count == 1 else { throw UnsupportedOperationError() }
+
+        try self.insertFace(named: operation.name, weight: operation.weight, at: vertices.first!)
+    }
+}
+
+extension PolygonalDual {
+    struct InsertFaceOutsideOperation: Equatable, Hashable {
+        init(name: ClusterName, weight: ClusterWeight, incidentTo u: ClusterName, _ v: ClusterName) {
+            self.name = name
+            self.weight = weight
+            self.incidentFaces = [u, v]
+
+            precondition(self.incidentFaces.count == 2)
+        }
+
+        let name: ClusterName
+        let weight: ClusterWeight
+        let incidentFaces: Set<ClusterName>
+    }
+
+    func possibleInsertFaceOutsideOperations(name: ClusterName, weight: ClusterWeight) -> Set<InsertFaceOutsideOperation> {
+        var operations: Set<InsertFaceOutsideOperation> = []
+
+        for (u, v) in self.embeddedClusterGraph.insertionPositionsOutside {
+            operations.insert(.init(name: name, weight: weight, incidentTo: u, v))
+        }
+
+        return operations
+    }
+
+    mutating func insertFaceOutside(_ operation: InsertFaceOutsideOperation) throws {
+        let (u, v) = operation.incidentFaces.destructured2()!
+
+        var vertices = Set(self.boundary(of: u))
+        vertices.formIntersection(self.boundary(of: v))
+        vertices.formIntersection(self.internalFacesAndOuterFace().outer.vertices)
+
+        guard vertices.count == 1 else { throw UnsupportedOperationError() }
+
+        try self.insertFace(named: operation.name,  weight: operation.weight, at: vertices.first!)
+    }
+}
+
+private extension PolygonalDual {
+    mutating func insertFace(named name: ClusterName, weight: ClusterWeight, at vertex: Vertex) throws {
         var faces = Array(self.faces(incidentTo: vertex))
+        assert(faces.allSatisfy({ $0.vertices.first == vertex }))
+
         guard faces.count == 3 else { throw UnsupportedOperationError() }
-        guard faces.allSatisfy({ $0.vertices.first == vertex }) else { throw UnsupportedOperationError() }
+
         var neighbors = faces.map({ $0.vertices[1] })
 
         // Ensure the closest vertices are subdivision vertices
@@ -43,8 +101,8 @@ extension PolygonalDual {
             faces[index] = faces[index].inserting(neighbors[index], at: 1)
         }
 
+        // Compute boundary of new face
         var boundary: [Vertex] = []
-
         for (face, (x, y)) in zip(faces, neighbors.adjacentPairs(wraparound: true)) {
             boundary.append(x)
 
@@ -65,6 +123,7 @@ extension PolygonalDual {
             }
         }
 
+        // Update data structure
         self.vertices.remove(vertex)
         self.vertexPayloads[vertex] = nil
         for neighbor in neighbors {
@@ -88,38 +147,36 @@ extension PolygonalDual {
         self.defineFace(named: name, boundedBy: boundary, weight: weight)
         self.ensureIntegrity()
     }
-
-    private func possibleInsertionPoints() -> (inside: [Vertex], outside: [Vertex]) {
-        var inside: [Vertex] = []
-        var outside: [Vertex] = []
-
-        for vertex in self.vertices.filter({ self.degree(of: $0) == 3 }) {
-            let faces = self.faces(incidentTo: vertex)
-            assert(faces.count == 3)
-
-            if faces.contains(where: { self.polygon(on: $0.vertices).area < 0 }) {
-                outside.append(vertex)
-            } else {
-                inside.append(vertex)
-            }
-        }
-
-        return (inside: inside, outside: outside)
-    }
 }
 
-extension PolygonalDual {
-    var insertionPositionsInside: [(FaceID, FaceID, FaceID)] {
-        let vertices = self.possibleInsertionPoints().inside
-        let faces = vertices.map({ self.faces(incidentTo: $0).compactMap(self.faceID(of:)).destructured3()! })
+private extension EmbeddedClusterGraph {
+    /// We can insert into all (triangular) internal faces.
+    var insertionPositionsInside: [(Vertex, Vertex, Vertex)] {
+        var insertionPositionsInside: [(Vertex, Vertex, Vertex)] = []
 
-        return faces
+        for face in self.internalFaces {
+            let (u, v, w) = face.vertices.destructured3()!
+
+            insertionPositionsInside.append((u, v, w))
+            insertionPositionsInside.append((u, w, v))
+            insertionPositionsInside.append((v, u, w))
+            insertionPositionsInside.append((v, w, u))
+            insertionPositionsInside.append((w, u, v))
+            insertionPositionsInside.append((w, v, u))
+        }
+
+        return insertionPositionsInside
     }
 
-    var insertionPositionsOutside: [(FaceID, FaceID)] {
-        let vertices = self.possibleInsertionPoints().outside
-        let faces = vertices.map({ self.faces(incidentTo: $0).compactMap(self.faceID(of:)).destructured2()! })
+    /// We can insert at all edges on the outer face.
+    var insertionPositionsOutside: [(Vertex, Vertex)] {
+        var insertionPositionsOutside: [(Vertex, Vertex)] = []
 
-        return faces
+        for (u, v) in self.externalEdges {
+            insertionPositionsOutside.append((u, v))
+            insertionPositionsOutside.append((v, u))
+        }
+
+        return insertionPositionsOutside
     }
 }

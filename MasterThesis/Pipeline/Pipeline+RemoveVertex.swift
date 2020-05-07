@@ -9,25 +9,43 @@
 import Foundation
 
 extension PolygonalDual {
-    mutating func removeRandomInternalFace<T>(
-        using generator: inout T
-    ) throws where T: RandomNumberGenerator {
-        guard let face = self.categorizeRemovableFaces().internal.randomElement(using: &generator) else { throw UnsupportedOperationError() }
+    struct RemoveFaceWithoutBoundaryToExternalFaceOperation: Equatable, Hashable {
+        init(name: ClusterName) {
+            self.name = name
+        }
 
-        try! self.removeFace(face)
+        let name: ClusterName
     }
 
-    mutating func removeRandomExternalFace<T>(
-        using generator: inout T
-    ) throws where T: RandomNumberGenerator {
-        guard let face = self.categorizeRemovableFaces().external.randomElement(using: &generator) else { throw UnsupportedOperationError() }
-
-        try! self.removeFace(face)
+    func possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() -> Set<RemoveFaceWithoutBoundaryToExternalFaceOperation> {
+        return Set(self.embeddedClusterGraph.removableExternalVertices.map(RemoveFaceWithoutBoundaryToExternalFaceOperation.init))
     }
 
+    mutating func removeFaceWithoutBoundaryToExternalFace(_ operation: RemoveFaceWithoutBoundaryToExternalFaceOperation) throws {
+        try self.removeFace(operation.name)
+    }
+}
+
+extension PolygonalDual {
+    struct RemoveFaceWithBoundaryToExternalFaceOperation: Equatable, Hashable {
+        init(name: ClusterName) {
+            self.name = name
+        }
+
+        let name: ClusterName
+    }
+
+    func possibleRemoveFaceWithBoundaryToExternalFaceOperations() -> Set<RemoveFaceWithBoundaryToExternalFaceOperation> {
+        return Set(self.embeddedClusterGraph.removableExternalVertices.map(RemoveFaceWithBoundaryToExternalFaceOperation.init))
+    }
+
+    mutating func removeFaceWithBoundaryToExternalFace(_ operation: RemoveFaceWithBoundaryToExternalFaceOperation) throws {
+        try self.removeFace(operation.name)
+    }
+}
+
+private extension PolygonalDual {
     mutating func removeFace(_ faceID: FaceID) throws {
-//        print("Removing face “\(faceID)”...")
-
         let face = Face(vertices: self.facePayloads[faceID]!.boundary)
         let joints = face.vertices.filter(self.isJoint(_:))
 
@@ -41,9 +59,7 @@ extension PolygonalDual {
         assert(faces.count == 3)
 
         let neighbor = faces.max(by: { abs(self.polygon(on: $0.vertices).area) })!
-//        print("merge \(faceID) into \(neighbor)")
         let (joined, boundary) = self.computeBoundary(between: face.vertices, and: neighbor.vertices)!
-//        print("boundary to be removed is", boundary)
 
         for (u,v) in boundary.adjacentPairs(wraparound: false) {
             self.vertexPayloads[u]!.neighbors.remove(v)
@@ -63,67 +79,21 @@ extension PolygonalDual {
 
         self.ensureIntegrity()
     }
-
-    private func categorizeRemovableFaces() -> (internal: [FaceID], external: [FaceID]) {
-        guard self.faces.count >= 4 else { return ([], []) }
-
-        var `internal`: [FaceID] = []
-        var external: [FaceID] = []
-
-        let (internalFaces, outerFace) = self.internalFacesAndOuterFace()
-
-        for (face, payload) in self.facePayloads {
-            let set = Set(payload.boundary)
-
-            let n = internalFaces.count(where: { 1..<set.count ~= set.intersection($0.vertices).count })
-            let m = outerFace.vertices.contains(where: set.contains(_:))
-
-            switch (n, m) {
-            case (2, true):
-                external.append(face)
-            case (3, false):
-                `internal`.append(face)
-            default:
-                break // face cannot be removed
-            }
-        }
-
-        return (internal: `internal`, external: external)
-    }
-
-    func isBend(_ vertex: Vertex) -> Bool {
-        return self.degree(of: vertex) == 2
-    }
-
-    func isJoint(_ vertex: Vertex) -> Bool {
-        return self.degree(of: vertex) == 3
-    }
-
-    func computeBoundary(between left: [Vertex], and right: [Vertex]) -> (joined: [Vertex], shared: [Vertex])? {
-        let set = Set(right)
-        guard let index = left.firstIndex(where: set.contains(_:)) else { return nil }
-
-        let rotated1 = Array(left.rotated(shiftingToStart: index))
-        let count = rotated1.reversed().prefix(while: set.contains(_:)).count
-        let rotated2 = Array(rotated1.rotated(shiftingToStart: (rotated1.count - count) % rotated1.count))
-        let shared = Array(rotated2.prefix(while: set.contains(_:)))
-        let rotated3 = Array(right.rotated(shiftingToStart: right.firstIndex(of: shared.last!)!))
-
-        var joined = [rotated2[0]]
-        joined.append(contentsOf: rotated3.dropFirst(shared.count))
-        joined.append(rotated3[0])
-        joined.append(contentsOf: rotated2.dropFirst(shared.count))
-
-        return (joined, shared)
-    }
 }
 
-extension PolygonalDual {
-    var removableFacesWithoutBoundaryToOuterFace: [FaceID] {
-        return self.categorizeRemovableFaces().internal
+private extension EmbeddedClusterGraph {
+    /// We can only remove an internal vertex if the graph remains internally
+    /// triangulated. This is the case if the vertex to be removed has degree 3.
+    var removableInternalVertices: [Vertex] {
+        return self.internalVertices.filter({ self.degree(of: $0) == 3 })
     }
 
-    var removableFacesWithBoundaryToOuterFace: [FaceID] {
-        return self.categorizeRemovableFaces().external
+    /// We can only remove an external vertex if the graph remains 2-connected.
+    /// Because we only allow removing vertices with degree 2, this is the case
+    /// if the graph would have 3+ vertices remaining.
+    var removableExternalVertices: [Vertex] {
+        guard self.vertices.count >= 4 else { return [] }
+
+        return self.externalVertices.filter({ self.degree(of: $0) == 2 })
     }
 }
