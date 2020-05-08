@@ -140,10 +140,9 @@ enum PolygonalDualIntergrityViolation: Error {
 
 extension PolygonalDual {
     private mutating func insertEdge(from u: Vertex, to v: Vertex) {
-        let angle = self.angle(from: u, to: v).counterclockwise
-
         var neighbors = self.vertexPayloads[u]!.neighbors
-        let index = neighbors.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > angle }) ?? neighbors.endIndex
+        let angles = neighbors.map({ self.angle(from: u, to: $0).counterclockwise })
+        let index = angles.index(forInserting: self.angle(from: u, to: v).counterclockwise)
         neighbors.insert(v, at: index)
         self.vertexPayloads[u]!.neighbors = neighbors
     }
@@ -276,8 +275,8 @@ extension PolygonalDual {
         let iw = nw.firstIndex(of: v)!
         nu.remove(v)
         nw.remove(v)
-        let ju = nu.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > uw }) ?? nu.endIndex
-        let jw = nw.firstIndex(where: { self.angle(from: w, to: $0).counterclockwise > wu }) ?? nw.endIndex
+        let ju = nu.map({ self.angle(from: u, to: $0).counterclockwise }).index(forInserting: uw)
+        let jw = nw.map({ self.angle(from: w, to: $0).counterclockwise }).index(forInserting: wu)
         guard abs(iu - ju) % nu.count == 0 else { throw UnsupportedOperationError() }
         guard abs(iw - jw) % nu.count == 0 else { throw UnsupportedOperationError() }
 
@@ -293,5 +292,40 @@ extension PolygonalDual {
         }
 
         self.ensureIntegrity(strict: false)
+    }
+}
+
+
+// MARK: - Misc
+
+extension Array where Element == Angle {
+    var isSortedWithOneDiscontinuity: Bool {
+        return self.adjacentPairs(wraparound: true).filter(>=).count <= 1
+    }
+
+    func index(forInserting angle: Angle) -> Int {
+        guard self.count >= 2 else { return self.endIndex }
+
+        if !self.isSortedWithOneDiscontinuity {
+            print(self)
+        }
+        assert(self.isSortedWithOneDiscontinuity)
+
+        let angle = angle >= self.first! ? angle : angle + .init(turns: 1)
+
+        var array = self
+        if let i = array.indices.dropFirst().first(where: { array[$0] < array[$0 - 1] }) {
+            for j in i..<array.endIndex {
+                array[j] += .init(turns: 1)
+            }
+        }
+
+        let index = array.firstIndex(where: { $0 > angle }) ?? array.endIndex
+
+        var copy = self
+        copy.insert(angle, at: index)
+        assert(self.isSortedWithOneDiscontinuity)
+
+        return index
     }
 }

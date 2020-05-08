@@ -199,11 +199,11 @@ extension PolygonalDual {
         if let below = below { self.facePayloads[below]!.boundary.replace(u, with: [rightBend, v, leftBend].compactMap({ $0 })) }
         if let left = left { self.facePayloads[left]!.boundary.replace(u, with: [leftBend].compactMap({ $0 })) }
         if let right = right { self.facePayloads[right]!.boundary.replace(u, with: [rightBend].compactMap({ $0 })) }
-        [faces[1].vertices[1], leftBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
-        [faces[2].vertices[1], rightBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
         self.vertices.remove(u)
         self.vertexPayloads[u] = nil
         faces.forEach({ self.vertexPayloads[$0.vertices[1]]!.neighbors.remove(u) })
+        [faces[1].vertices[1], leftBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
+        [faces[2].vertices[1], rightBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
     }
 
     private mutating func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID?) {

@@ -41,10 +41,9 @@ struct VertexWeightedGraph {
     }
 
     private mutating func insertEdge(from u: Vertex, to v: Vertex) {
-        let angle = self.angle(from: u, to: v).counterclockwise
-
         var neighbors = self.payloads[u]!.neighbors
-        let index = neighbors.firstIndex(where: { self.angle(from: u, to: $0).counterclockwise > angle }) ?? neighbors.endIndex
+        let angles = neighbors.map({ self.angle(from: u, to: $0).counterclockwise })
+        let index = angles.index(forInserting: self.angle(from: u, to: v).counterclockwise)
         neighbors.insert(v, at: index)
         self.payloads[u]!.neighbors = neighbors
     }
