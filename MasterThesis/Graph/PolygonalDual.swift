@@ -137,9 +137,17 @@ extension Polygon {
     /// https://stackoverflow.com/questions/4001745/testing-whether-a-polygon-is-simple-or-complex
     /// http://geomalgorithms.com/a09-_intersect-3.html#simple_Polygon()
     var isSimple: Bool {
+        guard self.points.count >= 3 else { return true }
+
         let segments = self.points.adjacentPairs(wraparound: true).map(Segment.init)
 
-        return !segments.cartesianPairs().contains(where: { $0.intersects($1) })
+        for (i, j) in segments.indices.cartesianPairs() where (2..<segments.indices.last!).contains(abs(i - j)) {
+            if segments[i].intersects(segments[j]) {
+                return false
+            }
+        }
+
+        return true
     }
 }
 

@@ -11,9 +11,6 @@ import Geometry
 
 extension Segment {
     func intersects(_ other: Segment) -> Bool {
-        if self.start == other.start || self.start == other.end { return false }
-        if self.end == other.start || self.end == other.end { return false }
-
         return check_inter(a: self.start, b: self.end, c: other.start, d: other.end)
     }
 

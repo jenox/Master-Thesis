@@ -223,7 +223,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     func flipRandomInternalEdge() {
         self.scheduleMutationOperation(named: "random edge flip", { graph in
             let operations = graph.possibleFlipAdjacencyOperations()
-            print(operations.count)
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
             try! graph.flipAdjacency(operations.randomElement(using: &self.randomNumberGenerator)!)
         })
