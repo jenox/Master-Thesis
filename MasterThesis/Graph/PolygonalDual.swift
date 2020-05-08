@@ -67,6 +67,7 @@ extension PolygonalDual {
             break
         case .failure(let error):
             print("Integrity violation:", error)
+            fatalError()
         }
     }
 

@@ -26,61 +26,40 @@ extension PolygonalDual {
 }
 
 extension PolygonalDual {
-    func ensureAllValidOperationsPass() throws {
-        print("Ensuring all possible operations pass...", terminator: " ")
+    private func verify<T>(_ name: String, _ operations: Set<T>, using closure: (inout PolygonalDual, T) throws -> Void) -> Error? where T: Hashable {
         var firstError: Error?
         let before = CFAbsoluteTimeGetCurrent()
+        var n = 0
 
-        do {
-            for operation in self.possibleInsertFaceInsideOperations(name: "_", weight: 1) {
+        for operation in operations {
+            do {
                 var graph = self
-                try graph.insertFaceInside(operation)
+                try closure(&graph, operation)
+                n += 1
+            } catch let error {
+                firstError = firstError ?? error
             }
-            print("✔︎", terminator: "")
-        } catch let error {
-            firstError = error
-            print("✖", terminator: "")
-        }
-
-        do {
-            for operation in self.possibleInsertFaceOutsideOperations(name: "_", weight: 1) {
-                var graph = self
-                try graph.insertFaceOutside(operation)
-            }
-            print("✔︎", terminator: "")
-        } catch let error {
-            firstError = error
-            print("✖", terminator: "")
-        }
-
-        do {
-            for operation in self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() {
-                var graph = self
-                try graph.removeFaceWithoutBoundaryToExternalFace(operation)
-            }
-            print("✔︎", terminator: "")
-        } catch let error {
-            firstError = error
-            print("✖", terminator: "")
-        }
-
-        do {
-            for operation in self.possibleRemoveFaceWithBoundaryToExternalFaceOperations() {
-                var graph = self
-                try graph.removeFaceWithBoundaryToExternalFace(operation)
-            }
-            print("✔︎", terminator: "")
-        } catch let error {
-            firstError = error
-            print("✖", terminator: "")
-        }
-
-        if let error = firstError {
-            throw error
         }
 
         let duration = "\(String(format: "%.3f", 1e3 * (CFAbsoluteTimeGetCurrent() - before)))ms"
-        print(" \(duration)")
+        print("- \(name):", (n == operations.count ? "✔︎" : "✖"), "(\(n)/\(operations.count)) (\(duration))")
+        return firstError
+    }
+
+    func ensureAllValidOperationsPass() throws {
+        print("Ensuring all possible operations pass...")
+
+        let errors = [
+            self.verify("Insert inside", self.possibleInsertFaceInsideOperations(name: "_", weight: 1), using: { try $0.insertFaceInside($1) }),
+            self.verify("Insert outside", self.possibleInsertFaceOutsideOperations(name: "_", weight: 1), using: { try $0.insertFaceOutside($1) }),
+            self.verify("Remove internal", self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithoutBoundaryToExternalFace($1) }),
+            self.verify("Remove external", self.possibleRemoveFaceWithBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithBoundaryToExternalFace($1) }),
+            self.verify("Flip", self.possibleFlipAdjacencyOperations(), using: { try $0.flipAdjacency($1) }),
+        ]
+
+        if let error = errors.compactMap({ $0 }).first {
+            throw error
+        }
     }
 }
 
