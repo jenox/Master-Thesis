@@ -104,6 +104,22 @@ extension PlanarGraph {
 
         return faces.destructured2()!
     }
+
+    func face(startingWith edge: (Vertex, Vertex)) -> Face<Vertex> {
+        var boundingVertices = [edge.0, edge.1]
+
+        while boundingVertices.first != boundingVertices.last {
+            let neighbors = self.vertices(adjacentTo: boundingVertices[boundingVertices.count - 1])
+            let incoming = neighbors.firstIndex(of: boundingVertices[boundingVertices.count - 2])!
+            let outgoing = (incoming == 0 ? neighbors.count : incoming) - 1
+
+            boundingVertices.append(neighbors[outgoing])
+        }
+
+        boundingVertices.removeLast()
+
+        return .init(vertices: boundingVertices)
+    }
 }
 
 protocol StraightLineGraph: PlanarGraph {

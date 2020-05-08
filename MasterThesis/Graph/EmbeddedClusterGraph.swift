@@ -81,7 +81,10 @@ extension EmbeddedClusterGraph {
     }
 
     var internalFaces: AnyBidirectionalCollection<Face<Vertex>> {
-        return AnyBidirectionalCollection(self.allFaces().filter({ $0 != self.outerFace }))
+        var faces = Array(self.allFaces())
+        faces.remove(at: faces.firstIndex(of: self.outerFace)!)
+
+        return AnyBidirectionalCollection(faces)
     }
 }
 

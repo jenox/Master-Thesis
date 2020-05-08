@@ -272,7 +272,8 @@ private extension EmbeddedClusterGraph {
 
     /// We can only remove an edge on the outer face if the graph remains
     /// 2-connected. This is the case if the edge's endpoints both have degree
-    /// ≥ 3.
+    /// ≥ 3 and the third vertex in the internal face they are incident to
+    /// doesn't already lie on the outer face.
     var removableEdges: [(Vertex, Vertex)] {
         var removableEdges: [(Vertex, Vertex)] = []
 
@@ -280,8 +281,24 @@ private extension EmbeddedClusterGraph {
             guard self.degree(of: u) >= 3 else { continue }
             guard self.degree(of: v) >= 3 else { continue }
 
+            let tip = self.face(startingWith: (v, u)).vertices.destructured3()!.2
+            guard !self.outerFace.vertices.contains(tip) else { continue }
+
             removableEdges.append((u, v))
             removableEdges.append((v, u))
+        }
+
+        for edge in removableEdges {
+            let (f, g) = self.faces(incidentTo: (edge.0, edge.1))
+            let `internal` = [f, g].filter({ $0 != self.outerFace }).destructured1()!
+            let vertex = `internal`.vertices.filter({ $0 != edge.0 && $0 != edge.1 }).destructured1()!
+
+            var copy = self
+            copy.neighbors[edge.0]!.remove(edge.1)
+            copy.neighbors[edge.1]!.remove(edge.0)
+            copy.outerFaceBoundary.insert(vertex, at: self.outerFace.indexOfEdge(between: edge.0, and: edge.1)! + 1)
+
+            try! copy.ensureIntegrity()
         }
 
         return removableEdges
