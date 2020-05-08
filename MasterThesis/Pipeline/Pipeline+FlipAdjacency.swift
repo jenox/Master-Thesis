@@ -14,17 +14,16 @@ extension PolygonalDual {
         init(between u: ClusterName, and v: ClusterName) {
             self.incidentFaces = [u, v]
 
-            precondition(self.incidentFaces.count == 2)
+            precondition(Set(self.incidentFaces).count == 2)
         }
 
-        let incidentFaces: Set<ClusterName>
+        let incidentFaces: ClusterNameSet
     }
 
     func possibleFlipAdjacencyOperations() -> Set<FlipAdjacencyOperation> {
         return Set(self.embeddedClusterGraph.flippableInternalEdges.map(FlipAdjacencyOperation.init))
     }
 
-    // TODO: for testing, how do we make sure we test all orderings? can't use set!
     mutating func flipAdjacency(_ operation: FlipAdjacencyOperation) throws {
         // u = left, v = right
         // x = above, y = below
@@ -200,11 +199,11 @@ extension PolygonalDual {
             self.incidentFaces = [u, w]
             self.sharedNeighbor = sharedNeighbor
 
-            precondition(self.incidentFaces.count == 2)
+            precondition(Set(self.incidentFaces).count == 2)
             precondition(!self.incidentFaces.contains(sharedNeighbor))
         }
 
-        let incidentFaces: Set<ClusterName>
+        let incidentFaces: ClusterNameSet
         let sharedNeighbor: ClusterName
     }
 
@@ -223,10 +222,10 @@ extension PolygonalDual {
         init(between u: ClusterName, and v: ClusterName) {
             self.incidentFaces = [u, v]
 
-            precondition(self.incidentFaces.count == 2)
+            precondition(Set(self.incidentFaces).count == 2)
         }
 
-        let incidentFaces: Set<ClusterName>
+        let incidentFaces: ClusterNameSet
     }
 
     func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {

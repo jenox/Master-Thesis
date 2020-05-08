@@ -9,6 +9,9 @@
 import CoreGraphics
 import Geometry
 
+// Configure as Array or Set here to test all possible orderings or only one
+typealias ClusterNameSet = Array<ClusterName>
+
 extension PolygonalDual {
     struct InsertFaceInsideOperation: Equatable, Hashable {
         init(name: ClusterName, weight: ClusterWeight, incidentTo u: ClusterName, _ v: ClusterName, _ w: ClusterName) {
@@ -16,12 +19,12 @@ extension PolygonalDual {
             self.weight = weight
             self.incidentFaces = [u, v, w]
 
-            precondition(self.incidentFaces.count == 3)
+            precondition(Set(self.incidentFaces).count == 3)
         }
 
         let name: ClusterName
         let weight: ClusterWeight
-        let incidentFaces: Set<ClusterName>
+        let incidentFaces: ClusterNameSet
     }
 
     func possibleInsertFaceInsideOperations(name: ClusterName, weight: ClusterWeight) -> Set<InsertFaceInsideOperation> {
@@ -54,12 +57,12 @@ extension PolygonalDual {
             self.weight = weight
             self.incidentFaces = [u, v]
 
-            precondition(self.incidentFaces.count == 2)
+            precondition(Set(self.incidentFaces).count == 2)
         }
 
         let name: ClusterName
         let weight: ClusterWeight
-        let incidentFaces: Set<ClusterName>
+        let incidentFaces: ClusterNameSet
     }
 
     func possibleInsertFaceOutsideOperations(name: ClusterName, weight: ClusterWeight) -> Set<InsertFaceOutsideOperation> {
