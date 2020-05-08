@@ -115,6 +115,10 @@ extension PolygonalDual {
 
         // edge crossings? or is this already covered by simpleness?
 
+        if strict {
+            _ = self.embeddedClusterGraph
+        }
+
         return .success(())
     }
 }

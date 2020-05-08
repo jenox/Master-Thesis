@@ -55,7 +55,7 @@ extension PolygonalDual {
             self.verify("Remove internal", self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithoutBoundaryToExternalFace($1) }),
             self.verify("Remove external", self.possibleRemoveFaceWithBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithBoundaryToExternalFace($1) }),
             self.verify("Flip edge", self.possibleFlipAdjacencyOperations(), using: { try $0.flipAdjacency($1) }),
-//            self.verify("Insert edge", self.possibleCreateAdjacencyOperations(), using: { try $0.createAdjacency($1) }),
+            self.verify("Insert edge", self.possibleCreateAdjacencyOperations(), using: { try $0.createAdjacency($1) }),
             self.verify("Remove edge", self.possibleRemoveAdjacencyOperations(), using: { try $0.removeAdjacency($1) }),
         ]
 

@@ -55,24 +55,26 @@ extension PolygonalDual {
 
 extension PolygonalDual {
     struct CreateAdjacencyOperation: Equatable, Hashable {
-        init(between u: ClusterName, and w: ClusterName, sharedNeighbor: ClusterName) {
-            self.incidentFaces = [u, w]
+        init(over sharedNeighbor: ClusterName) {
             self.sharedNeighbor = sharedNeighbor
-
-            precondition(Set(self.incidentFaces).count == 2)
-            precondition(!self.incidentFaces.contains(sharedNeighbor))
         }
 
-        let incidentFaces: ClusterNameSet
         let sharedNeighbor: ClusterName
     }
 
     func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
-        return Set(self.embeddedClusterGraph.insertableEdges.map({ CreateAdjacencyOperation(between: $0.0, and: $0.2, sharedNeighbor: $0.1) }))
+        return Set(self.embeddedClusterGraph.insertableEdges.map(CreateAdjacencyOperation.init))
     }
 
     mutating func createAdjacency(_ operation: CreateAdjacencyOperation) throws {
-        throw UnsupportedOperationError()
+        let fv = Face(vertices: self.boundary(of: operation.sharedNeighbor))
+        let fo = self.internalFacesAndOuterFace().outer
+        let boundary = self.computeBoundary(between: fv.vertices, and: fo.vertices)!.shared
+        let vertex = self.contractBoundary(boundary)
+        self.ensureIntegrity(strict: false)
+        self.expandDegenerateBoundary(at: vertex, into: nil)
+        self.expandDegenerateBoundary(at: vertex, into: operation.sharedNeighbor)
+        self.ensureIntegrity(strict: true)
     }
 }
 
@@ -204,11 +206,11 @@ extension PolygonalDual {
         faces.forEach({ self.vertexPayloads[$0.vertices[1]]!.neighbors.remove(u) })
     }
 
-    private mutating func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID) {
-        let face = Face(vertices: self.boundary(of: faceID))
+    private mutating func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID?) {
+        let face = faceID.map({ Face(vertices: self.boundary(of: $0)) }) ?? self.internalFacesAndOuterFace().outer
 
         var faces = Array(self.faces(incidentTo: vertex))
-        faces = Array(faces.rotated(shiftingToStart: .init(vertices: self.boundary(of: faceID))))
+        faces = Array(faces.rotated(shiftingToStart: face))
         assert(faces.count == 3 || faces.count == 4)
         let below = self.faceID(of: faces[1])
         let above = self.faceID(of: faces.last!)
@@ -221,7 +223,7 @@ extension PolygonalDual {
         if !self.isBend(predecessor) { predecessor = self.subdivideEdge(between: vertex, and: predecessor) }
         if !self.isBend(successor) { successor = self.subdivideEdge(between: vertex, and: successor) }
 
-        let boundary = self.boundary(of: faceID)
+        let boundary = faceID.map({ self.boundary(of: $0) }) ?? self.internalFacesAndOuterFace().outer.vertices
         let polygon = self.polygon(on: boundary)
         let index = boundary.firstIndex(of: vertex)!
 
@@ -234,7 +236,7 @@ extension PolygonalDual {
             let position = polygon.movingPoint(at: index, to: midpoint, progress: progress).points[index]
 
             let q = self.insertVertex(at: position)
-            self.facePayloads[faceID]!.boundary.replace(vertex, with: [q])
+            if let faceID = faceID { self.facePayloads[faceID]!.boundary.replace(vertex, with: [q]) }
             if let below = below { self.facePayloads[below]!.boundary.insert(q, after: vertex) }
             if let above = above { self.facePayloads[above]!.boundary.insert(q, before: vertex) }
             self.insertEdge(between: q, and: predecessor)
@@ -310,14 +312,14 @@ private extension EmbeddedClusterGraph {
     ///
     /// If the edge's endpoints have two neighbors on the outer face in common,
     /// we must explicitly specify which of them becomes an internal vertex.
-    var insertableEdges: [(Vertex, Vertex, Vertex)] {
-        var insertableEdges: [(Vertex, Vertex, Vertex)] = []
+    var insertableEdges: [Vertex] {
+        var insertableEdges: [Vertex] = []
 
         for (u, v, w) in self.externalVertices.adjacentTriplets(wraparound: true) {
             guard !self.vertices(adjacentTo: u).contains(w) else { continue }
 
-            insertableEdges.append((u, v, w))
-            insertableEdges.append((w, v, u))
+            insertableEdges.append(v)
+            insertableEdges.append(v)
         }
 
         return insertableEdges
