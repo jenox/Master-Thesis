@@ -232,6 +232,11 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
     }
 
     func removeRandomEdgeOutside() {
+        self.scheduleMutationOperation(named: "random edge removal", { graph in
+            let operations = graph.possibleRemoveAdjacencyOperations()
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            try! graph.removeAdjacency(operations.randomElement(using: &self.randomNumberGenerator)!)
+        })
     }
 }
 

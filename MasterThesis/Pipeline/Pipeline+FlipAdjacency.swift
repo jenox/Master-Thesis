@@ -40,8 +40,8 @@ extension PolygonalDual {
         guard let boundary = self.computeBoundary(between: bu, and: bv)?.shared else { throw UnsupportedOperationError() }
         let fx = self.faces(incidentTo: boundary.last!).subtracting([fu, fv]).destructured1()!
         let fy = self.faces(incidentTo: boundary.first!).subtracting([fu, fv]).destructured1()!
-        let x = self.faceID(of: fx)!
-        let y = self.faceID(of: fy)!
+        guard let x = self.faceID(of: fx) else { throw UnsupportedOperationError() }
+        guard let y = self.faceID(of: fy) else { throw UnsupportedOperationError() }
         assert(x != y)
         guard self.computeBoundary(between: fx.vertices, and: fy.vertices) == nil else { throw UnsupportedOperationError() }
 
@@ -51,7 +51,76 @@ extension PolygonalDual {
         self.expandDegenerateBoundary(at: vertex, into: v)
         self.ensureIntegrity(strict: true)
     }
+}
 
+extension PolygonalDual {
+    struct CreateAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and w: ClusterName, sharedNeighbor: ClusterName) {
+            self.incidentFaces = [u, w]
+            self.sharedNeighbor = sharedNeighbor
+
+            precondition(Set(self.incidentFaces).count == 2)
+            precondition(!self.incidentFaces.contains(sharedNeighbor))
+        }
+
+        let incidentFaces: ClusterNameSet
+        let sharedNeighbor: ClusterName
+    }
+
+    func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
+        return Set(self.embeddedClusterGraph.insertableEdges.map({ CreateAdjacencyOperation(between: $0.0, and: $0.2, sharedNeighbor: $0.1) }))
+    }
+
+    mutating func createAdjacency(_ operation: CreateAdjacencyOperation) throws {
+        throw UnsupportedOperationError()
+    }
+}
+
+extension PolygonalDual {
+    struct RemoveAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and v: ClusterName) {
+            self.incidentFaces = [u, v]
+
+            precondition(Set(self.incidentFaces).count == 2)
+        }
+
+        let incidentFaces: ClusterNameSet
+    }
+
+    func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {
+        return Set(self.embeddedClusterGraph.removableEdges.map(RemoveAdjacencyOperation.init))
+    }
+
+    mutating func removeAdjacency(_ operation: RemoveAdjacencyOperation) throws {
+        let (u, w) = operation.incidentFaces.destructured2()!
+
+        guard self.faces.contains(u) else { throw UnsupportedOperationError() }
+        guard self.faces.contains(w) else { throw UnsupportedOperationError() }
+
+        let bu = self.boundary(of: u)
+        let bw = self.boundary(of: w)
+        let fu = Face(vertices: bu)
+        let fw = Face(vertices: bw)
+
+        // Must have a boundary
+        guard let boundary = self.computeBoundary(between: bu, and: bw)?.shared else { throw UnsupportedOperationError() }
+
+        // boundary must have one vertex on outer face and go inward;
+        let fx = self.faces(incidentTo: boundary.last!).subtracting([fu, fw]).destructured1()!
+        let fy = self.faces(incidentTo: boundary.first!).subtracting([fu, fw]).destructured1()!
+        guard let v = [fx, fy].compactMap(self.faceID(of:)).destructured1() else { throw UnsupportedOperationError() }
+        guard self.faces(incidentTo: fu).count >= 3 else { throw UnsupportedOperationError() }
+        guard self.faces(incidentTo: fw).count >= 3 else { throw UnsupportedOperationError() }
+
+        let vertex = self.contractBoundary(boundary)
+        self.ensureIntegrity(strict: false)
+        self.expandDegenerateBoundary(at: vertex, into: u)
+        self.expandDegenerateBoundary(at: vertex, into: v)
+        self.ensureIntegrity(strict: true)
+    }
+}
+
+extension PolygonalDual {
     private mutating func contractBoundary(_ boundary: [Vertex]) -> Vertex {
         precondition(boundary.count >= 2)
 
@@ -75,9 +144,10 @@ extension PolygonalDual {
         assert(faces.allSatisfy({ $0.vertices.first == u }))
         assert(faces.count == 3)
         faces = Array(faces.rotated(shiftingToStart: faces.first(where: { $0.containsEdge(from: u, to: v) })!))
-        let left = self.faceID(of: faces[0])!
-        let below = self.faceID(of: faces[1])!
-        let right = self.faceID(of: faces[2])!
+        let left = self.faceID(of: faces[0])
+        let below = self.faceID(of: faces[1])
+        let right = self.faceID(of: faces[2])
+        assert([left, below, right].compactMap({ $0 }).count >= 2) // only one can be outer face
 
         // Ensure the closest vertices are subdivision vertices
         for (index, neighbor) in faces.map({ $0.vertices[1] }).enumerated().dropFirst() where self.degree(of: neighbor) == 3 {
@@ -124,9 +194,9 @@ extension PolygonalDual {
             }
         }
 
-        self.facePayloads[below]!.boundary.replace(u, with: [rightBend, v, leftBend].compactMap({ $0 }))
-        self.facePayloads[left]!.boundary.replace(u, with: [leftBend].compactMap({ $0 }))
-        self.facePayloads[right]!.boundary.replace(u, with: [rightBend].compactMap({ $0 }))
+        if let below = below { self.facePayloads[below]!.boundary.replace(u, with: [rightBend, v, leftBend].compactMap({ $0 })) }
+        if let left = left { self.facePayloads[left]!.boundary.replace(u, with: [leftBend].compactMap({ $0 })) }
+        if let right = right { self.facePayloads[right]!.boundary.replace(u, with: [rightBend].compactMap({ $0 })) }
         [faces[1].vertices[1], leftBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
         [faces[2].vertices[1], rightBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
         self.vertices.remove(u)
@@ -140,8 +210,9 @@ extension PolygonalDual {
         var faces = Array(self.faces(incidentTo: vertex))
         faces = Array(faces.rotated(shiftingToStart: .init(vertices: self.boundary(of: faceID))))
         assert(faces.count == 3 || faces.count == 4)
-        let below = self.faceID(of: faces[1])!
-        let above = self.faceID(of: faces.last!)!
+        let below = self.faceID(of: faces[1])
+        let above = self.faceID(of: faces.last!)
+        assert([below, above].compactMap({ $0 }).count >= 1) // only one can be the outer face
 
         // subdivide such that neighbors are bends
         var predecessor = face.predecessor(of: vertex)!
@@ -164,59 +235,14 @@ extension PolygonalDual {
 
             let q = self.insertVertex(at: position)
             self.facePayloads[faceID]!.boundary.replace(vertex, with: [q])
-            self.facePayloads[below]!.boundary.insert(q, after: vertex)
-            self.facePayloads[above]!.boundary.insert(q, before: vertex)
+            if let below = below { self.facePayloads[below]!.boundary.insert(q, after: vertex) }
+            if let above = above { self.facePayloads[above]!.boundary.insert(q, before: vertex) }
             self.insertEdge(between: q, and: predecessor)
             self.insertEdge(between: q, and: successor)
             self.insertEdge(between: q, and: vertex)
             self.removeEdge(between: vertex, and: predecessor)
             self.removeEdge(between: vertex, and: successor)
         }
-    }
-}
-
-extension PolygonalDual {
-    struct CreateAdjacencyOperation: Equatable, Hashable {
-        init(between u: ClusterName, and w: ClusterName, sharedNeighbor: ClusterName) {
-            self.incidentFaces = [u, w]
-            self.sharedNeighbor = sharedNeighbor
-
-            precondition(Set(self.incidentFaces).count == 2)
-            precondition(!self.incidentFaces.contains(sharedNeighbor))
-        }
-
-        let incidentFaces: ClusterNameSet
-        let sharedNeighbor: ClusterName
-    }
-
-    func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
-        return []
-//        return Set(self.embeddedClusterGraph.insertableEdges.map({ CreateAdjacencyOperation(between: $0.0, and: $0.2, sharedNeighbor: $0.1) }))
-    }
-
-    mutating func createAdjacency(_ operation: CreateAdjacencyOperation) throws {
-        throw UnsupportedOperationError()
-    }
-}
-
-extension PolygonalDual {
-    struct RemoveAdjacencyOperation: Equatable, Hashable {
-        init(between u: ClusterName, and v: ClusterName) {
-            self.incidentFaces = [u, v]
-
-            precondition(Set(self.incidentFaces).count == 2)
-        }
-
-        let incidentFaces: ClusterNameSet
-    }
-
-    func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {
-        return []
-//        return Set(self.embeddedClusterGraph.removableEdges.map(RemoveAdjacencyOperation.init))
-    }
-
-    mutating func removeAdjacency(_ operation: RemoveAdjacencyOperation) throws {
-        throw UnsupportedOperationError()
     }
 }
 
@@ -281,22 +307,13 @@ private extension EmbeddedClusterGraph {
     }
 }
 
-
-extension Array where Element: Equatable {
-    mutating func remove(_ element: Element) {
-        self.remove(at: self.firstIndex(of: element)!)
-    }
-
+private extension Array where Element: Equatable {
     mutating func insert(_ element: Element, before other: Element) {
         self.insert(element, at: self.firstIndex(of: other)!)
     }
 
     mutating func insert(_ element: Element, after other: Element) {
         self.insert(element, at: self.firstIndex(of: other)! + 1)
-    }
-
-    mutating func insert<T>(_ elements: T, after other: Element) where T: Collection, T.Element == Element {
-        self.insert(contentsOf: elements, at: self.firstIndex(of: other)! + 1)
     }
 
     mutating func replace<T>(_ element: Element, with elements: T) where T: Collection, T.Element == Element {

@@ -49,12 +49,14 @@ extension PolygonalDual {
     func ensureAllValidOperationsPass() throws {
         print("Ensuring all possible operations pass...")
 
-        let errors = [
+        let errors: [Error?] = [
             self.verify("Insert inside", self.possibleInsertFaceInsideOperations(name: "_", weight: 1), using: { try $0.insertFaceInside($1) }),
             self.verify("Insert outside", self.possibleInsertFaceOutsideOperations(name: "_", weight: 1), using: { try $0.insertFaceOutside($1) }),
             self.verify("Remove internal", self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithoutBoundaryToExternalFace($1) }),
             self.verify("Remove external", self.possibleRemoveFaceWithBoundaryToExternalFaceOperations(), using: { try $0.removeFaceWithBoundaryToExternalFace($1) }),
-            self.verify("Flip", self.possibleFlipAdjacencyOperations(), using: { try $0.flipAdjacency($1) }),
+            self.verify("Flip edge", self.possibleFlipAdjacencyOperations(), using: { try $0.flipAdjacency($1) }),
+//            self.verify("Insert edge", self.possibleCreateAdjacencyOperations(), using: { try $0.createAdjacency($1) }),
+            self.verify("Remove edge", self.possibleRemoveAdjacencyOperations(), using: { try $0.removeAdjacency($1) }),
         ]
 
         if let error = errors.compactMap({ $0 }).first {
