@@ -69,10 +69,8 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
         // Vertices
         for vertex in self.graph.vertices {
             let position = self.graph.position(of: vertex)
-            let weight = self.graph.weight(of: vertex)
 
-            context.fill(position, diameter: 5 / scale, color: .black)
-            context.draw("\(vertex.rawValue) | \(formatted: weight.rawValue)", at: position, scale: scale, rotation: rotation)
+            context.draw(vertex.rawValue, at: position, scale: scale, rotation: rotation)
         }
 
         // Forces
@@ -173,7 +171,8 @@ private extension CGContext {
     }
 
     func draw(_ text: String, at position: CGPoint, scale: CGFloat, rotation: Angle) {
-        let font = UIFont.systemFont(ofSize: 14 / sqrt(scale))
+        let scale = pow(scale, 0.75)
+        let font = UIFont.systemFont(ofSize: 9 / scale)
         let string = NSAttributedString(string: text, attributes: [.font: font])
         let line = CTLineCreateWithAttributedString(string)
         let size = CTLineGetBoundsWithOptions(line, .useOpticalBounds).size
@@ -186,7 +185,7 @@ private extension CGContext {
         self.rotate(by: -rotation.radians)
         self.setFillColor(UIColor.white.cgColor)
         self.setStrokeColor(UIColor.black.cgColor)
-        self.drawCapsule(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height).insetBy(dx: -5 / sqrt(scale), dy: -2 / sqrt(scale)), using: .fillStroke)
+        self.drawCapsule(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height).insetBy(dx: -3 / scale, dy: -1 / scale), using: .fillStroke)
         CTLineDraw(line, self)
         self.restoreGState()
     }
