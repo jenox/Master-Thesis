@@ -129,7 +129,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             if case .success(let graph) = result {
                 DispatchQueue.main.sync(execute: {
                     if case .faceWeighted(let graph) = graph {
-                        try! graph.ensureAllValidOperationsPass()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                            try! graph.ensureAllValidOperationsPass()
+                        })
                     }
 
                     self.previousGraph = self.graph
@@ -189,7 +191,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             let operations = graph.possibleInsertFaceInsideOperations(name: name, weight: weight)
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.insertFaceInside(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.insertFaceInside(operation)
         })
     }
 
@@ -200,7 +204,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             let operations = graph.possibleInsertFaceOutsideOperations(name: name, weight: weight)
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.insertFaceOutside(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.insertFaceOutside(operation)
         })
     }
 
@@ -208,7 +214,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "remove internal vertex", { graph in
             let operations = graph.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations()
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.removeFaceWithoutBoundaryToExternalFace(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.removeFaceWithoutBoundaryToExternalFace(operation)
         })
     }
 
@@ -216,7 +224,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "remove external vertex", { graph in
             let operations = graph.possibleRemoveFaceWithBoundaryToExternalFaceOperations()
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.removeFaceWithBoundaryToExternalFace(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.removeFaceWithBoundaryToExternalFace(operation)
         })
     }
 
@@ -224,7 +234,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "random edge flip", { graph in
             let operations = graph.possibleFlipAdjacencyOperations()
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.flipAdjacency(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.flipAdjacency(operation)
         })
     }
 
@@ -232,7 +244,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "random edge insertion", { graph in
             let operations = graph.possibleCreateAdjacencyOperations()
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.createAdjacency(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.createAdjacency(operation)
         })
     }
 
@@ -240,7 +254,9 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleMutationOperation(named: "random edge removal", { graph in
             let operations = graph.possibleRemoveAdjacencyOperations()
             guard !operations.isEmpty else { throw UnsupportedOperationError() }
-            try! graph.removeAdjacency(operations.randomElement(using: &self.randomNumberGenerator)!)
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            print("Applying", operation)
+            try! graph.removeAdjacency(operation)
         })
     }
 }

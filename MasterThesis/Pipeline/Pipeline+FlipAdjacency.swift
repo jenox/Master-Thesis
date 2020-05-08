@@ -227,13 +227,15 @@ extension PolygonalDual {
         let polygon = self.polygon(on: boundary)
         let index = boundary.firstIndex(of: vertex)!
 
-        if polygon.internalAngle(at: index).turns > 0.5 {
+        if polygon.internalAngle(at: index).turns >= 0.5 {
             // no-op
         } else {
             let midpoint = self.segment(from: predecessor, to: successor).midpoint
             let progresses = sequence(first: 1 as CGFloat, next: { $0 / 2 })
             let progress = progresses.first(where: { polygon.movingPoint(at: index, to: midpoint, progress: $0).isSimple })!
             let position = polygon.movingPoint(at: index, to: midpoint, progress: progress).points[index]
+
+            guard position - polygon.points[index] != .zero else { return }
 
             let q = self.insertVertex(at: position)
             if let faceID = faceID { self.facePayloads[faceID]!.boundary.replace(vertex, with: [q]) }
