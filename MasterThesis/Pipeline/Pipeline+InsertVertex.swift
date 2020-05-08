@@ -112,12 +112,12 @@ private extension PolygonalDual {
 
             if polygon.internalAngle(at: 0).turns > 0.5 {
                 boundary.append(self.insertVertex(at: self.position(of: vertex)))
-            } else if polygon.removingPoint(at: 0).isSimple {
+            } else if polygon.removingPoint(at: 0).isSimpleAndSameOrientation(as: polygon) {
                 // no-op
             } else {
                 let midpoint = self.segment(from: x, to: y).midpoint
                 let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
-                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
+                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimpleAndSameOrientation(as: polygon) })!
                 let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
 
                 boundary.append(self.insertVertex(at: position))

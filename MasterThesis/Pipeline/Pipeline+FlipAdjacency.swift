@@ -164,12 +164,12 @@ extension PolygonalDual {
 
             if polygon.internalAngle(at: 0).turns > 0.5 {
                 leftBend = self.insertVertex(at: self.position(of: u))
-            } else if polygon.removingPoint(at: 0).isSimple {
+            } else if polygon.removingPoint(at: 0).isSimpleAndSameOrientation(as: polygon) {
                 leftBend = nil
             } else {
                 let midpoint = self.segment(from: vertex, to: v).midpoint
                 let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
-                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
+                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimpleAndSameOrientation(as: polygon) })!
                 let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
 
                 leftBend = self.insertVertex(at: position)
@@ -184,12 +184,12 @@ extension PolygonalDual {
 
             if polygon.internalAngle(at: 0).turns > 0.5 {
                 rightBend = self.insertVertex(at: self.position(of: u))
-            } else if polygon.removingPoint(at: 0).isSimple {
+            } else if polygon.removingPoint(at: 0).isSimpleAndSameOrientation(as: polygon) {
                 rightBend = nil
             } else {
                 let midpoint = self.segment(from: vertex, to: v).midpoint
                 let progresses = sequence(first: 0.5 as CGFloat, next: { $0 / 2 })
-                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
+                let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimpleAndSameOrientation(as: polygon) })!
                 let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
 
                 rightBend = self.insertVertex(at: position)
@@ -232,7 +232,7 @@ extension PolygonalDual {
         } else {
             let midpoint = self.segment(from: predecessor, to: successor).midpoint
             let progresses = sequence(first: 1 as CGFloat, next: { $0 / 2 })
-            let progress = progresses.first(where: { polygon.movingPoint(at: index, to: midpoint, progress: $0).isSimple })!
+            let progress = progresses.first(where: { polygon.movingPoint(at: index, to: midpoint, progress: $0).isSimpleAndSameOrientation(as: polygon) })!
             let position = polygon.movingPoint(at: index, to: midpoint, progress: progress).points[index]
 
             guard position - polygon.points[index] != .zero else { return }

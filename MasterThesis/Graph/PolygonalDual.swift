@@ -138,24 +138,6 @@ enum PolygonalDualIntergrityViolation: Error {
     case edgeCrossing
 }
 
-extension Polygon {
-    /// https://stackoverflow.com/questions/4001745/testing-whether-a-polygon-is-simple-or-complex
-    /// http://geomalgorithms.com/a09-_intersect-3.html#simple_Polygon()
-    var isSimple: Bool {
-        guard self.points.count >= 3 else { return true }
-
-        let segments = self.points.adjacentPairs(wraparound: true).map(Segment.init)
-
-        for (i, j) in segments.indices.cartesianPairs() where (2..<segments.indices.last!).contains(abs(i - j)) {
-            if segments[i].intersects(segments[j]) {
-                return false
-            }
-        }
-
-        return true
-    }
-}
-
 extension PolygonalDual {
     private mutating func insertEdge(from u: Vertex, to v: Vertex) {
         let angle = self.angle(from: u, to: v).counterclockwise
@@ -281,9 +263,9 @@ extension PolygonalDual {
         precondition(faces.count == 2)
         let (u, w) = (neighbors[0], neighbors[1])
 
-        // No crossings
-        guard self.polygon(on: faces[0].smoothing(vertex: v).vertices).isSimple else { throw UnsupportedOperationError() }
-        guard self.polygon(on: faces[1].smoothing(vertex: v).vertices).isSimple else { throw UnsupportedOperationError() }
+        // No crossings and same orientation as before
+        guard self.polygon(on: faces[0].smoothing(vertex: v).vertices).isSimpleAndSameOrientation(as: self.polygon(on: faces[0].vertices)) else { throw UnsupportedOperationError() }
+        guard self.polygon(on: faces[1].smoothing(vertex: v).vertices).isSimpleAndSameOrientation(as: self.polygon(on: faces[1].vertices)) else { throw UnsupportedOperationError() }
 
         // Ensure cyclic order stays the same
         let uw = self.angle(from: u, to: w).counterclockwise

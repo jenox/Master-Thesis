@@ -55,4 +55,28 @@ extension Polygon {
 
         return Polygon(points: points)
     }
+
+    /// https://stackoverflow.com/questions/4001745/testing-whether-a-polygon-is-simple-or-complex
+    /// http://geomalgorithms.com/a09-_intersect-3.html#simple_Polygon()
+    var isSimple: Bool {
+        guard self.points.count >= 3 else { return true }
+
+        let segments = self.points.adjacentPairs(wraparound: true).map(Segment.init)
+
+        for (i, j) in segments.indices.cartesianPairs() where (2..<segments.indices.last!).contains(abs(i - j)) {
+            if segments[i].intersects(segments[j]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    func isSimpleAndSameOrientation(as other: Polygon) -> Bool {
+        return (self.isCounterclockwise == other.isCounterclockwise) && self.isSimple
+    }
+
+    var isCounterclockwise: Bool {
+        return self.area >= 0
+    }
 }
