@@ -27,7 +27,7 @@ extension PolygonalDual {
     mutating func flipAdjacency(_ operation: FlipAdjacencyOperation) throws {
         // u = left, v = right
         // x = above, y = below
-        let (v, u) = operation.incidentFaces.destructured2()!
+        let (u, v) = operation.incidentFaces.destructured2()!
 
         guard self.faces.contains(u) else { throw UnsupportedOperationError() }
         guard self.faces.contains(v) else { throw UnsupportedOperationError() }
@@ -45,9 +45,6 @@ extension PolygonalDual {
         assert(x != y)
         guard self.computeBoundary(between: fx.vertices, and: fy.vertices) == nil else { throw UnsupportedOperationError() }
 
-        print("left", u, "right", v, "above", x, "below", y)
-        print(boundary)
-
         let vertex = self.contractBoundary(boundary)
         self.ensureIntegrity(strict: false)
         self.expandDegenerateBoundary(at: vertex, into: u)
@@ -60,13 +57,10 @@ extension PolygonalDual {
 
         var boundary = boundary
 
-        print("!", boundary)
-
         while boundary.count >= 2 {
             self.contract(boundary[0], into: boundary[1])
             boundary.reverse()
             boundary.removeLast()
-            print("!", boundary)
         }
 
         return boundary.destructured1()!
@@ -91,18 +85,14 @@ extension PolygonalDual {
             faces[index] = faces[index].inserting(bend, at: 1)
         }
 
-//        print("left", left, "below", below, "right", right)
-
         let leftBend: Vertex?
         do {
             let polygon = self.polygon(on: faces[0].vertices)
             let vertex = faces[1].vertices[1]
 
             if polygon.internalAngle(at: 0).turns > 0.5 {
-//                print("left >= 180")
                 leftBend = self.insertVertex(at: self.position(of: u))
             } else if polygon.removingPoint(at: 0).isSimple {
-//                print("left easy")
                 leftBend = nil
             } else {
                 let midpoint = self.segment(from: vertex, to: v).midpoint
@@ -110,7 +100,6 @@ extension PolygonalDual {
                 let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
                 let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
 
-//                print("left subdidive at", progress)
                 leftBend = self.insertVertex(at: position)
             }
         }
@@ -122,10 +111,8 @@ extension PolygonalDual {
             let vertex = faces[2].vertices[1]
 
             if polygon.internalAngle(at: 0).turns > 0.5 {
-//                print("right >= 180")
                 rightBend = self.insertVertex(at: self.position(of: u))
             } else if polygon.removingPoint(at: 0).isSimple {
-//                print("right easy")
                 rightBend = nil
             } else {
                 let midpoint = self.segment(from: vertex, to: v).midpoint
@@ -133,12 +120,9 @@ extension PolygonalDual {
                 let progress = progresses.first(where: { polygon.movingPoint(at: 0, to: midpoint, progress: $0).isSimple })!
                 let position = polygon.movingPoint(at: 0, to: midpoint, progress: progress).points[0]
 
-//                print("right subdidive at", progress)
                 rightBend = self.insertVertex(at: position)
             }
         }
-
-//        print("left bend", leftBend as Any, "right bend", rightBend as Any)
 
         self.facePayloads[below]!.boundary.replace(u, with: [rightBend, v, leftBend].compactMap({ $0 }))
         self.facePayloads[left]!.boundary.replace(u, with: [leftBend].compactMap({ $0 }))
@@ -169,8 +153,6 @@ extension PolygonalDual {
         let boundary = self.boundary(of: faceID)
         let polygon = self.polygon(on: boundary)
         let index = boundary.firstIndex(of: vertex)!
-
-        print(predecessor, successor)
 
         if polygon.internalAngle(at: index).turns > 0.5 {
             // no-op
