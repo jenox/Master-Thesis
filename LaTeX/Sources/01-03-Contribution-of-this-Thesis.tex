@@ -1,8 +1,17 @@
 \section{Contribution of this Thesis}
 \label{sect:structure-of-this-thesis}
 
-The main problem with GMap is the independent nature of the clustering and embedding phases: If clustering is done first, a force-directed embedding algorithm likely causes a high degree of fragmented and noncontiguous regions \cite{mashima2011visualizing}. OpMap manages to somewhat dimish this effect with a smart choice of forces that makes use of the clustering information \cite{schmettow2017}. Embedding the graph first and then clustered it using a geometric clustering algorithm is dangerous too, because this may detect clusters that don't actually exist in the abstract data. Most force-directed algorithms used with GMap also lack the ability to specify the desired sizes and shapes of the clusters.
+The main problem with GMap is the independent nature of the clustering and embedding phases:
+If clustering is done first, a force-directed embedding algorithm likely causes a high degree of fragmented and noncontiguous regions \cite{mashima2011visualizing}.
+OpMap manages to somewhat dimish this effect with a smart choice of forces that makes use of the clustering information \cite{schmettow2017}.
+Embedding the graph first and then clustered it using a geometric clustering algorithm is dangerous too, because this may detect clusters that don't actually exist in the abstract data.
+Most force-directed algorithms used with GMap also lack the ability to specify the desired sizes and shapes of the clusters.
 
-OpMap as implemented in \cite{schmettow2017} supports only some degree of dynamicity: while new vertices can be added to existing clusters dynamically, the set of clusters is determined statically. This means that as new opinions are incorporated into the opinion network, no new clusters can form.
+OpMap as implemented in \cite{schmettow2017} supports only some degree of dynamicity: while new vertices can be added to existing clusters dynamically, the set of clusters is determined statically.
+This means that as new opinions are incorporated into the opinion network, no new clusters can form.
 
-In this thesis, we address the aforementioned issues in related work and try to overcome them. In particular, we design an algorithm that constructs maps in which the countries are guaranteed to be contiguous, have an area that is close to proportional to the respective cluster sizes, and have somewhat organic shapes. The algorithm also allows for dynamic updates such as inserting new clusters, removing existing clusters, tweaking cluster adjacencies, or changing cluster weights. In order to evaluate our algorithm, we adapt several measures from literature, capturing both the map's accuracy and the quality of its regions' shapes. Finally, we experimentally evaluate the quality of the maps created by our algorithm using randomly generated data sets.
+In this thesis, we address the aforementioned issues in related work and try to overcome them.
+In particular, we design an algorithm that constructs maps in which the countries are guaranteed to be contiguous, have an area that is close to proportional to the respective cluster sizes, and have somewhat organic shapes.
+The algorithm also allows for dynamic updates such as inserting new clusters, removing existing clusters, tweaking cluster adjacencies, or changing cluster weights.
+In order to evaluate our algorithm, we adapt several measures from literature, capturing both the map's accuracy and the quality of its regions' shapes.
+Finally, we experimentally evaluate the quality of the maps created by our algorithm using randomly generated data sets.
