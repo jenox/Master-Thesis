@@ -7,7 +7,7 @@
 
 GMap \cite{gansner2009gmap} is a framework for visualizing graphs as geographical maps.
 In a first step, it embeds the input graph in the plane and performs a cluster analysis using arbitrary user-provided algorithms.
-Embedding and clustering are typically done independently from one another; however, the algorithms should be well-matched such that clusters form contiguous regions in the computed embedding.
+Embedding and clustering are typically done independently from one another; however, the algorithms should be well-matched such that clusters form continuous regions in the computed embedding.
 A combination of force-directed graph drawing and modularity-based clustering methods is commonly used.
 GMap then creates a map by computing the Voronoi diagram of the graph's vertices as per the computed embedding and merging adjacent cells whose vertices belong to the same cluster.
 Eventually, the original graph's edges are drawn on top of this map.
@@ -20,7 +20,7 @@ Because the canonical map is much less volatile, vertices and clusters don't mov
 The aforementioned algorithm for visualizing opinion networks by Betz \etal{} is called OpMap.
 OpMap focuses on clustering and weighting the opinion vectors in the network and delegates the visualization to GMap.
 However, the clustering is performed on the abstract input graph, independent from the force-directed embedding algorithm.
-This can be problematic, because if the clustering and the computed embedding don't fit together well, one ends up with many fragmented, noncontiguous clusters on the map.
+This can be problematic, because if the clustering and the computed embedding don't fit together well, one ends up with many fragmented, noncontinuous clusters on the map.
 OpMap has only been evaluated for relatively small input sizes and works with static inputs only.
 We want to explore an approach that supports larger \emdash{} and most importantly dynamic \emdash{} opinion networks.
 %We will not attempt to answer open questions from the OpMap paper such as how to scale the clustering to larger graphs, or how adapt the clustering to a dynamic setting.
