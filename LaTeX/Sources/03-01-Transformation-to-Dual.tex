@@ -3,7 +3,9 @@
 
 In this step of the pipeline, we take an embedded cluster graph $G_\text{emb}$ and form a polygonal dual of $G_\text{emb}$, our initial map graph $G_\text{init}$.
 
-Let us discuss the relationship between $G_\text{emb}$ and $G_\text{init}$ a bit more. Recall from \cref{chap:preliminaries} that the weak dual of a plane graph is its dual without the vertex corresponding to its outer face. Using this terminology, given $G_\text{init}$, which is a hole-free polygonal dual of the plane graph $G_\text{emb}$, we can smooth out the degree-2 vertices in $G_\text{init}$ and form its weak dual to get back $G_\text{emb}$, as illustrated in the following figure:
+Let us discuss the relationship between $G_\text{emb}$ and $G_\text{init}$ a bit more.
+Recall from \cref{chap:preliminaries} that the weak dual of a plane graph is its dual without the vertex corresponding to its outer face.
+Using this terminology, given $G_\text{init}$, which is a hole-free polygonal dual of the plane graph $G_\text{emb}$, we can smooth out the degree-2 vertices in $G_\text{init}$ and form its weak dual to get back $G_\text{emb}$, as illustrated in the following figure:
 %
 \begin{figure}[H]
 	\centering
@@ -16,7 +18,8 @@ Let us discuss the relationship between $G_\text{emb}$ and $G_\text{init}$ a bit
 	\label{fig:transformation-polygonal-dual}
 \end{figure}
 
-We can also formalize the other direction, namely how to get from \cref{subfig:transformation-polygonal-dual-primal} back to \cref{subfig:transformation-polygonal-dual-dual}. To do so, we need the concept of an augmented dual:
+We can also formalize the other direction, namely how to get from \cref{subfig:transformation-polygonal-dual-primal} back to \cref{subfig:transformation-polygonal-dual-dual}.
+To do so, we need the concept of an augmented dual:
 %
 \begin{definition}
 	The \emph{augmented dual} $G^+$ of a plane graph $G$ is the plane multigraph obtained by first placing a new vertex $v^+$ in the outer face of $G$, connecting it to all vertices on the outer face, in order, without introducing edge crossings, and then forming its dual.
@@ -38,7 +41,8 @@ We can also formalize the other direction, namely how to get from \cref{subfig:t
 	\label{fig:transformation-augmented-dual}
 \end{figure}
 
-Note that analogous to the regular dual, the weak dual of the augmented dual of a plane graph $G$ is $G$ again, \ie{} $(G^+)^- = G$. With this definition in plane, we make the following observation:
+Note that analogous to the regular dual, the weak dual of the augmented dual of a plane graph $G$ is $G$ again, \ie{} $(G^+)^- = G$.
+With this definition in plane, we make the following observation:
 
 \begin{corollary}
 	A polygonal dual of an internally triangulated plane graph $G$ is a straight-line planar embedding of a subdivision of its augmented dual $G^+$.
@@ -48,22 +52,38 @@ Note that analogous to the regular dual, the weak dual of the augmented dual of 
 
 \paragraph{Theoretical Results}
 
-But do we have to subdivide edges of the augmented dual of our embedded cluster graph $G_\text{emb}$ in order to get a valid polygonal dual of $G_\text{emb}$? Although the augmented dual $G_\text{emb}^+$ is plane by definition, it is not immediately obvious that there exists a planar straight-line embedding of $G_\text{emb}^+$ \emdash{} and that's what we need for it to be a polygonal contact representation.
+But do we have to subdivide edges of the augmented dual of our embedded cluster graph $G_\text{emb}$ in order to get a valid polygonal dual of $G_\text{emb}$?
+Although the augmented dual $G_\text{emb}^+$ is plane by definition, it is not immediately obvious that there exists a planar straight-line embedding of $G_\text{emb}^+$ \emdash{} and that's what we need for it to be a polygonal contact representation.
 
-In our case, however, $G_\text{emb}^+$ is simple, \ie{} there are no loops or multiple adjacencies. Recall that $G_\text{emb}$ is 2-connected and internally triangulated. Adding the helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face therefore creates a fully triangulated, simple graph. In a simple triangulated graph, there are no two edges that are incident to the same faces (only those would create multiple adjacencies when forming the dual) and no edges that have the same face on both sides (only those would create loops when forming the dual) either. The augmented dual $G_\text{emb}^+$ is therefore simple and, according to Fáry's theorem \cite{fary1948straight}, there exists a planar straight-line embedding of $G_\text{emb}^+$ respecting its original combinatorial embedding and outer face.
+In our case, however, $G_\text{emb}^+$ is simple, \ie{} there are no loops or multiple adjacencies.
+Recall that $G_\text{emb}$ is 2-connected and internally triangulated.
+Adding the helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face therefore creates a fully triangulated, simple graph.
+In a simple triangulated graph, there are no two edges that are incident to the same faces (only those would create multiple adjacencies when forming the dual) and no edges that have the same face on both sides (only those would create loops when forming the dual) either.
+The augmented dual $G_\text{emb}^+$ is therefore simple and, according to Fáry's theorem \cite{fary1948straight}, there exists a planar straight-line embedding of $G_\text{emb}^+$ respecting its original combinatorial embedding and outer face.
 
-In addition to having a planar straight-line embedding, $G_\text{emb}^+$ is also a cubic graph, \ie{} one in which all vertices have degree 3. This is because $G_\text{emb}$ with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual. According to the results of Thomassen \cite{thomassen1992plane}, $G_\text{emb}^+$ is therefore area-universal. This means that regardless of the concrete face weights that $G_\text{emb}$ prescribes, there exists a planar straight-line embedding of $G_\text{emb}^+$ realizing those weights/areas.
+In addition to having a planar straight-line embedding, $G_\text{emb}^+$ is also a cubic graph, \ie{} one in which all vertices have degree 3.
+This is because $G_\text{emb}$ with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual.
+According to the results of Thomassen \cite{thomassen1992plane}, $G_\text{emb}^+$ is therefore area-universal.
+This means that regardless of the concrete face weights that $G_\text{emb}$ prescribes, there exists a planar straight-line embedding of $G_\text{emb}^+$ realizing those weights/areas.
 
-Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already. Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics. Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-dual}.
+Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already.
+Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics.
+Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-dual}.
 
 
 
 \paragraph{Algorithm Overview}
 
-The underlying idea is as follows: Given an embedded cluster graph $G_\text{emb}$, we place vertices on edges of the outer face of $G_\text{emb}$ (those edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of $G_\text{emb}$. We then connect these vertices if their corresponding faces are incident. Connecting two vertices may require additional subdivision vertices in order not to introduce edge crossings \emdash{} we use a single subdivision vertex per edge.
+The underlying idea is as follows:
+Given an embedded cluster graph $G_\text{emb}$, we place vertices on edges of the outer face of $G_\text{emb}$ (those edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of $G_\text{emb}$.
+We then connect these vertices if their corresponding faces are incident.
+Connecting two vertices may require additional subdivision vertices in order not to introduce edge crossings \emdash{} we use a single subdivision vertex per edge.
 
 % and was independently proved by Wagner \cite{wagner1936bemerkungen} and Stein \cite{stein1951convex}.
-In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-line edges. As mentioned before, such an embedding exists for every plane graph according to Fáry's theorem \cite{fary1948straight}. There exist numerous popular algorithms to construct such an embedding such as Tutte's method \cite{tutte1963draw}, the shift method \cite{fraysseix1990draw}, or the Schnyder realizer method \cite{schnyder1990embedding}. \tamara{is this Tutte the algorithm with exponential area you meant?}
+In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-line edges.
+As mentioned before, such an embedding exists for every plane graph according to Fáry's theorem \cite{fary1948straight}.
+There exist numerous popular algorithms to construct such an embedding such as Tutte's method \cite{tutte1963draw}, the shift method \cite{fraysseix1990draw}, or the Schnyder realizer method \cite{schnyder1990embedding}.
+\tamara{is this Tutte the algorithm with exponential area you meant?}
 
 
 
@@ -145,9 +165,13 @@ In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-
 
 \paragraph{Algorithm Correctness}
 
-To show the algorithm's correctness, we work with a helper graph, the \emph{augmented graph} $G_\text{aug}$, that can be obtained from $G_\text{emb}$ by adding a new helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face of $G_\text{emb}$, in order, without introducing edge crossings. This is the same graph as used in the definition of the augmented dual in \cref{def:augmented-dual}. Therefore $G_\text{aug}^* = G_\text{emb}^+$.
+To show the algorithm's correctness, we work with a helper graph, the \emph{augmented graph} $G_\text{aug}$, that can be obtained from $G_\text{emb}$ by adding a new helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face of $G_\text{emb}$, in order, without introducing edge crossings.
+This is the same graph as used in the definition of the augmented dual in \cref{def:augmented-dual}.
+Therefore $G_\text{aug}^* = G_\text{emb}^+$.
 
-The polygonal dual of $G_\text{emb}$ produced by \cref{alg:transformation-to-dual} consists of five kinds of vertices: inner face vertices (\cref{line:transformation-innerfacevertex}), outer edge vertices (\cref{line:transformation-outeredgevertex}), subdivision vertices between two inner face vertices (\cref{line:transformation-subdivisionvertex1}), subdivision vertices between an inner face vertex and an outer edge vertex (\cref{line:transformation-subdivisionvertex2}), and subdivision vertices between two outer edge vertex (\cref{line:transformation-subdivisionvertex3}). The inner face and outer edge vertices correspond to faces in the augmented graph and have degree 3, the subdivision vertices are essentially bends in the dual edges of the augmented graph and therefore have degree 2. The following figure illustrates an example:
+The polygonal dual of $G_\text{emb}$ produced by \cref{alg:transformation-to-dual} consists of five kinds of vertices: inner face vertices (\cref{line:transformation-innerfacevertex}), outer edge vertices (\cref{line:transformation-outeredgevertex}), subdivision vertices between two inner face vertices (\cref{line:transformation-subdivisionvertex1}), subdivision vertices between an inner face vertex and an outer edge vertex (\cref{line:transformation-subdivisionvertex2}), and subdivision vertices between two outer edge vertex (\cref{line:transformation-subdivisionvertex3}).
+The inner face and outer edge vertices correspond to faces in the augmented graph and have degree 3, the subdivision vertices are essentially bends in the dual edges of the augmented graph and therefore have degree 2.
+The following figure illustrates an example:
 %
 \begin{figure}[H]
 	\centering
@@ -163,31 +187,59 @@ The polygonal dual of $G_\text{emb}$ produced by \cref{alg:transformation-to-dua
 Vertices in $G_\text{emb}^+$ are created for two following two scenarios:
 %
 \begin{itemize}
-	\item Every inner face $f$ of $G_\text{emb}$ induces a corresponding vertex $v_f$ in $G_\text{emb}^+$. We create these vertices in \cref{line:transformation-innerfacevertex}.
-	\item Every outer edge $\{u,v\}$ of $G_\text{emb}$ forms an additional triangular face in $G_\text{aug}$ (one with the helper vertex) and therefore induces a corresponding vertex $v_{\{u,v\}}$ in $G_\text{emb}^+$. We create these vertices in \cref{line:transformation-outeredgevertex}.
+\item Every inner face $f$ of $G_\text{emb}$ induces a corresponding vertex $v_f$ in $G_\text{emb}^+$.
+We create these vertices in \cref{line:transformation-innerfacevertex}.
+\item Every outer edge $\{u,v\}$ of $G_\text{emb}$ forms an additional triangular face in $G_\text{aug}$ (one with the helper vertex) and therefore induces a corresponding vertex $v_{\{u,v\}}$ in $G_\text{emb}^+$.
+We create these vertices in \cref{line:transformation-outeredgevertex}.
 \end{itemize}
 
-Every edge $\{u,v\}$ in $G_\text{emb}$ induces a dual edge in $G_\text{emb}^+$. Let us go over the different kinds of edges we have and how we add them to $G_\text{emb}^+$ while guaranteeing the planarity of the embedding:
+Every edge $\{u,v\}$ in $G_\text{emb}$ induces a dual edge in $G_\text{emb}^+$.
+Let us go over the different kinds of edges we have and how we add them to $G_\text{emb}^+$ while guaranteeing the planarity of the embedding:
 %
 \begin{itemize}
-	\item Internal edges, \ie{} edges of $G_\text{emb}$ that do not lie on its outer face: These edges are incident to two internal faces $f, g$ of $G_\text{emb}$. Their dual edges in $G_\text{emb}^+$ therefore connect the vertices $v_f$ and $v_g$. We draw these dual edges with a bend in \cref{line:transformation-subdivisionvertex1}.
-	\item Edges $\{u,v\}$ that lie on the outer face of $G_\text{emb}$: These edges are incident to an internal face $f$ of $G_\text{emb}$ and a new triangular face with the helper vertex in $G_\text{aug}$. In $G_\text{emb}^+$, their dual edges therefore connect the vertices $v_f$ and $v_{\{u,v\}}$. We could draw these dual edges without a bend, but add a bend for consistency's sake in \cref{line:transformation-subdivisionvertex2}.
-	\item Helper edges $\{v,\cdot\}$ that are added to vertices $v$ on the outer face of $G_\text{emb}$ in $G_\text{aug}$: These edges are incident to two new triangular faces in $G_\text{aug}$, namely the faces formed using $\{u,v\}$ and $\{v,w\}$, assuming $u$ and $w$ are the two neighbors of $v$ on the outer face of $G_\text{emb}$. Their dual edges in $G_\text{emb}^+$ therefore connect the vertices $v_{\{u,v\}}$ and $v_{\{v,w\}}$. We draw these dual edges with a bend in \cref{line:transformation-subdivisionvertex3}.
+\item Internal edges, \ie{} edges of $G_\text{emb}$ that do not lie on its outer face:
+These edges are incident to two internal faces $f, g$ of $G_\text{emb}$.
+Their dual edges in $G_\text{emb}^+$ therefore connect the vertices $v_f$ and $v_g$.
+We draw these dual edges with a bend in \cref{line:transformation-subdivisionvertex1}.
+\item Edges $\{u,v\}$ that lie on the outer face of $G_\text{emb}$:
+These edges are incident to an internal face $f$ of $G_\text{emb}$ and a new triangular face with the helper vertex in $G_\text{aug}$.
+In $G_\text{emb}^+$, their dual edges therefore connect the vertices $v_f$ and $v_{\{u,v\}}$.
+We could draw these dual edges without a bend, but add a bend for consistency's sake in \cref{line:transformation-subdivisionvertex2}.
+\item Helper edges $\{v,\cdot\}$ that are added to vertices $v$ on the outer face of $G_\text{emb}$ in $G_\text{aug}$:
+These edges are incident to two new triangular faces in $G_\text{aug}$, namely the faces formed using $\{u,v\}$ and $\{v,w\}$, assuming $u$ and $w$ are the two neighbors of $v$ on the outer face of $G_\text{emb}$.
+Their dual edges in $G_\text{emb}^+$ therefore connect the vertices $v_{\{u,v\}}$ and $v_{\{v,w\}}$.
+We draw these dual edges with a bend in \cref{line:transformation-subdivisionvertex3}.
 \end{itemize}
 
-Due to our choice of bend locations, the generated embedding is planar: We draw edges from the barycenter of all faces to the midpoints of their incident edges (in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end}); these edges cannot possibly cross. The remainder of the edges (in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end}) partition the boundary of the outer face of $G_\text{emb}$. Obviously, these two classes of edges do not cross and $G_\text{init}$ is therefore planar.
+Due to our choice of bend locations, the generated embedding is planar:
+We draw edges from the barycenter of all faces to the midpoints of their incident edges (in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end}); these edges cannot possibly cross.
+The remainder of the edges (in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end}) partition the boundary of the outer face of $G_\text{emb}$.
+Obviously, these two classes of edges do not cross and $G_\text{init}$ is therefore planar.
 
-Once the algorithm has computed $G_\text{init}$, we construct an explicit representation of its faces. We do so for $G_\text{emb}^+$ first (loop in \cref{line:transformation-enumerateedges}) and then insert the subdivision vertices (loop in \cref{line:transformation-insertsubdivisions}). The face in $G_\text{emb}^+$ that corresponds to a vertex $v$ of $G_\text{emb}$ is bounded by vertices corresponding to internal faces of $G_\text{emb}$ that contain $v$, plus the vertices corresponding to the additional triangular faces in $G_\text{aug}$ in case $v$ lies on outer face of $G_\text{emb}$. Iterating over adjacent pairs $(e_1, e_2)$ of incident edges in counterclockwise order correctly detects the internal faces between $e_1$ and $e_2$ and the case where $e_1$ and $e_2$ wrap around on the outside, in order. The area sign check \cref{line:transformation-checktriangle} such that the wraparound case isn't misclassified as an internal face. This would be the case for internal faces of $G_\text{emb}$ with two edges on the outer face, as is the case for vertex $v \coloneqq d$ and edges $e_1 \coloneqq \{d,b\}, e_2 \coloneqq \{d,c\}$ in \cref{fig:transformation-algorithm}.
+Once the algorithm has computed $G_\text{init}$, we construct an explicit representation of its faces.
+We do so for $G_\text{emb}^+$ first (loop in \cref{line:transformation-enumerateedges}) and then insert the subdivision vertices (loop in \cref{line:transformation-insertsubdivisions}).
+The face in $G_\text{emb}^+$ that corresponds to a vertex $v$ of $G_\text{emb}$ is bounded by vertices corresponding to internal faces of $G_\text{emb}$ that contain $v$, plus the vertices corresponding to the additional triangular faces in $G_\text{aug}$ in case $v$ lies on outer face of $G_\text{emb}$.
+Iterating over adjacent pairs $(e_1, e_2)$ of incident edges in counterclockwise order correctly detects the internal faces between $e_1$ and $e_2$ and the case where $e_1$ and $e_2$ wrap around on the outside, in order.
+The area sign check \cref{line:transformation-checktriangle} such that the wraparound case isn't misclassified as an internal face.
+This would be the case for internal faces of $G_\text{emb}$ with two edges on the outer face, as is the case for vertex $v \coloneqq d$ and edges $e_1 \coloneqq \{d,b\}, e_2 \coloneqq \{d,c\}$ in \cref{fig:transformation-algorithm}.
 
 
 
 \paragraph{Algorithm Runtime}
 
-To compute the input graph's faces, we replace every edge with two inversely oriented, directed edges. We then repeatedly pick any unmarked edge and form a directed cycle by following the next outgoing edge according to the embedding, marking the edges as we go. Once all edges have been marked, we have found all faces. The outer face is the only face with negative area. This can be implemented in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
+To compute the input graph's faces, we replace every edge with two inversely oriented, directed edges.
+We then repeatedly pick any unmarked edge and form a directed cycle by following the next outgoing edge according to the embedding, marking the edges as we go.
+Once all edges have been marked, we have found all faces.
+The outer face is the only face with negative area.
+This can be implemented in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
 
-The input graph has $\bigTheta{\abs{V_\text{in}}}$ internal faces and they are all triangles, therefore we can compute their barycenter in $\bigTheta{1}$ each (\cref{line:transformation-barycenter1}, \cref{line:transformation-barycenter2}). By keeping track of of which faces an edge of the input graph is incident to while computing the faces as outlined above, we allow for $\bigTheta{1}$ lookups in \cref{line:transformation-incidentfacelookup1} and \cref{line:transformation-incidentfacelookup2}. The loop in \crefrange{line:transformation-loop1-start}{line:transformation-loop1-end} therefore runs in $\bigTheta{\abs{V_\text{in}}}$, the loop in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end} in $\bigTheta{\abs{E_\text{in}}}$, and the loop in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end} in $\bigTheta{\abs{E_\text{in}}}$.
+The input graph has $\bigTheta{\abs{V_\text{in}}}$ internal faces and they are all triangles, therefore we can compute their barycenter in $\bigTheta{1}$ each (\cref{line:transformation-barycenter1}, \cref{line:transformation-barycenter2}).
+By keeping track of of which faces an edge of the input graph is incident to while computing the faces as outlined above, we allow for $\bigTheta{1}$ lookups in \cref{line:transformation-incidentfacelookup1} and \cref{line:transformation-incidentfacelookup2}.
+The loop in \crefrange{line:transformation-loop1-start}{line:transformation-loop1-end} therefore runs in $\bigTheta{\abs{V_\text{in}}}$, the loop in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end} in $\bigTheta{\abs{E_\text{in}}}$, and the loop in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end} in $\bigTheta{\abs{E_\text{in}}}$.
 
-The loop in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end} processes every vertex once in \cref{line:transformation-enumeratevertices} and and every edge twice \cref{line:transformation-enumerateedges}. We can check if the vertices $u,v,w$ form a triangle in constant time (\cref{line:transformation-checktriangle}) by checking if there's an edge between $v$ and $w$. Considering each of the $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$ vertices of the generated graph appears in \code{endpoints} in no more than two iterations of the loop in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end} and all those vertices have degree 3, we can find their shared neighbor in constant time and implement the entire loop to run in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
+The loop in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end} processes every vertex once in \cref{line:transformation-enumeratevertices} and and every edge twice \cref{line:transformation-enumerateedges}.
+We can check if the vertices $u,v,w$ form a triangle in constant time (\cref{line:transformation-checktriangle}) by checking if there's an edge between $v$ and $w$.
+Considering each of the $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$ vertices of the generated graph appears in \code{endpoints} in no more than two iterations of the loop in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end} and all those vertices have degree 3, we can find their shared neighbor in constant time and implement the entire loop to run in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
 
 %By keeping track of which faces in the generated graph correspond to which vertices in the source graph in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end}, the loop in \crefrange{line:transformation-loop5-start}{line:transformation-loop5-end} runs in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
 
