@@ -1,12 +1,13 @@
 % What motivates our concrete problem statement?
-\section{Motivation}
+%\section{Motivation}
 \label{sect:motivation}
 
 % Clustered data
+In the field of graph theory and graph drawing, for example, for larger graphs, global structures such as clusters and their relationships become increasingly important while the importance of local features such as  individual edges diminishes.
 Clustered data appears naturally in many real-world data sets.
 For example, university students can be grouped by their academic major, or politicians can be grouped according to their party affiliation.
 When done correctly, clustering provides a lot of additional structure to data and essentially functions as a high-level data aggregation that is easy to visualize while still conveying crucial global information.
-In this thesis, we therefore propose a framework that explicitly visualizes clusters in the input graph as a high-level overview in addition to all local details.
+In this thesis, we propose a framework that explicitly visualizes clusters in the input graph as a high-level overview in addition to all local details.
 
 % Map metaphor
 Given a map of the earth, it is remarkably easy to find out whether or not two countries are neighbors, or to compare their size.
@@ -32,14 +33,16 @@ In this thesis, we shall preserve the mental map of the dynamic map visualizatio
 
 % Area-proportionality
 Cartograms are maps in which geographic regions appear skewed such that their areas are proportional to some statistic, \eg{} the population or gross domestic product of a country.
-Although cartograms are traditionally used to visualize demographic data and are based real geographic maps, extensive studies related to human perception \cite{nusrat2016state} \cite{nusrat2018evaluating} give us a few valuable insights that can be transferred to our problem definition:
+Although cartograms are traditionally used to visualize demographic data and are based on real geographic maps, extensive studies related to human perception \cite{nusrat2016state} \cite{nusrat2018evaluating} give us a few valuable insights that can be transferred to our problem definition:
 First, area is a strong visual variable that can be interpreted naturally.
 And second, having before/after-comparison allows viewers to easily detect trends in the underlying data.
 In this thesis, we therefore aim to create maps whose regions' areas are proportional to their respective cluster sizes and adopt established quality metrics of cartograms for the visualizations we produce.
 
 % Motivating application: concrete use case
-A real-world application with great potential to benefit from this framework and its goals is the visualization of \emph{opinion networks} \cite{betz2019applying} and in particular how they evolve over time.
-An opinion network is represented as a weighted graph whose vertices are so-called \emph{opinion vectors} and the edge weights represent the similarity between two opinion vectors.
-Betz \etal{} \cite{betz2019applying} cluster the vertices to group similar opinions together, visualize the graph as a map in which each cluster corresponds to a country, and draw the original graph on top of this map.
-Naturally, such an opinion network is dynamic in a sense where new opinions can be incorporated or individual opinions can change over time: clusters can therefore grow or shrink, appear or disappear, merge or split.
+A real-world application with great potential to benefit from this framework and its goals is the visualization of opinion networks \cite{betz2019applying} and in particular how they evolve over time.
+An opinion network is represented as a weighted graph whose vertices are so-called opinion vectors and the edge weights represent the similarity between two opinion vectors.
+Betz \etal{} \cite{betz2019applying} cluster the vertices to group similar opinions together, visualize the graph as a map in which each cluster corresponds to a country, and draw the original graph on top of this map following the GMap algorithm \cite{gansner2009gmap}.
+Naturally, such an opinion network is dynamic in a sense where new opinions can be incorporated or individual opinions can change over time: clusters can therefore grow or shrink, appear or disappear, merge or split, etc.
 We are interested in visualizing such processes effectively in order to find and communicate important trends in the underlying data.
+
+Before diving into the contributions of this thesis, we discuss related work that we build upon to better understand the aspects we are going to address.
