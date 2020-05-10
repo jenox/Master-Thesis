@@ -4,60 +4,64 @@
 In this chapter we provide a detailed description of our problem statement, formalize it, and discuss our solution in the case of static input graphs.
 
 Our goal is to visualize clusters of a larger graph, such as an opinion network, as an artificial map.
-In this map, each cluster of the larger graph is represented by a contiguous region whose area is approximately proportional to the cluster's size, and neighboring regions indicate similarities between the respective clusters.
+In this map, each cluster of the larger graph is represented by a continuous region whose area is approximately proportional to the cluster's size, and neighboring regions indicate similarities between the respective clusters.
 
 Unlike OpMap and GMap, which have similar goals, clustering the larger graph is not part of the framework we discuss here.
-Instead, we assume the larger graph is clustered externally before feeding it into our framework.
-In a first step, we take the already clustered graph as input and build an initial polygonal contact representation of said graph.
-Obviously, this is only possible under a few conditions that we formalize in a bit.
-We then tweak the polygonal contact representation, displacing the polygons' corners in such a way that their areas are approximately proportional to the cluster's sizes and they have somewhat organic shapes.
+Instead, we assume the larger graph is clustered externally before being fed into our framework, producing some cluster graph.
+The first step of our framework takes a spanning subgraph of this cluster graph as input and builds an initial contact representation in which all regions are simple polygons.
+Obviously, this isn't possible for all spanning subgraphs of the cluster graph; for example, the subgraph must be planar.
+We formalize the additional requirements we impose on the spanning subgraph in a bit.
+The contact representation is then tweaked, displacing the polygons' corners in such a way that their areas are approximately proportional to the clusters' weights and they have somewhat organic shapes.
 To formalize this, we require two short definitions:
 
 \begin{definition}
-A weighted contact representation is \emph{approximately area-proportional} if its regions' areas are approximately proportional to the weights prescribed by the weight function.
+A contact representation in which all regions are simple polygons is called a \emph{polygonal contact representation}.
 \end{definition}
 
 \begin{definition}
-Given a plane graph $G$, a contact representation of $G$ with simple polygons is called a \emph{polygonal dual} of $G$.
-A polygonal dual respects the combinatorial embedding and outer face of $G$, \ie{} the regions corresponding to vertices that lie on the outer face of $G$ have a boundary with the implicit outer face of the polygonal dual, and the cyclic order of incident faces is as prescribed by the combinatorial embedding of $G$.
+Given a plane graph $G$, a polygonal contact representation of $G$ is called a \emph{polygonal dual} of $G$.
 \end{definition}
 
-Unless otherwise noted, we assume that polygonal duals respect the combinatorial embedding and outer face of their primal graphs and that two regions share at most one continuous border, \ie{} the points where two regions meet lie on a single polyline.
 Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
 
-With these definitions in place, we can formalize the structure of our algorithmic pipeline: Our input is a plane 2-connected, internally triangulated, and vertex-weighted graph, the \emph{cluster graph} $G_\text{emb}$.
-We start with forming an initial weighted polygonal dual of $G_\text{emb}$'s embedding, the \emph{initial map graph} $G_\text{init}$.
-$G_\text{init}$ inherits its (face) weights from $G_\text{emb}$'s vertices.
-We then turn $G_\text{init}$ into an approximately area-proportional, polygonal contact representation of $G_\text{emb}$ with other aforementioned region features, the \emph{(approximately area-)proportional map graph} $G_\text{prop}$.
-This is done by displacing its vertices while preserving the graphs's planarity.
+\newcommand{\clustergraph}[1]{\ensuremath{G^\mathcal{C}_{#1}}}
+\newcommand{\initmap}[1]{\ensuremath{\Gamma^*_{#1}}}
+\newcommand{\propmap}[1]{\ensuremath{\Gamma^\propto_{#1}}}
+
+With these definitions in place, we can formalize the structure of our framework:
+Our input is a biconnected and internally triangulated plane subgraph of a cluster graph that we call the \emph{filtered cluster graph} \clustergraph{}.
+We start by forming an initial weighted polygonal dual of \clustergraph{}, the \emph{initial map} \initmap{}.
+\initmap{} inherits its (face) weights from the vertices of \clustergraph{}.
+We then turn \initmap{} into an $\varepsilon$-area-proportional, polygonal contact representation of \clustergraph{} for some small $\varepsilon > 0$, the \emph{$\varepsilon$-proportional map} \propmap{} of \clustergraph{}.
+This is done by displacing the the contact representation \initmap{}'s vertices while preserving its planarity.
 We implement this step using a force-directed algorithm.
 
 \begin{figure}[H]
-	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Thesis-Static.pdf}
+	\centering\includegraphics[width=0.9\textwidth]{Resources/Framework-1.pdf}
 	\caption{Overview of the algorithmic pipeline for static input graphs.}
 	\label{fig:static-pipeline-thesis}
 \end{figure}
 
-Let's break down the requirements we impose on the cluster graph $G_\text{emb}$ and its embedding:
+Let's break down the requirements we impose on the filtered cluster graph \clustergraph{}:
 
 \begin{itemize}
-\item $G_\text{emb}$ is given as a plane graph.
-$G_\text{emb}$ must be planar such that there exists a contact representation of $G_\text{emb}$.
-We require a combinatorial embedding of $G_\text{emb}$ with prescribed outer face such that the \quoted{arrangement} of the clusters or of the regions on the eventual map is predetermined.
-This becomes important in \cref{chap:visualizing-dynamic-input-graphs} where we start incorporating dynamic updates into the embedded cluster graph and the map graphs.
-\item $G_\text{emb}$ is internally triangulated such that the map graphs $G_\text{init}$ and $G_\text{prop}$ are hole-free.
+\item \clustergraph{} is given as a plane graph.
+Obviously, \clustergraph{} must be planar such that there exists a contact representation of \clustergraph{}.
+We require a planar embedding of \clustergraph{} such that the \quoted{arrangement} of the clusters or of the regions on the eventual map is predetermined.
+This becomes important in \cref{chap:visualizing-dynamic-input-graphs} where we start incorporating dynamic updates into the filtered cluster graph and resulting the map graphs.
+\item \clustergraph{} must be internally triangulated such that the maps \initmap{} and \propmap{} are hole-free.
 Applying the map metaphor, this translates to there not being any lakes or rivers separating countries on the map.
 \cref{fig:preliminaries-rectilinear-dual} illustrates how internal faces on 4 or more vertices creates holes in contact representations.
-\item $G_\text{emb}$ is 2-connected such that, in combination with the internal triangulatedness, no vertex appears on outer face multiple times.
-This is required for how we compute the initial map graph and will be discussed in detail in \cref{sect:transformation-to-dual}.
-\item $G_\text{emb}$ is vertex-weighted such that the initial map graph $G_\text{init}$ can inherit its vertex weights and we know what areas the polygonal regions are supposed to have in $G_\text{prop}$.
+\item \clustergraph{} must be biconnected such that, in combination with the internal triangulatedness, no vertex appears on the outer face multiple times.
+The region of such a vertex in the polygonal dual would need to have multiple borders to the outer face, which we specifically excluded in \cref{chap:preliminaries}.
+\item \clustergraph{} must be vertex-weighted such that the map \initmap{} can inherit its vertex weights and we know what areas the polygonal regions are supposed to have in \propmap{}.
 \end{itemize}
 
-Many real-world applications, such as visualizing opinion networks, do not produce an embedded cluster graph directly.
-In order for our framework to be applicable, one may need to prepend a clustering phase that turns an arbitrary input graph $G_\text{in}$ into a plane 2-connected, internally triangulated, and vertex-weighted graph that can then be processed by our framework:
+Many real-world applications, such as visualizing opinion networks, do not produce a filtered cluster graph directly.
+In order for our framework to be applicable, one may need to prepend a clustering phase that turns an arbitrary input graph $G$ into a biconnected and internally triangulated plane subgraph \clustergraph{} of a cluster graph of $G$ that can then be processed by our framework:
 %
 \begin{figure}[H]
-	\centering\includegraphics[width=0.9\textwidth]{Resources/Pipeline-Application-Static.pdf}
+	\centering\includegraphics[width=0.9\textwidth]{Resources/Framework-2.pdf}
 	\caption{Overview of a possible algorithmic pipeline for generic applications.}
 	\label{fig:static-pipeline-application}
 \end{figure}

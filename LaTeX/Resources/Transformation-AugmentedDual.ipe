@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200425144226" modified="D:20200427020923"/>
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200420003246" modified="D:20200511010413"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -510,130 +510,224 @@ h
 <tiling name="rising" angle="30" step="4" width="1"/>
 </ipestyle>
 <page>
-<layer name="primal"/>
-<layer name="augmented"/>
-<layer name="old_helpers"/>
-<layer name="dual"/>
+<layer name="primal_vertices"/>
+<layer name="primal_edges"/>
+<layer name="primal_labels"/>
+<layer name="augmented_helpers"/>
+<layer name="dual_edges"/>
 <layer name="dual_labels"/>
-<view layers="primal" active="augmented"/>
-<view layers="primal augmented" active="primal"/>
-<view layers="primal augmented dual" active="primal"/>
-<view layers="dual dual_labels" active="primal"/>
-<path layer="augmented" stroke="red" dash="dashed" pen="heavier">
-192 414.851 m
-192 464 l
+<view layers="primal_vertices primal_edges primal_labels" active="dual_edges"/>
+<view layers="primal_vertices primal_edges primal_labels augmented_helpers" active="dual_edges"/>
+<view layers="primal_vertices primal_edges primal_labels augmented_helpers dual_edges" active="dual_edges"/>
+<view layers="dual_labels" active="dual_labels"/>
+<path layer="dual_labels" matrix="1 0 0 1 -512 0" fill="flatred">
+736 400 m
+688 480
+624 480
+576 400 c
+632 372 l
+656 400
+680 372 c
+h
 </path>
+<path matrix="1 0 0 1 -480 48" fill="flatyellow">
+600 324 m
+592 288
+624 284 c
+656 288
+648 324 c
+624 352
+600 324 c
+h
+</path>
+<path matrix="1 0 0 1 -512 48" fill="flatblue">
+680 324 m
+736 352 l
+768 272
+736 192 c
+656 232 l
+656 284 l
+688 288
+680 324 c
+h
+</path>
+<path matrix="1 0 0 1 -448 96" fill="flatgreen">
+568 276 m
+512 304 l
+480 224
+512 144 c
+592 184 l
+592 236 l
+560 240
+568 276 c
+h
+</path>
+<path matrix="1 0 0 1 -464 64" fill="flatorange">
+608 216 m
+528 176 l
+576 96
+640 96
+688 176 c
+h
+</path>
+<path layer="augmented_helpers" stroke="black" pen="heavier">
+144 432 m
+144 496 l
+</path>
+<path stroke="black" pen="heavier">
+208 320 m
+272 320 l
+</path>
+<path stroke="black" pen="heavier">
+80 320 m
+16 320 l
+</path>
+<path stroke="black" pen="heavier">
+144 208 m
+144 144 l
+</path>
+<path layer="primal_edges" matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+128 814.851 m
+64 704 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+64 704 m
+192 704 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+192 704 m
+128 814.851 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+128 814.851 m
+128 740.95 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+128 740.95 m
+192 704 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+192 704 m
+128 593.149 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+128 593.149 m
+64 704 l
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" pen="heavier">
+64 704 m
+128 740.95 l
+</path>
+<path layer="primal_vertices" matrix="1 0 0 1 16 -384" stroke="black" fill="flatgreen" pen="heavier">
+16 0 0 16 64 704 e
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" fill="flatblue" pen="heavier">
+16 0 0 16 192 704 e
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" fill="flatred" pen="heavier">
+16.0004 0 0 16.0004 128 814.851 e
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" fill="flatorange" pen="heavier">
+16 0 0 16 128 593.149 e
+</path>
+<path matrix="1 0 0 1 16 -384" stroke="black" fill="flatyellow" pen="heavier">
+16 0 0 16 128 740.95 e
+</path>
+<text layer="primal_labels" matrix="1 0 0 1 32 -32" transformations="translations" pos="112 462.851" stroke="black" type="label" width="6.145" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">a</text>
+<text matrix="1 0 0 1 32 -32" transformations="translations" pos="112 388.95" stroke="black" type="label" width="5.425" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">e</text>
+<text matrix="1 0 0 1 32 -32" transformations="translations" pos="48 352" stroke="black" type="label" width="4.977" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">b</text>
+<text matrix="1 0 0 1 32 -32" transformations="translations" pos="176 352" stroke="black" type="label" width="5.038" height="5.147" depth="0" halign="center" valign="center" size="large" style="math">c</text>
+<text matrix="1 0 0 1 32 -32" transformations="translations" pos="112 241.149" stroke="black" type="label" width="6.083" height="8.302" depth="0" halign="center" valign="center" size="large" style="math">d</text>
+<use layer="dual_edges" name="mark/disk(sx)" pos="144 280" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="144 332" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="120 372" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="168 372" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="64 400" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="224 400" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="64 240" size="normal" stroke="red"/>
+<use name="mark/disk(sx)" pos="224 240" size="normal" stroke="red"/>
 <path stroke="red" dash="dashed" pen="heavier">
-256 304 m
-304 304 l
+120 372 m
+144 400
+168 372 c
+120 372 m
+112 336
+144 332 c
+168 372 m
+176 336
+144 332 c
+144 332 m
+144 280 l
+144 280 m
+224 240 l
+144 280 m
+64 240 l
+120 372 m
+64 400 l
+168 372 m
+224 400 l
+224 400 m
+176 480
+112 480
+64 400 c
+224 240 m
+176 160
+112 160
+64 240 c
+224 240 m
+256 320
+224 400 c
+64 400 m
+32 320
+64 240 c
 </path>
-<path stroke="red" dash="dashed" pen="heavier">
-192 193.149 m
-192 144 l
+<use layer="dual_labels" name="mark/disk(sx)" pos="144 280" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="144 332" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="120 372" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="168 372" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="64 400" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="224 400" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="64 240" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="224 240" size="normal" stroke="black"/>
+<path stroke="black" pen="heavier">
+120 372 m
+144 400
+168 372 c
+120 372 m
+112 336
+144 332 c
+168 372 m
+176 336
+144 332 c
+144 332 m
+144 280 l
+144 280 m
+224 240 l
+144 280 m
+64 240 l
+120 372 m
+64 400 l
+168 372 m
+224 400 l
+224 400 m
+176 480
+112 480
+64 400 c
+224 240 m
+176 160
+112 160
+64 240 c
+224 240 m
+256 320
+224 400 c
+64 400 m
+32 320
+64 240 c
 </path>
-<path stroke="red" dash="dashed" pen="heavier">
-128 304 m
-80 304 l
-</path>
-<use layer="primal" matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="64 352" size="large" stroke="black"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="192 352" size="large" stroke="black"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="128 462.851" size="large" stroke="black"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="128 241.149" size="large" stroke="black"/>
-<path matrix="1 0 0 1 64 -48" stroke="black" pen="heavier">
-64 352 m
-128 462.851 l
-128 462.851 m
-192 352 l
-192 352 m
-128 241.149 l
-128 241.149 m
-64 352 l
-64 352 m
-192 352 l
-</path>
-<path layer="old_helpers" stroke="red" pen="heavier">
-128 304 m
-64 304
-64 304
-64 144
-64 144
-352 144
-352 144
-352 304
-352 304
-320 304 c
-</path>
-<use name="mark/disk(sx)" pos="320 304" size="large" stroke="red"/>
-<path stroke="red" pen="heavier">
-256 304 m
-320 304 l
-</path>
-<path stroke="red" pen="heavier">
-192 414.851 m
-192 448
-320 448
-320 304 c
-</path>
-<path stroke="red" pen="heavier">
-192 193.149 m
-192 160
-320 160
-320 304 c
-</path>
-<use layer="dual" matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="128 315.05" size="large" stroke="blue"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="128 388.95" size="large" stroke="blue"/>
-<path matrix="1 0 0 1 64 -48" stroke="blue" pen="heavier">
-128 388.95 m
-128 315.05 l
-</path>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="208 416" size="large" stroke="blue"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="208 288" size="large" stroke="blue"/>
-<path matrix="1 0 0 1 64 -48" stroke="blue" pen="heavier">
-208 288 m
-240 352
-208 416 c
-</path>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="48 288" size="large" stroke="blue"/>
-<use matrix="1 0 0 1 64 -48" name="mark/disk(sx)" pos="48 416" size="large" stroke="blue"/>
-<path matrix="1 0 0 1 64 -48" stroke="blue" pen="heavier">
-48 416 m
-16 352
-48 288 c
-</path>
-<path matrix="1 0 0 1 64 -48" stroke="blue" pen="heavier">
-48 288 m
-128 160
-208 288 c
-</path>
-<path stroke="blue" pen="heavier">
-112 368 m
-192 496
-272 368 c
-</path>
-<path stroke="blue" pen="heavier">
-112 368 m
-192 340.95 l
-</path>
-<path stroke="blue" pen="heavier">
-192 340.95 m
-272 368 l
-</path>
-<path stroke="blue" pen="heavier">
-192 267.05 m
-112 240 l
-</path>
-<path stroke="blue" pen="heavier">
-192 267.05 m
-272 240 l
-</path>
-<text layer="dual_labels" matrix="1 0 0 1 -208 48" transformations="translations" pos="400 336" stroke="blue" type="label" width="10.621" height="8.896" depth="0" halign="center" valign="center" size="huge" style="math">a</text>
-<text matrix="1 0 0 1 -304 -16" transformations="translations" pos="448 320" stroke="blue" type="label" width="8.602" height="14.349" depth="0" halign="center" valign="center" size="huge" style="math">b</text>
-<text matrix="1 0 0 1 -160 32" transformations="translations" pos="400 272" stroke="blue" type="label" width="8.707" height="8.896" depth="0" halign="center" valign="center" size="huge" style="math">c</text>
-<text matrix="1 0 0 1 -256 -48" transformations="translations" pos="448 272" stroke="blue" type="label" width="10.513" height="14.349" depth="0" halign="center" valign="center" size="huge" style="math">d</text>
-<text layer="old_helpers" matrix="1 0 0 1 -12.3145 -26.8186" transformations="translations" pos="336 336" stroke="red" type="label" width="12.271" height="6.179" depth="2.15" valign="baseline" size="Large" style="math">v_0</text>
-<text layer="primal" matrix="1 0 0 1 -188.206 18.7219" transformations="translations" pos="384 400" stroke="black" type="label" width="10.621" height="8.896" depth="0" valign="baseline" size="huge" style="math">a</text>
-<text matrix="1 0 0 1 -281.772 -74.6577" transformations="translations" pos="400 384" stroke="black" type="label" width="8.602" height="14.349" depth="0" valign="baseline" size="huge" style="math">b</text>
-<text matrix="1 0 0 1 -155.459 -57.3387" transformations="translations" pos="416 368" stroke="black" type="label" width="8.707" height="8.896" depth="0" valign="baseline" size="huge" style="math">c</text>
-<text matrix="1 0 0 1 -248.832 -149.751" transformations="translations" pos="448 336" stroke="black" type="label" width="10.513" height="14.349" depth="0" valign="baseline" size="huge" style="math">d</text>
+<text matrix="1 0 0 1 32 -40" transformations="translations" pos="112 462.851" stroke="black" type="label" width="7.374" height="6.177" depth="0" halign="center" valign="center" size="Large" style="math">a</text>
+<text matrix="1 0 0 1 32 -32" transformations="translations" pos="112 388.95" stroke="black" type="label" width="6.511" height="6.177" depth="0" halign="center" valign="center" size="Large" style="math">e</text>
+<text matrix="1 0 0 1 40 -32" transformations="translations" pos="48 352" stroke="black" type="label" width="5.973" height="9.963" depth="0" halign="center" valign="center" size="Large" style="math">b</text>
+<text matrix="1 0 0 1 24 -32" transformations="translations" pos="176 352" stroke="black" type="label" width="6.046" height="6.177" depth="0" halign="center" valign="center" size="Large" style="math">c</text>
+<text matrix="1 0 0 1 32 -16" transformations="translations" pos="112 241.149" stroke="black" type="label" width="7.299" height="9.963" depth="0" halign="center" valign="center" size="Large" style="math">d</text>
 </page>
 </ipe>

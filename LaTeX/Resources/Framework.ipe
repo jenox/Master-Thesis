@@ -1,0 +1,530 @@
+<?xml version="1.0"?>
+<!DOCTYPE ipe SYSTEM "ipe.dtd">
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200430174333" modified="D:20200510230641"/>
+<preamble>\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{marvosym}</preamble>
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+-0.5 -0.5 l
+-0.5 -0.5 l
+-0.5 -0.5 l
+-0.5 -0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+-0.6 -0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+-0.4 -0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+-0.43 -0.57 l
+-0.43 -0.57 l
+-0.43 -0.57 l
+-0.43 -0.57 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+-0.43 0.57 l
+-0.43 0.57 l
+-0.43 0.57 l
+-0.43 0.57 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+-1 0 l
+-1 0 l
+-1 0 l
+-1 0 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+0 0 l
+0 0 l
+0 0 l
+0 0 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+-1 0 l
+-1 0 l
+-1 0 l
+-1 0 l
+h
+</path>
+</symbol>
+<pen name="heavier" value="0.8"/>
+<pen name="fat" value="1.2"/>
+<pen name="ultrafat" value="2"/>
+<pen name="vertex" value="20"/>
+<pen name="boundary" value="20"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="flatred" value="1 0.7 0.7"/>
+<color name="flatgreen" value="0.7 1 0.7"/>
+<color name="flatblue" value="0.7 0.7 1"/>
+<color name="flatyellow" value="1 1 0.7"/>
+<color name="flatorange" value="1 0.85 0.7"/>
+<color name="flatcyan" value="0.7 1 1"/>
+<color name="flatdarkgray" value="0.7"/>
+<color name="flatgray" value="0.8"/>
+<color name="flatlightgray" value="0.9"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<textsize name="large" value="\large"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="small" value="\small"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textsize name="tiny" value="\tiny"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="22.5 deg" value="22.5"/>
+<anglesize name="15 deg" value="15"/>
+<opacity name="10%" value="0.1"/>
+<opacity name="30%" value="0.3"/>
+<opacity name="50%" value="0.5"/>
+<opacity name="75%" value="0.75"/>
+<layout paper="960 480" origin="0 0" frame="960 480"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+<page>
+<layer name="1+2"/>
+<layer name="2"/>
+<layer name="3+4"/>
+<layer name="3"/>
+<layer name="4"/>
+<view layers="1+2" active="1+2"/>
+<view layers="1+2 2" active="1+2"/>
+<view layers="3+4 3" active="3+4"/>
+<view layers="3+4 4" active="1+2"/>
+<text layer="3" matrix="1 0 0 1 72 148" transformations="translations" pos="192 176" stroke="black" type="label" width="73.445" height="8.384" depth="2.47" halign="center" valign="baseline">cluster graph $G_0^\mathcal{C}$</text>
+<path layer="2" matrix="1 0 0 1 16 -16" stroke="black" fill="flatlightgray">
+96 416 m
+96 384 l
+176 384 l
+176 416 l
+h
+</path>
+<path layer="1+2" matrix="1 0 0 1 192 16" stroke="black" fill="flatlightgray">
+96 384 m
+96 352 l
+176 352 l
+176 384 l
+h
+</path>
+<path matrix="1 0 0 1 328 80" stroke="black" fill="flatlightgray">
+96 320 m
+96 288 l
+160 288 l
+160 320 l
+h
+</path>
+<text layer="2" matrix="1 0 0 1 16 -16" transformations="translations" pos="96 400" stroke="black" type="minipage" width="80" height="6.926" depth="1.93" valign="center" style="center">Clustering</text>
+<text layer="1+2" matrix="1 0 0 1 192 16" transformations="translations" pos="96 368" stroke="black" type="minipage" width="80" height="5.958" depth="0.96" valign="center" style="center">Transformation</text>
+<text matrix="1 0 0 1 168 -32" transformations="translations" pos="256 416" stroke="black" type="minipage" width="64" height="6.865" depth="1.88" valign="center" style="center">Drawing</text>
+<text layer="2" matrix="1 0 0 1 -28 180" transformations="translations" pos="96 208" stroke="black" type="label" width="62.655" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G$</text>
+<text layer="1+2" matrix="1 0 0 1 48 212" transformations="translations" pos="192 176" stroke="black" type="label" width="73.445" height="8.388" depth="1.93" halign="center" valign="baseline">cluster graph $G^\mathcal{C}$</text>
+<text matrix="1 0 0 1 92 180" transformations="translations" pos="304 208" stroke="black" type="label" width="32.946" height="6.867" depth="1.93" halign="center" valign="baseline">map $\Gamma^*$</text>
+<text matrix="1 0 0 1 180 212" transformations="translations" pos="368 176" stroke="black" type="label" width="100.398" height="6.926" depth="1.93" halign="center" valign="baseline">$\varepsilon$-proportional map $\Gamma^\propto$</text>
+<path layer="2" stroke="black" arrow="normal/normal">
+24 384 m
+112 384 l
+</path>
+<path layer="1+2" stroke="black" arrow="normal/normal">
+192 384 m
+288 384 l
+</path>
+<path stroke="black" arrow="normal/normal">
+368 384 m
+424 384 l
+</path>
+<path stroke="black" arrow="normal/normal">
+488 384 m
+608 384 l
+</path>
+<path layer="3+4" matrix="1 0 0 1 224 -48" stroke="black" fill="flatlightgray">
+96 384 m
+96 352 l
+176 352 l
+176 384 l
+h
+</path>
+<path matrix="1 0 0 1 240 72" stroke="black" fill="flatlightgray">
+96 352 m
+96 320 l
+176 320 l
+176 352 l
+h
+</path>
+<path matrix="1 0 0 1 432 16" stroke="black" fill="flatlightgray">
+96 320 m
+96 288 l
+160 288 l
+160 320 l
+h
+</path>
+<text matrix="1 0 0 1 224 -48" transformations="translations" pos="96 368" stroke="black" type="minipage" width="80" height="5.958" depth="0.96" valign="center" style="center">Transformation</text>
+<text matrix="1 0 0 1 208 72" transformations="translations" pos="128 336" stroke="black" type="minipage" width="80" height="11.924" depth="6.95" valign="center" style="center">Incremental Transformation</text>
+<text matrix="1 0 0 1 272 -96" transformations="translations" pos="256 416" stroke="black" type="minipage" width="64" height="6.865" depth="1.88" valign="center" style="center">Drawing</text>
+<text matrix="1 0 0 1 122 116" transformations="translations" pos="304 208" stroke="black" type="label" width="32.946" height="6.863" depth="2.47" halign="center" valign="baseline">map $\Gamma_0^*$</text>
+<text matrix="1 0 0 1 92 172" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.59" halign="center" valign="baseline">map $\Gamma_i^*$</text>
+<text matrix="1 0 0 1 144 236" transformations="translations" pos="304 176" stroke="black" type="label" width="41.77" height="6.864" depth="3.42" halign="center" valign="baseline">map $\Gamma_{i+1}^*$</text>
+<text matrix="1 0 0 1 280 148" transformations="translations" pos="368 176" stroke="black" type="label" width="100.398" height="6.922" depth="2.59" halign="center" valign="baseline">$\varepsilon$-proportional map $\Gamma_i^\propto$</text>
+<text matrix="1 0 0 1 196 132" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.59" halign="center" valign="baseline">map $\Gamma_i^*$</text>
+<text matrix="1 0 0 1 -104 144" transformations="translations" pos="320 288" stroke="black" type="minipage" width="112" height="19.602" depth="14.65" valign="baseline" style="center">sequence of operations turning cluster graph $G_i^\mathcal{C}$ into cluster graph $G_{i+1}^\mathcal{C}$</text>
+<path matrix="1 0 0 1 -60 124" stroke="black">
+4 0 0 4 512 236 e
+512 240 m
+512 232 l
+508 236 m
+516 236 l
+</path>
+<path matrix="1 0 0 1 -40 84" stroke="black">
+4 0 0 4 512 236 e
+512 240 m
+512 232 l
+508 236 m
+516 236 l
+</path>
+<path stroke="black" rarrow="normal/normal">
+472 324 m
+472 356 l
+4 0 0 4 472 360 472 364 a
+472 408 l
+452 408 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+400 160 m
+468 160 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+208 256 m
+336 256 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+476 160 m
+528 160 l
+</path>
+<path stroke="black" arrow="normal/normal">
+448 360 m
+352 360 l
+352 392 l
+</path>
+<use matrix="1 0 0 1 0 160" name="mark/disk(sx)" pos="704 160" size="small" stroke="black"/>
+<path stroke="black" arrow="normal/normal">
+704 320 m
+704 360 l
+456 360 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+592 160 m
+720 160 l
+</path>
+<path layer="4" matrix="1 0 0 1 32 -24" stroke="black" fill="flatlightgray">
+96 448 m
+96 416 l
+176 416 l
+176 448 l
+h
+</path>
+<path matrix="1 0 0 1 32 -80" stroke="black" fill="flatlightgray">
+96 416 m
+96 384 l
+176 384 l
+176 416 l
+h
+</path>
+<text matrix="1 0 0 1 32 -24" transformations="translations" pos="96 432" stroke="black" type="minipage" width="80" height="12.891" depth="7.92" valign="center" style="center">Incremental Clustering</text>
+<text matrix="1 0 0 1 32 -80" transformations="translations" pos="96 400" stroke="black" type="minipage" width="80" height="6.926" depth="1.93" valign="center" style="center">Clustering</text>
+<text matrix="1 0 0 1 -16 116" transformations="translations" pos="96 208" stroke="black" type="label" width="67.125" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G_0$</text>
+<text matrix="1 0 0 1 -16 228" transformations="translations" pos="96 192" stroke="black" type="label" width="65.972" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G_i$</text>
+<text matrix="1 0 0 1 -16 214" transformations="translations" pos="96 176" stroke="black" type="label" width="76.06" height="6.923" depth="2.32" halign="center" valign="baseline">input graph $G_{i+1}$</text>
+<text matrix="1 0 0 1 64 148" transformations="translations" pos="192 176" stroke="black" type="label" width="73.445" height="8.384" depth="2.47" halign="center" valign="baseline">cluster graph $G_0^\mathcal{C}$</text>
+<text matrix="1 0 0 1 32 172" transformations="translations" pos="192 192" stroke="black" type="label" width="73.445" height="8.384" depth="2.59" halign="center" valign="baseline">cluster graph $G_i^\mathcal{C}$</text>
+<text matrix="1 0 0 1 64 182" transformations="translations" pos="192 208" stroke="black" type="label" width="81.677" height="8.384" depth="3.42" halign="center" valign="baseline">cluster graph $G_{i+1}^\mathcal{C}$</text>
+<use matrix="1 0 0 1 0 160" name="mark/disk(sx)" pos="304 160" size="small" stroke="black"/>
+<path matrix="1 0 0 1 -208 124" stroke="black">
+4 0 0 4 512 236 e
+512 240 m
+512 232 l
+508 236 m
+516 236 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+304 160 m
+304 196 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+304 160 m
+320 160 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+208 240 m
+304 240 l
+304 204 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+300 200 m
+144 200 l
+144 232 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+32 240 m
+128 240 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+32 256 m
+128 256 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black" arrow="normal/normal">
+32 160 m
+128 160 l
+</path>
+<path matrix="1 0 0 1 0 160" stroke="black">
+208 160 m
+304 160 l
+</path>
+<path layer="3" stroke="black" arrow="normal/normal">
+208 320 m
+320 320 l
+</path>
+<path layer="3+4" stroke="black" arrow="normal/normal">
+452 320 m
+452 356 l
+</path>
+<path stroke="black" arrow="normal/normal">
+452 408 m
+452 364 l
+</path>
+<use name="mark/disk(sx)" pos="452 320" size="small" stroke="black"/>
+<path stroke="black">
+416 408 m
+452 408 l
+</path>
+<use name="mark/disk(sx)" pos="452 408" size="small" stroke="black"/>
+</page>
+</ipe>

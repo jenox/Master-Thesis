@@ -35,6 +35,24 @@ $G$ is said to be \emph{$k$-(vertex)-connected} if one needs to remove $k$ or mo
 Graphs that are 2-vertex-connected are also called \emph{biconnected}.
 % If $G$ is connected but not biconnected, it has a \emph{cut vertex} whose removal disconnects $G$.
 
+A \emph{subgraph} $H$ of a graph $G$, denoted $H \subseteq G$ is a graph with a subset of vertices and edges from $G$, \ie{} $V(H) \subseteq V(G)$ and $E(H) \subseteq E(G)$.
+A subgraph is said to be \emph{spanning} if it includes all vertices of the original graph, \ie{} $V(H) = V(G)$.
+
+
+\paragraph{Graph Clustering}
+
+Given a graph $G = (V, E)$, a \emph{clustering} $\mathcal{C}$ of $G$ is a partition $\mathcal{C} = \{C_1, \dots, C_k\}$ of its vertices $V$ into non-empty, pairwise disjoint \emph{clusters} of vertices, \ie{} $\bigcup_{i=1}^k C_i = V$, $\forall i \colon C_i \neq \varnothing$, and $\forall i \neq j \colon C_i \cap C_j = \varnothing$.
+
+A clustering $\mathcal{C} = \{ C_1, \dots, C_k \}$ of a graph $G$ induces a so-called \emph{cluster graph} of $G$, a vertex- and edge-weighted graph $G_\mathcal{C} = (V_\mathcal{C}, E_\mathcal{C}, w_v, w_e)$ whose vertices are the clusters $C_i$:
+%
+\begin{align*}
+V_\mathcal{C} &\coloneqq \{ C_1, \dots, C_k \} \\
+E_\mathcal{C} &\coloneqq \{ \{C_i, C_j\} \vert (C_i, C_j) \in \mathcal{C}^2, C_i \neq C_j \} \\
+w_v(C_i) &\mapsto \abs{C_i} \\
+w_e(\{C_i, C_j\}) &\mapsto \abs{\{ (u,v) \in E \vert u \in C_i \land v \in C_j \}}
+\end{align*}
+
+
 
 \paragraph{Graph Operations}
 
@@ -105,7 +123,7 @@ In a \emph{(simple) contact representation} of a plane graph $G_\phi$, the verti
 Because $G_\phi$ is simple, the regions corresponding to adjacent vertices in $G_\phi$ must therefore only share a single continuous boundary in the contact representation.
 A contact representation is said to be \emph{hole-free} if all regions other than the unbounded outer region have a corresponding vertex in $G_\phi$.
 
-Unless otherwise noted, we assume that contact representations are hole-free and that they respect the original graph $G_\phi$'s embedding, \ie{} the cyclic order of the boundaries with adjacent regions is equivalent to the cyclic order of respective incident edges for all vertices in $G_\phi$.
+Unless otherwise noted, we assume that contact representations are hole-free and that they respect the original graph $G_\phi$'s embedding, \ie{} for all regions, the cyclic order of the boundaries with adjacent regions is equivalent to the cyclic order of the incident edges of the corresponding vertex in $G_\phi$ and its neighbors.
 
 % If all regions are simple polygons, we call it a \emph{polygonal contact representation}.
 

@@ -1,89 +1,51 @@
 \section{Transformation to Polygonal Dual}
 \label{sect:transformation-to-dual}
 
-In this step of the pipeline, we take an embedded cluster graph $G_\text{emb}$ and form a polygonal dual of $G_\text{emb}$, our initial map graph $G_\text{init}$.
+In this step of the pipeline, we take a filtered cluster graph \clustergraph{} and form a polygonal dual of thereof, resulting in the map \initmap{}.
+To formalize the their relationship, we need the concept of the augmented dual:
 
-Let us discuss the relationship between $G_\text{emb}$ and $G_\text{init}$ a bit more.
-Recall from \cref{chap:preliminaries} that the weak dual of a plane graph is its dual without the vertex corresponding to its outer face.
-Using this terminology, given $G_\text{init}$, which is a hole-free polygonal dual of the plane graph $G_\text{emb}$, we can smooth out the degree-2 vertices in $G_\text{init}$ and form its weak dual to get back $G_\text{emb}$, as illustrated in the following figure:
-%
-\begin{figure}[H]
-	\centering
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-PolygonalDual-Dual.pdf}\label{subfig:transformation-polygonal-dual-dual}}
-	\quad
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-PolygonalDual-Smoothed.pdf}\label{subfig:transformation-polygonal-dual-smoothed}}
-	\quad
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-PolygonalDual-Primal.pdf}\label{subfig:transformation-polygonal-dual-primal}}
-	\caption{A polygonal dual $G_\text{init}$ of some plane graph $G_\text{emb}$ (a), $G_\text{init}$ with its degree-2 vertices smoothed out (b), and the smoothed graphs's weak dual, $G_\text{emb}$ again (c).}
-	\label{fig:transformation-polygonal-dual}
-\end{figure}
-
-We can also formalize the other direction, namely how to get from \cref{subfig:transformation-polygonal-dual-primal} back to \cref{subfig:transformation-polygonal-dual-dual}.
-To do so, we need the concept of an augmented dual:
-%
 \begin{definition}
-	The \emph{augmented dual} $G^+$ of a plane graph $G$ is the plane multigraph obtained by first placing a new vertex $v^+$ in the outer face of $G$, connecting it to all vertices on the outer face, in order, without introducing edge crossings, and then forming its dual.
-	\label{def:augmented-dual}
+The \emph{augmented dual} $G^+$ of a plane graph $G$ is the plane multigraph obtained by first placing a new vertex $v^+$ in the outer face of $G$, connecting it to all vertices on the outer face, in order, without introducing edge crossings, and then forming its dual.
+\label{def:augmented-dual}
 \end{definition}
 
-\Cref{fig:transformation-augmented-dual} illustrates how the augmented dual is formed.
+\Cref{fig:transformation-augmented-dual} illustrates how the augmented dual $G^+$ of a plane graph $G$ (\cref{subfig:transformation-augmented-dual-1}) is formed.
+We add the helper vertex $v^+$ and helper edges $\{v^+,\cdot\}$ in the outer face in \cref{subfig:transformation-augmented-dual-2}.
+We draw the helper edges as in \cite{wagner2016algorithmen} because it does not matter where in the plane this helper vertex lies \emdash{} all that matters is that each pair of adjacent vertices on the outer face forms a new triangular face with $v^+$.
+In \cref{subfig:transformation-augmented-dual-3}, we overlay the dual vertices and edges in red.
+\Cref{subfig:transformation-augmented-dual-4} shows just the augmented dual of $G$.
 %
 \begin{figure}[H]
 	\centering
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-AugmentedDual-Primal.pdf}}
+	\subfigure[]{\includegraphics[height=130px]{Resources/Transformation-AugmentedDual-1.pdf}\label{subfig:transformation-augmented-dual-1}}
 	\quad
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-AugmentedDual-Augmented.pdf}}
+	\subfigure[]{\includegraphics[height=130px]{Resources/Transformation-AugmentedDual-2.pdf}\label{subfig:transformation-augmented-dual-2}}
 	\quad
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-AugmentedDual-Everything.pdf}}
+	\subfigure[]{\includegraphics[height=130px]{Resources/Transformation-AugmentedDual-3.pdf}\label{subfig:transformation-augmented-dual-3}}
 	\quad
-	\subfigure[]{\includegraphics[height=90px]{Resources/Transformation-AugmentedDual-Dual.pdf}}
-	\caption{Step-by-step representation of forming a plane graph $G$ (a)'s augmented dual. We add the helper vertex $v^+$ and edges $\{v^+,\cdot\}$ in the outer face in red (b) and form the regular dual in blue (c). (d) shows just the augmented dual $G^+$.}
+	\subfigure[]{\includegraphics[height=130px]{Resources/Transformation-AugmentedDual-4.pdf}\label{subfig:transformation-augmented-dual-4}}
+	\caption{Step-by-step representation of forming a plane graph's augmented dual.}
 	\label{fig:transformation-augmented-dual}
 \end{figure}
 
 Note that analogous to the regular dual, the weak dual of the augmented dual of a plane graph $G$ is $G$ again, \ie{} $(G^+)^- = G$.
-With this definition in plane, we make the following observation:
 
-\begin{corollary}
-	A polygonal dual of an internally triangulated plane graph $G$ is a straight-line planar embedding of a subdivision of its augmented dual $G^+$.
-\end{corollary}
-
-
-
-\paragraph{Theoretical Results}
-
-But do we have to subdivide edges of the augmented dual of our embedded cluster graph $G_\text{emb}$ in order to get a valid polygonal dual of $G_\text{emb}$?
-Although the augmented dual $G_\text{emb}^+$ is plane by definition, it is not immediately obvious that there exists a planar straight-line embedding of $G_\text{emb}^+$ \emdash{} and that's what we need for it to be a polygonal contact representation.
-
-In our case, however, $G_\text{emb}^+$ is simple, \ie{} there are no loops or multiple adjacencies.
-Recall that $G_\text{emb}$ is 2-connected and internally triangulated.
-Adding the helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face therefore creates a fully triangulated, simple graph.
-In a simple triangulated graph, there are no two edges that are incident to the same faces (only those would create multiple adjacencies when forming the dual) and no edges that have the same face on both sides (only those would create loops when forming the dual) either.
-The augmented dual $G_\text{emb}^+$ is therefore simple and, according to Fáry's theorem \cite{fary1948straight}, there exists a planar straight-line embedding of $G_\text{emb}^+$ respecting its original combinatorial embedding and outer face.
-
-In addition to having a planar straight-line embedding, $G_\text{emb}^+$ is also a cubic graph, \ie{} one in which all vertices have degree 3.
-This is because $G_\text{emb}$ with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual.
-According to the results of Thomassen \cite{thomassen1992plane}, $G_\text{emb}^+$ is therefore area-universal.
-This means that regardless of the concrete face weights that $G_\text{emb}$ prescribes, there exists a planar straight-line embedding of $G_\text{emb}^+$ realizing those weights/areas.
-
-Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already.
-Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics.
-Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-dual}.
+The augmented dual $G^+$ (\cref{subfig:transformation-augmented-dual-4}) of a biconnected and internally triangulated plane graph $G$ (\cref{subfig:transformation-augmented-dual-1}) essentially is a contact representation thereof.
+In a polygonal dual, however, the edges cannot be curves and must be polylines instead.
+The map \initmap{} can therefore be interpreted as a subdivision of the augmented dual $(\clustergraph{})^+$ in combination with a planar straight-line embedding thereof.
 
 
 
 \paragraph{Algorithm Overview}
 
-The underlying idea is as follows:
-Given an embedded cluster graph $G_\text{emb}$, we place vertices on edges of the outer face of $G_\text{emb}$ (those edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of $G_\text{emb}$.
-We then connect these vertices if their corresponding faces are incident.
-Connecting two vertices may require additional subdivision vertices in order not to introduce edge crossings \emdash{} we use a single subdivision vertex per edge.
+The underlying idea of creating the initial map \initmap{} is as follows:
+Given a filtered cluster graph \clustergraph{}, we place vertices on edges of the outer face of \clustergraph{} (those edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of \clustergraph{}.
+We then connect these vertices if their corresponding faces are adjacent.
+Connecting two vertices may require additional subdivision vertices or bends in order not to introduce edge crossings \emdash{} we use a single bend per edge.
 
-% and was independently proved by Wagner \cite{wagner1936bemerkungen} and Stein \cite{stein1951convex}.
-In a preliminary step, we tweak the embedding of $G_\text{emb}$ to use straight-line edges.
-As mentioned before, such an embedding exists for every plane graph according to Fáry's theorem \cite{fary1948straight}.
-There exist numerous popular algorithms to construct such an embedding such as Tutte's method \cite{tutte1963draw}, the shift method \cite{fraysseix1990draw}, or the Schnyder realizer method \cite{schnyder1990embedding}.
-\tamara{is this Tutte the algorithm with exponential area you meant?}
+In a preliminary step, we construct a planar straight-line drawing $\Gamma^\mathcal{C}$ of \clustergraph{}.
+According to Fáry's theorem \cite{fary1948straight} \cite{wagner1936bemerkungen} \cite{stein1951convex}, such a drawing exists for every planar graph.
+There are numerous popular algorithms to construct such an embedding such as Tutte's method \cite{tutte1963draw}, the shift method \cite{fraysseix1990draw}, or the Schnyder realizer method \cite{schnyder1990embedding}.
 
 
 
@@ -97,47 +59,47 @@ There exist numerous popular algorithms to construct such an embedding such as T
   \SetKwFunction{Appending}{appending}
   \SetArgSty{textrm}
   \vspace{5pt}
-  \KwData{planar straight-line embedding of 2-connected, internally triangulated graph $G_\text{emb}$}
-  \KwResult{planar straight-line embedding of 1-subdivision of augmented dual $G_\text{init}$ of $G_\text{emb}$}
+  \KwData{filtered cluster graph \clustergraph{} and a planar straight-line drawing $\Gamma^\mathcal{C}$ thereof}
+  \KwResult{polygonal contract representation \initmap{} of \clustergraph{}, in the form of a 1-subdivision of the augmented dual of \clustergraph{} and planar straight-line drawing thereof}
   \vspace{10pt}
-  create empty output graph $G_\text{init}$\;
-  \ForEach{inner face $f$ in $G_\text{emb}$}{
+  create empty contact representation \initmap{}\;
+  \ForEach{inner face $f$ in \clustergraph{}}{
     \label{line:transformation-loop1-start}
-    add \quoted{inner face vertex} $v_f$ to $G_\text{init}$\; \label{line:transformation-innerfacevertex}
-    position $v_f$ at barycenter of $f$ in $G_\text{emb}$ \label{line:transformation-barycenter1}\;
+    add \quoted{inner face vertex} $v_f$ to \initmap{}\; \label{line:transformation-innerfacevertex}
+    position $v_f$ at barycenter of $f$ in \clustergraph{} \label{line:transformation-barycenter1}\;
     \label{line:transformation-loop1-end}
   }
-  \ForEach{edge $\{u,v\}$ in $G_\text{emb}$}{
+  \ForEach{edge $\{u,v\}$ in \clustergraph{}}{
     \label{line:transformation-loop2-start}
-  	\If{$\{u,v\}$ is incident to two different internal faces $f, g$ in $G_\text{emb}$ \label{line:transformation-incidentfacelookup1}}{
-  	  add \quoted{subdivision vertex} $v_\text{sub}$ to $G_\text{init}$\; \label{line:transformation-subdivisionvertex1}
-  	  position $v_\text{sub}$ at midpoint of ${\{u,v\}}$ in $G_\text{emb}$\;
-  	  add edge between $v_f$ and $v_\text{sub}$ to $G_\text{init}$\;
-  	  add edge between $v_\text{sub}$ and $v_g$ to $G_\text{init}$\;
+  	\If{$\{u,v\}$ is incident to two different internal faces $f, g$ in \clustergraph{} \label{line:transformation-incidentfacelookup1}}{
+  	  add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex1}
+  	  position $v_\text{sub}$ at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
+  	  add edge between $v_f$ and $v_\text{sub}$ to \initmap{}\;
+  	  add edge between $v_\text{sub}$ and $v_g$ to \initmap{}\;
   	}
-  	\ElseIf{$\{u,v\}$ is incident to a single internal face $f$ in $G_\text{emb}$ \label{line:transformation-incidentfacelookup2}}{
+  	\ElseIf{$\{u,v\}$ is incident to a single internal face $f$ in \clustergraph{} \label{line:transformation-incidentfacelookup2}}{
   	  add \quoted{outer edge vertex} $v_{\{u,v\}}$ to $G_\text{init}$\; \label{line:transformation-outeredgevertex}
-  	  position $v_{\{u,v\}}$ at midpoint of ${\{u,v\}}$ in $G_\text{emb}$\;
-  	  add \quoted{subdivision vertex} $v_\text{sub}$ to $G_\text{init}$\; \label{line:transformation-subdivisionvertex2}
-  	  position $v_\text{sub}$ at midpoint of barycenter of $f$ and midpoint of ${\{u,v\}}$ in $G_\text{emb}$ \label{line:transformation-barycenter2}\;
-  	  add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to $G_\text{init}$\;
-  	  add edge between $v_\text{sub}$ and $v_f$ to $G_\text{init}$\;
+  	  position $v_{\{u,v\}}$ at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
+  	  add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex2}
+  	  position $v_\text{sub}$ at midpoint of segment between barycenter of $f$ and midpoint of ${\{u,v\}}$ in \clustergraph{} \label{line:transformation-barycenter2}\;
+  	  add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to \initmap{}\;
+  	  add edge between $v_\text{sub}$ and $v_f$ to \initmap{}\;
   	}
   	\label{line:transformation-loop2-end}
   }
-  \ForEach{incident edges $\{\{u,v\},\{v,w\}\}$ on outer face of $G_\text{emb}$}{
+  \ForEach{incident edges $\{\{u,v\},\{v,w\}\}$ on outer face of \clustergraph{}}{
     \label{line:transformation-loop3-start}
-    add \quoted{subdivision vertex} $v_\text{sub}$ to $G_\text{init}$\; \label{line:transformation-subdivisionvertex3}
-    position $v_\text{sub}$ at position of $v$ in $G_\text{emb}$\;
-    add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to $G_\text{init}$\;
-    add edge between $v_\text{sub}$ and $v_{\{v,w\}}$ to $G_\text{init}$\;
+    add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex3}
+    position $v_\text{sub}$ at position of $v$ in \clustergraph{}\;
+    add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to \initmap{}\;
+    add edge between $v_\text{sub}$ and $v_{\{v,w\}}$ to \initmap{}\;
     \label{line:transformation-loop3-end}
   }
-  \ForEach{vertex $u$ in $G_\text{emb}$ \label{line:transformation-enumeratevertices}}{
+  \ForEach{vertex $u$ in \clustergraph{} \label{line:transformation-enumeratevertices}}{
     \label{line:transformation-loop4-start}
     $\Endpoints \gets ()$\;
-    \ForEach{adjacent pair $(v,w)$ of neighbors of $u$ (according to embedding) \label{line:transformation-enumerateedges}}{
-      \If{$u,v,w$ is a triangular face $f$ with positive area in $G_\text{emb}$ \label{line:transformation-checktriangle}}{
+    \ForEach{adjacent pair $(v,w)$ of neighbors of $u$ in counterclockwise order \label{line:transformation-enumerateedges}}{
+      \If{$(u,v,w)$ bound a triangular face $f$ in counterclockwise order in \clustergraph{} \label{line:transformation-checktriangle}}{
         append $v_f$ to \Endpoints\;
       }
       \Else{
@@ -148,16 +110,11 @@ There exist numerous popular algorithms to construct such an embedding such as T
     \ForEach{adjacent pair $(v,w)$ in \Endpoints \label{line:transformation-insertsubdivisions}}{
       insert subdivision vertex connecting $v$ to $w$ between $v$ and $w$ in \Endpoints\;
     }
-    define $f_u$ as face on \Endpoints\;
-    set weight of $f_u$ to weight of $u$ in $G_\text{emb}$\;
+    define $f_u$ as internal face on \Endpoints in \initmap{}\;
+    set weight of $f_u$ in \initmap{} to weight of $u$ in \clustergraph{}\;
     \label{line:transformation-loop4-end}
   }
-%  \ForEach{edge $\{u,v\}$ in $G_\text{emb}$}{
-%    \label{line:transformation-loop5-start}
-%    set weight of adjacency between $f_u$ and $f_v$ to weight of $\{u,v\}$ in $G_\text{emb}$\;
-%    \label{line:transformation-loop5-end}
-%  }
-  \Return $G_\text{init}$
+  \Return \initmap{}
 \end{algorithm}
 \vfill
 
@@ -230,7 +187,7 @@ This would be the case for internal faces of $G_\text{emb}$ with two edges on th
 To compute the input graph's faces, we replace every edge with two inversely oriented, directed edges.
 We then repeatedly pick any unmarked edge and form a directed cycle by following the next outgoing edge according to the embedding, marking the edges as we go.
 Once all edges have been marked, we have found all faces.
-The outer face is the only face with negative area.
+The outer face is the one face whose interior is on the left when traveling along its bounding edges.
 This can be implemented in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
 
 The input graph has $\bigTheta{\abs{V_\text{in}}}$ internal faces and they are all triangles, therefore we can compute their barycenter in $\bigTheta{1}$ each (\cref{line:transformation-barycenter1}, \cref{line:transformation-barycenter2}).
@@ -244,3 +201,25 @@ Considering each of the $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$ verti
 %By keeping track of which faces in the generated graph correspond to which vertices in the source graph in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end}, the loop in \crefrange{line:transformation-loop5-start}{line:transformation-loop5-end} runs in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
 
 The entire algorithm can therefore be implemented to run in $\bigTheta{\abs{V_\text{in}} + \abs{E_\text{in}}}$.
+
+
+
+\paragraph{Theoretical Bounds}
+
+But do we have to subdivide edges of the augmented dual of our embedded cluster graph $G_\text{emb}$ in order to get a valid polygonal dual of $G_\text{emb}$?
+Although the augmented dual $G_\text{emb}^+$ is plane by definition, it is not immediately obvious that there exists a planar straight-line embedding of $G_\text{emb}^+$ \emdash{} and that's what we need for it to be a polygonal contact representation.
+
+In our case, however, $G_\text{emb}^+$ is simple, \ie{} there are no loops or multiple adjacencies.
+Recall that $G_\text{emb}$ is 2-connected and internally triangulated.
+Adding the helper vertex in the outer face of $G_\text{emb}$ and connecting it to all vertices on the outer face therefore creates a fully triangulated, simple graph.
+In a simple triangulated graph, there are no two edges that are incident to the same faces (only those would create multiple adjacencies when forming the dual) and no edges that have the same face on both sides (only those would create loops when forming the dual) either.
+The augmented dual $G_\text{emb}^+$ is therefore simple and, according to Fáry's theorem, there exists a planar straight-line embedding of $G_\text{emb}^+$ respecting its original combinatorial embedding and outer face.
+
+In addition to having a planar straight-line embedding, $G_\text{emb}^+$ is also a cubic graph, \ie{} one in which all vertices have degree 3.
+This is because $G_\text{emb}$ with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual.
+According to the results of Thomassen \cite{thomassen1992plane}, $G_\text{emb}^+$ is therefore area-universal.
+This means that regardless of the concrete face weights that $G_\text{emb}$ prescribes, there exists a planar straight-line embedding of $G_\text{emb}^+$ realizing those weights/areas.
+
+Even without subdividing edges in $G_\text{emb}^+$, we could therefore choose the initial map graph $G_\text{init}$ in such a way that it has perfect statistical accuracy already.
+Such an embedding of $G_\text{emb}^+$ is non-trivial to compute though and creates undesired region shapes according to our other quality metrics.
+Instead, we provide a very simple algorithm that subdivides all edges of the augmented dual once and leaves us with enough degrees of freedom to optimize for other quality metrics in \cref{sect:drawing-the-dual}.
