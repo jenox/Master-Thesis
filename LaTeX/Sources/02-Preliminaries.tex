@@ -24,7 +24,7 @@ Given a graph $G = (V, E)$, two vertices $u, v \in V$ are said to be \emph{adjac
 Adjacent vertices are also called \emph{neighbors}.
 A vertex $v$'s \emph{degree} $\deg(v)$ is the number of vertices that are adjacent to it, \ie{} $\deg(v) \coloneqq \abs{\{u \vert \{u,v\} \in E\}}$.
 An edge $\{u, v\} \in E$ is said to be \emph{incident} to its \emph{endpoints} $u$ and $v$.
-% Two edges $\{u,v\}, \{v,w\} \in E$ are also said to be \emph{incident} if they share exactly one endpoint $v$.
+% Two edges $\{u,v\} \neq \{v,w\} \in E$ are said to be \emph{adjacent} if they share exactly one endpoint $v$.
 
 A \emph{path} $p$ is a (nonempty) sequence of edges that connects a sequence of distinct vertices $(v_1, \dots, v_n)$, \ie{} $p = (\{v_1, v_2\}, \dots, \{v_{n-1},v_n\}) \land \forall i \neq j \colon v_i \neq v_j$.
 The first and last vertices $v_1, v_n$ of a path are called its \emph{endpoints}.
@@ -79,11 +79,12 @@ The graph $G$ is called \emph{planar} if it permits a drawing in which its edges
 Such a drawing is called a \emph{planar drawing} of $G$.
 If all edges of $G$ are line segments, we also call it a \emph{planar straight-line drawing}.
 
-A planar drawing $\Gamma$ of a graph $G$ partitions the plane into mututally disjoint regions called \emph{faces}.
+A planar drawing $\Gamma$ of a graph $G$ partitions the plane into mutually disjoint regions called \emph{faces}.
 All faces but one, the \emph{internal faces}, are bounded; the unbounded face is called the \emph{outer face}.
 Faces are identified by the cyclic order of vertices that are encountered when walking on its boundary \cite{angelini2015monotone} in counterclockwise direction.
 Vertices and edges are said to be \emph{incident} to a face if they lie on the face's boundary.
 Similarly, two faces are said to be \emph{adjacent} if there exists an edge they are both incident to.
+If vertices or edges lie on the boundary of outer face, they are said to be \emph{external}, otherwise they are \emph{internal}.
 
 % Planar Embedding
 
