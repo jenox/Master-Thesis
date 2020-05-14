@@ -4,80 +4,150 @@
 In the second step of the pipeline, we apply a force-directed graph drawing algorithm to the initial map graph $G_\text{init}$ produced by \cref{alg:transformation-to-dual} to generate the approximately area-proportional map graph $G_\text{prop}$.
 
 In a force-directed algorithm, we interpret a graph's vertices as particles in a physical system.
-Based on the structure of the graph and the relative position of the particles, we define define various forces that act to bring the system to a stable equilibrium position in which its potential energy is at a local minimum.
+Based on the structure of the graph and the relative position of the particles, we define several forces that act to bring the system to a stable equilibrium position in which its potential energy is at a local minimum.
 In these equilibrium positions, the system is in a somewhat relaxed state that, in the context of graph drawing, generally is a visually appealing drawing of the graph.
 We find an equilibrium position by iteratively computing the net force acting on each particle and displacing it by a small amount in the direction of the net force, based on its absolute value.
-
-\tamara{Can/should I add more theory on the physical aspect here?}
 
 
 
 \paragraph{Forces}
 
+%https://slideplayer.com/slide/4924642/
+%v-v-rep: Eades 1984, Fruchterman & Reingold
+%v-e-rep: Davidson & Harel 1996, Bertault 1999
+
 We define the forces that exist in our particle system with two goals in mind:
 First, the faces of the graph (the regions of the map) to have an area ought to be close to proportional to some prescribed value.
-And second, we want the faces to be \emph{locally fat}.
+Second, we want the faces to be \emph{locally fat}.
 Our intuitive understanding of local fatness is that a region shouldn't have drawn-out, tight corridors.
 We formalize and discuss different quantifiable measures that aim to capture the local fatness of regions in \cref{chap:evaluation}.
-Note that both of these are nice-to-have goals though.
+Note that both of these are soft requirements.
 Planarity of the resulting drawing, on the other hand, is a hard requirement that must be preserved at all costs.
 
 Let us now discuss the concrete force components that act to bring our particle system to an equilibrium position.
-\tamara{Do you have a better idea than putting this in a bulleted list?
-Do we want figures for pressure and angle?}
 %
 \begin{itemize}
-\item \textbf{Air Pressure:}
-First, we define forces based on the air pressure in the faces as suggested by Alam \etal{} \cite{alam2013computing}.
-They are responsible for growing faces that are currently compressed and shrinking faces that are currently larger than they should be, therefore working towards the statistical accuracy of the generated map.
-We want this force and the overall drawing to be agnostic to constant factors of the face weights and therefore compute the normalized pressure $P(f)$ in a face $f$ as
+\item \textbf{Air Pressure:} % alam2013computing
+Motivated by Alam \etal{} \cite{alam2013computing}, we treat the polygonal regions as volumes of some amount of air equal to the respective face's weight.
+This allows us to define an analog to air pressure in the polygonal regions that exerts forces on the regions' edges.
+This force is responsible for growing faces that are currently compressed and shrinking faces that are currently larger than they should be, therefore working towards the statistical accuracy of the generated map.
+
+We want this force and the overall drawing to be agnostic to constant factors of the face weights and therefore compute the normalized pressure $P(f)$ in an internal face $f$ as
+%
 \begin{equation*}
-	P(f) \coloneqq \frac{w(f)}{A(f)} \cdot \frac{\sum\limits_{g \in F}{A(g)}}{\sum\limits_{g \in F}{w(g)}},
+	P(f) \coloneqq \frac{w(f)}{A(f)} \cdot \frac{\sum_{g \in F}{A(g)}}{\sum_{g \in F}{w(g)}},
 \end{equation*}
-where $A(f)$ is the area currently covered by some face $f$ and $w(f)$ its weight.
-A value greater than $1$ indicates that a regions wants to grow, a value less than $1$ indicates that it wants to shrink.
-We define the exerted force to be logarithmic in $P(f)$ such that the sign of $\log(P(f))$ determines whether the force points outwards or inwards and distribute the force proportionally along all edges bounding the face:
-\begin{equation}
-	\vec{F}_P(f,e) \coloneqq 10 \cdot \log(P(f)) \cdot \frac{l(e)}{l(f)} \cdot \vec{n}_e
-\end{equation}
-Here, $l(e)$ is the length of the edge $e$, $l(f)$ is the length of the boundary of the face $f$, as $\vec{n}_e$ is the outward-pointing normal vector of the edge $e$.
-We apply $\vec{F}_P(f,e)$ to both endpoints of $e$ for all pairs $(f,e)$ of internal faces and edges where $e$ is incident to $f$.
+%
+where $A(f)$ is the area currently covered by some internal face $f$ and $w(f)$ its weight.
+We set the pressure of the outer face to the weighted average pressure, \ie{}
+%
+\begin{equation*}
+	P(f_\text{outer}) \coloneqq \frac{\sum_{f \in F}{w(f) \cdot P(f)}}{\sum_{f \in F}{w(f)}}.
+\end{equation*}
 
-\item \textbf{Internal Angles:}
+Physical pressure is the ratio of force to area.
+The air pressure in each of the regions $f$ therefore exerts a force on each bounding edge $e = \{u,v\}$ based on the pressure's magnitude and the edge's length $l(e)$ in relation to the entire region's boundary's length $l(f)$.
+We orient $e = \{u,v\}$ such that $u$ precedes $v$ on the boundary of $f$ and define the force as
+%
+\begin{equation}
+	\vec{F}_P((u,v);f) \coloneqq
+	10 \cdot P(f)\cdot\frac{l(e)}{l(f)}
+	\cdot \Norm(\Perp(\longvec{vu}))
+	,
+\end{equation}
+%
+where $\Perp(\cdot)$ rotates a vector by $90^\circ$ in counterclockwise direction and $\Norm(\cdot)$ normalizes a vector to unit length.
+We apply $\vec{F}_P(\{u,v\};f)$ to both endpoints $u$ and $v$ of the edge, as illustrated in \cref{fig:drawing-forces-air-pressure}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=35mm]{Resources/Drawing-Forces-AirPressure.pdf}
+	\caption{Forces exerted on the endpoints of the edge $e = \{u,v\}$ by the air pressure in the region $f$.}
+	\label{fig:drawing-forces-air-pressure}
+\end{figure}
+
+Considering every edge is incident to exactly two faces, we can write the net force exerted on an oriented edge $e = (u,v)$ incident to face $f$ on the left and face $g$ on the right as
+%
+\begin{equation*}
+	\vec{F}_P((u,v);f,g) \coloneqq
+	10 \cdot \left( P(g)\cdot\frac{l(e)}{l(g)} - P(f)\cdot\frac{l(e)}{l(f)} \right)
+	\cdot \Norm(\Perp(\longvec{uv}))
+	,
+\end{equation*}
+%
+matching the force that Alam \etal{} \cite{alam2013computing} use for computing their cartograms.
+
+
+\item \textbf{Angular Resolution:} % argyriou2013maximizing
 Internal face angles close to $0^\circ$ cause tight corridors in the form of pointy spikes and angles close to $360^\circ$ the opposite \emdash{} both features we want to avoid if possible.
-We therefore define a force that works against such extreme angles, attempting to create uniform internal angles in each of the individual faces.
-Given a face $f$ on $n$ vertices, we define $\measuredangle_f$ as the internal angle of a regular $n$-gon.
-For all pairs $(v,f)$ of vertices and faces where $v$ lies on $f$'s boundary, we define the force
-\begin{equation}
-	\vec{F}_\measuredangle(f,v) \coloneqq 1 \cdot \left\{\begin{array}{lr}
-		\frac{\measuredangle_v - \measuredangle_f}{360^\circ - \measuredangle_f}, & \text{if } \measuredangle_v \geq \measuredangle_f\\
-		\frac{\measuredangle_v - \measuredangle_f}{\measuredangle_f}, & \text{otherwise}\end{array}
-	\right\} \cdot \vec{n}_v.
-\end{equation}
-Here, $\measuredangle_v$ is the internal angle at vertex $v$ in face $f$ and $\vec{n}_v$ is the normalized outward-pointing bisecting vector at $v$.
-We apply this force to all vertices on a face's boundary.
+We therefore define a force that optimizes angular resolution, \ie{} a force that tries to evenly distribute the angles formed by the incident edges around a vertex $v$ at $\frac{360^\circ}{\deg(v)}$ each.
 
-\item \textbf{Vertex-vertex repulsion:}
+Let $v$ be a vertex and $u$ and $w$ two successive neighbors of $u$ in counterclockwise order.
+Analogous to \cite{argyriou2013maximizing}, we define an angular force
+%
+\begin{equation}
+	\vec{F}_\measuredangle(u,w;v) \coloneqq
+	1 \cdot \frac{\measuredangle_{uvw} - \frac{2 \pi}{\deg(u)}}{\measuredangle_{uvw}}
+	\cdot \Norm(\Perp(\Bsc(\overrightarrow{vu}, \overrightarrow{vw})))
+	.
+\end{equation}
+
+Here $\Bsc(\cdot,\cdot)$ computes the bisector of its two arguments.
+The force is illustrated in the following figure:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=45mm]{Resources/Drawing-Forces-AngularResolution.pdf}
+	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} < \frac{2\pi}{\deg(v)}$.}
+	\label{fig:drawing-forces-angular-resolution}
+\end{figure}
+
+For all triplets $(u,v,w)$ of vertices $v$ and successive neighbors $u$, $w$ of $v$, we apply $\vec{F}_\measuredangle(u,w;v)$ to $u$ and $-\vec{F}_\measuredangle(u,w;v)$ to $w$.
+
+
+\item \textbf{Vertex-vertex repulsion:} % eades84heuristic
 We define a repulsive force between pairs of vertices to prevent the vertices from clumping together.
 This is important because in order to preserve planarity, vertices that are very close to others will need to have their movement restricted severely, possibly hindering us from satisfying our aesthetic criteria.
-We think of the vertices as charged particles that push each other away and define a repulsive force based on Coulomb's law that is exerted along the line connecting pairs of vertices and whose magnitude depends on their Euclidean distance $d(u,v)$:
+We think of the vertices as charged particles that push each other away and define a repulsive force based on Coulomb's law that is exerted along the line connecting pairs of vertices and whose magnitude depends on their Euclidean distance:
+%
 \begin{equation}
-	F_\leftrightarrow(u,v) \coloneqq 25 \cdot \frac{1}{d(u,v)^2}
+	\vec{F}_\leftrightarrow(u;v) \coloneqq
+	25 \cdot \frac{1}{\norm{\longvec{uv}}^2}
+	\cdot \Norm(\longvec{uv})
 \end{equation}
-For every pair of vertices $(u, v) \in V^2, u \neq v$, we apply this force to both $u$ and $v$, though in opposite directions.
 
-\item \textbf{Vertex-edge repulsion:}
-In another attempt to prevent tight corridors from forming, we define an additional repulsive force between vertices and edges.
-Given an edge $e$ and non-incident vertex $v$, we define $d(e,v)$ as the shortest Euclidean distance between $v$'s position and any point on $e$.
-Analogous to the vertex-vertex-repulsion, we define the force as an inverse of the squared distance:
+For pairs $(u, v) \in V^2, u \neq v$, we apply $\vec{F}_\leftrightarrow(u;v)$ to $u$.
+We restrict ourselves to pairs $(u,v)$ where $u$ and $v$ lie together on the boundary of some face for performance reasons and because for other pairs, there'd be other vertices or edges between $u$ and $v$ that would push the two vertices apart.
+
+This kind of force was first used by Eades \cite{eades84heuristic}, albeit only for non-adjacent pairs of vertices.
+We apply this force to adjacent vertices as well because we don't use spring-like forces between adjacent vertices trying to achieve a uniform edge length (and therefore some non-zero distance) as Eades does, as discussed below.
+
+
+\item \textbf{Vertex-edge repulsion:} % bertault1999force
+In another attempt to prevent tight corridors from forming, we define an additional repulsive force between vertices and edges like in \cite{bertault1999force}.
+Given an edge $e = \{u,w\}$ and non-incident vertex $v$, we define a helper vertex $v_+$ by projecting $v$ orthogonally onto the line through $u$ and $w$.
+The repulsive force can then be defined as
+%
 \begin{equation}
-	F_\bot(e,v) \coloneqq 10 \cdot \frac{1}{d(e,v)^2}
+	\vec{F}_\bot(v,\{u,w\}) \coloneqq \begin{cases}
+	10 \cdot \frac{1}{\norm{\longvec{vv_+}}^2} \cdot \Norm(\longvec{v_+v}) & \text{if $v_+$ lies between $u$ and $w$}\\
+	0 & \text{otherwise.}
+ 	\end{cases}
 \end{equation}
-For all pairs $(e,v)$ of non-incident edges and vertices that share a boundary of a face, we apply a force with magnitude $F_\bot(e,v)$ to $v$.
-The force is applied perpendicular to $e$ and oriented to the side of $e$ on which $v$ lies.
+
+The following figure illustrates the construction of the force $\vec{F}_\bot(v,\{u,w\})$:
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=30mm]{Resources/Drawing-Forces-VertexEdgeRepulsion.pdf}
+	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} < \frac{2\pi}{\deg(v)}$.}
+	\label{fig:drawing-forces-vertex-edge-repulsion}
+\end{figure}
+
+$\vec{F}_\bot(v,\{u,w\})$ is applied to $v$ while $-\vec{F}_\bot(v,\{u,w\})$ is applied to $u$ and $v$. Analogous to the vertex-vertex-repulsion discussed above, we apply this force only to vertices and edges that lie together on the boundary of some face.
 \end{itemize}
 
-The constant factors of the force components above were determined experimentally.
+The constant factors of the force components above were determined experimentally and yielded good results for a variety of randomly generated graphs.
 
 Note that we do not define attractive forces between adjacent vertices as most traditional force-directed algorithms do.
 Such an attractive force is generally used to keep adjacent vertices close together while nonadjacent vertices are pushed further apart by the repulsive forces.
@@ -95,7 +165,7 @@ By doing so, we prevent unstable oscillations around equilibrium.
 
 When iteratively displacing the map graph's vertices according to the forces defined above, we must pay close attention to not accidentally introduce edge crossings.
 
-To do so, we adopt the rules of PrEd \cite{bertault1999force} that ensure no edge crossings are created.
-At each step of the algorithm, PrEd computes the maximum distance each of the vertices is allowed to move such that the drawing's edge crossing properties are guaranteed to be preserved.
+To do so, we adopt the rules of ImPrEd \cite{simonetto2011impred} that ensure no edge crossings are created.
+At each step of the algorithm, ImPrEd computes the maximum distance each of the vertices is allowed to move such that the drawing's edge crossing properties are guaranteed to be preserved.
 The maximum displacement per vertex is computed in eight general directions, zones of $45^\circ$ each.
 The actual displacement of the vertices is then clamped at the maximum distance the vertex can safely move in the desired direction.
