@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200430174333" modified="D:20200501192548"/>
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200430174333" modified="D:20200514232107"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -322,7 +322,7 @@ h
 <layer name="vertices_after"/>
 <layer name="indicators_after"/>
 <layer name="labels_after"/>
-<view layers="faces_before boundaries_before vertices_before labels_before" active="boundaries_before"/>
+<view layers="faces_before boundaries_before vertices_before labels_before" active="labels_before"/>
 <view layers="faces_before boundaries_before vertices_before labels_before indicators_before" active="labels_before"/>
 <view layers="faces_after boundaries_after vertices_after indicators_after labels_after" active="labels_after"/>
 <path layer="faces_after" fill="flatred">
@@ -604,5 +604,6 @@ h
 <text matrix="1 0 0 1 -188 16" transformations="translations" pos="314 328" stroke="black" type="label" width="14.174" height="4.297" depth="1.93" halign="center" valign="center" style="math">q_{ux}</text>
 <text matrix="1 0 0 1 -156 0" transformations="translations" pos="312 344" stroke="black" type="label" width="13.699" height="4.297" depth="1.93" halign="center" valign="center" style="math">q_{vx}</text>
 <text matrix="1 0 0 1 -208 -56" transformations="translations" pos="313 344" stroke="black" type="label" width="23.265" height="4.29" depth="2.85" halign="center" valign="center" style="math">p_{uvxy}</text>
+<text layer="labels_before" matrix="1 0 0 1 -149 -55" transformations="translations" pos="274 352" stroke="black" type="label" width="14.456" height="4.297" depth="1.93" halign="center" valign="center" style="math">p_{uv}</text>
 </page>
 </ipe>

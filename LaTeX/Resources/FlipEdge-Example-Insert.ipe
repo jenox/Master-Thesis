@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70206" creator="Ipe 7.2.7">
-<info created="D:20200430174333" modified="D:20200501113955"/>
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200430174333" modified="D:20200514225130"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -350,45 +350,41 @@ h
 </text>
 <text matrix="1 0 0 1 -160 56" transformations="translations" pos="240 312" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
 <text matrix="1 0 0 1 -184 88" transformations="translations" pos="240 312" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
-<path layer="alpha" matrix="1 0 0 1 -192 128" fill="flatred">
-224 320 m
-320 320 l
-320 272 l
-288 272 l
-288 288 l
-256 288 l
-224 288 l
-224 320 l
-224 320 l
-224 320 l
-224 320 l
-224 320 l
+<path layer="alpha" fill="flatred">
+32 448 m
+128 448 l
+128 400 l
+112 400 l
+112 416 l
+64 416 l
+32 416 l
+32 448 l
+32 448 l
+32 448 l
+32 448 l
+32 448 l
 h
 </path>
-<path matrix="1 0 0 1 -192 128" fill="flatblue">
-288 272 m
-288 256 l
-224 256 l
-224 224 l
-320 224 l
-320 272 l
-288 272 l
-288 272 l
-288 272 l
-288 272 l
+<path fill="flatblue">
+112 400 m
+112 384 l
+32 384 l
+32 352 l
+128 352 l
+128 400 l
 h
 </path>
-<path matrix="1 0 0 1 -192 128" fill="flatyellow">
-224 288 m
-224 256 l
-256 256 l
-256 288 l
-224 288 l
-224 288 l
-224 288 l
+<path fill="flatyellow">
+32 416 m
+32 384 l
+80 384 l
+80 416 l
+32 416 l
+32 416 l
+32 416 l
 h
 </path>
-<path matrix="1 0 0 1 -192 128" fill="flatgreen">
+<path matrix="1 0 0 1 -176 128" fill="flatgreen">
 256 288 m
 256 256 l
 288 256 l
@@ -399,9 +395,9 @@ h
 h
 </path>
 <text matrix="1 0 0 1 -16 128" transformations="translations" pos="96 304" stroke="black" type="label" width="5.703" height="4.289" depth="0" halign="center" valign="center" style="math">u</text>
-<text matrix="1 0 0 1 -16 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
+<text matrix="1 0 0 1 0 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
 <text matrix="1 0 0 1 -16 64" transformations="translations" pos="96 304" stroke="black" type="label" width="7.401" height="4.289" depth="0" halign="center" valign="center" style="math">w</text>
-<text matrix="1 0 0 1 -48 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
+<text matrix="1 0 0 1 -40 96" transformations="translations" pos="96 304" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="center" valign="center" style="math">x</text>
 <path layer="gamma" matrix="1 0 0 1 -48 0" stroke="black">
 175.92 431.862 m
 148.287 384 l
@@ -514,50 +510,45 @@ h
 64 256 l
 h
 </path>
-<path layer="alpha" matrix="1 0 0 1 -192 128" stroke="0">
-224 320 m
-320 320 l
-320 272 l
-288 272 l
-288 288 l
-256 288 l
-224 288 l
-224 320 l
-224 320 l
-224 320 l
-224 320 l
-224 320 l
-224 320 l
+<path layer="alpha" matrix="1 0 0 1 -112 0" stroke="black">
+144 448 m
+240 448 l
+240 400 l
+224 400 l
+224 416 l
+176 416 l
+144 416 l
+144 448 l
+144 448 l
+144 448 l
+144 448 l
+144 448 l
+144 448 l
 h
-288 272 m
-288 256 l
-224 256 l
-224 224 l
-320 224 l
-320 272 l
-288 272 l
-288 272 l
-288 272 l
-288 272 l
-288 272 l
+144 416 m
+144 384 l
+192 384 l
+192 416 l
+144 416 l
+144 416 l
+144 416 l
+144 416 l
 h
-224 288 m
-224 256 l
-256 256 l
-256 288 l
-224 288 l
-224 288 l
-224 288 l
-224 288 l
+192 416 m
+192 384 l
+224 384 l
+224 416 l
+192 416 l
+192 416 l
+192 416 l
+192 416 l
 h
-256 288 m
-256 256 l
-288 256 l
-288 288 l
-256 288 l
-256 288 l
-256 288 l
-256 288 l
+144 384 m
+144 352 l
+240 352 l
+240 400 l
+224 400 l
+224 384 l
 h
 </path>
 </page>

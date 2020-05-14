@@ -76,9 +76,9 @@ There are numerous popular algorithms to construct such a drawing, \eg{} Tutte's
   \KwResult{polygonal dual \initmap{} of \clustergraph{}, in the form of a 1-subdivision of the augmented dual of \clustergraph{} and planar straight-line drawing thereof}
   \vspace{10pt}
   create empty contact representation \initmap{}\;
-  \ForEach{inner face $f$ in \clustergraph{}}{
+  \ForEach{internal face $f$ in \clustergraph{}}{
     \label{line:transformation-loop1-start}
-    add \quoted{inner face vertex} $v_f$ to \initmap{}\; \label{line:transformation-innerfacevertex}
+    add \quoted{internal face vertex} $v_f$ to \initmap{}\; \label{line:transformation-innerfacevertex}
     position $v_f$ at barycenter of $f$ in \clustergraph{} \label{line:transformation-barycenter1}\;
     \label{line:transformation-loop1-end}
   }

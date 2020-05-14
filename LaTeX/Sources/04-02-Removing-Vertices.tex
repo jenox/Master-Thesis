@@ -10,9 +10,10 @@ We make the same distinction here as when inserting vertices: we can remove inte
 
 \paragraph{Removing Internal Vertices}
 
-When removing an internal vertex, we must ensure that the cluster graph remains internally triangulated.
-This is only the case if the vertex we want to remove has degree 3 as removing vertices with greater degree would create holes.
-If one wants to a vertex with degree 4 or higher, one must first tweak the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}.
+When removing an internal vertex of the filtered cluster filter, we must ensure that the graph remains internally triangulated.
+This is the case iff the internal vertex we want to remove has degree 3.
+Removing vertices with greater degree would create holes in the graph.
+If one wants to remove a vertex with degree 4 or higher, one must first change the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}.
 \Cref{fig:remove-vertex-example-internal} shows a valid removal of an internal vertex.
 
 \begin{figure}[H]
@@ -29,9 +30,8 @@ If one wants to a vertex with degree 4 or higher, one must first tweak the adjac
 \end{figure}
 
 In order not to create holes in the contact representation, the incident faces must take over the area that the face to be removed originally occupied.
-Let $x$ denote the internal vertex we want to remove and $u$, $v$, and $w$ its three neighbors.
-We start by computing the paths that form the $u$-$v$-, $v$-$w$, and $w$-$u$-boundaries in the dual.
-Let $p_{uvx}$ ($p_{vwx}$, $p_{uwx}$) denote the vertex where face $x$ meets faces $u$ and $v$ ($v$ and $w$, $w$ and $u$).
+Let $x$ denote the internal vertex we want to remove in the primal and $u$, $v$, and $w$ its three neighbors.
+Let $p_{uvx}$ ($p_{vwx}$, $p_{uwx}$) denote the vertex where face $x$ meets faces $u$ and $v$ ($v$ and $w$, $w$ and $u$) in the dual.
 \Cref{subfig:remove-vertex-illustration-1} shows how these vertices might look for the example from above.
 
 \begin{figure}[H]
@@ -43,19 +43,38 @@ Let $p_{uvx}$ ($p_{vwx}$, $p_{uwx}$) denote the vertex where face $x$ meets face
 	\label{fig:remove-vertex-illustration}
 \end{figure}
 
-To remove the internal face $x$, we simply remove the its boundary to one of its neighboring faces.
-In doing so, the two faces effectively merge.
+To remove the internal face $x$, we simply remove its boundary to one of its neighboring faces.
+In doing so, the two faces merge.
 In practice this works really well because large clusters don't disappear at a moment's notice, and small clusters generally occupy a very small area such that the operation is barely noticeable.
 
+With this fairly trivial removal of vertices from the filtered cluster graph, the question arises why we only allow this for vertices of degree 3.
+Let us assume we want to remove a face that is adjacent to $n \geq 4$ other faces.
+By removing one of the boundaries to its neighboring faces, we would create $n$ new adjacencies that weren't there before, as illustrated in \cref{fig:remove-vertex-nondeterministic-adjacencies}.
+The respective edges would also need to be inserted into the cluster graph.
+Most importantly though, which new adjacencies would be created depends on which of the $n$ boundaries is dropped.
+Considering future dynamic operations must remain applicable to the cluster graph and the map, we cannot allow such a nondeterministic operation.
+Instead, the excess edges need to be flipped away before removing the vertex is allowed, so that the operations remain deterministic.
+
+\begin{figure}[H]
+	\centering
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-NondeterministicAdjacencies-1.pdf}}
+	\quad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-NondeterministicAdjacencies-2.pdf}}
+	\qquad
+	\subfigure[]{\includegraphics[height=29mm]{Resources/RemoveVertex-NondeterministicAdjacencies-3.pdf}}
+	\caption{Nondeterministic removal of an internal face with 4 neighbors. Removing the $w$-$y$-boundary creates a $w$-$v$-adjacency (b), while removing the $x$-$y$-boundary creates an $x$-$u$-adjacency (c).}
+	\label{fig:remove-vertex-nondeterministic-adjacencies}
+\end{figure}
 
 
 
 \paragraph{Removing External Vertices}
 
-When removing vertices on the outer face along with its incident edges, we must ensure that the graph remains 2-connected afterwards.
-\cref{fig:remove-vertex-example-external} illustrates a valid removal of a vertex on the outer face.
+When removing vertices on the outer face of the filtered cluster graph along with its incident edges, we must ensure that the graph remains biconnected afterwards.
 Similar to inserting vertices on the outer face, we restrict ourselves to removing vertices on the outer face that have degree 2.
 If we need to remove a vertex with higher degree, the additional edges need to be removed first as discussed in \cref{sect:flipping-edges}.
+The operation is therefore only permitted iff the graph has 4 or more vertices prior to the vertex' removal.
+\cref{fig:remove-vertex-example-external} illustrates a valid removal of a vertex on the outer face.
 
 \begin{figure}[H]
 	\centering
