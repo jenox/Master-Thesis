@@ -11,7 +11,8 @@ This is because even though the combinatorial arrangement of regions in the map 
 We therefore extend the pipeline in a way that allows for small, incremental changes to be propagated through the pipeline and to eventually be applied to the previous output in a way that preserves the viewer's mental map.
 
 We extend the pipeline for static input by an incremental transformation phase.
-This phase takes two inputs: A map \initmap{i} that the pipeline previously produced as output for some filtered cluster graph \clustergraph{i}, and a sequence of operations on said cluster graph, that, when applied to \clustergraph{i}, yields the cluster graph \clustergraph{i+1}.
+This phase takes two inputs:
+A map \initmap{i} that the pipeline previously produced as output for some filtered cluster graph \clustergraph{i}, and a sequence of operations on said cluster graph, that, when applied to \clustergraph{i}, yields the cluster graph \clustergraph{i+1}.
 The incremental transformation phase then determines how these operations translate to a polygonal dual of \clustergraph{i} and applies the translated operations to \initmap{i}, producing \initmap{i+1}, a  polygonal dual of \clustergraph{i+1}.
 This new polygonal dual is then fed back into the drawing phase to make it an $\varepsilon$-area-proportional contact representation \propmap{i+1} for some small $\varepsilon > 0$ and to improve the local fatness of the map's regions.
 
@@ -50,7 +51,8 @@ Our pipeline supports numerous classes of primitive operations on the filtered c
 By composing multiple primitive operations in a sequence, more drastic changes can be made to the filtered cluster graph.
 In our pipeline, the operations are applied one after the other nonetheless.
 
-The simplest operation of all is changing a vertex $v$'s weight: We simply take the previous $\varepsilon$-proportional map \propmap{i}, update the weight of the face $f_v$ corresponding to the vertex $v$, and declare that as the new map \initmap{i+1}.
+The simplest operation of all is changing a vertex $v$'s weight:
+We simply take the previous $\varepsilon$-proportional map \propmap{i}, update the weight of the face $f_v$ corresponding to the vertex $v$, and declare that as the new map \initmap{i+1}.
 The map \initmap{i+1} then runs through the drawing phase again to account for the updated face weights.
 
 Implementing the remaining operations as part of the incremental transformation is a little more challenging, and we'll discuss those in great detail in the following sections.
