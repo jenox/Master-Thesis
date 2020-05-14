@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200430174333" modified="D:20200510230641"/>
+<info created="D:20200430174333" modified="D:20200514162644"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -395,7 +395,7 @@ h
 <text matrix="1 0 0 1 144 236" transformations="translations" pos="304 176" stroke="black" type="label" width="41.77" height="6.864" depth="3.42" halign="center" valign="baseline">map $\Gamma_{i+1}^*$</text>
 <text matrix="1 0 0 1 280 148" transformations="translations" pos="368 176" stroke="black" type="label" width="100.398" height="6.922" depth="2.59" halign="center" valign="baseline">$\varepsilon$-proportional map $\Gamma_i^\propto$</text>
 <text matrix="1 0 0 1 196 132" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.59" halign="center" valign="baseline">map $\Gamma_i^*$</text>
-<text matrix="1 0 0 1 -104 144" transformations="translations" pos="320 288" stroke="black" type="minipage" width="112" height="19.602" depth="14.65" valign="baseline" style="center">sequence of operations turning cluster graph $G_i^\mathcal{C}$ into cluster graph $G_{i+1}^\mathcal{C}$</text>
+<text matrix="1 0 0 1 -104 144" transformations="translations" pos="320 288" stroke="black" type="minipage" width="112" height="19.602" depth="14.65" valign="baseline" style="center">sequence of operations $\sigma_{i}$ turning cluster graph $G_i^\mathcal{C}$ into cluster graph $G_{i+1}^\mathcal{C}$</text>
 <path matrix="1 0 0 1 -60 124" stroke="black">
 4 0 0 4 512 236 e
 512 240 m
