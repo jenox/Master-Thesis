@@ -13,11 +13,10 @@ struct ConcreteForceComputerConfigurationView: View {
 
     var body: some View {
         return VStack(content: {
-            self.logarithmicSlider(value: self.forceComputer.force1Strength, range: 1e-2...1e3, text: "V-V Repulsion")
-            self.logarithmicSlider(value: self.forceComputer.force2Strength, range: 1e-2...1e1, text: "V-V Attraction")
-            self.logarithmicSlider(value: self.forceComputer.force3Strength, range: 1e-2...1e3, text: "V-E Repulsion")
-            self.logarithmicSlider(value: self.forceComputer.force4Strength, range: 1e-2...1e1, text: "Pressure")
-            self.logarithmicSlider(value: self.forceComputer.force5Strength, range: 1e-2...1e2, text: "Angle")
+            self.logarithmicSlider(value: self.forceComputer.airPressureStrength, range: 1e-2...1e1, text: "Air Pressure")
+            self.logarithmicSlider(value: self.forceComputer.angularResolutionStrength, range: 1e-2...1e2, text: "Angular Resolution")
+            self.logarithmicSlider(value: self.forceComputer.vertexVertexRepulsionStrength, range: 1e-2...1e3, text: "V-V Repulsion")
+            self.logarithmicSlider(value: self.forceComputer.vertexEdgeRepulsionStrength, range: 1e-2...1e3, text: "V-E Repulsion")
         })
     }
 

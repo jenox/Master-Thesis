@@ -23,6 +23,12 @@ class PrEdForceApplicator: ForceApplicator {
 
             graph.displace(vertex, by: displacement)
         }
+
+        // Centering
+        let centroid = CGPoint.centroid(of: graph.vertices.map(graph.position(of:)))
+        for vertex in graph.vertices {
+            graph.displace(vertex, by: 1e-1 * CGVector(from: centroid, to: .zero))
+        }
     }
 
     private func computeMaximumAmplitudes<Graph>(in graph: Graph) -> [Graph.Vertex: UpperBounds] where Graph: StraightLineGraph {
