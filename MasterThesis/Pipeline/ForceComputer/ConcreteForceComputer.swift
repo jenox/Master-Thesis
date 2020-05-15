@@ -11,7 +11,7 @@ import Geometry
 
 struct ConcreteForceComputer: ForceComputer {
     var airPressureStrength: CGFloat = 3 // 1
-    var angularResolutionStrength: CGFloat = 2 // 1
+    var angularResolutionStrength: CGFloat = 0.5 // 1
     var vertexVertexRepulsionStrength: CGFloat = 25 // 25
     var vertexEdgeRepulsionStrength: CGFloat = 10 // 10
 
@@ -73,23 +73,37 @@ struct ConcreteForceComputer: ForceComputer {
             }
         }
 
-        // Angular Resolution (ours)
+//        // Angular Resolution (ours)
+//        if self.angularResolutionStrength > 0 {
+//            for face in graph.faces {
+//                let polygon = graph.polygon(for: face)
+//
+//                for (index, vertex) in graph.boundary(of: face).enumerated() {
+//                    let (normal, angle) = polygon.normalAndAngle(at: index)
+//                    let inside = Angle(turns: 1) - angle
+//                    let desired = Angle(degrees: 180 * (CGFloat(polygon.points.count) - 2) / CGFloat(polygon.points.count))
+//
+//                    // small angle -> move inside -> negative sign
+//                    // large angle -> move outside -> positive sign
+//                    let over = (inside - desired) / (Angle(turns: 1) - desired) // fraction over
+//                    let under = (desired - inside) / desired // fraction under
+//                    let factor = inside > desired ? over : -under
+//
+//                    forces[vertex]! += self.angularResolutionStrength * sanitize(factor * normal)
+//                }
+//            }
+//        }
+
         if self.angularResolutionStrength > 0 {
-            for face in graph.faces {
-                let polygon = graph.polygon(for: face)
+            for v in graph.vertices {
+                for (u, w) in graph.vertices(adjacentTo: v).adjacentPairs(wraparound: true) {
+                    let currentAngle = graph.angle(from: u, via: v, to: w).counterclockwise
+                    let preferredAngle = Angle(degrees: 360) / graph.degree(of: v)
+                    let fraction = (preferredAngle - currentAngle) / currentAngle
 
-                for (index, vertex) in graph.boundary(of: face).enumerated() {
-                    let (normal, angle) = polygon.normalAndAngle(at: index)
-                    let inside = Angle(turns: 1) - angle
-                    let desired = Angle(degrees: 180 * (CGFloat(polygon.points.count) - 2) / CGFloat(polygon.points.count))
+                    let bisector = graph.vector(from: v, to: u).normalized.rotated(by: currentAngle / 2)
 
-                    // small angle -> move inside -> negative sign
-                    // large angle -> move outside -> positive sign
-                    let over = (inside - desired) / (Angle(turns: 1) - desired) // fraction over
-                    let under = (desired - inside) / desired // fraction under
-                    let factor = inside > desired ? over : -under
-
-                    forces[vertex]! += self.angularResolutionStrength * sanitize(factor * normal)
+                    forces[v]! += self.angularResolutionStrength * fraction * bisector
                 }
             }
         }
@@ -147,7 +161,10 @@ struct ConcreteForceComputer: ForceComputer {
                     let up = graph.vector(from: u, to: p)
                     let d = up.length
 
-                    forces[u]! -= self.vertexEdgeRepulsionStrength * sanitize(up.normalized / pow(d, 2))
+                    let angle = Angle(from: CGVector(from: p, to: graph.position(of: u)), to: graph.vector(from: v, to: w).rotated(by: .degrees(90)))
+                    let factor = abs(cos(angle))
+
+                    forces[u]! -= self.vertexEdgeRepulsionStrength * factor * sanitize(up.normalized / pow(d, 2))
                 }
             }
         }

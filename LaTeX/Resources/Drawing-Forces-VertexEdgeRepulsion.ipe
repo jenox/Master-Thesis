@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200512214951" modified="D:20200514151445"/>
-<preamble>\usepackage{amssymb}</preamble>
+<info created="D:20200512214951" modified="D:20200515214239"/>
+<preamble>\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -320,49 +322,45 @@ h
 </path>
 <use name="mark/disk(sx)" pos="256 768" size="normal" stroke="black"/>
 <use matrix="1 0 0 1 0 64" name="mark/disk(sx)" pos="256 640" size="normal" stroke="black"/>
-<use matrix="1 0 0 1 -32 0" name="mark/disk(sx)" pos="352 736" size="normal" stroke="black"/>
-<path stroke="black" dash="dashed">
-256 736 m
-320 736 l
-</path>
-<path stroke="black">
-256 744 m
-8 0 0 -8 256 736 264 736 a
-</path>
-<use name="mark/disk(sx)" pos="259 739" size="tiny" stroke="black"/>
-<use name="mark/disk(sx)" pos="256 736" size="normal" stroke="black"/>
-<text layer="labels" matrix="1 0 0 1 48 0" transformations="translations" pos="212 768" stroke="black" type="label" width="5.703" height="4.289" depth="0" valign="center" style="math">u</text>
-<text matrix="1 0 0 1 104 -32" transformations="translations" pos="212 760" stroke="black" type="label" width="5.187" height="4.289" depth="0" valign="center" style="math">v</text>
+<text layer="labels" matrix="1 0 0 1 48 0" transformations="translations" pos="212 768" stroke="black" type="label" width="30.43" height="4.294" depth="2.32" valign="center" style="math">u=v_+</text>
+<text matrix="1 0 0 1 -20 18" transformations="translations" pos="212 760" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="center" style="math">v</text>
 <text matrix="1 0 0 1 52 -44" transformations="translations" pos="208 748" stroke="black" type="label" width="7.401" height="4.289" depth="0" valign="center" style="math">w</text>
-<text matrix="1 0 0 1 40 -8" transformations="translations" pos="212 744" stroke="black" type="label" width="11.443" height="4.294" depth="2.32" halign="right" valign="center" style="math">v_+</text>
 <path layer="alpha" stroke="black" arrow="normal/normal">
-320 736 m
-352 736 l
-</path>
-<path matrix="1 0 0 1 0 64" stroke="black" arrow="normal/normal">
-256 640 m
-224 640 l
-</path>
-<path stroke="black" arrow="normal/normal">
 256 768 m
-224 768 l
+192 768 l
 </path>
-<text layer="labels" matrix="1 0 0 1 132 36" transformations="translations" pos="188 708" stroke="black" type="label" width="57.989" height="9.637" depth="2.49" valign="center" style="math">\vec{F}_\bot(v,\{u,w\})</text>
-<text matrix="1 0 0 1 -8 52" transformations="translations" pos="188 708" stroke="black" type="label" width="65.737" height="9.637" depth="2.49" valign="center" style="math">-\vec{F}_\bot(v,\{u,w\})</text>
-<text matrix="1 0 0 1 -8 5" transformations="translations" pos="188 708" stroke="black" type="label" width="65.737" height="9.637" depth="2.49" valign="center" style="math">-\vec{F}_\bot(v,\{u,w\})</text>
-<path matrix="-1 0 0 1 512 -32" stroke="black">
-256 744 m
-8 0 0 -8 256 736 264 736 a
-</path>
-<use matrix="-1 0 0 1 512 -32" name="mark/disk(sx)" pos="259 739" size="tiny" stroke="black"/>
+<text layer="labels" matrix="1 0 0 1 -36 92" transformations="translations" pos="188 708" stroke="black" type="label" width="57.989" height="9.637" depth="2.49" valign="center" style="math">\vec{F}_\bot(v;\{u,w\})</text>
 <path matrix="-1 0 0 -1 512 1504" stroke="black">
 256 744 m
 8 0 0 -8 256 736 264 736 a
 </path>
 <use matrix="-1 0 0 -1 512 1504" name="mark/disk(sx)" pos="259 739" size="tiny" stroke="black"/>
 <path stroke="black" dash="dashed">
-384 736 m
-352 736 l
+192 784 m
+256 768 l
+</path>
+<use name="mark/disk(sx)" pos="192 784" size="normal" stroke="black"/>
+<path stroke="black" dash="dashed">
+128 800 m
+160 792 l
+</path>
+<path stroke="black" arrow="normal/normal">
+192 784 m
+160 792 l
+</path>
+<text matrix="1 0 0 1 -4 12" transformations="translations" pos="192 756" stroke="black" type="label" width="10.258" height="7.122" depth="1.49" halign="right" valign="center" style="math">\vec{n}_e</text>
+<text matrix="1 0 0 1 -120 -40" transformations="translations" pos="264 792" stroke="black" type="label" width="106.423" height="7.945" depth="2.49" valign="baseline" style="math">\arccos(\lvert \vec{n}_e \cdot \text{Norm}(\overrightarrow{v_+v}) \rvert)</text>
+<path stroke="black">
+216 768 m
+40 0 0 -40 256 768 217.194 777.701 a
+</path>
+<path stroke="black">
+228 761 m
+228 772 l
+</path>
+<path stroke="black">
+226 772 m
+230 772 l
 </path>
 </page>
 </ipe>

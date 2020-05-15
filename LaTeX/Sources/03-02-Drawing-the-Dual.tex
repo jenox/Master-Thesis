@@ -51,7 +51,7 @@ We orient $e = \{u,v\}$ such that $u$ directly precedes $v$ on the boundary of $
 %
 \begin{equation}
 	\vec{F}_P((u,v);f) \coloneqq
-	10 \cdot P(f)\cdot\frac{l(e)}{l(f)}
+	3 \cdot P(f)\cdot\frac{l(e)}{l(f)}
 	\cdot \Norm(\Perp(\longvec{vu}))
 	,
 \end{equation}
@@ -70,7 +70,7 @@ Considering every edge is incident to exactly two faces, we can write the net fo
 %
 \begin{equation*}
 	\vec{F}_P((u,v);f,g) \coloneqq
-	10 \cdot \left( P(g)\cdot\frac{l(e)}{l(g)} - P(f)\cdot\frac{l(e)}{l(f)} \right)
+	3 \cdot \left( P(g)\cdot\frac{l(e)}{l(g)} - P(f)\cdot\frac{l(e)}{l(f)} \right)
 	\cdot \Norm(\Perp(\longvec{uv}))
 	,
 \end{equation*}
@@ -83,29 +83,33 @@ Internal face angles close to $0^\circ$ cause tight corridors in the form of poi
 We therefore define a force that optimizes angular resolution, \ie{} a force that tries to evenly distribute the angles formed by the incident edges around a vertex $v$ at $\frac{360^\circ}{\deg(v)}$ each.
 
 Let $v$ be a vertex and let $u$ and $w$ be two successive neighbors of $u$ in counterclockwise order.
-Also let $\measuredangle_{uvw} \in \lbrack -180^\circ, 180^\circ )$ denote the normalized angle from $u$ via $v$ to $w$ measured in counterclockwise direction.
-Analogous to \cite{argyriou2013maximizing}, we define an angular force
+Also let $\measuredangle_{uvw} \in \lbrack 0^\circ, 360^\circ )$ denote the normalized angle from $u$ via $v$ to $w$ measured in counterclockwise direction.
+%Analogous to \cite{argyriou2013maximizing}, we define an angular force
+With this, we define the force $\vec{F}_\measuredangle(v;u,w)$ as
 %
 \begin{equation}
-	\vec{F}_\measuredangle(u,w;v) \coloneqq
-	1 \cdot \frac{\measuredangle_{uvw} - \frac{360^\circ}{\deg(u)}}{\measuredangle_{uvw}}
-	\cdot \begin{cases}
-		\Norm(\Perp(\Bsc(\longvec{vu}, \longvec{vw}))) & \text{if $\measuredangle_{uvw} \neq 180^\circ$}\\
-		\Norm(\longvec{uw}) & \text{otherwise.}
-	\end{cases}
+	\vec{F}_\measuredangle(v;u,w) \coloneqq
+	\frac{1}{2} \cdot \frac{\frac{360^\circ}{\deg(u)} - \measuredangle_{uvw}}{\measuredangle_{uvw}}
+	\cdot \Bsc(\angle_{uvw})
+	.
 \end{equation}
 
-Here $\Bsc(\vec{x},\vec{y}) \coloneqq \frac{\vec{x}}{\norm{\vec{x}}} + \frac{\vec{y}}{\norm{\vec{y}}}$ computes the bisector of its two arguments.
-The force is illustrated in the following figure:
+Here $\Bsc(\angle_{uvw})$ computes the normalized bisector of the given angle, \ie{} $\Norm(\longvec{vu})$ rotated by $\frac{1}{2} \measuredangle_{uvw}$ in counterclockwise direction.
+The construction of $\vec{F}_\measuredangle(v;u,w)$ is illustrated in \cref{fig:drawing-forces-angular-resolution}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=45mm]{Resources/Drawing-Forces-AngularResolution.pdf}
-	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} > \frac{360^\circ}{\deg(v)}$.}
+	\includegraphics[height=40mm]{Resources/Drawing-Forces-AngularResolution.pdf}
+	\caption{Force exerted on some vertex $v$ with successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} > \frac{360^\circ}{\deg(v)}$.}
 	\label{fig:drawing-forces-angular-resolution}
 \end{figure}
 
-For all triplets $(u,v,w)$ of vertices $v$ and successive neighbors $u$, $w$ of $v$, we apply $\vec{F}_\measuredangle(u,w;v)$ to $u$ and $-\vec{F}_\measuredangle(u,w;v)$ to $w$.
+For all triplets $(u,v,w)$ of vertices $v$ and successive neighbors $u$, $w$ of $v$, we apply $\vec{F}_\measuredangle(v;u,w)$ to $v$.
+If the angle at $v$ is currently too small, the force acts to move $v$ along the bisector, thereby increasing the angle; otherwise it acts to move $v$ against the bisector, thereby decreasing the angle.
+
+Argyriou \etal{} \cite{argyriou2013maximizing} use a similar force to obtain uniform angles around all vertices.
+However, instead of applying the force to the vertex $v$ whose angular resolution we want to improve as we do, they apply perpendicular forces to its neighbors.
+In our tests, the approach of Argyriou \etal{} has shown not to converge well due to us not having a force acting towards a uniform edge length, as discussed below in a bit.
 
 
 \item \textbf{Vertex-vertex repulsion:} % eades84heuristic
@@ -127,27 +131,33 @@ We apply this force to adjacent vertices as well because we don't use spring-lik
 
 
 \item \textbf{Vertex-edge repulsion:} % bertault1999force
-In another attempt to prevent tight corridors from forming, we define an additional repulsive force between vertices and edges like in \cite{bertault1999force}.
-Given an edge $e = \{u,w\}$ and non-incident vertex $v$, we define a helper vertex $v_+$ by projecting $v$ orthogonally onto the line through $u$ and $w$.
-The repulsive force can then be defined as
+In another attempt to prevent tight corridors from forming, we define an additional repulsive force between vertices and edges.
+Given an edge $e = \{u,w\}$ and non-incident vertex $v$, we define $v_+$ as the point on the segment from $u$ to $w$ with the smallest Euclidean distance to $v$.
+We then define the repulsive force as
 %
 \begin{equation}
-	\vec{F}_\bot(v,\{u,w\}) \coloneqq \begin{cases}
-	10 \cdot \frac{1}{\norm{\longvec{vv_+}}^2} \cdot \Norm(\longvec{v_+v}) & \text{if $v_+$ lies between $u$ and $w$}\\
-	0 & \text{otherwise.}
- 	\end{cases}
+	\vec{F}_\bot(v;\{u,w\}) \coloneqq
+	10 \cdot \frac{1}{\norm{\longvec{v_+v}}^2}
+	\cdot \abs{\vec{n}_e \cdot \Norm(\longvec{v_+v})}
+	\cdot \Norm(\longvec{v_+v})
+	,
 \end{equation}
-
-The following figure illustrates the construction of the force $\vec{F}_\bot(v,\{u,w\})$:
+%
+where $\vec{n}_e$ is the normalized normal vector of the edge $e$ pointing in either direction.
+The following figure illustrates the construction of the force $\vec{F}_\bot(v;\{u,w\})$:
 %
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=30mm]{Resources/Drawing-Forces-VertexEdgeRepulsion.pdf}
-	\caption{Forces exerted on the endpoints of the edge $\{u,w\}$ and some non-incident vertex $v$ whose orthogonal projection $v_+$ onto the line through $u$ and $w$ lies on the edge.}
+	\includegraphics[height=40mm]{Resources/Drawing-Forces-VertexEdgeRepulsion.pdf}
+	\caption{Force exerted on some vertex $v$ by a non-incident edge $\{u,w\}$.}
 	\label{fig:drawing-forces-vertex-edge-repulsion}
 \end{figure}
 
-$\vec{F}_\bot(v,\{u,w\})$ is applied to $v$ while $-\vec{F}_\bot(v,\{u,w\})$ is applied to $u$ and $v$. Analogous to the vertex-vertex-repulsion discussed above, we apply this force only to vertices and edges that lie together on the boundary of some face.
+Analogous to the vertex-vertex-repulsion discussed above, we compute the force $\vec{F}_\bot(v;\{u,w\})$ only for vertices and edges that lie together on the boundary of some face and apply it to $v$.
+
+This repulsive force is very similar to what Bertault uses in PrEd \cite{bertault1999force}.
+However, we have an additional dot product term for how $v$ is positioned relatively to the edge $\{u,w\}$ whereas Bertault drops the force altogether if the orthogonal projection of $v$ onto the line through $u$ and $w$ doesn't lie between $u$ and $w$.
+In our tests, Bertault's definition resulted in very unstable simulations as these force swayed back and forth between having full impact and no impact at all.
 \end{itemize}
 
 The constant factors of the force components above were determined experimentally and yielded good results for a variety of randomly generated graphs.
@@ -161,6 +171,16 @@ Including such an attractive force here would in fact be counterproductive.
 To make sure that the physical simulation converges, we cool the particle system down over time.
 We define a global cooling parameter $\alpha = 0.01$ and, at step $i$ of the iterative process, add $(1 - \alpha)^i$ as a factor to all of the forces mentioned above.
 By doing so, we prevent unstable oscillations around equilibrium.
+
+In our implementation, we also smooth vertices of degree 2 that become too close to other vertices and subdivide edges that become too long in order to create more degrees of freedom in the respective face's shape.
+To do so, we first compute the average edge length $\bar{l}$ as
+%
+\begin{equation*}
+	\bar{l} \coloneqq \frac1{\abs{E}} \cdot \sum\limits_{e \in E} l(e)
+	.
+\end{equation*}
+%
+Then, at each iteration, we subdivide edges that are longer than $2\bar{l}$ at their midpoint and smooth vertices whose distance to the closest other vertex is $\frac{1}{10}\bar{l}$ or less if we can do so without introducing edge crossings.
 
 
 

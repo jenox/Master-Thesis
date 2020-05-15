@@ -10,14 +10,17 @@ import CoreGraphics
 
 extension PolygonalDual {
     mutating func willStepOnce() throws {
+        let lengths = self.edges.map(self.distance(from:to:))
+        let average = lengths.reduce(0, +) / CGFloat(lengths.count)
+
         for v in self.vertices.filter(self.isBend(_:)).sorted(by: self.distanceToClosestNeighbor(of:)) {
-            guard self.distanceToClosestNeighbor(of: v) < 5 else { break }
+            guard self.distanceToClosestNeighbor(of: v) <= 0.1 * average else { break }
 
             try? self.smooth(v)
         }
 
         for (u, v) in self.edges.sorted(by: self.distance(from:to:)) {
-            guard self.distance(from: u, to: v) >= 100 else { continue }
+            guard self.distance(from: u, to: v) >= 2 * average else { continue }
             guard self.containsEdge(between: u, and: v) else { continue }
 
             self.subdivideEdge(between: u, and: v)

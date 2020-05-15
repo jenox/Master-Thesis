@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200512214951" modified="D:20200515155832"/>
+<info created="D:20200512214951" modified="D:20200515225804"/>
 <preamble>\usepackage{amssymb}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
@@ -312,9 +312,10 @@ h
 </ipestyle>
 <page>
 <layer name="alpha"/>
-<view layers="alpha" active="alpha"/>
-<use layer="alpha" matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="256 768" size="normal" stroke="black"/>
-<use matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="192 640" size="normal" stroke="black"/>
+<layer name="beta"/>
+<view layers="beta" active="beta"/>
+<use layer="beta" matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="256 768" size="normal" stroke="black"/>
+<use layer="alpha" matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="192 640" size="normal" stroke="black"/>
 <use matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="304 672" size="normal" stroke="black"/>
 <path matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" stroke="black">
 192 640 m
@@ -351,15 +352,43 @@ h
 </path>
 <use matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="253 643" size="tiny" stroke="black"/>
 <use matrix="1 -0.00000022 -0.00000022 -1 -0.0004121 1344" name="mark/disk(sx)" pos="259 675" size="tiny" stroke="black"/>
-<text matrix="1 0.00000022 -0.00000022 1 -148 -95.9999" transformations="translations" pos="336 736" stroke="black" type="label" width="7.995" height="6.177" depth="0" halign="right" valign="center" size="Large" style="math">u</text>
-<text matrix="1 0.00000022 -0.00000022 1 -80.0004 51.9995" transformations="translations" pos="336 720" stroke="black" type="label" width="7.306" height="6.177" depth="0" halign="center" valign="bottom" size="Large" style="math">v</text>
-<text matrix="1 0.00000022 -0.00000022 1 -28.0001 -32" transformations="translations" pos="336 704" stroke="black" type="label" width="10.427" height="6.177" depth="0" valign="center" size="Large" style="math">w</text>
-<text matrix="1 0.00000022 -0.00000022 1 -47.9999 -7.99998" transformations="translations" pos="304 752" stroke="black" type="label" width="24.736" height="8.279" depth="1.79" halign="center" valign="center" size="large" style="math">\measuredangle_{uvw}</text>
-<path matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" stroke="black" dash="dashed">
+<text layer="beta" matrix="1 0.00000022 -0.00000022 1 -164 -15.9999" transformations="translations" pos="336 736" stroke="black" type="label" width="7.995" height="6.177" depth="0" halign="right" valign="center" size="Large" style="math">u</text>
+<text matrix="1 0.00000022 -0.00000022 1 -72.0004 47.9995" transformations="translations" pos="336 720" stroke="black" type="label" width="7.306" height="6.177" depth="0" halign="center" valign="bottom" size="Large" style="math">v</text>
+<text matrix="1 0.00000022 -0.00000022 1 -12.0001 48" transformations="translations" pos="336 704" stroke="black" type="label" width="10.427" height="6.177" depth="0" valign="center" size="Large" style="math">w</text>
+<text matrix="1 0.00000022 0 1 -47 5" transformations="translations" pos="304 752" stroke="black" type="label" width="24.736" height="8.279" depth="1.79" halign="center" valign="center" size="large" style="math">\measuredangle_{uvw}</text>
+<path layer="alpha" matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" stroke="black" dash="dashed">
 256 732.223 m
 256 624 l
 </path>
 <text matrix="1 0 0 1 -48 24" transformations="translations" pos="240 608" stroke="black" type="label" width="47.597" height="9.637" depth="2.49" valign="center" style="math">\vec{F}_\measuredangle(u,w;v)</text>
 <text matrix="1 0 0 1 -96 56" transformations="translations" pos="368 608" stroke="black" type="label" width="55.346" height="9.637" depth="2.49" valign="center" style="math">-\vec{F}_\measuredangle(u,w;v)</text>
+<path layer="beta" stroke="black">
+256 768 m
+320 752 l
+</path>
+<path stroke="black">
+256 768 m
+176 720 l
+</path>
+<use name="mark/disk(sx)" pos="176 720" size="normal" stroke="black"/>
+<use name="mark/disk(sx)" pos="320 752" size="normal" stroke="black"/>
+<path stroke="black">
+236.799 756.479 m
+22.3919 0 0 22.3919 256 768 277.723 762.569 a
+</path>
+<path matrix="0.595473 0 0 0.595473 104.892 301.717" stroke="black" dash="dashed">
+259.295 745.852 m
+270.977 667.346 l
+</path>
+<text matrix="1 0 0 1 -62 -14" transformations="translations" pos="304 752" stroke="black" type="label" width="31.361" height="9.846" depth="4.12" halign="center" valign="center" size="large" style="math">\frac12\measuredangle_{uvw}</text>
+<path stroke="black">
+214.498 743.099 m
+48.3997 0 0 48.3997 256 768 263.123 720.127 a
+</path>
+<path stroke="black" arrow="normal/normal">
+256 768 m
+252.435 791.956 l
+</path>
+<text matrix="1 0 0 1 -112 184" transformations="translations" pos="368 608" stroke="black" type="label" width="47.597" height="9.637" depth="2.49" valign="center" style="math">\vec{F}_\measuredangle(v;u,w)</text>
 </page>
 </ipe>
