@@ -15,6 +15,13 @@ extension PolygonalDual {
 
             try? self.smooth(v)
         }
+
+        for (u, v) in self.edges.sorted(by: self.distance(from:to:)) {
+            guard self.distance(from: u, to: v) >= 100 else { continue }
+            guard self.containsEdge(between: u, and: v) else { continue }
+
+            self.subdivideEdge(between: u, and: v)
+        }
     }
 
     mutating func didStepOnce() throws {

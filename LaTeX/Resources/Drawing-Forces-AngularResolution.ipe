@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200512214951" modified="D:20200514150334"/>
+<info created="D:20200512214951" modified="D:20200515155832"/>
 <preamble>\usepackage{amssymb}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
@@ -352,7 +352,7 @@ h
 <use matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" name="mark/disk(sx)" pos="253 643" size="tiny" stroke="black"/>
 <use matrix="1 -0.00000022 -0.00000022 -1 -0.0004121 1344" name="mark/disk(sx)" pos="259 675" size="tiny" stroke="black"/>
 <text matrix="1 0.00000022 -0.00000022 1 -148 -95.9999" transformations="translations" pos="336 736" stroke="black" type="label" width="7.995" height="6.177" depth="0" halign="right" valign="center" size="Large" style="math">u</text>
-<text matrix="1 0.00000022 -0.00000022 1 -80.0004 51.9995" transformations="translations" pos="336 720" stroke="black" type="label" width="5.187" height="4.289" depth="0" halign="center" valign="bottom" style="math">v</text>
+<text matrix="1 0.00000022 -0.00000022 1 -80.0004 51.9995" transformations="translations" pos="336 720" stroke="black" type="label" width="7.306" height="6.177" depth="0" halign="center" valign="bottom" size="Large" style="math">v</text>
 <text matrix="1 0.00000022 -0.00000022 1 -28.0001 -32" transformations="translations" pos="336 704" stroke="black" type="label" width="10.427" height="6.177" depth="0" valign="center" size="Large" style="math">w</text>
 <text matrix="1 0.00000022 -0.00000022 1 -47.9999 -7.99998" transformations="translations" pos="304 752" stroke="black" type="label" width="24.736" height="8.279" depth="1.79" halign="center" valign="center" size="large" style="math">\measuredangle_{uvw}</text>
 <path matrix="1 0.00000022 -0.00000022 1 -0.0004121 -0.00005151" stroke="black" dash="dashed">

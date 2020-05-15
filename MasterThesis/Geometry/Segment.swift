@@ -22,7 +22,20 @@ extension Segment {
         // We find projection of point p onto the line.
         // It falls where t = [(p-v) . (w-v)] / |w-v|^2
         // We clamp t from [0,1] to handle points outside the segment vw.
-        let t = max(0, min(1, dot((other - self.start), (self.end - self.start)) / l2))
+        let t = dot((other - self.start), (self.end - self.start)) / l2
+        return self.point(at: max(0, min(1, t)))
+    }
+
+    func orthogonalProjection(of other: CGPoint) -> CGPoint? {
+        // Return minimum distance between line segment vw and point p
+        let l2 = pow(self.start.distance(to: self.end), 2)  // i.e. |w-v|^2 -  avoid a sqrt
+        guard (l2 != 0.0) else { return self.start } // v == w case
+        // Consider the line extending the segment, parameterized as v + t (w - v).
+        // We find projection of point p onto the line.
+        // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+        // We clamp t from [0,1] to handle points outside the segment vw.
+        let t = dot((other - self.start), (self.end - self.start)) / l2
+        guard t >= 0 && t <= 1 else { return nil }
         return self.point(at: t)
     }
 

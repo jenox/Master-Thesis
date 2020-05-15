@@ -10,10 +10,10 @@ import CoreGraphics
 import Geometry
 
 struct ConcreteForceComputer: ForceComputer {
-    var airPressureStrength: CGFloat = 1
-    var angularResolutionStrength: CGFloat = 1
-    var vertexVertexRepulsionStrength: CGFloat = 25
-    var vertexEdgeRepulsionStrength: CGFloat = 10
+    var airPressureStrength: CGFloat = 3 // 1
+    var angularResolutionStrength: CGFloat = 2 // 1
+    var vertexVertexRepulsionStrength: CGFloat = 25 // 25
+    var vertexEdgeRepulsionStrength: CGFloat = 10 // 10
 
     func forces(in graph: PolygonalDual) -> [PolygonalDual.Vertex: CGVector] {
         var forces = Dictionary(uniqueKeys: graph.vertices, initialValue: CGVector.zero)
@@ -35,22 +35,45 @@ struct ConcreteForceComputer: ForceComputer {
             }
         }
 
-        // Air Pressure
+        // Air Pressure (Alam)
         if self.airPressureStrength > 0 {
+            let outerfaceedges = graph.internalFacesAndOuterFace().outer.vertices.adjacentPairs(wraparound: true)
+
             for face in graph.faces {
                 let weight = graph.weight(of: face).rawValue
                 let area = graph.area(of: face)
                 let pressure = CGFloat((weight / totalweight) / (area / totalarea))
 
-                let polygon = graph.polygon(for: face)
+                let edges = graph.boundary(of: face).adjacentPairs(wraparound: true)
+                let length = edges.map(graph.distance(from:to:)).reduce(0, +)
 
-                for (index, vertex) in graph.boundary(of: face).enumerated() {
-                    forces[vertex]! += self.airPressureStrength * sanitize(log(pressure) * polygon.normalAndAngle(at: index).normal)
+                for (u, v) in edges {
+                    if !outerfaceedges.contains(where: { $0 == (u,v) || $0 == (v,u) }) {
+                    }
+
+                    let fraction = graph.distance(from: u, to: v) / length
+                    let vector = graph.vector(from: u, to: v).rotated(by: .degrees(-90)).normalized
+
+                    forces[u]! += self.airPressureStrength * sanitize(pressure * fraction * vector)
+                    forces[v]! += self.airPressureStrength * sanitize(pressure * fraction * vector)
+                }
+            }
+
+            do {
+                let edges = graph.internalFacesAndOuterFace().outer.vertices.adjacentPairs(wraparound: true)
+                let length = edges.map(graph.distance(from:to:)).reduce(0, +)
+
+                for (u, v) in edges {
+                    let fraction = graph.distance(from: u, to: v) / length
+                    let vector = graph.vector(from: u, to: v).rotated(by: .degrees(-90)).normalized
+
+                    forces[u]! += self.airPressureStrength * sanitize(1 * fraction * vector)
+                    forces[v]! += self.airPressureStrength * sanitize(1 * fraction * vector)
                 }
             }
         }
 
-        // Angular Resolution
+        // Angular Resolution (ours)
         if self.angularResolutionStrength > 0 {
             for face in graph.faces {
                 let polygon = graph.polygon(for: face)
@@ -71,6 +94,32 @@ struct ConcreteForceComputer: ForceComputer {
             }
         }
 
+//        // Angular Resolution (ABS13) | bad like this. blows things up, would need strong gravity.
+//        if self.angularResolutionStrength > 0 {
+//            for v in graph.vertices {
+//                for (u, w) in graph.vertices(adjacentTo: v).adjacentPairs(wraparound: true) {
+//                    let currentAngle = graph.angle(from: u, via: v, to: w).counterclockwise
+//                    let preferredAngle = Angle(degrees: 360) / graph.degree(of: v)
+//                    let fraction = (currentAngle - preferredAngle) / currentAngle
+//
+//                    let bisector = graph.vector(from: v, to: u).normalized + graph.vector(from: v, to: w).normalized
+//                    let vector: CGVector
+//
+//                    if bisector.length < 1e-10 {
+//                        vector = CGVector(
+//                            from: graph.position(of: v) + graph.vector(from: v, to: u).normalized,
+//                            to: graph.position(of: v) + graph.vector(from: v, to: w).normalized
+//                        ).normalized
+//                    } else {
+//                        vector = bisector.rotated(by: .degrees(90)).normalized
+//                    }
+//
+//                    forces[u]! += self.angularResolutionStrength * sanitize(fraction * vector)
+//                    forces[w]! += self.angularResolutionStrength * -sanitize(fraction * vector)
+//                }
+//            }
+//        }
+
         // Vertex-vertex repulsion
         if self.vertexVertexRepulsionStrength > 0 {
             for (u, vs) in verticesToCheck {
@@ -86,7 +135,7 @@ struct ConcreteForceComputer: ForceComputer {
             }
         }
 
-        // Vertex-edge repulsion
+        // Vertex-edge repulsion (ours)
         if self.vertexEdgeRepulsionStrength > 0 {
             for (u, edges) in edgesToCheck {
                 for (v,w) in edges {
@@ -102,6 +151,25 @@ struct ConcreteForceComputer: ForceComputer {
                 }
             }
         }
+
+//        // Vertex-edge repulsion (PrEd) | bad like this. very unstable.
+//        if self.vertexEdgeRepulsionStrength > 0 {
+//            for (v, edges) in edgesToCheck {
+//                for (u, w) in edges {
+//                    precondition(v != u && v != w)
+//
+//                    let segment = graph.segment(from: u, to: w)
+//                    if let p = segment.orthogonalProjection(of: graph.position(of: v)) {
+//                        let factor = 1 / pow(graph.position(of: v).distance(to: p), 2)
+//                        let vector = -graph.vector(from: v, to: p).normalized
+//
+//                        forces[v]! += self.vertexEdgeRepulsionStrength * sanitize(factor * vector)
+//                        forces[u]! -= self.vertexEdgeRepulsionStrength * sanitize(factor * vector)
+//                        forces[w]! -= self.vertexEdgeRepulsionStrength * sanitize(factor * vector)
+//                    }
+//                }
+//            }
+//        }
 
         return forces
     }

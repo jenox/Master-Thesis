@@ -230,10 +230,22 @@ extension PolygonalDual {
     }
 }
 
+extension PolygonalDual: CustomStringConvertible {
+    var description: String {
+        var description = ""
+        for vertex in self.vertices {
+            description.append("\(vertex) -> \(Array(self.vertices(adjacentTo: vertex)))\n")
+        }
+        description.removeLast()
+        return description
+    }
+}
+
 
 // MARK: - Subdivision & Smoothing
 
 extension PolygonalDual {
+    @discardableResult
     mutating func subdivideEdge(between u: Vertex, and w: Vertex) -> Vertex {
         precondition(self.vertices(adjacentTo: u).contains(w))
 

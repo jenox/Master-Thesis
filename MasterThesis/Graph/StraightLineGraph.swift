@@ -157,6 +157,10 @@ extension StraightLineGraph {
         return Angle.atan2(vector.dy, vector.dx)
     }
 
+    func angle(from u: Vertex, via v: Vertex, to w: Vertex) -> Angle {
+        return Angle(from: self.position(of: u), by: self.position(of: v), to: self.position(of: w))
+    }
+
     func internalFacesAndOuterFace() -> (internal: [Face<Vertex>], outer: Face<Vertex>) {
         var faces = self.allFaces()
         let index = faces.partition(by: { self.polygon(on: $0.vertices).area >= 0 })

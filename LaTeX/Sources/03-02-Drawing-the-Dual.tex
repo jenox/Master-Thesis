@@ -39,15 +39,15 @@ We want this force and the overall drawing to be agnostic to constant factors of
 \end{equation*}
 %
 where $A(f)$ is the area currently covered by some internal face $f$ and $w(f)$ its weight.
-We set the pressure of the outer face to the weighted average pressure, \ie{}
+We set the normalized pressure in the outer face to the weighted average normalized pressure, \ie{}
 %
 \begin{equation*}
-	P(f_\text{outer}) \coloneqq \frac{\sum_{f \in F}{w(f) \cdot P(f)}}{\sum_{f \in F}{w(f)}}.
+	P(f_\text{outer}) \coloneqq \frac{\sum_{f \in F}{A(f) \cdot P(f)}}{\sum_{f \in F}{A(f)}} = 1.
 \end{equation*}
 
 Physical pressure is the ratio of force to area.
 The air pressure in each of the regions $f$ therefore exerts a force on each bounding edge $e = \{u,v\}$ based on the pressure's magnitude and the edge's length $l(e)$ in relation to the entire region's boundary's length $l(f)$.
-We orient $e = \{u,v\}$ such that $u$ precedes $v$ on the boundary of $f$ and define the force as
+We orient $e = \{u,v\}$ such that $u$ directly precedes $v$ on the boundary of $f$ and define the force as
 %
 \begin{equation}
 	\vec{F}_P((u,v);f) \coloneqq
@@ -82,23 +82,26 @@ matching the force that Alam \etal{} \cite{alam2013computing} use for computing 
 Internal face angles close to $0^\circ$ cause tight corridors in the form of pointy spikes and angles close to $360^\circ$ the opposite \emdash{} both features we want to avoid if possible.
 We therefore define a force that optimizes angular resolution, \ie{} a force that tries to evenly distribute the angles formed by the incident edges around a vertex $v$ at $\frac{360^\circ}{\deg(v)}$ each.
 
-Let $v$ be a vertex and $u$ and $w$ two successive neighbors of $u$ in counterclockwise order.
+Let $v$ be a vertex and let $u$ and $w$ be two successive neighbors of $u$ in counterclockwise order.
+Also let $\measuredangle_{uvw} \in \lbrack -180^\circ, 180^\circ )$ denote the normalized angle from $u$ via $v$ to $w$ measured in counterclockwise direction.
 Analogous to \cite{argyriou2013maximizing}, we define an angular force
 %
 \begin{equation}
 	\vec{F}_\measuredangle(u,w;v) \coloneqq
-	1 \cdot \frac{\measuredangle_{uvw} - \frac{2 \pi}{\deg(u)}}{\measuredangle_{uvw}}
-	\cdot \Norm(\Perp(\Bsc(\overrightarrow{vu}, \overrightarrow{vw})))
-	.
+	1 \cdot \frac{\measuredangle_{uvw} - \frac{360^\circ}{\deg(u)}}{\measuredangle_{uvw}}
+	\cdot \begin{cases}
+		\Norm(\Perp(\Bsc(\longvec{vu}, \longvec{vw}))) & \text{if $\measuredangle_{uvw} \neq 180^\circ$}\\
+		\Norm(\longvec{uw}) & \text{otherwise.}
+	\end{cases}
 \end{equation}
 
-Here $\Bsc(\cdot,\cdot)$ computes the bisector of its two arguments.
+Here $\Bsc(\vec{x},\vec{y}) \coloneqq \frac{\vec{x}}{\norm{\vec{x}}} + \frac{\vec{y}}{\norm{\vec{y}}}$ computes the bisector of its two arguments.
 The force is illustrated in the following figure:
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=45mm]{Resources/Drawing-Forces-AngularResolution.pdf}
-	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} < \frac{2\pi}{\deg(v)}$.}
+	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} > \frac{360^\circ}{\deg(v)}$.}
 	\label{fig:drawing-forces-angular-resolution}
 \end{figure}
 
@@ -140,7 +143,7 @@ The following figure illustrates the construction of the force $\vec{F}_\bot(v,\
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=30mm]{Resources/Drawing-Forces-VertexEdgeRepulsion.pdf}
-	\caption{Forces exerted on the successive neighbors $u$ and $w$ of $v$ where $\measuredangle_{uvw} < \frac{2\pi}{\deg(v)}$.}
+	\caption{Forces exerted on the endpoints of the edge $\{u,w\}$ and some non-incident vertex $v$ whose orthogonal projection $v_+$ onto the line through $u$ and $w$ lies on the edge.}
 	\label{fig:drawing-forces-vertex-edge-repulsion}
 \end{figure}
 

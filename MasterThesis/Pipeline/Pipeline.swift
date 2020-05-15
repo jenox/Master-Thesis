@@ -128,11 +128,11 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
             if case .success(let graph) = result {
                 DispatchQueue.main.sync(execute: {
-                    if case .faceWeighted(let graph) = graph {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                            try! graph.ensureAllValidOperationsPass()
-                        })
-                    }
+//                    if case .faceWeighted(let graph) = graph {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+//                            try! graph.ensureAllValidOperationsPass()
+//                        })
+//                    }
 
                     self.previousGraph = self.graph
                     self.graph = graph
