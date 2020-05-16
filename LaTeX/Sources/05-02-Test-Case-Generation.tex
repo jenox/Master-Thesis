@@ -1,0 +1,93 @@
+\section{Test Case Generation}
+\label{sect:test-case-generation}
+
+We implement a randomized test case generation in two phases.
+First, we generate a filtered cluster graph $G^\mathcal{C}$.
+We accompany this cluster graph with a planar straight-line drawing $\Gamma^\mathcal{C}$ thereof so that such a drawing doesn't need to be calculated in retrospect as previously discussed in \cref{sect:transformation-to-dual}.
+Second, we generate a sequence of dynamic operations to be applied to said cluster graph.
+
+\paragraph{Filtered Cluster Graph Generation}
+
+Our test case generation can be configured using the following five parameters:
+%
+\begin{itemize}
+\item \textbf{Number of clusters:} The number of clusters $n \in \mathbb{N}, n \geq 3$ determines how many vertices the generated cluster graph $G^\mathcal{C}$ has.
+\item \textbf{Bounding box:} The axis-aligned bounding box $\mathcal{A} = \lbrack x_\text{min}, x_\text{max} \rbrack \times \lbrack y_\text{min}, y_\text{max} \rbrack$ determines the area in which the cluster graph's vertices can be placed.
+\item \textbf{Weight distribution:} The cluster weight distribution is given as a probability mass function $\pmf \colon \mathbb{N}_+ \to \mathbb{R}_+$ and determines how the cluster weights are distributed.
+\item \textbf{Nesting ratio:} The nesting ratio $\alpha \in \lbrack 0, 1 \rbrack$ determines what fraction of the $n$ vertices are nested into other triangular faces.
+\item \textbf{Nesting bias:} The nesting bias $\beta \in \lbrack 0, 1 )$ determines to what degree nesting vertices into already-nested triangular faces is preferred over nesting vertices into top-level triangles.
+\end{itemize}
+
+The idea behind generating filtered cluster graphs $G^\mathcal{C}$ is as follows:
+We start by placing a number of vertices randomly within the bounding box $\mathcal{A}$ and computing a triangulation of these vertices.
+We then place the remaining vertices into existing triangles based on the nesting ratio $\alpha$ and bias $\beta$, inserting additional edges to those triangles' endpoints in the process.
+The algorithm is illustrated in pseudocode in \cref{alg:randomized-filtered-cluster-graph-generation} on the next page.
+
+Obviously, the generated graph is plane and internally triangulated.
+Considering a point set's triangulation covers the same area as the set's convex hull, no vertex of the generated graph can appear on its outer face more than once and the graph is therefore also biconnected.
+
+Due to the independent sampling of vertex positions in \cref{alg:randomized-filtered-cluster-graph-generation}, vertices often clump together, especially for larger test instances.
+This isn't an ideal starting position for the transformation as previously discussed in \cref{sect:transformation-to-dual} because the polygonal dual contains at least twice the number of vertices, therefore clumping even more and severely restricting the involved vertices' movement.
+To address this issue, we apply a force-directed \quoted{shake} to the generated straight-line drawing $\Gamma^\mathcal{C}$ of the cluster graph while preserving its edge crossing and combinatorial properties.
+
+We do this by defining attractive forces between pairs of adjacent vertices and strong repulsive forces between non-adjacent vertices and between edges and non-incident vertices based on their distances, and again applying the rules of ImPrEd \cite{simonetto2011impred} to prevent the introduction of edge crossings.
+The repulsive forces are the same as the ones defined in \cref{sect:drawing-the-dual}, although we use a higher scaling constant of $1000$ here to really prevent the vertices from clumping together.
+For the attractive force between adjacent vertices, we apply the force $F_\text{att}(u,v) \coloneqq \log(d(u,v) / 100)$ to both endpoints of an edge, directed towards each other.
+Here, the value of $100$ represents our ideal edge length.
+This force is based on a logarithmic springs as suggested by Eades \cite{eades84heuristic}.
+
+\vfill
+
+\begin{algorithm}[H]
+	\caption{Randomized Filtered Cluster Graph Generation}
+	\label{alg:randomized-filtered-cluster-graph-generation}
+	\SetArgSty{textrm}
+	\vspace{5pt}
+	\KwData{bounding box $\mathcal A$, weight probability mass function $\pmf(\cdot)$, count $n$, nesting ratio $\alpha$, nesting bias $\beta$}
+	\KwResult{planar straight-line drawing $\Gamma^\mathcal{C}$ of a filtered cluster graph $G^\mathcal{C}$ on $n$ vertices}
+	\vspace{5pt}
+	create empty straight-line drawing $\Gamma^\mathcal{C}$\;
+	$k \gets \min(\floor{\alpha \cdot n}, n - 3)$ \tcp{number of nested vertices}
+	\BlankLine
+	\tcp{sample $n - k$ pairwise distinct points $p_i \in \mathcal{A}$}
+	\ForEach{index $i \in \lbrack 0, n-k ) \cap \mathbb{N}$}{
+		sample random point $p_i$ within $\mathcal{A}$ (uniformly)\;
+		sample random weight $w_i$ (according to $\pmf(\cdot)$)\;
+		add vertex $i$ with weight $w_i$ at position $p_i$ to $\Gamma^\mathcal{C}$\;
+	}
+	\BlankLine
+	\tcp{create edges according to Delaunay triangulation of points}
+	\ForEach{triangle $\triangle_j = (u,v,w) \in$ Delaunay triangulation of points $(p_i)_i$}{
+		\ForEach{$(a,b) \in \{ (u,v), (v,w), (w,u) \}$}{
+			insert edge between $a$ and $b$ in $\Gamma^\mathcal{C}$ unless edge already exists\;
+		}
+		register triangular face $\triangle_j$ with $\text{depth}(\triangle_i) = 1$\;
+	}
+	\BlankLine
+	\tcp{nest remaining $k$ vertices into existing triangles}
+	\ForEach{index $i \in \lbrack n - k, k ) \cap \mathbb{N}$}{
+		sample random triangle $\triangle_i$ (weighted by $(1 - \beta)^{-\text{depth}(\cdot)}$)\;
+		sample random point $p_i$ within $\triangle_i$ (uniformly)\;
+		sample random weight $w_i$ (according to $\pmf(\cdot)$)\;
+		add vertex $i$ with weight $w_i$ at position $p_i$ to $\Gamma^\mathcal{C}$\;
+		add edges between $i$ and all of $\triangle_i$'s endpoints to $\Gamma^\mathcal{C}$\;
+		unregister triangular face $\triangle_i$\;
+		register the three new triangular faces with depth $1 + \text{depth}(\triangle_i)$\;
+	}
+	\BlankLine
+	\Return $\Gamma^\mathcal{C}$\;
+\end{algorithm}
+
+
+
+\vspace{1cm}
+\paragraph{\todo{Dynamic Operation Generation}}
+
+from set of valid dynamic operations affecting topology (all but changing weights), pick random one
+
+do new clusters have their weights sampled according to $\pmf$?
+do we allow big clusters to just disappear?
+
+intersperse weight changes? do we sample those according to $\pmf$ or prefer close-by weights? do we apply multiple of those at once? in combination with other operation?
+
+idea: draw a $\Delta_w$ for each country, then apply random topology-altering operation.

@@ -20,7 +20,7 @@ We define the forces that exist in our particle system with two goals in mind:
 First, the faces of the graph (the regions of the map) to have an area ought to be close to proportional to some prescribed value.
 Second, we want the faces to be \emph{locally fat}.
 Our intuitive understanding of local fatness is that a region shouldn't have drawn-out, tight corridors.
-We formalize and discuss different quantifiable measures that aim to capture the local fatness of regions in \cref{chap:evaluation}.
+We formalize and discuss different quantifiable measures that aim to capture the local fatness of regions in \cref{chap:experimental-evaluation}.
 Note that both of these are soft requirements.
 Planarity of the resulting drawing, on the other hand, is a hard requirement that must be preserved at all costs.
 
@@ -184,11 +184,13 @@ Then, at each iteration, we subdivide edges that are longer than $2\bar{l}$ at t
 
 
 
-\paragraph{Preventing Edge Crossings}
+\paragraph{Preserving Edge Crossing and Combinatorial Properties}
 
-When iteratively displacing the map graph's vertices according to the forces defined above, we must pay close attention to not accidentally introduce edge crossings.
+When iteratively displacing the map graph's vertices according to the forces defined above, we must pay close attention to not accidentally introduce edge crossings or change the cyclic order of incident edges around the vertices.
 
 To do so, we adopt the rules of ImPrEd \cite{simonetto2011impred} that ensure no edge crossings are created.
 At each step of the algorithm, ImPrEd computes the maximum distance each of the vertices is allowed to move such that the drawing's edge crossing properties are guaranteed to be preserved.
 The maximum displacement per vertex is computed in eight general directions, zones of $45^\circ$ each.
 The actual displacement of the vertices is then clamped at the maximum distance the vertex can safely move in the desired direction.
+
+As a byproduct, these rules also ensure that the cyclic order of incident edges around the vertices stays the same, thereby preserving the map's combinatorial properties.

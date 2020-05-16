@@ -1,25 +1,8 @@
-\chapter{Evaluation}
-\label{chap:evaluation}
+\chapter{Experimental Evaluation}
+\label{chap:experimental-evaluation}
 
-\paragraph{quality metrics}
-\begin{itemize}
-	\item borrowed from cartograms: \begin{itemize}
-		\item statistical accuracy: easy to compute
-		\item topological accuracy: perfect
-		\item geographical accuracy: only relevant for dynamic pipeline, once we have an initial shape
-	\end{itemize}
-	\item local fatness \begin{itemize}
-		\item fraction of circumcircle
-		\item incircle / circumcircle
-		\item fraction or convex hull
-		\item entropy of angles
-		\item entropy of distances from centroid
-	\end{itemize}
-\end{itemize}
-
-\paragraph{test graph generation}
-\begin{itemize}
-	\item Parameters
-	\item Pseudocode
-	\item Force-directed "shake"
-\end{itemize}
+\input{Sources/05-01-Quality-Metrics}
+\clearpage
+\input{Sources/05-02-Test-Case-Generation}
+\clearpage
+\input{Sources/05-03-Evaluation}
