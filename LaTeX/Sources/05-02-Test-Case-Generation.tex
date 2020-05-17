@@ -81,13 +81,12 @@ This force is based on a logarithmic springs as suggested by Eades \cite{eades84
 
 
 \vspace{1cm}
-\paragraph{\todo{Dynamic Operation Generation}}
+\paragraph{Dynamic Operation Generation}
 
-from set of valid dynamic operations affecting topology (all but changing weights), pick random one
+We generate sequences of dynamic operations $\sigma_t$ to be incorporated into the cluster graph \clustergraph{t} and the resulting map \propmap{t} at different points in time $t$.
+In such a sequence of operations, we combine simple weight change operations with topology-altering operations, namely inserting or removing vertices or edges, or flipping internal edges in the cluster graph \clustergraph{t}.
 
-do new clusters have their weights sampled according to $\pmf$?
-do we allow big clusters to just disappear?
-
-intersperse weight changes? do we sample those according to $\pmf$ or prefer close-by weights? do we apply multiple of those at once? in combination with other operation?
-
-idea: draw a $\Delta_w$ for each country, then apply random topology-altering operation.
+For each point in time $t$ at which we want to incorporate dynamic operations, we first sample new target weights $w_i^\prime$ for all clusters $i$ according to $\pmf(\cdot)$.
+To prevent too drastic weight changes that would likely not appear in natural data sets, we set the clusters' new weights to a weighted average of their current weight and the newly sampled target weight as $w_{i,t+1} \coloneqq \frac34 w_{i,t} + \frac14 w_i^\prime$.
+Finally, we compute the set of valid operations affecting topology, pick a random one uniformly, and apply it alongside the weight changes in $\sigma_t$.
+Each $\sigma_t$ therefore consists of $\lvert V(\clustergraph{t}) \rvert + 1$ dynamic operations.

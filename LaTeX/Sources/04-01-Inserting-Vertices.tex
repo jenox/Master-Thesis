@@ -8,7 +8,7 @@ We distinguish between adding a new vertex in an internal face and adding a new 
 
 \paragraph{Inserting Vertices Inside}
 
-All internal faces of the filtered cluster graph \clustergraph{i} are triangles.
+All internal faces of the filtered cluster graph \clustergraph{t} are triangles.
 If we add a vertex in one of the triangular faces, we must also add edges to the three vertices bounding the face without introducing edge crossings in order to preserve the graph's internal triangulatedness.
 A valid vertex insertion into an internal face is illustrated in \cref{fig:insert-vertex-example-inside}.
 
@@ -27,7 +27,7 @@ A valid vertex insertion into an internal face is illustrated in \cref{fig:inser
 
 Let $u$, $v$, and $w$ be the vertices bounding an internal face of the cluster graph in counterclockwise order and let $x$ be the new vertex we want to add inside said face.
 
-Let $p_{uvw}$ be the vertex of the map \initmap{i} that is common to faces $u$, $v$, and $w$.
+Let $p_{uvw}$ be the vertex of the map \initmap{t} that is common to faces $u$, $v$, and $w$.
 Also let $p_{uv}$, $p_{vw}$, and $p_{wu}$ denote the subdivision vertices on the boundary of these faces that are incident to $p_{uwv}$, as illustrated in \cref{subfig:insert-vertex-illustration-1}.
 If one of the boundaries consist of only one edge, we subdivide the edge at its midpoint first.
 
@@ -90,9 +90,9 @@ Let $\{u,v\}$ be an edge on the outer face, then we support adding a new vertex 
 
 This operation is really just a special case of the vertex insertion discussed above: in the polygonal dual, instead of creating a new face between three internal faces, we need to create a new face between two internal faces and the implicit outer face.
 
-Recall that the polygonal dual is a subdivision of the augmented dual $(\clustergraph{})^+$ of the cluster graph \clustergraph{}.
+Recall that the polygonal dual is a subdivision of the augmented dual $(\clustergraph{t})^+$ of the cluster graph \clustergraph{t}.
 In the construction of the augmented dual from \cref{def:augmented-dual}, we insert a helper vertex incident to all vertices on the outer face of the primal graph and then form the regular dual.
-That is why the polygonal dual has an internal face for each of the vertices in $(\clustergraph{})^+$.
+That is why the polygonal dual has an internal face for each of the vertices in $(\clustergraph{t})^+$.
 But the polygonal dual also has an implicit outer face \emdash{} an ocean in the context of maps \emdash{} that corresponds to the helper vertex inserted during the construction of the augmented dual, as illustrated in \cref{fig:insert-vertex-duality}.
 
 \begin{figure}[H]
@@ -109,7 +109,7 @@ But the polygonal dual also has an implicit outer face \emdash{} an ocean in the
 \end{figure}
 
 Also recall that the cluster graph with this helper vertex is a triangulated graph.
-Two arbitrary adjacent vertices on the outer face of \clustergraph{} form a triangular face with the helper vertex $v^+$.
+Two arbitrary adjacent vertices on the outer face of \clustergraph{t} form a triangular face with the helper vertex $v^+$.
 Inserting a new vertex $x$ in the outer face as described above is therefore equivalent to inserting $x$ in the triangular face $u$ and $v$ form with the helper vertex $v^+$, or, in the dual, inserting a face at the point where the faces $u$ and $v$ meet the implicit outer face.
 
 The construction outlined above translates 1-to-1 to inserting a vertex in the outer face, except one of the three neighboring faces is the implicit outer face.
