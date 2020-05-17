@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200430174333" modified="D:20200514162644"/>
+<info created="D:20200430174333" modified="D:20200517154424"/>
 <preamble>\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -391,11 +391,11 @@ h
 <text matrix="1 0 0 1 208 72" transformations="translations" pos="128 336" stroke="black" type="minipage" width="80" height="11.924" depth="6.95" valign="center" style="center">Incremental Transformation</text>
 <text matrix="1 0 0 1 272 -96" transformations="translations" pos="256 416" stroke="black" type="minipage" width="64" height="6.865" depth="1.88" valign="center" style="center">Drawing</text>
 <text matrix="1 0 0 1 122 116" transformations="translations" pos="304 208" stroke="black" type="label" width="32.946" height="6.863" depth="2.47" halign="center" valign="baseline">map $\Gamma_0^*$</text>
-<text matrix="1 0 0 1 92 172" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.59" halign="center" valign="baseline">map $\Gamma_i^*$</text>
-<text matrix="1 0 0 1 144 236" transformations="translations" pos="304 176" stroke="black" type="label" width="41.77" height="6.864" depth="3.42" halign="center" valign="baseline">map $\Gamma_{i+1}^*$</text>
-<text matrix="1 0 0 1 280 148" transformations="translations" pos="368 176" stroke="black" type="label" width="100.398" height="6.922" depth="2.59" halign="center" valign="baseline">$\varepsilon$-proportional map $\Gamma_i^\propto$</text>
-<text matrix="1 0 0 1 196 132" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.59" halign="center" valign="baseline">map $\Gamma_i^*$</text>
-<text matrix="1 0 0 1 -104 144" transformations="translations" pos="320 288" stroke="black" type="minipage" width="112" height="19.602" depth="14.65" valign="baseline" style="center">sequence of operations $\sigma_{i}$ turning cluster graph $G_i^\mathcal{C}$ into cluster graph $G_{i+1}^\mathcal{C}$</text>
+<text matrix="1 0 0 1 92 172" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.46" halign="center" valign="baseline">map $\Gamma_t^*$</text>
+<text matrix="1 0 0 1 144 236" transformations="translations" pos="304 176" stroke="black" type="label" width="41.961" height="6.863" depth="3.3" halign="center" valign="baseline">map $\Gamma_{t+1}^*$</text>
+<text matrix="1 0 0 1 280 148" transformations="translations" pos="368 176" stroke="black" type="label" width="100.398" height="6.921" depth="2.46" halign="center" valign="baseline">$\varepsilon$-proportional map $\Gamma_t^\propto$</text>
+<text matrix="1 0 0 1 196 132" transformations="translations" pos="304 192" stroke="black" type="label" width="32.946" height="6.863" depth="2.46" halign="center" valign="baseline">map $\Gamma_t^*$</text>
+<text matrix="1 0 0 1 -104 144" transformations="translations" pos="320 288" stroke="black" type="minipage" width="112" height="19.542" depth="14.59" valign="baseline" style="center">sequence of operations $\sigma_{t}$ turning cluster graph $G_t^\mathcal{C}$ into cluster graph $G_{t+1}^\mathcal{C}$</text>
 <path matrix="1 0 0 1 -60 124" stroke="black">
 4 0 0 4 512 236 e
 512 240 m
@@ -461,11 +461,11 @@ h
 <text matrix="1 0 0 1 32 -24" transformations="translations" pos="96 432" stroke="black" type="minipage" width="80" height="12.891" depth="7.92" valign="center" style="center">Incremental Clustering</text>
 <text matrix="1 0 0 1 32 -80" transformations="translations" pos="96 400" stroke="black" type="minipage" width="80" height="6.926" depth="1.93" valign="center" style="center">Clustering</text>
 <text matrix="1 0 0 1 -16 116" transformations="translations" pos="96 208" stroke="black" type="label" width="67.125" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G_0$</text>
-<text matrix="1 0 0 1 -16 228" transformations="translations" pos="96 192" stroke="black" type="label" width="65.972" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G_i$</text>
-<text matrix="1 0 0 1 -16 214" transformations="translations" pos="96 176" stroke="black" type="label" width="76.06" height="6.923" depth="2.32" halign="center" valign="baseline">input graph $G_{i+1}$</text>
+<text matrix="1 0 0 1 -16 228" transformations="translations" pos="96 192" stroke="black" type="label" width="66.163" height="6.926" depth="1.93" halign="center" valign="baseline">input graph $G_t$</text>
+<text matrix="1 0 0 1 -16 214" transformations="translations" pos="96 176" stroke="black" type="label" width="76.25" height="6.923" depth="2.32" halign="center" valign="baseline">input graph $G_{t+1}$</text>
 <text matrix="1 0 0 1 64 148" transformations="translations" pos="192 176" stroke="black" type="label" width="73.445" height="8.384" depth="2.47" halign="center" valign="baseline">cluster graph $G_0^\mathcal{C}$</text>
-<text matrix="1 0 0 1 32 172" transformations="translations" pos="192 192" stroke="black" type="label" width="73.445" height="8.384" depth="2.59" halign="center" valign="baseline">cluster graph $G_i^\mathcal{C}$</text>
-<text matrix="1 0 0 1 64 182" transformations="translations" pos="192 208" stroke="black" type="label" width="81.677" height="8.384" depth="3.42" halign="center" valign="baseline">cluster graph $G_{i+1}^\mathcal{C}$</text>
+<text matrix="1 0 0 1 32 172" transformations="translations" pos="192 192" stroke="black" type="label" width="73.445" height="8.384" depth="2.46" halign="center" valign="baseline">cluster graph $G_t^\mathcal{C}$</text>
+<text matrix="1 0 0 1 64 182" transformations="translations" pos="192 208" stroke="black" type="label" width="81.868" height="8.384" depth="3.3" halign="center" valign="baseline">cluster graph $G_{t+1}^\mathcal{C}$</text>
 <use matrix="1 0 0 1 0 160" name="mark/disk(sx)" pos="304 160" size="small" stroke="black"/>
 <path matrix="1 0 0 1 -208 124" stroke="black">
 4 0 0 4 512 236 e
