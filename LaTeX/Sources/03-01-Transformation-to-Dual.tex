@@ -52,11 +52,11 @@ The following figure illustrates an example:
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-2.pdf}\label{subfig:transformation-algorithm-2}}
 	\quad
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-3.pdf}\label{subfig:transformation-algorithm-3}}
-	\caption{A filtered cluster graph \clustergraph{} (a), the helper graph $G_+^\mathcal{C}$ (b), and the polygonal dual \initmap{} of \clustergraph{} as produced by \cref{alg:transformation-to-dual} (c).}
+	\caption{A filtered cluster graph \clustergraph{} (a), the helper graph \clustergraph{+} (b), and the polygonal dual \initmap{} of \clustergraph{} as produced by \cref{alg:transformation-to-dual} (c).}
 	\label{fig:transformation-algorithm}
 \end{figure}
 
-Before feeding the filtered cluster graph \clustergraph{} into the algorithm, we construct a planar straight-line drawing $\Gamma^\mathcal{C}$ of \clustergraph{} with the same planar embedding.
+Before feeding the filtered cluster graph \clustergraph{} into the algorithm, we construct a planar straight-line drawing \clusterdrawing{} of \clustergraph{} with the same planar embedding.
 According to Fáry's theorem \cite{fary1948straight} \cite{wagner1936bemerkungen} \cite{stein1951convex}, such a drawing exists for every plane graph.
 There are numerous popular algorithms to construct such a drawing, \eg{} Tutte's method \cite{tutte1963draw}, the shift method \cite{fraysseix1990draw}, or the Schnyder realizer method \cite{schnyder1990embedding}.
 
@@ -72,7 +72,7 @@ There are numerous popular algorithms to construct such a drawing, \eg{} Tutte's
   \SetKwFunction{Appending}{appending}
   \SetArgSty{textrm}
   \vspace{5pt}
-  \KwData{filtered cluster graph \clustergraph{} and a planar straight-line drawing $\Gamma^\mathcal{C}$ thereof}
+  \KwData{filtered cluster graph \clustergraph{} and a planar straight-line drawing \clusterdrawing{} thereof}
   \KwResult{polygonal dual \initmap{} of \clustergraph{}, in the form of a 1-subdivision of the augmented dual of \clustergraph{} and planar straight-line drawing thereof}
   \vspace{10pt}
   create empty contact representation \initmap{}\;
@@ -140,15 +140,15 @@ First, we show that the algorithm does indeed construct a 1-subdivision of the a
 Second, we show that the constructed drawing thereof is planar, making it a contact representation of \clustergraph{} as previously explained and illustrated in \cref{fig:transformation-augmented-dual}.
 
 Recall that $(\clustergraph{})^+$ is a contact representation of \clustergraph{}.
-We can construct $(\clustergraph{})^+$ via a helper graph $G_+^\mathcal{C}$ that we obtain by inserting a helper vertex $v_+$ in the outer face of \clustergraph{} and connecting it to all vertices on the outer face of \clustergraph{}, in order, without introducing edge crossings.
-The contact representation $(\clustergraph{})^+$ then is the regular dual of $G_+^\mathcal{C}$, \ie{} $(\clustergraph{})^+ = (G_+^\mathcal{C})^*$.
-By adding the helper vertex $V_+$ and helper edges $\{v,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of $G_+^\mathcal{C}$.
+We can construct $(\clustergraph{})^+$ via a helper graph \clustergraph{+} that we obtain by inserting a helper vertex $v_+$ in the outer face of \clustergraph{} and connecting it to all vertices on the outer face of \clustergraph{}, in order, without introducing edge crossings.
+The contact representation $(\clustergraph{})^+$ then is the regular dual of \clustergraph{+}, \ie{} $(\clustergraph{})^+ = (\clustergraph{+})^*$.
+By adding the helper vertex $V_+$ and helper edges $\{v,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of \clustergraph{+}.
 
 The dual of a plane graph has vertices in each of the primal graph's faces.
-We place these vertices in the original internal faces in \cref{line:transformation-innerfacevertex} and in \emdash{} or rather on \emdash{} the new triangular faces in $G_+^\mathcal{C}$ in \cref{line:transformation-outeredgevertex}.
+We place these vertices in the original internal faces in \cref{line:transformation-innerfacevertex} and in \emdash{} or rather on \emdash{} the new triangular faces in \clustergraph{+} in \cref{line:transformation-outeredgevertex}.
 Vertices in the dual are adjacent if their respective faces are adjacent in the primal.
-Thus for every edge separating two faces in the primal $G_+^\mathcal{C}$, we require a dual edge in $(G_+^\mathcal{C})^*$.
-We add these edges in \crefrange{line:transformation-edgetype1-start}{line:transformation-edgetype1-end} (for adjacent internal faces in \clustergraph{}), in \crefrange{line:transformation-edgetype2-start}{line:transformation-edgetype2-end} (for edges separating an internal face in \clustergraph{} from a new face in $G_+^\mathcal{C}$), and in \crefrange{line:transformation-edgetype3-start}{line:transformation-edgetype3-end} (for helper edges $\{v_+,\cdot\}$ separating two new faces in $G_+^\mathcal{C}$).
+Thus for every edge separating two faces in the primal \clustergraph{+}, we require a dual edge in $(\clustergraph{+})^*$.
+We add these edges in \crefrange{line:transformation-edgetype1-start}{line:transformation-edgetype1-end} (for adjacent internal faces in \clustergraph{}), in \crefrange{line:transformation-edgetype2-start}{line:transformation-edgetype2-end} (for edges separating an internal face in \clustergraph{} from a new face in \clustergraph{+}), and in \crefrange{line:transformation-edgetype3-start}{line:transformation-edgetype3-end} (for helper edges $\{v_+,\cdot\}$ separating two new faces in \clustergraph{+}).
 Because we place all bends of the dual edges on the respective primal edge, the cyclic order of the edges incident to each vertex is equivalent to the cyclic order of the edges bounding the respective faces in the primal.
 
 \begin{figure}[H]
@@ -157,17 +157,17 @@ Because we place all bends of the dual edges on the respective primal edge, the 
 	\subfigure[]{\includegraphics[height=32mm]{Resources/Transformation-DualEdgeConstruction-2.pdf}\label{subfig:transformation-dual-edge-construction-2}}
 	\quad
 	\subfigure[]{\includegraphics[height=32mm]{Resources/Transformation-DualEdgeConstruction-3.pdf}\label{subfig:transformation-dual-edge-construction-3}}
-	\caption{Construction of the dual edges as per \cref{alg:transformation-to-dual} between two internal faces in \clustergraph{} (a), between an internal face of \clustergraph{} and a new face in $G_+^\mathcal{C}$ (b), and between two new faces in $G_+^\mathcal{C}$ (c). The dotted lines are edges in \clustergraph{}.}
+	\caption{Construction of the dual edges as per \cref{alg:transformation-to-dual} between two internal faces in \clustergraph{} (a), between an internal face of \clustergraph{} and a new face in \clustergraph{+} (b), and between two new faces in \clustergraph{+} (c). The dotted lines are edges in \clustergraph{}.}
 	\label{fig:transformation-dual-edge-construction}
 \end{figure}
 
 It is left to show that the placement of vertices and edges produces a crossing-free drawing.
-To do so, we consider the edges from non-subdivision vertices in $(G_+^\mathcal{C})^*$ to their neighbors.
-Recall that those vertices correspond to faces in $G_+^\mathcal{C}$.
+To do so, we consider the edges from non-subdivision vertices in $(\clustergraph{+})^*$ to their neighbors.
+Recall that those vertices correspond to faces in \clustergraph{+}.
 Following the construction illustrated in \crefrange{subfig:transformation-dual-edge-construction-1}{subfig:transformation-dual-edge-construction-2}, the three incident edges to a vertex corresponding to an internal face of \clustergraph{} lie completely inside said face.
 Because these edges go straight towards the midpoint of the incident edges, they don't self-intersect.
 
-The vertices corresponding to new faces in $G_+^\mathcal{C}$ lie on the midpoint of the bounding edge that already exists in \clustergraph{}.
+The vertices corresponding to new faces in \clustergraph{+} lie on the midpoint of the bounding edge that already exists in \clustergraph{}.
 The dual edges connecting two of those vertices are constructed such that they partition the boundary of the outer face of \clustergraph{} (see \cref{subfig:transformation-dual-edge-construction-3}) and therefore don't intersect any of the edges discussed so far.
 Their edge to the vertex corresponding to the adjacent internal face goes straight towards said vertex, meeting it halfway, as illustrated in \cref{subfig:transformation-dual-edge-construction-2}.
 Because some $v_f$'s incident edges all go straight towards its bounding edges as outlined above, this kind of edge does not introduce any edge crossings either.
@@ -175,7 +175,7 @@ The constructed graph and drawing is therefore a 1-subdivision of the augmented 
 
 Once the algorithm has constructed \initmap{}, we compute an explicit representation of its internal faces and the corresponding vertices in the primal.
 We do so for the augmented dual $(\clustergraph{})^+$ first (loop in \cref{line:transformation-enumerateedges}) and then insert the subdivision vertices (loop in \cref{line:transformation-insertsubdivisions}).
-The face in $(\clustergraph{})^+$ that corresponds to a vertex $v$ of \clustergraph{} is bounded by vertices corresponding to internal faces of \clustergraph{} that contain $v$, plus the vertices corresponding to the additional triangular faces in $G_+^\mathcal{C}$ in case $v$ lies on outer face of \clustergraph{}.
+The face in $(\clustergraph{})^+$ that corresponds to a vertex $v$ of \clustergraph{} is bounded by vertices corresponding to internal faces of \clustergraph{} that contain $v$, plus the vertices corresponding to the additional triangular faces in \clustergraph{+} in case $v$ lies on outer face of \clustergraph{}.
 Iterating over adjacent pairs $(e_1, e_2)$ of incident edges in counterclockwise order correctly detects the internal faces between $e_1$ and $e_2$ and the case where $e_1$ and $e_2$ wrap around on the outside, in order.
 The orientation check in \cref{line:transformation-checktriangle} is required such that the wraparound case isn't misclassified as an internal face.
 This would be the case for internal faces of \clustergraph{} with two edges on the outer face, as is the case for vertex $v \coloneqq d$ and edges $e_1 \coloneqq \{d,b\}, e_2 \coloneqq \{d,c\}$ in \cref{fig:transformation-algorithm}.
