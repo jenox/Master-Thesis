@@ -1,19 +1,53 @@
 \section{Quality Metrics}
 \label{sect:quality-metrics}
 
-%Quantitative Measures for Cartogram Generation Techniques?
+We start by looking at common quality metrics of cartograms, which are closely related to the problem we are trying to solve in this thesis as previously discussed in \cref{sect:related-work}, and discussing how they translate to the visualizations our framework creates.
+We then discuss different ideas to formalize and quantify the previously mentioned notion of organicness and local fatness of the regions.
+
+
+
+\paragraph{Quality Metrics of Cartograms}
+
+Three well-established quantifiable measures are commonly used to assess a cartograms's quality \cite{alam2015quantitative} \cite{nusrat2018evaluating}:
+
+% TODO: actually define cartographic error first! probably in preliminaries.
 
 \begin{itemize}
-	\item borrowed from cartograms: \begin{itemize}
-		\item statistical accuracy: easy to compute
-		\item topological accuracy: perfect
-		\item geographical accuracy: only relevant for dynamic pipeline, once we have an initial shape
-	\end{itemize}
-	\item local fatness \begin{itemize}
-		\item fraction of circumcircle
-		\item incircle / circumcircle
-		\item fraction or convex hull
-		\item entropy of angles
-		\item entropy of distances from centroid
-	\end{itemize}
+\item \textbf{Statistical accuracy:}
+The statistical accuracy of a cartogram describes how closely the areas of the modified geographic regions match the variable of interest.
+Recall that the cartographic error of a region $v$ is defined as $\frac{\abs{A(v)-w(v)}}{max(A(v),w(v))}$ where $A(v)$ is its actual area and $w(v)$ is its desired area.
+The maximum and average cartographic error over all regions in the cartogram are commonly used to quantify its statistical accuracy.
+We borrow this quality metric from cartograms and use it for our visualizations in the form of $\varepsilon$-area-proportionality.
+
+\item \textbf{Topological accuracy:}
+The topological accuracy describes how well the original adjacencies between the geographic regions are preserved in the cartogram.
+Considering our framework computes a polygonal contact representation of the filtered cluster graph, those and only those regions whose corresponding vertices are adjacent in the cluster graph are adjacent in the contact representation.
+In terms of topological accuracy, we therefore produce perfect drawings.
+
+\item \textbf{Geographic accuracy:}
+The geographic accuracy of a cartogram describes to what degree the shapes and positions of the distorted regions resemble their original counterpart on the real geographic map.
+In our case, however, there is no real geographic map that our visualization is based upon:
+The maps we generate are entirely artificial and there is no geographic reference map.
+
+But why is this resemblance a meaningful quality metric?
+Geographic accuracy captures the preservation of the viewer's mental map between the real geographic map and the distorted map in the cartogram.
+For our framework, this is only relevant once we start incorporating dynamic updates into the artificial map.
+Our dynamic pipeline naturally preserves the viewer's mental map by only allowing small, incremental changes to be incorporated and redrawing the artificial map using a force-directed algorithm.
+This makes it easy for the viewer to track how the map changes between versions of the underlying cluster graph at different points in time.
 \end{itemize}
+
+
+
+\paragraph{Organicness and Local Fatness}
+
+\todo{fraction or convex hull \cite{brinkhoff1995measuring}}
+
+\todo{fraction of circumcircle}
+
+\todo{incircle / circumcircle}
+
+\todo{entropy of angles \cite{chen2005estimating}}
+
+\todo{entropy of distances from centroid \cite{chen2005estimating}}
+
+which of these captures the local fatness and organicness best? artificial examples. pick 2 to proceed with in \cref{sect:evaluation}.

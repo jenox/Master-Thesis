@@ -31,7 +31,7 @@ In this thesis we therefore cluster the graph and extract important features fir
 \paragraph{Cartograms}
 
 Cartograms have been studied for more than 50 years \cite{tobler2004thirty} and there are lots of fundamentally different approaches to generate different kinds of cartograms \cite{nusrat2016state}.
-Their quality is generally assessed by a combination of statistical accuracy, topological accuracy, and geographic accuracy \cite{alam2015quantitative}: \emph{Statistical accuracy} describes how closely the areas of the modified geographic regions match the variable of interest, \emph{topological accuracy} how well the original region adjacencies are preserved, and \emph{geographic accuracy} how the shapes and positions of the distorted regions resemble their original.
+Their quality is generally assessed by a combination of statistical accuracy, topological accuracy, and geographic accuracy \cite{alam2015quantitative}: \emph{Statistical accuracy} describes how closely the areas of the modified geographic regions match the variable of interest, \emph{topological accuracy} to what degree the original region adjacencies are preserved, and \emph{geographic accuracy} how well the shapes and positions of the distorted regions resemble their original.
 Geographic accuracy is closely related to the preservation of the mental map as it captures a viewer's ability to intuitively recognize the regions and therefore detect the trends in the underlying data.
 Although traditionally used for other applications, cartograms are closely related to our problem statement and the aforementioned quality metrics translate directly to our use case.
 While we don't have a reference map for the initial area-proportional map like cartograms do, we can use that initial map as a reference map that we can base geographical accuracy on when incorporating dynamic updates of the input graph.
@@ -46,7 +46,7 @@ However, due to the rasterization and heavy precomputation of pathlines, this al
 
 Kämper \etal{} \cite{kamper2013circular} start with a polygonal map and transform every edge into a circular arc that can bend to realize the desired areas of individual regions.
 They use a max-flow-based formulation on the dual graph of the map to find out how the area should be distributed among the regions and solve for the circular arc radii.
-However, the degree to which the edges can bend is heavily restricted since the circular arcs may not touch or cross, making it difficult for circular arc cartograms to achieve good statistical accuracies.
+However, the degree to which the edges can bend is heavily restricted since the circular arcs may not touch or cross, making it difficult for circular arc cartograms to achieve good statistical accuracy.
 The resulting regions' shapes also appear very artificial, unlike the ones you would find on a real geographic map.
 
 Alam \etal{} \cite{alam2013computing} show how air-pressure-based models for the general floorplan problem such as \cite{izumi1998air} and \cite{felsner2013exploiting} can be applied to generating rectilinear cartograms.
