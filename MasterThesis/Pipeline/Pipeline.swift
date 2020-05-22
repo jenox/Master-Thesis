@@ -156,10 +156,10 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         })
     }
 
-    func clear() {
+    func clear(completion: CompletionHandler? = nil) {
         self.scheduleReplacementOperation(named: "clear", {
             return nil
-        })
+        }, completion: completion)
     }
 
     func load(_ graph: VertexWeightedGraph) {
@@ -192,7 +192,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func insertRandomVertexInside() {
         self.scheduleMutationOperation(named: "insert vertex inside", { graph in
-            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let possibleNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             let operations = graph.possibleInsertFaceInsideOperations(name: name, weight: weight)
@@ -205,7 +205,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func insertRandomVertexOutside() {
         self.scheduleMutationOperation(named: "insert vertex outside", { graph in
-            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let possibleNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             let operations = graph.possibleInsertFaceOutsideOperations(name: name, weight: weight)
@@ -268,9 +268,12 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 }
 
 extension Pipeline {
-    func runThroughEntirePipeline() {
+    func runThroughEntirePipeline(count: Int) {
+        guard count >= 1 else { return }
+
         let uuid = UUID().uuidString
 
+        self.clear()
         self.generate()
         self.saveClusterGraph(as: "\(uuid)-cluster-0.json")
         for _ in 0..<100 { self.stepOnce() }
@@ -284,6 +287,9 @@ extension Pipeline {
             for _ in 0..<100 { self.stepOnce() }
             self.savePolygonalDual(as: "\(uuid)-map-\(i).json")
         }
+        self.clear(completion: { [weak self] _ in
+            self?.runThroughEntirePipeline(count: count - 1)
+        })
     }
 
     func evaluateQualityMetrics() {
@@ -337,7 +343,7 @@ extension Pipeline {
                 graph.setWeight(of: face, to: weight)
             }
 
-            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let possibleNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ".map(ClusterName.init)
             let name = possibleNames.first(where: { !graph.faces.contains($0) })!
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             let operations = graph.possibleDynamicOperations(name: name, weight: weight)

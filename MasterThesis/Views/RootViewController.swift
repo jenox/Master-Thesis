@@ -12,7 +12,7 @@ typealias PrimaryPipeline = Pipeline<DelaunayGraphGenerator, NaiveTransformer, C
 
 class RootViewController: UIHostingController<AnyView> {
     let pipeline: PrimaryPipeline = .init(
-        generator: DelaunayGraphGenerator(countries: OrderedSet(Array("ABCDEFGHIJKLMNOPQ").map(ClusterName.init)), nestingRatio: 0.3, nestingBias: 0.5),
+        generator: DelaunayGraphGenerator(numberOfCountries: 10, nestingRatio: 0, nestingBias: 0),
         transformer: NaiveTransformer(),
         forceComputer: ConcreteForceComputer(),
         forceApplicator: PrEdForceApplicator(),

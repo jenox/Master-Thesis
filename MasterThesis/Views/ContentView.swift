@@ -26,7 +26,7 @@ struct ContentView: View {
         return VStack(alignment: .leading, content: {
             Button(action: self.pipeline.undo, label: { Text("Undo") }).disabled(self.pipeline.previousGraph == nil)
             Toggle(isOn: binding, label: { Text("Step") })
-            Button(action: self.pipeline.clear, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
+            Button(action: { self.pipeline.clear() }, label: { Text("Clear") }).disabled(self.pipeline.graph.isEmpty)
             Button(action: self.loadSmall, label: { Text("Load Small") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.loadLarge, label: { Text("Load Large") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.pipeline.generate, label: { Text("Generate") }).disabled(!self.pipeline.graph.isEmpty)
@@ -63,7 +63,7 @@ struct ContentView: View {
 
     private var evaluationView: some View {
         return Group(content: {
-            Button(action: self.pipeline.runThroughEntirePipeline, label: { Text("Run Test") })
+            Button(action: { self.pipeline.runThroughEntirePipeline(count: 50) }, label: { Text("Run Test") })
             Button(action: self.pipeline.evaluateQualityMetrics, label: { Text("Evaluate Data") })
         })
     }

@@ -11,26 +11,36 @@ import Geometry
 import Delaunay
 
 struct DelaunayGraphGenerator: GraphGenerator {
-    var bounds: CGRect = .init(x: -256, y: -256, width: 512, height: 512)
-    var countries: OrderedSet<ClusterName>
-    var nestingRatio: Double
-    var nestingBias: Double = 0.5
-    var weights: ClosedRange<ClusterWeight> = 1...50
+    private static let countries: OrderedSet<ClusterName> = OrderedSet(Array("ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ").map(ClusterName.init))
+
+    init(numberOfCountries: Int, nestingRatio: Double, nestingBias: Double) {
+        self.numberOfCountries = numberOfCountries
+        self.bounds = CGRect(x: -256, y: -256, width: 512, height: 512)
+        self.nestingRatio = nestingRatio
+        self.nestingBias = nestingBias
+        self.weights = 1...50
+    }
+
+    let numberOfCountries: Int
+    let bounds: CGRect
+    let nestingRatio: Double
+    let nestingBias: Double
+    let weights: ClosedRange<ClusterWeight>
 
     func generateRandomWeight<T>(using generator: inout T) -> ClusterWeight where T : RandomNumberGenerator {
         return .init(rawValue: .random(in: self.weights.lowerBound.rawValue...self.weights.upperBound.rawValue, using: &generator))
     }
 
     func generateRandomGraph<T>(using generator: inout T) throws -> VertexWeightedGraph where T: RandomNumberGenerator {
-        precondition(self.countries.count >= 3)
+        precondition(self.numberOfCountries >= 3)
 
         var graph = VertexWeightedGraph()
         var vertices: [HashablePoint: ClusterName] = [:]
 
-        let numberOfTopLevelCountries = max(3, Int(round((1 - self.nestingRatio) * Double(self.countries.count))))
+        let numberOfTopLevelCountries = max(3, Int(round((1 - self.nestingRatio) * Double(self.numberOfCountries))))
 
         // Create n - k top level points
-        for country in self.countries.prefix(numberOfTopLevelCountries) {
+        for country in Self.countries.prefix(numberOfTopLevelCountries) {
             let weight = self.generateRandomWeight(using: &generator)
             let position = self.randomPoint(existing: vertices.keys.map(\.point), using: &generator)
 
@@ -56,7 +66,7 @@ struct DelaunayGraphGenerator: GraphGenerator {
 
         // Nest remaining k vertices into existing triangles
         var trianglesByDepth: [Int: [Triangle]] = [0: triangles]
-        for country in self.countries.dropFirst(numberOfTopLevelCountries) {
+        for country in Self.countries.prefix(self.numberOfCountries).dropFirst(numberOfTopLevelCountries) {
             let depths = trianglesByDepth.compactMap({ $0.value.isEmpty ? nil : $0.key })
             let depth = depths.randomElement(weightedBy: { 1 / pow(self.nestingBias, Double($0)) }, using: &generator)!
             let index = trianglesByDepth[depth]!.indices.randomElement(using: &generator)!
