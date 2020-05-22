@@ -13,9 +13,15 @@ import Geometry
 struct DistanceFromConvexHull: QualityEvaluator {
     func quality(of face: PolygonalDual.FaceID, in graph: PolygonalDual) throws -> QualityValue {
         let polygon = graph.polygon(for: face)
-        let hull = Polygon(points: calculateConvexHull(fromPoints: polygon.points))
+        let hull = polygon.convexHull
 
         return .percentage(Double(polygon.area / hull.area))
+    }
+}
+
+extension Polygon {
+    var convexHull: Polygon {
+        return Polygon(points: calculateConvexHull(fromPoints: self.points))
     }
 }
 
@@ -28,13 +34,15 @@ private func calculateConvexHull(fromPoints points: [CGPoint]) -> [CGPoint] {
     let index = points.firstIndexOfMinimum(by: \.x)!
     var stack: [CGPoint] = []
 
-    for p in points.rotated(shiftingToStart: index) {
+    for p in points.rotated(shiftingToStart: index) + [points[index]] {
         while stack.count >= 2, calculateOrientation(stack[stack.count - 2], stack[stack.count - 1], p) == .clockwise {
             stack.removeLast()
         }
 
         stack.append(p)
     }
+
+    stack.removeLast()
 
     return stack
 }
