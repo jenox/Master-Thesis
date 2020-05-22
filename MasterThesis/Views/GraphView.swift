@@ -128,6 +128,20 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
             context.setStrokeColor(UIColor.red.cgColor)
             context.strokePath()
         }
+
+        for x in stride(from: -500, through: 500, by: 100) {
+            context.move(to: CGPoint(x: x, y: -500))
+            context.addLine(to: CGPoint(x: x, y: 500))
+            context.setStrokeColor(UIColor.black.cgColor)
+            context.strokePath()
+        }
+
+        for y in stride(from: -500, through: 500, by: 100) {
+            context.move(to: CGPoint(x: -500, y: y))
+            context.addLine(to: CGPoint(x: 500, y: y))
+            context.setStrokeColor(UIColor.black.cgColor)
+            context.strokePath()
+        }
     }
 }
 

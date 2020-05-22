@@ -15,9 +15,9 @@ struct ContentView: View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
         return SwiftUIGraphView(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
-            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
+//            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
-            .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
+//            .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
     }
 
     private var controlView: some View {

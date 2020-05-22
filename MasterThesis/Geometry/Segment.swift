@@ -10,7 +10,18 @@ import CoreGraphics
 import Geometry
 
 extension Segment {
+    private var boundingBox: CGRect {
+        return CGRect(
+            x: fmin(self.start.x, self.end.x),
+            y: fmin(self.start.y, self.end.y),
+            width: abs(self.start.x - self.end.x),
+            height: abs(self.start.y - self.end.y)
+        )
+    }
+
     func intersects(_ other: Segment) -> Bool {
+        guard self.boundingBox.intersects(other.boundingBox) else { return false }
+
         return check_inter(a: self.start, b: self.end, c: other.start, d: other.end)
     }
 

@@ -28,10 +28,6 @@ class CanvasView: UIView {
 
         self.addSubview(self.dummy)
         self.configureTransformGesture()
-
-        defer {
-            self.committedUserTransform = CGAffineTransform(scaleX: 2.5, y: 2.5)
-        }
     }
 
     required init?(coder: NSCoder) {

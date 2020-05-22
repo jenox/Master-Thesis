@@ -16,6 +16,7 @@ extension PolygonalDual {
         for v in self.vertices.filter(self.isBend(_:)).sorted(by: self.distanceToClosestNeighbor(of:)) {
             guard self.distanceToClosestNeighbor(of: v) <= 0.1 * average else { break }
 
+//            print("try to smooth \(v)")
             try? self.smooth(v)
         }
 
@@ -23,6 +24,7 @@ extension PolygonalDual {
             guard self.distance(from: u, to: v) >= 2 * average else { continue }
             guard self.containsEdge(between: u, and: v) else { continue }
 
+//            print("subdivide \(u)-\(v)")
             self.subdivideEdge(between: u, and: v)
         }
     }
