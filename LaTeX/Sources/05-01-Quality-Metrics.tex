@@ -10,13 +10,11 @@ We then discuss different ideas to formalize and quantify the previously mention
 
 Three well-established quantifiable measures are commonly used to assess a cartograms's quality \cite{alam2015quantitative} \cite{nusrat2018evaluating}:
 
-% TODO: actually define cartographic error first! probably in preliminaries.
-
 \begin{itemize}
 \item \textbf{Statistical accuracy:}
 The statistical accuracy of a cartogram describes how closely the areas of the modified geographic regions match the variable of interest.
-Recall that the cartographic error of a region $v$ is defined as $\frac{\abs{A(v)-w(v)}}{max(A(v),w(v))}$ where $A(v)$ is its actual area and $w(v)$ is its desired area.
-The maximum and average cartographic error over all regions in the cartogram are commonly used to quantify its statistical accuracy.
+Recall that the normalized cartographic error of a region $v$ is defined as $\frac{\abs{A^\prime(v)-w(v)}}{max(A^\prime(v),w(v))}$ where $A^\prime(v)$ is its normalized actual area and $w(v)$ is its desired area.
+The maximum and average normalized cartographic error over all regions in the cartogram are commonly used to quantify its statistical accuracy.
 We borrow this quality metric from cartograms and use it for our visualizations in the form of $\varepsilon$-area-proportionality.
 
 \item \textbf{Topological accuracy:}
@@ -47,7 +45,10 @@ Given a polygon $P$, they count the number of corners where the polygon's intern
 %
 \begin{equation*}
 \text{notches}_{\lbrack0,1\rbrack}(P) \coloneqq
-\frac{\text{notches}(P)}{n - 3}
+\begin{cases}
+\frac{\text{notches}(P)}{n - 3} & \text{if $n$ > 3}\\
+0 & \text{otherwise}
+\end{cases}
 \in \lbrack0,1\rbrack
 ,
 \end{equation*}
@@ -65,12 +66,12 @@ They use this fraction to define the frequency of the vibration as
 and its amplitude as
 \begin{equation*}
 \text{ampl}(P) \coloneqq
-\frac{\text{boundary}(P) - \text{boundary}(\text{hull}(P))}{\text{boundary}(P)}
+\frac{\text{circumference}(P) - \text{circumference}(\text{hull}(P))}{\text{circumference}(P)}
 \in \lbrack0,1\rbrack
 ,
 \end{equation*}
 %
-where $\text{boundary}(P)$ is the the length of $P$'s boundary and $\text{hull}(P)$ is $P$'s convex hull in the form of another polygon.
+where $\text{circumference}(P)$ is the the length of $P$'s boundary and $\text{hull}(P)$ is $P$'s convex hull in the form of another polygon.
 For convex polygons $P$, both the frequency $\text{freq}(P)$ and the amplitude $\text{ampl}(P)$ of the vibration of its boundary is zero.
 The frequency value is at its maximum when half of the polygon's corners are notches.
 
@@ -111,7 +112,7 @@ In our use case, we don't even have to implement the heuristic to guess the shap
 We know that the points form a closed curve that is in fact a polygon.
 However, by connecting the points in this predetermined manner, we possibly get drastically different edge lengths.
 The points on these edges that aren't corners of the polygon have no impact on the computed entropies at all.
-This problem becomes obvious when we consider two straight-line segments of the same length, one that is a side of our polygon, and one which is the union of multiple sides of our polygon with corners (with internal angle $180^\circ$ in between):
+This problem becomes obvious when we consider two straight-line segments of the same length, one that is a side of our polygon, and one which is the union of multiple sides of our polygon with corners (with internal angle $180^\circ$) in between:
 The one with additional corners has a much greater impact on the computed entropies, even though both look the same to an observer.
 
 We can try to remedy by subdividing the polygon's sides first, creating roughly uniform side lengths.
