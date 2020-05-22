@@ -33,6 +33,53 @@
 		CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
 		CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
 		CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
+		CB2F82F724784BE000060881 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F82F624784BE000060881 /* main.swift */; };
+		CB2F82FB24784BF100060881 /* Pipeline+DynamicOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */; };
+		CB2F82FC24784BF100060881 /* Pipeline+InsertVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */; };
+		CB2F82FD24784BF100060881 /* Pipeline+RemoveVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */; };
+		CB2F82FE24784BF100060881 /* Pipeline+FlipAdjacency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */; };
+		CB2F830024784C0100060881 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F82FF24784C0100060881 /* Delaunay */; };
+		CB2F830224784C0100060881 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830124784C0100060881 /* Collections */; };
+		CB2F830424784C0100060881 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830324784C0100060881 /* Geometry */; };
+		CB2F830524784C1900060881 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
+		CB2F830624784C1900060881 /* DelaunayGraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */; };
+		CB2F830724784C1900060881 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2924292D3D005B3048 /* Transformer.swift */; };
+		CB2F830824784C1900060881 /* NaiveTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */; };
+		CB2F830924784C1900060881 /* ForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3524292F50005B3048 /* ForceComputer.swift */; };
+		CB2F830A24784C1900060881 /* ConcreteForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */; };
+		CB2F830B24784C1900060881 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */; };
+		CB2F830C24784C1900060881 /* PrEdForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */; };
+		CB2F830D24784C1900060881 /* QualityEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */; };
+		CB2F830E24784C1900060881 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
+		CB2F830F24784C1900060881 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
+		CB2F831024784C2100060881 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
+		CB2F831124784C2100060881 /* DirectedEdgeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */; };
+		CB2F831224784C2100060881 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2124314ECF0019C766 /* CGPoint.swift */; };
+		CB2F831324784C2100060881 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
+		CB2F831424784C2100060881 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1D24314E360019C766 /* Segment.swift */; };
+		CB2F831524784C2100060881 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1B24314E320019C766 /* Polygon.swift */; };
+		CB2F831624784C2100060881 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1F24314E8D0019C766 /* Circle.swift */; };
+		CB2F831724784C2700060881 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
+		CB2F831824784C2700060881 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Comparable.swift */; };
+		CB2F831924784C2700060881 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Result.swift */; };
+		CB2F831A24784C2700060881 /* AnyRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */; };
+		CB2F831B24784C2700060881 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
+		CB2F831D24784C2D00060881 /* ClusterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E472432920C0019C766 /* ClusterName.swift */; };
+		CB2F831E24784C2D00060881 /* ClusterWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E49243292120019C766 /* ClusterWeight.swift */; };
+		CB2F831F24784C2D00060881 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
+		CB2F832024784C2D00060881 /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
+		CB2F832124784C2D00060881 /* EitherGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */; };
+		CB2F832224784C2D00060881 /* PlanarGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B532478034D007472D6 /* PlanarGraph.swift */; };
+		CB2F832324784C2D00060881 /* StraightLineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */; };
+		CB2F832424784C2D00060881 /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
+		CB2F832524784C2D00060881 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
+		CB2F832624784C2D00060881 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
+		CB2F832724784C2D00060881 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
+		CB2F832824784C2D00060881 /* EmbeddedClusterGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */; };
+		CB2F832924784C4100060881 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
+		CB2F832A24784C5800060881 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
+		CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
+		CB2F832D247852C500060881 /* FastPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F832C247852C500060881 /* FastPipeline.swift */; };
 		CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
 		CB3F704724781632002B73D8 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
@@ -110,6 +157,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		CB2F82F224784BE000060881 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +190,9 @@
 		CB2D53DA245F187700317BD6 /* PolygonalDual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalDual.swift; sourceTree = "<group>"; };
 		CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeIterator.swift; sourceTree = "<group>"; };
 		CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniquelyIdentifiedVertex.swift; sourceTree = "<group>"; };
+		CB2F82F424784BE000060881 /* Evaluation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Evaluation; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB2F82F624784BE000060881 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CB2F832C247852C500060881 /* FastPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastPipeline.swift; sourceTree = "<group>"; };
 		CB3F70442478156A002B73D8 /* PolygonComplexity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonComplexity.swift; sourceTree = "<group>"; };
 		CB3F704624781632002B73D8 /* CartographicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartographicError.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
@@ -205,6 +264,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB2F82F124784BE000060881 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB2F830224784C0100060881 /* Collections in Frameworks */,
+				CB2F830424784C0100060881 /* Geometry in Frameworks */,
+				CB2F830024784C0100060881 /* Delaunay in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBDA153A23CB670B0070847D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +315,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB2F82F524784BE000060881 /* Evaluation */ = {
+			isa = PBXGroup;
+			children = (
+				CB2F82F624784BE000060881 /* main.swift */,
+				CB2F832C247852C500060881 /* FastPipeline.swift */,
+			);
+			path = Evaluation;
 			sourceTree = "<group>";
 		};
 		CB456EA6241AB7AA00008E87 /* DataStructures */ = {
@@ -297,6 +375,7 @@
 				CBDA153F23CB670B0070847D /* MasterThesis */,
 				CBDA155D23CB88850070847D /* MasterThesisTests */,
 				CB131A4A241543A600B5F5BB /* CLI */,
+				CB2F82F524784BE000060881 /* Evaluation */,
 				CBDA153E23CB670B0070847D /* Products */,
 				CB131A50241543AD00B5F5BB /* Frameworks */,
 			);
@@ -308,6 +387,7 @@
 				CBDA153D23CB670B0070847D /* MasterThesis.app */,
 				CBDA155C23CB88850070847D /* MasterThesisTests.xctest */,
 				CB131A49241543A600B5F5BB /* CLI */,
+				CB2F82F424784BE000060881 /* Evaluation */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -475,6 +555,28 @@
 			productReference = CB131A49241543A600B5F5BB /* CLI */;
 			productType = "com.apple.product-type.tool";
 		};
+		CB2F82F324784BE000060881 /* Evaluation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB2F82FA24784BE000060881 /* Build configuration list for PBXNativeTarget "Evaluation" */;
+			buildPhases = (
+				CB2F82F024784BE000060881 /* Sources */,
+				CB2F82F124784BE000060881 /* Frameworks */,
+				CB2F82F224784BE000060881 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Evaluation;
+			packageProductDependencies = (
+				CB2F82FF24784C0100060881 /* Delaunay */,
+				CB2F830124784C0100060881 /* Collections */,
+				CB2F830324784C0100060881 /* Geometry */,
+			);
+			productName = Evaluation;
+			productReference = CB2F82F424784BE000060881 /* Evaluation */;
+			productType = "com.apple.product-type.tool";
+		};
 		CBDA153C23CB670B0070847D /* MasterThesis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBDA155123CB670C0070847D /* Build configuration list for PBXNativeTarget "MasterThesis" */;
@@ -526,12 +628,15 @@
 		CBDA153523CB670B0070847D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Christian Schnorr";
 				TargetAttributes = {
 					CB131A48241543A600B5F5BB = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					CB2F82F324784BE000060881 = {
+						CreatedOnToolsVersion = 11.4;
 					};
 					CBDA153C23CB670B0070847D = {
 						CreatedOnToolsVersion = 11.3;
@@ -562,6 +667,7 @@
 				CBDA153C23CB670B0070847D /* MasterThesis */,
 				CBDA155B23CB88850070847D /* MasterThesisTests */,
 				CB131A48241543A600B5F5BB /* CLI */,
+				CB2F82F324784BE000060881 /* Evaluation */,
 			);
 		};
 /* End PBXProject section */
@@ -595,6 +701,57 @@
 				CB131A57241544C600B5F5BB /* CLITransmitter.swift in Sources */,
 				CB131A4C241543A600B5F5BB /* main.swift in Sources */,
 				CB131A5B241548D000B5F5BB /* Commands.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB2F82F024784BE000060881 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB2F832A24784C5800060881 /* DistanceFromConvexHull.swift in Sources */,
+				CB2F830824784C1900060881 /* NaiveTransformer.swift in Sources */,
+				CB2F831124784C2100060881 /* DirectedEdgeSet.swift in Sources */,
+				CB2F831324784C2100060881 /* CGVector.swift in Sources */,
+				CB2F832424784C2D00060881 /* VertexWeightedGraph.swift in Sources */,
+				CB2F830624784C1900060881 /* DelaunayGraphGenerator.swift in Sources */,
+				CB2F830B24784C1900060881 /* ForceApplicator.swift in Sources */,
+				CB2F830524784C1900060881 /* GraphGenerator.swift in Sources */,
+				CB2F82FC24784BF100060881 /* Pipeline+InsertVertex.swift in Sources */,
+				CB2F830924784C1900060881 /* ForceComputer.swift in Sources */,
+				CB2F832224784C2D00060881 /* PlanarGraph.swift in Sources */,
+				CB2F831824784C2700060881 /* Comparable.swift in Sources */,
+				CB2F831224784C2100060881 /* CGPoint.swift in Sources */,
+				CB2F82FB24784BF100060881 /* Pipeline+DynamicOperations.swift in Sources */,
+				CB2F831D24784C2D00060881 /* ClusterName.swift in Sources */,
+				CB2F831424784C2100060881 /* Segment.swift in Sources */,
+				CB2F830E24784C1900060881 /* CartographicError.swift in Sources */,
+				CB2F832724784C2D00060881 /* UniquelyIdentifiedVertex.swift in Sources */,
+				CB2F830F24784C1900060881 /* PolygonComplexity.swift in Sources */,
+				CB2F831E24784C2D00060881 /* ClusterWeight.swift in Sources */,
+				CB2F831924784C2700060881 /* Result.swift in Sources */,
+				CB2F832624784C2D00060881 /* DirectedEdgeIterator.swift in Sources */,
+				CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */,
+				CB2F831024784C2100060881 /* OrderedSet.swift in Sources */,
+				CB2F831A24784C2700060881 /* AnyRandomNumberGenerator.swift in Sources */,
+				CB2F82FE24784BF100060881 /* Pipeline+FlipAdjacency.swift in Sources */,
+				CB2F831F24784C2D00060881 /* Face.swift in Sources */,
+				CB2F832924784C4100060881 /* Errors.swift in Sources */,
+				CB2F831724784C2700060881 /* Collection.swift in Sources */,
+				CB2F831B24784C2700060881 /* StringInterpolations.swift in Sources */,
+				CB2F830C24784C1900060881 /* PrEdForceApplicator.swift in Sources */,
+				CB2F831524784C2100060881 /* Polygon.swift in Sources */,
+				CB2F830D24784C1900060881 /* QualityEvaluator.swift in Sources */,
+				CB2F82F724784BE000060881 /* main.swift in Sources */,
+				CB2F82FD24784BF100060881 /* Pipeline+RemoveVertex.swift in Sources */,
+				CB2F831624784C2100060881 /* Circle.swift in Sources */,
+				CB2F832024784C2D00060881 /* DirectedEdge.swift in Sources */,
+				CB2F830724784C1900060881 /* Transformer.swift in Sources */,
+				CB2F832124784C2D00060881 /* EitherGraph.swift in Sources */,
+				CB2F832824784C2D00060881 /* EmbeddedClusterGraph.swift in Sources */,
+				CB2F830A24784C1900060881 /* ConcreteForceComputer.swift in Sources */,
+				CB2F832D247852C500060881 /* FastPipeline.swift in Sources */,
+				CB2F832324784C2D00060881 /* StraightLineGraph.swift in Sources */,
+				CB2F832524784C2D00060881 /* PolygonalDual.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +874,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CB2F82F824784BE000060881 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CB2F82F924784BE000060881 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -923,6 +1102,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		CB2F82FA24784BE000060881 /* Build configuration list for PBXNativeTarget "Evaluation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB2F82F824784BE000060881 /* Debug */,
+				CB2F82F924784BE000060881 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CBDA153823CB670B0070847D /* Build configuration list for PBXProject "MasterThesis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -999,6 +1187,18 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB1AA1B824045AA0009028F8 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		CB2F82FF24784C0100060881 /* Delaunay */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Delaunay;
+		};
+		CB2F830124784C0100060881 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Collections;
+		};
+		CB2F830324784C0100060881 /* Geometry */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Geometry;
 		};
 		CBA25E1224312CD20019C766 /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

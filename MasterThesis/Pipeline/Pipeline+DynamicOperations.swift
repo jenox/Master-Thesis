@@ -17,6 +17,20 @@ extension PolygonalDual {
         case flipAdjacency(PolygonalDual.FlipAdjacencyOperation)
         case createAdjacency(PolygonalDual.CreateAdjacencyOperation)
         case removeAdjacency(PolygonalDual.RemoveAdjacencyOperation)
+
+        var isInsertion: Bool {
+            switch self {
+            case .insertFaceInside, .insertFaceOutside: return true
+            default: return false
+            }
+        }
+
+        var isRemoval: Bool {
+            switch self {
+            case .removeFaceWithoutBoundaryToExternalFace, .removeFaceWithBoundaryToExternalFace: return true
+            default: return false
+            }
+        }
     }
 
     func possibleDynamicOperations(name: ClusterName, weight: ClusterWeight) -> Set<AnyDynamicOperation> {
