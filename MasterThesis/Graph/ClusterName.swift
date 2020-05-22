@@ -33,3 +33,5 @@ extension ClusterName: CustomStringConvertible {
         return self.rawValue
     }
 }
+
+extension ClusterName: Codable {}

@@ -12,11 +12,11 @@ public struct OrderedSet<Element> where Element: Hashable {
     private var storage: NSMutableOrderedSet
 
     public init() {
-        self.storage = NSMutableOrderedSet()
+        self.storage = .init()
     }
 
     public init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Sequence.Element == Element {
-        self.storage = NSMutableOrderedSet()
+        self.storage = .init()
         self.storage.addObjects(from: Array(sequence))
     }
 
@@ -129,5 +129,25 @@ extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
 
     public var debugDescription: String {
         return "OrderedSet(\(Array(self)))"
+    }
+}
+
+extension OrderedSet: Codable where Element: Codable {
+    public init(from decoder: Decoder) throws {
+        self.storage = .init()
+
+        var container = try decoder.unkeyedContainer()
+
+        while !container.isAtEnd {
+            self.insert(try container.decode(Element.self))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+
+        for element in self {
+            try container.encode(element)
+        }
     }
 }

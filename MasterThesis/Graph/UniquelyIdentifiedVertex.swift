@@ -29,3 +29,17 @@ struct UniquelyIdentifiedVertex: Hashable, Comparable, CustomStringConvertible, 
         return "\(self.id)"
     }
 }
+
+extension UniquelyIdentifiedVertex: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        self.id = try container.decode(Int.self)
+        Self.nextID = max(Self.nextID, self.id + 1)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.id)
+    }
+}

@@ -16,8 +16,15 @@ struct PolygonalDual {
     typealias FaceID = ClusterName
     typealias Weight = ClusterWeight
 
-    typealias VertexPayload = (neighbors: OrderedSet<Vertex>, position: CGPoint)
-    typealias FacePayload = (boundary: [Vertex], weight: Weight)
+    struct VertexPayload {
+        var neighbors: OrderedSet<Vertex>
+        var position: CGPoint
+    }
+
+    struct FacePayload {
+        var boundary: [Vertex]
+        var weight: Weight
+    }
 
     var vertices: OrderedSet<Vertex> = []
     var vertexPayloads: [Vertex: VertexPayload] = [:]
@@ -30,7 +37,7 @@ extension PolygonalDual {
         let vertex = Vertex()
 
         self.vertices.insert(vertex)
-        self.vertexPayloads[vertex] = ([], position)
+        self.vertexPayloads[vertex] = .init(neighbors: [], position: position)
 
         return vertex
     }
@@ -56,7 +63,7 @@ extension PolygonalDual {
         assert(boundary.adjacentPairs(wraparound: true).allSatisfy(self.containsEdge(between:and:)))
 
         self.faces.insert(name)
-        self.facePayloads[name] = (boundary, weight)
+        self.facePayloads[name] = .init(boundary: boundary, weight: weight)
     }
 }
 
@@ -341,3 +348,7 @@ extension Array where Element == Angle {
         return index
     }
 }
+
+extension PolygonalDual: Codable {}
+extension PolygonalDual.VertexPayload: Codable {}
+extension PolygonalDual.FacePayload: Codable {}

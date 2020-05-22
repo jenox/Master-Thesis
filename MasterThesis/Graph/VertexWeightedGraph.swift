@@ -14,7 +14,12 @@ import Geometry
 struct VertexWeightedGraph {
     typealias Vertex = ClusterName
     typealias Weight = ClusterWeight
-    fileprivate typealias Payload = (neighbors: OrderedSet<Vertex>, position: CGPoint, weight: Weight)
+
+    fileprivate struct Payload {
+        var neighbors: OrderedSet<Vertex>
+        var position: CGPoint
+        var weight: Weight
+    }
 
     init() {}
 
@@ -25,7 +30,7 @@ struct VertexWeightedGraph {
         precondition(self.payloads[vertex] == nil)
 
         self.vertices.insert(vertex)
-        self.payloads[vertex] = ([], position, weight)
+        self.payloads[vertex] = .init(neighbors: [], position: position, weight: weight)
     }
 
     func containsEdge(between endpoint1: Vertex, and endpoint2: Vertex) -> Bool {
@@ -85,3 +90,6 @@ extension VertexWeightedGraph: StraightLineGraph {
         self.payloads[vertex]!.position = position
     }
 }
+
+extension VertexWeightedGraph.Payload: Codable {}
+extension VertexWeightedGraph: Codable {}

@@ -35,3 +35,5 @@ extension ClusterWeight: CustomStringConvertible {
         return "\(self.rawValue)"
     }
 }
+
+extension ClusterWeight: Codable {}
