@@ -8,7 +8,69 @@
 
 import Foundation
 
-public struct OrderedSet<Element> where Element: Hashable {
+//public typealias OrderedSet = _NSOrderedSet
+public typealias OrderedSet = _NaiveOrderedSet
+
+public protocol _OrderedSetProtocol: RandomAccessCollection, ExpressibleByArrayLiteral, CustomStringConvertible, CustomDebugStringConvertible where Element: Hashable {
+    init()
+    init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Sequence.Element == Element
+    mutating func insert(_ element: Element)
+    mutating func insert(_ element: Element, at index: Index)
+    func contains(_ element: Element) -> Bool
+    mutating func popLast() -> Element?
+    @discardableResult mutating func remove(_ element: Element) -> Bool
+    mutating func replace(_ oldElement: Element, with newElement: Element)
+    func subtracting<T>(_ sequence: T) -> Self where T: Sequence, T.Element == Element
+}
+
+public struct _NaiveOrderedSet<Element>: _OrderedSetProtocol where Element: Hashable {
+    private var elements: [Element] = []
+
+    public init() { self.elements = [] }
+    public init<Sequence>(_ sequence: Sequence) where Sequence: Swift.Sequence, Self.Element == Sequence.Element {
+        for element in sequence { self.insert(element) }
+    }
+    public mutating func insert(_ element: Element) { if !self.contains(element) { self.elements.append(element) } }
+    public mutating func insert(_ element: Element, at index: Index) { if !self.contains(element) { self.elements.insert(element, at: index) } }
+    public func contains(_ element: Element) -> Bool { return self.elements.contains(element) }
+    public mutating func popLast() -> Element? { return self.elements.popLast() }
+    @discardableResult public mutating func remove(_ element: Element) -> Bool {
+        if let index = self.elements.firstIndex(of: element) {
+            self.elements.remove(at: index)
+            return true
+        } else {
+            return false
+        }
+    }
+    public mutating func replace(_ oldElement: Element, with newElement: Element) {
+        precondition(!self.contains(newElement))
+        let index = self.elements.firstIndex(of: oldElement)!
+        self.elements[index] = newElement
+    }
+    public func subtracting<T>(_ sequence: T) -> Self where T: Sequence, T.Element == Element {
+        var elements = self.elements
+        elements.removeAll(where: sequence.contains(_:))
+
+        return .init(elements)
+    }
+
+    public var startIndex: Int { return 0 }
+    public var endIndex: Int { return self.elements.count }
+    public func index(after index: Int) -> Int { return index + 1 }
+    public func index(before index: Int) -> Int { return index - 1 }
+    public func index(_ index: Int, offsetBy distance: Int) -> Int { return index + distance }
+    public func distance(from start: Int, to end: Int) -> Int { return end - start }
+    public subscript(position: Int) -> Element { return self.elements[position] }
+
+    public init(arrayLiteral elements: Element...) { for element in elements { self.insert(element) } }
+    public var description: String { return "\(Array(self))" }
+    public var debugDescription: String { return "OrderedSet(\(Array(self)))" }
+}
+
+
+// MARK: - NSOrderedSet
+
+public struct _NSOrderedSet<Element> where Element: Hashable {
     private var storage: NSMutableOrderedSet
 
     public init() {
@@ -20,21 +82,21 @@ public struct OrderedSet<Element> where Element: Hashable {
         self.storage.addObjects(from: Array(sequence))
     }
 
-    mutating func insert(_ element: Element) {
+    public mutating func insert(_ element: Element) {
         self.ensureValueSemantics()
         self.storage.add(element)
     }
 
-    mutating func insert(_ element: Element, at index: Index) {
+    public mutating func insert(_ element: Element, at index: Index) {
         self.ensureValueSemantics()
         self.storage.insert(element, at: index)
     }
 
-    func contains(_ element: Element) -> Bool {
+    public func contains(_ element: Element) -> Bool {
         return self.storage.contains(element)
     }
 
-    mutating func popLast() -> Element? {
+    public mutating func popLast() -> Element? {
         guard let index = self.indices.last else { return nil }
 
         self.ensureValueSemantics()
@@ -45,7 +107,7 @@ public struct OrderedSet<Element> where Element: Hashable {
     }
 
     @discardableResult
-    mutating func remove(_ element: Element) -> Bool {
+    public mutating func remove(_ element: Element) -> Bool {
         guard self.storage.contains(element) else { return false }
 
         self.ensureValueSemantics()
@@ -53,14 +115,14 @@ public struct OrderedSet<Element> where Element: Hashable {
         return true
     }
 
-    mutating func replace(_ oldElement: Element, with newElement: Element) {
+    public mutating func replace(_ oldElement: Element, with newElement: Element) {
         guard let index = self.firstIndex(of: oldElement) else { preconditionFailure() }
 
         self.ensureValueSemantics()
         self.storage.replaceObject(at: index, with: newElement)
     }
 
-    func subtracting<T>(_ sequence: T) -> Self where T: Sequence, T.Element == Element {
+    public func subtracting<T>(_ sequence: T) -> Self where T: Sequence, T.Element == Element {
         var copy = self
         for element in sequence {
             copy.remove(element)
@@ -75,7 +137,7 @@ public struct OrderedSet<Element> where Element: Hashable {
     }
 }
 
-extension OrderedSet: RandomAccessCollection {
+extension _NSOrderedSet: RandomAccessCollection {
     public var startIndex: Int {
         return 0
     }
@@ -115,14 +177,14 @@ extension OrderedSet: RandomAccessCollection {
     }
 }
 
-extension OrderedSet: ExpressibleByArrayLiteral {
+extension _NSOrderedSet: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: Element...) {
         self.storage = NSMutableOrderedSet()
         self.storage.addObjects(from: elements)
     }
 }
 
-extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
+extension _NSOrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
         return "\(Array(self))"
     }
@@ -132,9 +194,14 @@ extension OrderedSet: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
+extension _NSOrderedSet: _OrderedSetProtocol {}
+
+
+// MARK: - Codable
+
 extension OrderedSet: Codable where Element: Codable {
     public init(from decoder: Decoder) throws {
-        self.storage = .init()
+        self.init()
 
         var container = try decoder.unkeyedContainer()
 

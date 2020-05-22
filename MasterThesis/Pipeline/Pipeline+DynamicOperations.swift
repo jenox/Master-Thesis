@@ -8,8 +8,6 @@
 
 import Swift
 
-
-
 extension PolygonalDual {
     enum AnyDynamicOperation: Hashable {
         case insertFaceInside(PolygonalDual.InsertFaceInsideOperation)

@@ -37,8 +37,6 @@ struct ConcreteForceComputer: ForceComputer {
 
         // Air Pressure (Alam)
         if self.airPressureStrength > 0 {
-            let outerfaceedges = graph.internalFacesAndOuterFace().outer.vertices.adjacentPairs(wraparound: true)
-
             for face in graph.faces {
                 let weight = graph.weight(of: face).rawValue
                 let area = graph.area(of: face)
@@ -48,9 +46,6 @@ struct ConcreteForceComputer: ForceComputer {
                 let length = edges.map(graph.distance(from:to:)).reduce(0, +)
 
                 for (u, v) in edges {
-                    if !outerfaceedges.contains(where: { $0 == (u,v) || $0 == (v,u) }) {
-                    }
-
                     let fraction = graph.distance(from: u, to: v) / length
                     let vector = graph.vector(from: u, to: v).rotated(by: .degrees(-90)).normalized
 
