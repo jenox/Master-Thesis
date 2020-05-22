@@ -23,11 +23,11 @@ struct PolygonComplexity {
             let maxarea = CGFloat(polygon.points.count) * circle.radius * cos(angle) * circle.radius * sin(angle)
 
             let angles = polygon.points.indices.map(polygon.internalAngle(at:))
-            let notches = Double(angles.count(where: { $0 > .init(degrees: 180) })) / Double(polygon.points.count - 3)
+            let notches = angles.count > 3 ? Double(angles.count(where: { $0 > .init(degrees: 180) })) / Double(polygon.points.count - 3) : 0
             let frequency = Double(1 + 16 * pow(notches - 0.5, 4) - 8 * pow(notches - 0.5, 2)).clamped(to: 0...1)
             let amplitude = Double((polygon.circumference - hull.circumference) / polygon.circumference).clamped(to: 0...1)
 //            let convexity = Double((hull.area - polygon.area) / hull.area).clamped(to: 0...1) // theirs
-            let convexity = Double((maxarea - polygon.area) / maxarea) // ours
+            let convexity = Double((maxarea - polygon.area) / maxarea).clamped(to: 0...1) // ours
 
             precondition(0...1 ~= frequency)
             precondition(0...1 ~= amplitude)

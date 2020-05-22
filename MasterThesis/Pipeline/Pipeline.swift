@@ -271,7 +271,7 @@ extension Pipeline {
     func runThroughEntirePipeline() {
         let uuid = UUID().uuidString
 
-        self.load(TestGraphs.makeSmallInputGraph())
+        self.generate()
         self.saveClusterGraph(as: "\(uuid)-cluster-0.json")
         for _ in 0..<100 { self.stepOnce() }
         self.saveClusterGraph(as: "\(uuid)-cluster-1.json")
@@ -294,7 +294,7 @@ extension Pipeline {
 
         for uuid in uuids {
             do {
-                for i in 0...10 {
+                for i in 1... {
                     let url = directory.appendingPathComponent("\(uuid)-map-\(i).json")
                     let data = try Data(contentsOf: url)
                     let graph = try! JSONDecoder().decode(PolygonalDual.self, from: data)
