@@ -62,6 +62,18 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             self.hasScheduledNextSteppingBlock = false
         })
 
+        stepOnce(completion: { success in
+            if success {
+                if self.isRunning && !self.hasScheduledNextSteppingBlock {
+                    GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded, after: 0.01)
+                }
+            } else {
+                self.isRunning = false
+            }
+        })
+    }
+
+    private func stepOnce(completion: ((Bool) -> Void)? = nil) {
         self.scheduleOperation(named: "step", {
             switch self.graph {
             case .vertexWeighted(var graph):
@@ -78,13 +90,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
                 throw UnsupportedOperationError()
             }
         }, completion: { result in
-            if result.isSuccess {
-                if self.isRunning && !self.hasScheduledNextSteppingBlock {
-                    GraphModificationQueue.schedule(self.stepOnceAndScheduleNextIfNeeded, after: 0.01)
-                }
-            } else {
-                self.isRunning = false
-            }
+            completion?(result.isSuccess)
         })
     }
 
@@ -257,6 +263,87 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
             let operation = operations.randomElement(using: &self.randomNumberGenerator)!
             print("Applying", operation)
             try! graph.removeAdjacency(operation)
+        })
+    }
+}
+
+extension Pipeline {
+    func runThroughEntirePipeline() {
+        let uuid = UUID().uuidString
+
+        self.load(TestGraphs.makeSmallInputGraph())
+        self.saveClusterGraph(as: "\(uuid)-cluster-0.json")
+        for _ in 0..<100 { self.stepOnce() }
+        self.saveClusterGraph(as: "\(uuid)-cluster-1.json")
+        self.transform()
+        self.savePolygonalDual(as: "\(uuid)-map-0.json")
+        for _ in 0..<100 { self.stepOnce() }
+        self.savePolygonalDual(as: "\(uuid)-map-1.json")
+        for i in 2...20 {
+            self.performRandomOperation()
+            for _ in 0..<100 { self.stepOnce() }
+            self.savePolygonalDual(as: "\(uuid)-map-\(i).json")
+        }
+    }
+
+    func evaluateQualityMetrics() {
+        let directory = URL(fileURLWithPath: CommandLine.arguments[1])
+
+        let urls = try! FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        let uuids = Set(urls.compactMap({ UUID(uuidString: String($0.lastPathComponent.prefix(36))) }))
+
+        for uuid in uuids {
+            do {
+                for i in 0...10 {
+                    let url = directory.appendingPathComponent("\(uuid)-map-\(i).json")
+                    let data = try Data(contentsOf: url)
+                    let graph = try! JSONDecoder().decode(PolygonalDual.self, from: data)
+
+                    let errors = try! CartographicError().evaluate(in: graph)
+                    let complexities = try! PolygonComplexity().evaluate(in: graph)
+                    print(uuid, i, errors.max()!.rounded(scale: 1e3), errors.mean()!.rounded(scale: 1e3), complexities.max()!.rounded(scale: 1e3), complexities.mean()!.rounded(scale: 1e3))
+                }
+            } catch {
+            }
+        }
+    }
+
+    private func saveClusterGraph(as filename: String) {
+        let encoder = JSONEncoder()
+        let url = URL(fileURLWithPath: CommandLine.arguments[1]).appendingPathComponent(filename)
+
+        self.scheduleOperation(named: "save cluster graph", {
+            try! encoder.encode(self.graph!.vertexWeightedGraph!).write(to: url)
+            return self.graph
+        })
+    }
+
+    private func savePolygonalDual(as filename: String) {
+        let encoder = JSONEncoder()
+        let url = URL(fileURLWithPath: CommandLine.arguments[1]).appendingPathComponent(filename)
+
+        self.scheduleOperation(named: "save polygonal dual", {
+            try! encoder.encode(self.graph!.faceWeightedGraph!).write(to: url)
+            return self.graph
+        })
+    }
+
+    private func performRandomOperation() {
+        self.scheduleMutationOperation(named: "random operation and weight changes", { graph in
+            for face in graph.faces {
+                let generated = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+                let weight = 0.75 * graph.weight(of: face) + 0.25 * generated
+
+                graph.setWeight(of: face, to: weight)
+            }
+
+            let possibleNames = "ABCDEFGHJIKLMNOPQRSTUVWXYZ".map(ClusterName.init)
+            let name = possibleNames.first(where: { !graph.faces.contains($0) })!
+            let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
+            let operations = graph.possibleDynamicOperations(name: name, weight: weight)
+            guard !operations.isEmpty else { throw UnsupportedOperationError() }
+            let operation = operations.randomElement(using: &self.randomNumberGenerator)!
+            try! graph.apply(operation)
         })
     }
 }

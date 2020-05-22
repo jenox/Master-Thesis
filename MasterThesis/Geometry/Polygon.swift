@@ -15,6 +15,10 @@ extension Polygon {
         return self.points.adjacentPairs(wraparound: true).reduce(0, { $0 + $1.0.x * $1.1.y - $1.0.y * $1.1.x }) / 2
     }
 
+    var circumference: CGFloat {
+        return self.points.adjacentPairs(wraparound: true).map({ $0.distance(to: $1) }).reduce(0, +)
+    }
+
     func contains(_ point: CGPoint) -> Bool {
         let path = CGMutablePath()
         path.move(to: self.points[0])

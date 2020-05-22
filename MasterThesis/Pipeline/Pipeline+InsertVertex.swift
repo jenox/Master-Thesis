@@ -10,7 +10,7 @@ import CoreGraphics
 import Geometry
 
 // Configure as Array or Set here to test all possible orderings or only one
-typealias ClusterNameSet = Array<ClusterName>
+typealias ClusterNameSet = Set<ClusterName>
 
 extension PolygonalDual {
     struct InsertFaceInsideOperation: Equatable, Hashable {

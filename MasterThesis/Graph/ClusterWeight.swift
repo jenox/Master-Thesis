@@ -18,6 +18,10 @@ struct ClusterWeight: Equatable, Hashable, Comparable, RawRepresentable {
     static func + (lhs: Self, rhs: Self) -> Self {
         return .init(rawValue: lhs.rawValue + rhs.rawValue)
     }
+
+    static func * (lhs: Double, rhs: Self) -> Self {
+        return .init(rawValue: lhs * rhs.rawValue)
+    }
 }
 
 extension ClusterWeight: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {

@@ -18,10 +18,10 @@ class RootViewController: UIHostingController<AnyView> {
         forceApplicator: PrEdForceApplicator(),
         qualityMetrics: [
             ("Statistical Accuracy", StatisticalAccuracy()),
-            ("Distance from Circumcircle", DistanceFromCircumcircle()),
-            ("Distance from Hull", DistanceFromConvexHull()),
-            ("Entropy of Angles", EntropyOfAngles()),
-            ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
+//            ("Distance from Circumcircle", DistanceFromCircumcircle()),
+//            ("Distance from Hull", DistanceFromConvexHull()),
+//            ("Entropy of Angles", EntropyOfAngles()),
+//            ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
         ],
         randomNumberGenerator: AnyRandomNumberGenerator(SystemRandomNumberGenerator())
     )

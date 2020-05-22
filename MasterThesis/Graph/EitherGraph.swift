@@ -14,6 +14,13 @@ enum EitherGraph {
 }
 
 extension EitherGraph {
+    var vertexWeightedGraph: VertexWeightedGraph? {
+        switch self {
+        case .vertexWeighted(let graph): return graph
+        case .faceWeighted: return nil
+        }
+    }
+
     var faceWeightedGraph: PolygonalDual? {
         switch self {
         case .faceWeighted(let graph): return graph

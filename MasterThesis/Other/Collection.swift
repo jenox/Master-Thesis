@@ -29,3 +29,17 @@ extension Collection {
         return try self.reduce(0, { $0 + (try predicate($1) ? 1 : 0) })
     }
 }
+
+extension Collection where Element == Double {
+    func mean() -> Double? {
+        guard !self.isEmpty else { return nil }
+
+        return self.reduce(0, +) / Double(self.count)
+    }
+}
+
+extension Double {
+    func rounded(scale: Double) -> Double {
+        return (self * scale).rounded() / scale
+    }
+}

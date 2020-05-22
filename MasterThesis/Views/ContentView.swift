@@ -15,7 +15,7 @@ struct ContentView: View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
         return SwiftUIGraphView(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
-//            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
+            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
             .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
     }
@@ -32,6 +32,7 @@ struct ContentView: View {
             Button(action: self.pipeline.generate, label: { Text("Generate") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.pipeline.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
             self.dynamicOperationsView.disabled(!self.pipeline.graph.isFaceWeighted)
+            self.evaluationView
         }).frame(width: 190, height: nil, alignment: .center)
     }
 
@@ -57,6 +58,13 @@ struct ContentView: View {
             Button(action: self.pipeline.flipRandomInternalEdge, label: { Text("Flip Internal Edge") })
             Button(action: self.pipeline.insertRandomEdgeOutside, label: { Text("Insert Edge Outside") })
             Button(action: self.pipeline.removeRandomEdgeOutside, label: { Text("Remove Edge Outside") })
+        })
+    }
+
+    private var evaluationView: some View {
+        return Group(content: {
+            Button(action: self.pipeline.runThroughEntirePipeline, label: { Text("Run Test") })
+            Button(action: self.pipeline.evaluateQualityMetrics, label: { Text("Evaluate Data") })
         })
     }
 

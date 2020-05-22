@@ -33,6 +33,8 @@
 		CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
 		CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
 		CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
+		CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
+		CB3F704724781632002B73D8 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
@@ -79,6 +81,7 @@
 		CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */; };
 		CBF37CF12401844C00AA4846 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Comparable.swift */; };
 		CBF61B542478034D007472D6 /* PlanarGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B532478034D007472D6 /* PlanarGraph.swift */; };
+		CBF61B5624780D7B007472D6 /* Pipeline+DynamicOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */; };
 		CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2924292D3D005B3048 /* Transformer.swift */; };
 		CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */; };
 		CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */; };
@@ -131,6 +134,8 @@
 		CB2D53DA245F187700317BD6 /* PolygonalDual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalDual.swift; sourceTree = "<group>"; };
 		CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeIterator.swift; sourceTree = "<group>"; };
 		CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniquelyIdentifiedVertex.swift; sourceTree = "<group>"; };
+		CB3F70442478156A002B73D8 /* PolygonComplexity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonComplexity.swift; sourceTree = "<group>"; };
+		CB3F704624781632002B73D8 /* CartographicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartographicError.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
@@ -172,6 +177,7 @@
 		CBF37CEE240151FE00AA4846 /* ConcreteForceComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteForceComputer.swift; sourceTree = "<group>"; };
 		CBF37CF02401844C00AA4846 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		CBF61B532478034D007472D6 /* PlanarGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanarGraph.swift; sourceTree = "<group>"; };
+		CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+DynamicOperations.swift"; sourceTree = "<group>"; };
 		CBFDDE2924292D3D005B3048 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
 		CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityEvaluator.swift; sourceTree = "<group>"; };
 		CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayGraphGenerator.swift; sourceTree = "<group>"; };
@@ -269,6 +275,7 @@
 				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
 				CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */,
 				CBA25E45243289520019C766 /* Pipeline+Weight.swift */,
+				CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */,
 				CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */,
 				CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */,
 				CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */,
@@ -393,6 +400,8 @@
 				CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */,
 				CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */,
 				CBFDDE47242AA14D005B3048 /* Entropy.swift */,
+				CB3F704624781632002B73D8 /* CartographicError.swift */,
+				CB3F70442478156A002B73D8 /* PolygonComplexity.swift */,
 			);
 			path = "Quality Metrics";
 			sourceTree = "<group>";
@@ -600,7 +609,9 @@
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
 				CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */,
 				CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */,
+				CB3F704724781632002B73D8 /* CartographicError.swift in Sources */,
 				CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */,
+				CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */,
 				CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */,
@@ -623,6 +634,7 @@
 				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */,
 				CBF37CEF240151FE00AA4846 /* ConcreteForceComputer.swift in Sources */,
+				CBF61B5624780D7B007472D6 /* Pipeline+DynamicOperations.swift in Sources */,
 				CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */,
 				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
 				CBA25E172431344E0019C766 /* Imports.swift in Sources */,
