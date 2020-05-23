@@ -9,6 +9,16 @@
 import Swift
 
 extension PolygonalDual {
+    private enum DynamicOperationKind: CaseIterable {
+        case insertFaceInside
+        case insertFaceOutside
+        case removeFaceWithoutBoundaryToExternalFace
+        case removeFaceWithBoundaryToExternalFace
+        case flipAdjacency
+        case createAdjacency
+        case removeAdjacency
+    }
+
     enum AnyDynamicOperation: Hashable {
         case insertFaceInside(PolygonalDual.InsertFaceInsideOperation)
         case insertFaceOutside(PolygonalDual.InsertFaceOutsideOperation)
@@ -33,18 +43,35 @@ extension PolygonalDual {
         }
     }
 
-    func possibleDynamicOperations(name: ClusterName, weight: ClusterWeight) -> Set<AnyDynamicOperation> {
+    func randomDynamicOperation<T>(name: ClusterName, weight: ClusterWeight, using generator: inout T) -> AnyDynamicOperation where T: RandomNumberGenerator {
         var operations: Set<AnyDynamicOperation> = []
 
-        for op in self.possibleInsertFaceInsideOperations(name: name, weight: weight) { operations.insert(.insertFaceInside(op)) }
-        for op in self.possibleInsertFaceOutsideOperations(name: name, weight: weight) { operations.insert(.insertFaceOutside(op)) }
-        for op in self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() { operations.insert(.removeFaceWithoutBoundaryToExternalFace(op)) }
-        for op in self.possibleRemoveFaceWithBoundaryToExternalFaceOperations() { operations.insert(.removeFaceWithBoundaryToExternalFace(op)) }
-        for op in self.possibleFlipAdjacencyOperations() { operations.insert(.flipAdjacency(op)) }
-        for op in self.possibleCreateAdjacencyOperations() { operations.insert(.createAdjacency(op)) }
-        for op in self.possibleRemoveAdjacencyOperations() { operations.insert(.removeAdjacency(op)) }
+        while operations.isEmpty {
+            switch PolygonalDual.DynamicOperationKind.allCases.randomElement(using: &generator)! {
+            case .insertFaceInside:
+                for op in self.possibleInsertFaceInsideOperations(name: name, weight: weight) { operations.insert(.insertFaceInside(op)) }
 
-        return operations
+            case .insertFaceOutside:
+                for op in self.possibleInsertFaceOutsideOperations(name: name, weight: weight) { operations.insert(.insertFaceOutside(op)) }
+
+            case .removeFaceWithoutBoundaryToExternalFace:
+                for op in self.possibleRemoveFaceWithoutBoundaryToExternalFaceOperations() { operations.insert(.removeFaceWithoutBoundaryToExternalFace(op)) }
+
+            case .removeFaceWithBoundaryToExternalFace:
+                for op in self.possibleRemoveFaceWithBoundaryToExternalFaceOperations() { operations.insert(.removeFaceWithBoundaryToExternalFace(op)) }
+
+            case .flipAdjacency:
+                for op in self.possibleFlipAdjacencyOperations() { operations.insert(.flipAdjacency(op)) }
+
+            case .createAdjacency:
+                for op in self.possibleCreateAdjacencyOperations() { operations.insert(.createAdjacency(op)) }
+
+            case .removeAdjacency:
+                for op in self.possibleRemoveAdjacencyOperations() { operations.insert(.removeAdjacency(op)) }
+            }
+        }
+
+        return operations.randomElement(using: &generator)!
     }
 
     mutating func apply(_ operation: AnyDynamicOperation) throws {

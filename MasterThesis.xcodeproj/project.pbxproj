@@ -79,12 +79,15 @@
 		CB2F832924784C4100060881 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
 		CB2F832A24784C5800060881 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
 		CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
-		CB2F832D247852C500060881 /* FastPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F832C247852C500060881 /* FastPipeline.swift */; };
+		CB2F832D247852C500060881 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F832C247852C500060881 /* Pipeline.swift */; };
 		CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
 		CB3F704724781632002B73D8 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
 		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
 		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
+		CB87646524796361002EDEE2 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = CB87646424796361002EDEE2 /* ArgumentParser */; };
+		CB87646724797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */; };
+		CB876469247976C5002EDEE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB876468247976C5002EDEE2 /* Extensions.swift */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
 		CBA25E172431344E0019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E162431344E0019C766 /* Imports.swift */; };
@@ -192,12 +195,14 @@
 		CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniquelyIdentifiedVertex.swift; sourceTree = "<group>"; };
 		CB2F82F424784BE000060881 /* Evaluation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Evaluation; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2F82F624784BE000060881 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		CB2F832C247852C500060881 /* FastPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastPipeline.swift; sourceTree = "<group>"; };
+		CB2F832C247852C500060881 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
 		CB3F70442478156A002B73D8 /* PolygonComplexity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonComplexity.swift; sourceTree = "<group>"; };
 		CB3F704624781632002B73D8 /* CartographicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartographicError.swift; sourceTree = "<group>"; };
 		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
 		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
+		CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Xoroshiro128PlusRandomNumberGenerator.swift; sourceTree = "<group>"; };
+		CB876468247976C5002EDEE2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		CBA25E162431344E0019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBA25E1824314DE20019C766 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -270,6 +275,7 @@
 			files = (
 				CB2F830224784C0100060881 /* Collections in Frameworks */,
 				CB2F830424784C0100060881 /* Geometry in Frameworks */,
+				CB87646524796361002EDEE2 /* ArgumentParser in Frameworks */,
 				CB2F830024784C0100060881 /* Delaunay in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,7 +327,9 @@
 			isa = PBXGroup;
 			children = (
 				CB2F82F624784BE000060881 /* main.swift */,
-				CB2F832C247852C500060881 /* FastPipeline.swift */,
+				CB2F832C247852C500060881 /* Pipeline.swift */,
+				CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */,
+				CB876468247976C5002EDEE2 /* Extensions.swift */,
 			);
 			path = Evaluation;
 			sourceTree = "<group>";
@@ -572,6 +580,7 @@
 				CB2F82FF24784C0100060881 /* Delaunay */,
 				CB2F830124784C0100060881 /* Collections */,
 				CB2F830324784C0100060881 /* Geometry */,
+				CB87646424796361002EDEE2 /* ArgumentParser */,
 			);
 			productName = Evaluation;
 			productReference = CB2F82F424784BE000060881 /* Evaluation */;
@@ -712,6 +721,7 @@
 				CB2F830824784C1900060881 /* NaiveTransformer.swift in Sources */,
 				CB2F831124784C2100060881 /* DirectedEdgeSet.swift in Sources */,
 				CB2F831324784C2100060881 /* CGVector.swift in Sources */,
+				CB87646724797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift in Sources */,
 				CB2F832424784C2D00060881 /* VertexWeightedGraph.swift in Sources */,
 				CB2F830624784C1900060881 /* DelaunayGraphGenerator.swift in Sources */,
 				CB2F830B24784C1900060881 /* ForceApplicator.swift in Sources */,
@@ -730,6 +740,7 @@
 				CB2F831E24784C2D00060881 /* ClusterWeight.swift in Sources */,
 				CB2F831924784C2700060881 /* Result.swift in Sources */,
 				CB2F832624784C2D00060881 /* DirectedEdgeIterator.swift in Sources */,
+				CB876469247976C5002EDEE2 /* Extensions.swift in Sources */,
 				CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */,
 				CB2F831024784C2100060881 /* OrderedSet.swift in Sources */,
 				CB2F831A24784C2700060881 /* AnyRandomNumberGenerator.swift in Sources */,
@@ -749,7 +760,7 @@
 				CB2F832124784C2D00060881 /* EitherGraph.swift in Sources */,
 				CB2F832824784C2D00060881 /* EmbeddedClusterGraph.swift in Sources */,
 				CB2F830A24784C1900060881 /* ConcreteForceComputer.swift in Sources */,
-				CB2F832D247852C500060881 /* FastPipeline.swift in Sources */,
+				CB2F832D247852C500060881 /* Pipeline.swift in Sources */,
 				CB2F832324784C2D00060881 /* StraightLineGraph.swift in Sources */,
 				CB2F832524784C2D00060881 /* PolygonalDual.swift in Sources */,
 			);
@@ -1199,6 +1210,11 @@
 		CB2F830324784C0100060881 /* Geometry */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Geometry;
+		};
+		CB87646424796361002EDEE2 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB131A53241543E700B5F5BB /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
 		};
 		CBA25E1224312CD20019C766 /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -184,7 +184,7 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     func changeRandomCountryWeight() {
         self.scheduleMutationOperation(named: "random weight change", { graph in
-            guard let country = graph.faces.randomElement() else { throw UnsupportedOperationError() }
+            guard let country = graph.faces.randomElement(using: &self.randomNumberGenerator) else { throw UnsupportedOperationError() }
             let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
             try graph.adjustWeight(of: country, to: weight)
         })
