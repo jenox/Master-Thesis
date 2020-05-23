@@ -68,7 +68,7 @@ struct DelaunayGraphGenerator: GraphGenerator {
         var trianglesByDepth: [Int: [Triangle]] = [0: triangles]
         for country in Self.countries.prefix(self.numberOfCountries).dropFirst(numberOfTopLevelCountries) {
             let depths = trianglesByDepth.compactMap({ $0.value.isEmpty ? nil : $0.key })
-            let depth = depths.randomElement(weightedBy: { 1 / pow(self.nestingBias, Double($0)) }, using: &generator)!
+            let depth = depths.randomElement(weightedBy: { 1 / pow(1 - self.nestingBias, Double($0)) }, using: &generator)!
             let index = trianglesByDepth[depth]!.indices.randomElement(using: &generator)!
             let triangle = trianglesByDepth[depth]!.remove(at: index)
 
