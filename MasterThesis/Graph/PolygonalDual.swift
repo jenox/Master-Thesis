@@ -30,11 +30,13 @@ struct PolygonalDual {
     var vertexPayloads: [Vertex: VertexPayload] = [:]
     var faces: OrderedSet<FaceID> = []
     var facePayloads: [FaceID: FacePayload] = [:]
+    var currentVertexIdentifier: Int = 0
 }
 
 extension PolygonalDual {
     mutating func insertVertex(at position: CGPoint) -> Vertex {
-        let vertex = Vertex()
+        let vertex = Vertex(id: self.currentVertexIdentifier)
+        self.currentVertexIdentifier += 1
 
         self.vertices.insert(vertex)
         self.vertexPayloads[vertex] = .init(neighbors: [], position: position)

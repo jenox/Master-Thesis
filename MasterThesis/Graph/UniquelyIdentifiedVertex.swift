@@ -13,16 +13,14 @@ struct UniquelyIdentifiedVertex: Hashable, Comparable, CustomStringConvertible, 
         return lhs.id < rhs.id
     }
 
-    private static var nextID: Int = 0
     private let id: Int
 
     init(integerLiteral value: Int) {
         self.id = value
     }
 
-    init() {
-        self.id = Self.nextID
-        Self.nextID += 1
+    init(id: Int) {
+        self.id = id
     }
 
     var description: String {
@@ -33,9 +31,7 @@ struct UniquelyIdentifiedVertex: Hashable, Comparable, CustomStringConvertible, 
 extension UniquelyIdentifiedVertex: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-
         self.id = try container.decode(Int.self)
-        Self.nextID = max(Self.nextID, self.id + 1)
     }
 
     func encode(to encoder: Encoder) throws {
