@@ -32,7 +32,6 @@ struct ContentView: View {
             Button(action: self.pipeline.generate, label: { Text("Generate") }).disabled(!self.pipeline.graph.isEmpty)
             Button(action: self.pipeline.transform, label: { Text("Transform") }).disabled(!self.pipeline.graph.isVertexWeighted)
             self.dynamicOperationsView.disabled(!self.pipeline.graph.isFaceWeighted)
-            self.evaluationView
         }).frame(width: 190, height: nil, alignment: .center)
     }
 
@@ -58,13 +57,6 @@ struct ContentView: View {
             Button(action: self.pipeline.flipRandomInternalEdge, label: { Text("Flip Internal Edge") })
             Button(action: self.pipeline.insertRandomEdgeOutside, label: { Text("Insert Edge Outside") })
             Button(action: self.pipeline.removeRandomEdgeOutside, label: { Text("Remove Edge Outside") })
-        })
-    }
-
-    private var evaluationView: some View {
-        return Group(content: {
-            Button(action: { self.pipeline.runThroughEntirePipeline(count: 50) }, label: { Text("Run Test") })
-            Button(action: self.pipeline.evaluateQualityMetrics, label: { Text("Evaluate Data") })
         })
     }
 
