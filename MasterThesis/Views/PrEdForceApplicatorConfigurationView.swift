@@ -1,5 +1,5 @@
 //
-//  ConcreteForceComputerConfigurationView.swift
+//  PrEdForceApplicatorConfigurationView.swift
 //  MasterThesis
 //
 //  Created by Christian Schnorr on 23.03.20.
@@ -8,15 +8,15 @@
 
 import SwiftUI
 
-struct ConcreteForceComputerConfigurationView: View {
-    var forceComputer: Binding<ConcreteForceComputer>
+struct PrEdForceApplicatorConfigurationView: View {
+    var forceApplicator: Binding<PrEdForceApplicator>
 
     var body: some View {
         return VStack(content: {
-            self.logarithmicSlider(value: self.forceComputer.airPressureStrength, range: 1e-2...1e1, text: "Air Pressure")
-            self.logarithmicSlider(value: self.forceComputer.angularResolutionStrength, range: 1e-2...1e2, text: "Angular Resolution")
-            self.logarithmicSlider(value: self.forceComputer.vertexVertexRepulsionStrength, range: 1e-2...1e3, text: "V-V Repulsion")
-            self.logarithmicSlider(value: self.forceComputer.vertexEdgeRepulsionStrength, range: 1e-2...1e3, text: "V-E Repulsion")
+            self.logarithmicSlider(value: self.forceApplicator.airPressureStrength, range: 1e-2...1e1, text: "Air Pressure")
+            self.logarithmicSlider(value: self.forceApplicator.angularResolutionStrength, range: 1e-2...1e2, text: "Angular Resolution")
+            self.logarithmicSlider(value: self.forceApplicator.vertexVertexRepulsionStrength, range: 1e-2...1e3, text: "V-V Repulsion")
+            self.logarithmicSlider(value: self.forceApplicator.vertexEdgeRepulsionStrength, range: 1e-2...1e3, text: "V-E Repulsion")
         })
     }
 

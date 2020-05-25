@@ -14,15 +14,15 @@ class GraphView: UIView {
         didSet { self.updateCanvasViewRenderer() }
     }
 
-    var forceComputer: ForceComputer {
+    var forceApplicator: ForceApplicator {
         didSet { self.updateCanvasViewRenderer() }
     }
 
     private let canvasView: CanvasView = .init()
 
-    init(frame: CGRect, graph: EitherGraph?, forceComputer: ForceComputer) {
+    init(frame: CGRect, graph: EitherGraph?, forceApplicator: ForceApplicator) {
         self.graph = graph
-        self.forceComputer = forceComputer
+        self.forceApplicator = forceApplicator
 
         super.init(frame: frame)
 
@@ -44,9 +44,9 @@ class GraphView: UIView {
     private func updateCanvasViewRenderer() {
         switch self.graph {
         case .vertexWeighted(let graph):
-            self.canvasView.renderer = VertexWeightedGraphRenderer(graph: graph, forceComputer: self.forceComputer)
+            self.canvasView.renderer = VertexWeightedGraphRenderer(graph: graph, forceApplicator: self.forceApplicator)
         case .faceWeighted(let graph):
-            self.canvasView.renderer = FaceWeightedGraphRenderer(graph: graph, forceComputer: self.forceComputer)
+            self.canvasView.renderer = FaceWeightedGraphRenderer(graph: graph, forceApplicator: self.forceApplicator)
         case .none:
             self.canvasView.renderer = nil
         }
@@ -55,7 +55,7 @@ class GraphView: UIView {
 
 private struct VertexWeightedGraphRenderer: CanvasRenderer {
     var graph: VertexWeightedGraph
-    var forceComputer: ForceComputer
+    var forceApplicator: ForceApplicator
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         let context = UIGraphicsGetCurrentContext()!
@@ -74,7 +74,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
         }
 
         // Forces
-        for (vertex, force) in (try? self.forceComputer.forces(in: self.graph)) ?? [:] {
+        for (vertex, force) in (try? self.forceApplicator.forces(in: self.graph)) ?? [:] {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)
@@ -86,7 +86,7 @@ private struct VertexWeightedGraphRenderer: CanvasRenderer {
 
 private struct FaceWeightedGraphRenderer: CanvasRenderer {
     var graph: PolygonalDual
-    var forceComputer: ForceComputer
+    var forceApplicator: ForceApplicator
 
     func draw(in context: CGContext, scale: CGFloat, rotation: Angle) {
         self.graph.ensureIntegrity(strict: true)
@@ -121,7 +121,7 @@ private struct FaceWeightedGraphRenderer: CanvasRenderer {
         }
 
         // Forces
-        for (vertex, force) in (try? self.forceComputer.forces(in: self.graph)) ?? [:] {
+        for (vertex, force) in (try? self.forceApplicator.forces(in: self.graph)) ?? [:] {
             context.beginPath()
             context.move(to: self.graph.position(of: vertex))
             context.addLine(to: context.currentPointOfPath + 10 * force)

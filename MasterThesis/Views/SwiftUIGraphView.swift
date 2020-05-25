@@ -11,15 +11,15 @@ import SwiftUI
 
 struct SwiftUIGraphView: View, UIViewRepresentable {
     var graph: EitherGraph?
-    var forceComputer: ConcreteForceComputer
+    var forceApplicator: PrEdForceApplicator
 
     func makeUIView(context: UIViewRepresentableContext<SwiftUIGraphView>) -> GraphView {
-        return GraphView(frame: UIScreen.main.bounds, graph: self.graph, forceComputer: self.forceComputer)
+        return GraphView(frame: UIScreen.main.bounds, graph: self.graph, forceApplicator: self.forceApplicator)
     }
 
     func updateUIView(_ view: GraphView, context: UIViewRepresentableContext<SwiftUIGraphView>) {
         view.graph = self.graph
-        view.forceComputer = self.forceComputer
+        view.forceApplicator = self.forceApplicator
     }
 
     static func dismantleUIView(_ uiView: GraphView, coordinator: Void) {

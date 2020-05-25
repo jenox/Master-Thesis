@@ -9,5 +9,9 @@
 import CoreGraphics
 
 protocol ForceApplicator {
-    func apply<Graph>(_ forces: [Graph.Vertex: CGVector], to graph: inout Graph) throws where Graph: StraightLineGraph
+    func forces(in graph: VertexWeightedGraph) throws -> [VertexWeightedGraph.Vertex: CGVector]
+    func applyForces(to graph: inout VertexWeightedGraph) throws
+
+    func forces(in graph: PolygonalDual) throws -> [PolygonalDual.Vertex: CGVector]
+    func applyForces(to graph: inout PolygonalDual) throws
 }

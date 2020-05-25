@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
-        return SwiftUIGraphView(graph: self.pipeline.graph, forceComputer: self.pipeline.forceComputer)
+        return SwiftUIGraphView(graph: self.pipeline.graph, forceApplicator: self.pipeline.forceApplicator)
 //            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
 //            .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
@@ -37,7 +37,7 @@ struct ContentView: View {
 
     private var forceConfigurationView: some View {
         if self.pipeline.graph.isFaceWeighted {
-            return AnyView(ConcreteForceComputerConfigurationView(forceComputer: self.$pipeline.forceComputer).frame(width: 400, height: nil, alignment: .center))
+            return AnyView(PrEdForceApplicatorConfigurationView(forceApplicator: self.$pipeline.forceApplicator).frame(width: 400, height: nil, alignment: .center))
         } else {
             return AnyView(EmptyView())
         }

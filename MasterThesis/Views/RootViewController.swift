@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-typealias PrimaryPipeline = Pipeline<DelaunayGraphGenerator, NaiveTransformer, ConcreteForceComputer, PrEdForceApplicator>
+typealias PrimaryPipeline = Pipeline<DelaunayGraphGenerator, NaiveTransformer, PrEdForceApplicator>
 
 class RootViewController: UIHostingController<AnyView> {
     let pipeline: PrimaryPipeline = .init(
         generator: DelaunayGraphGenerator(numberOfCountries: 10, nestingRatio: 0, nestingBias: 0),
         transformer: NaiveTransformer(),
-        forceComputer: ConcreteForceComputer(),
         forceApplicator: PrEdForceApplicator(),
         qualityMetrics: [
             ("Statistical Accuracy", StatisticalAccuracy()),

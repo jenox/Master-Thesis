@@ -12,14 +12,13 @@ import CoreGraphics
 import CoreFoundation
 import Foundation
 
-final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: MasterThesis.Transformer, ForceComputer: MasterThesis.ForceComputer, ForceApplicator: MasterThesis.ForceApplicator {
+final class Pipeline<Generator, Transformer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: MasterThesis.Transformer, ForceApplicator: MasterThesis.ForceApplicator {
 
     // MARK: - Initialization
 
-    init(generator: Generator, transformer: Transformer, forceComputer: ForceComputer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)], randomNumberGenerator: AnyRandomNumberGenerator) {
+    init(generator: Generator, transformer: Transformer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)], randomNumberGenerator: AnyRandomNumberGenerator) {
         self.generator = generator
         self.transformer = transformer
-        self.forceComputer = forceComputer
         self.forceApplicator = forceApplicator
         self.qualityMetrics = qualityMetrics
         self.randomNumberGenerator = randomNumberGenerator
@@ -30,7 +29,6 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
 
     @Published var generator: Generator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     @Published var transformer: Transformer { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
-    @Published var forceComputer: ForceComputer { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     @Published var forceApplicator: ForceApplicator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
     private(set) var randomNumberGenerator: AnyRandomNumberGenerator
@@ -77,13 +75,11 @@ final class Pipeline<Generator, Transformer, ForceComputer, ForceApplicator>: Ob
         self.scheduleOperation(named: "step", {
             switch self.graph {
             case .vertexWeighted(var graph):
-                let forces = try self.forceComputer.forces(in: graph)
-                try self.forceApplicator.apply(forces, to: &graph)
+                try self.forceApplicator.applyForces(to: &graph)
                 return .vertexWeighted(graph)
             case .faceWeighted(var graph):
                 try graph.willStepOnce()
-                let forces = try self.forceComputer.forces(in: graph)
-                try self.forceApplicator.apply(forces, to: &graph)
+                try self.forceApplicator.applyForces(to: &graph)
                 try graph.didStepOnce()
                 return .faceWeighted(graph)
             case .none:

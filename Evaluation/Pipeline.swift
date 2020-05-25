@@ -21,7 +21,6 @@ struct Pipeline {
     private var state: EitherGraph
 
     private let transformer: Transformer = NaiveTransformer()
-    private let forceComputer: ForceComputer = ConcreteForceComputer()
     private let forceApplicator: ForceApplicator = PrEdForceApplicator()
     private var randomNumberGenerator: Xoroshiro128PlusRandomNumberGenerator
 
@@ -53,13 +52,11 @@ struct Pipeline {
     mutating func step() {
         switch self.state {
         case .vertexWeighted(var graph):
-            let forces = try! self.forceComputer.forces(in: graph)
-            try! self.forceApplicator.apply(forces, to: &graph)
+            try! self.forceApplicator.applyForces(to: &graph)
             self.state = .vertexWeighted(graph)
         case .faceWeighted(var graph):
             try! graph.willStepOnce()
-            let forces = try! self.forceComputer.forces(in: graph)
-            try! self.forceApplicator.apply(forces, to: &graph)
+            try! self.forceApplicator.applyForces(to: &graph)
             try! graph.didStepOnce()
             self.state = .faceWeighted(graph)
         }
