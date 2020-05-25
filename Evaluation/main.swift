@@ -12,7 +12,7 @@ import ArgumentParser
 private struct TopLevelCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "evaluate",
-        subcommands: [GenerateUUIDsCommand.self, RunThroughPipelineCommand.self, EvaluateCommand.self]
+        subcommands: [GenerateUUIDsCommand.self, RunThroughPipelineCommand.self, EvaluateCommand.self, BenchmarkCommand.self]
     )
 }
 

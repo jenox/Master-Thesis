@@ -65,6 +65,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "pipeline --number-of-vertices=10 --nesting-ratio=0.5 --nesting-bias=0 --number-of-optimization-steps=5 --number-of-dynamic-operations=2 --uuid-file=/Users/jenox/Desktop/Directory/uuids.txt --output-directory=/Users/jenox/Desktop/Directory/test/"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "benchmark"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
