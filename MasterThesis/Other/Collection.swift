@@ -37,9 +37,3 @@ extension Collection where Element == Double {
         return self.reduce(0, +) / Double(self.count)
     }
 }
-
-extension Double {
-    func rounded(scale: Double) -> Double {
-        return (self * scale).rounded() / scale
-    }
-}
