@@ -88,7 +88,7 @@ extension EmbeddedClusterGraph {
     }
 }
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     var embeddedClusterGraph: EmbeddedClusterGraph {
         var graph = EmbeddedClusterGraph()
         graph.vertices = self.faces
@@ -116,7 +116,7 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     typealias _Face = Face<UniquelyIdentifiedVertex>
 
     /// In counterclockwise order.

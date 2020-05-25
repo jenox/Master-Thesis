@@ -24,7 +24,54 @@ extension PolygonalDual {
         return Set(self.embeddedClusterGraph.flippableInternalEdges.map(FlipAdjacencyOperation.init))
     }
 
-    mutating func flipAdjacency(_ operation: FlipAdjacencyOperation) throws {
+    mutating func flipAdjacency(_ operation: PolygonalDual.FlipAdjacencyOperation) throws {
+        self.ensureValueSemantics()
+        try self.storage.flipAdjacency(operation)
+    }
+}
+
+extension PolygonalDual {
+    struct CreateAdjacencyOperation: Equatable, Hashable {
+        init(over sharedNeighbor: ClusterName) {
+            self.sharedNeighbor = sharedNeighbor
+        }
+
+        let sharedNeighbor: ClusterName
+    }
+
+    func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
+        return Set(self.embeddedClusterGraph.insertableEdges.map(CreateAdjacencyOperation.init))
+    }
+
+    mutating func createAdjacency(_ operation: PolygonalDual.CreateAdjacencyOperation) throws {
+        self.ensureValueSemantics()
+        try self.storage.createAdjacency(operation)
+    }
+}
+
+extension PolygonalDual {
+    struct RemoveAdjacencyOperation: Equatable, Hashable {
+        init(between u: ClusterName, and v: ClusterName) {
+            self.incidentFaces = [u, v]
+
+            precondition(Set(self.incidentFaces).count == 2)
+        }
+
+        let incidentFaces: ClusterNameSet
+    }
+
+    func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {
+        return Set(self.embeddedClusterGraph.removableEdges.map(RemoveAdjacencyOperation.init))
+    }
+
+    mutating func removeAdjacency(_ operation: PolygonalDual.RemoveAdjacencyOperation) throws {
+        self.ensureValueSemantics()
+        try self.storage.removeAdjacency(operation)
+    }
+}
+
+extension MutablePolygonalDual {
+    func flipAdjacency(_ operation: PolygonalDual.FlipAdjacencyOperation) throws {
         // u = left, v = right
         // x = above, y = below
         let (u, v) = operation.incidentFaces.destructured2()!
@@ -51,22 +98,8 @@ extension PolygonalDual {
         self.expandDegenerateBoundary(at: vertex, into: v)
         self.ensureIntegrity(strict: true)
     }
-}
 
-extension PolygonalDual {
-    struct CreateAdjacencyOperation: Equatable, Hashable {
-        init(over sharedNeighbor: ClusterName) {
-            self.sharedNeighbor = sharedNeighbor
-        }
-
-        let sharedNeighbor: ClusterName
-    }
-
-    func possibleCreateAdjacencyOperations() -> Set<CreateAdjacencyOperation> {
-        return Set(self.embeddedClusterGraph.insertableEdges.map(CreateAdjacencyOperation.init))
-    }
-
-    mutating func createAdjacency(_ operation: CreateAdjacencyOperation) throws {
+    func createAdjacency(_ operation: PolygonalDual.CreateAdjacencyOperation) throws {
         let fv = Face(vertices: self.boundary(of: operation.sharedNeighbor))
         let fo = self.internalFacesAndOuterFace().outer
         let boundary = self.computeBoundary(between: fv.vertices, and: fo.vertices)!.shared
@@ -76,24 +109,8 @@ extension PolygonalDual {
         self.expandDegenerateBoundary(at: vertex, into: operation.sharedNeighbor)
         self.ensureIntegrity(strict: true)
     }
-}
 
-extension PolygonalDual {
-    struct RemoveAdjacencyOperation: Equatable, Hashable {
-        init(between u: ClusterName, and v: ClusterName) {
-            self.incidentFaces = [u, v]
-
-            precondition(Set(self.incidentFaces).count == 2)
-        }
-
-        let incidentFaces: ClusterNameSet
-    }
-
-    func possibleRemoveAdjacencyOperations() -> Set<RemoveAdjacencyOperation> {
-        return Set(self.embeddedClusterGraph.removableEdges.map(RemoveAdjacencyOperation.init))
-    }
-
-    mutating func removeAdjacency(_ operation: RemoveAdjacencyOperation) throws {
+    func removeAdjacency(_ operation: PolygonalDual.RemoveAdjacencyOperation) throws {
         let (u, w) = operation.incidentFaces.destructured2()!
 
         guard self.faces.contains(u) else { throw UnsupportedOperationError() }
@@ -122,8 +139,8 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual {
-    private mutating func contractBoundary(_ boundary: [Vertex]) -> Vertex {
+extension MutablePolygonalDual {
+    private func contractBoundary(_ boundary: [Vertex]) -> Vertex {
         precondition(boundary.count >= 2)
 
         var boundary = boundary
@@ -137,7 +154,7 @@ extension PolygonalDual {
         return boundary.destructured1()!
     }
 
-    private mutating func contract(_ u: Vertex, into v: Vertex) {
+    private func contract(_ u: Vertex, into v: Vertex) {
         precondition(self.vertices(adjacentTo: u).contains(v))
         precondition(self.degree(of: u) == 3)
         precondition(self.degree(of: v) >= 2)
@@ -206,7 +223,7 @@ extension PolygonalDual {
         [faces[2].vertices[1], rightBend, v].compactMap({ $0 }).adjacentPairs(wraparound: false).forEach({ self.insertEdge(between: $0, and: $1) })
     }
 
-    private mutating func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID?) {
+    private func expandDegenerateBoundary(at vertex: Vertex, into faceID: FaceID?) {
         let face = faceID.map({ Face(vertices: self.boundary(of: $0)) }) ?? self.internalFacesAndOuterFace().outer
 
         var faces = Array(self.faces(incidentTo: vertex))

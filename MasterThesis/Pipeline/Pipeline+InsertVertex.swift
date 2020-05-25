@@ -90,6 +90,13 @@ extension PolygonalDual {
 
 private extension PolygonalDual {
     mutating func insertFace(named name: ClusterName, weight: ClusterWeight, at vertex: Vertex) throws {
+        self.ensureValueSemantics()
+        try self.storage.insertFace(named: name, weight: weight, at: vertex)
+    }
+}
+
+private extension MutablePolygonalDual {
+    func insertFace(named name: ClusterName, weight: ClusterWeight, at vertex: Vertex) throws {
         var faces = Array(self.faces(incidentTo: vertex))
         assert(faces.allSatisfy({ $0.vertices.first == vertex }))
 

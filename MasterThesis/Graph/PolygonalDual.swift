@@ -9,19 +9,181 @@
 import CoreGraphics
 import Geometry
 
+protocol PolygonalDualRequirements: StraightLineGraph {
+    var faces: OrderedSet<ClusterName> { get }
+    var embeddedClusterGraph: EmbeddedClusterGraph { get }
+
+    func vertex(adjacentTo u: UniquelyIdentifiedVertex, and v: UniquelyIdentifiedVertex) -> UniquelyIdentifiedVertex?
+    func polygon(for face: ClusterName) -> Polygon
+    func area(of face: ClusterName) -> Double
+    func weight(of face: ClusterName) -> ClusterWeight
+    mutating func setWeight(of face: ClusterName, to value: ClusterWeight)
+    func boundary(of face: ClusterName) -> [UniquelyIdentifiedVertex]
+}
+
+enum PolygonalDualIntergrityViolation: Error {
+    case fatal
+    case invalidVertexDegree
+    case asymmetricAdjacencies
+    case corruptFaceRepresentation1
+    case corruptFaceRepresentation2
+    case corruptFaceRepresentation3
+    case corruptFaceRepresentation4
+    case nonSimplePolygonalFaces1
+    case nonSimplePolygonalFaces2
+    case nonSimplePolygonalFaces3
+    case nonSimplePolygonalFaces4
+    case edgeCrossing
+}
+
 struct PolygonalDual {
+    typealias Vertex = UniquelyIdentifiedVertex
+    typealias FaceID = ClusterName
+    typealias Weight = ClusterWeight
+
+    init() {
+        self.storage = .init()
+    }
+
+    private(set) var storage: MutablePolygonalDual
+
+    mutating func ensureValueSemantics() {
+        if !isKnownUniquelyReferenced(&self.storage) {
+            print("[CSC] deep copy")
+            self.storage = self.storage.clone()
+        }
+    }
+
+    mutating func insertVertex(at position: CGPoint) -> Vertex {
+        self.ensureValueSemantics()
+        return self.storage.insertVertex(at: position)
+    }
+
+    mutating func insertEdge(between u: Vertex, and v: Vertex) {
+        self.ensureValueSemantics()
+        self.storage.insertEdge(between: u, and: v)
+    }
+
+    mutating func removeEdge(between u: Vertex, and v: Vertex) {
+        self.ensureValueSemantics()
+        self.storage.removeEdge(between: u, and: v)
+    }
+
+    mutating func defineFace(named name: FaceID, boundedBy boundary: [Vertex], weight: Weight) {
+        self.ensureValueSemantics()
+        self.storage.defineFace(named: name, boundedBy: boundary, weight: weight)
+    }
+
+    func ensureIntegrity(strict: Bool) {
+        self.storage.ensureIntegrity(strict: strict)
+    }
+
+    func validateIntegrity(strict: Bool) -> Result<Void, PolygonalDualIntergrityViolation> {
+        return self.storage.validateIntegrity(strict: strict)
+    }
+}
+
+extension PolygonalDual: StraightLineGraph {
+    typealias Vertices = OrderedSet<Vertex>
+    typealias Edges = DirectedEdgeIterator<Vertex>
+
+    var vertices: OrderedSet<Vertex> {
+        return self.storage.vertices
+    }
+
+    var edges: DirectedEdgeIterator<Vertex> {
+        return self.storage.edges
+    }
+
+    func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
+        return self.storage.vertices(adjacentTo: vertex)
+    }
+
+    func position(of vertex: Vertex) -> CGPoint {
+        return self.storage.position(of: vertex)
+    }
+
+    mutating func move(_ vertex: Vertex, to position: CGPoint) {
+        self.ensureValueSemantics()
+        self.storage.move(vertex, to: position)
+    }
+}
+
+extension PolygonalDual: PolygonalDualRequirements {
+    var faces: OrderedSet<ClusterName> {
+        return self.storage.faces
+    }
+
+    var embeddedClusterGraph: EmbeddedClusterGraph {
+        return self.storage.embeddedClusterGraph
+    }
+
+    func vertex(adjacentTo u: Vertex, and v: Vertex) -> Vertex? {
+        return self.storage.vertex(adjacentTo: u, and: v)
+    }
+
+    func polygon(for face: FaceID) -> Polygon {
+        return self.storage.polygon(for: face)
+    }
+
+    func area(of face: FaceID) -> Double {
+        return self.storage.area(of: face)
+    }
+
+    func weight(of face: FaceID) -> Weight {
+        return self.storage.weight(of: face)
+    }
+
+    mutating func setWeight(of face: FaceID, to value: Weight) {
+        self.ensureValueSemantics()
+        self.storage.setWeight(of: face, to: value)
+    }
+
+    func boundary(of face: FaceID) -> [Vertex] {
+        return self.storage.boundary(of: face)
+    }
+}
+
+extension PolygonalDual: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.storage = try container.decode(MutablePolygonalDual.self)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.storage)
+    }
+}
+
+extension MutablePolygonalDual: PolygonalDualRequirements {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+final class MutablePolygonalDual: Codable {
     init() {}
 
     typealias Vertex = UniquelyIdentifiedVertex
     typealias FaceID = ClusterName
     typealias Weight = ClusterWeight
 
-    struct VertexPayload {
+    struct VertexPayload: Codable {
         var neighbors: OrderedSet<Vertex>
         var position: CGPoint
     }
 
-    struct FacePayload {
+    struct FacePayload: Codable {
         var boundary: [Vertex]
         var weight: Weight
     }
@@ -31,10 +193,21 @@ struct PolygonalDual {
     var faces: OrderedSet<FaceID> = []
     var facePayloads: [FaceID: FacePayload] = [:]
     var currentVertexIdentifier: Int = 0
+
+    func clone() -> MutablePolygonalDual {
+        let copy = MutablePolygonalDual()
+        copy.vertices = self.vertices
+        copy.vertexPayloads = self.vertexPayloads
+        copy.faces = self.faces
+        copy.facePayloads = self.facePayloads
+        copy.currentVertexIdentifier = self.currentVertexIdentifier
+
+        return copy
+    }
 }
 
-extension PolygonalDual {
-    mutating func insertVertex(at position: CGPoint) -> Vertex {
+extension MutablePolygonalDual {
+    func insertVertex(at position: CGPoint) -> Vertex {
         let vertex = Vertex(id: self.currentVertexIdentifier)
         self.currentVertexIdentifier += 1
 
@@ -44,7 +217,7 @@ extension PolygonalDual {
         return vertex
     }
 
-    mutating func insertEdge(between u: Vertex, and v: Vertex) {
+    func insertEdge(between u: Vertex, and v: Vertex) {
         assert(!self.vertexPayloads[u]!.neighbors.contains(v))
         assert(!self.vertexPayloads[v]!.neighbors.contains(u))
 
@@ -52,7 +225,7 @@ extension PolygonalDual {
         self.insertEdge(from: v, to: u)
     }
 
-    mutating func removeEdge(between u: Vertex, and v: Vertex) {
+    func removeEdge(between u: Vertex, and v: Vertex) {
         assert(self.vertexPayloads[u]!.neighbors.contains(v))
         assert(self.vertexPayloads[v]!.neighbors.contains(u))
 
@@ -60,7 +233,7 @@ extension PolygonalDual {
         self.vertexPayloads[v]!.neighbors.remove(u)
     }
 
-    mutating func defineFace(named name: FaceID, boundedBy boundary: [Vertex], weight: Weight) {
+    func defineFace(named name: FaceID, boundedBy boundary: [Vertex], weight: Weight) {
         assert(self.facePayloads[name] == nil)
         assert(boundary.adjacentPairs(wraparound: true).allSatisfy(self.containsEdge(between:and:)))
 
@@ -69,7 +242,7 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     func ensureIntegrity(strict: Bool) {
         switch self.validateIntegrity(strict: strict) {
         case .success:
@@ -132,23 +305,8 @@ extension PolygonalDual {
     }
 }
 
-enum PolygonalDualIntergrityViolation: Error {
-    case fatal
-    case invalidVertexDegree
-    case asymmetricAdjacencies
-    case corruptFaceRepresentation1
-    case corruptFaceRepresentation2
-    case corruptFaceRepresentation3
-    case corruptFaceRepresentation4
-    case nonSimplePolygonalFaces1
-    case nonSimplePolygonalFaces2
-    case nonSimplePolygonalFaces3
-    case nonSimplePolygonalFaces4
-    case edgeCrossing
-}
-
-extension PolygonalDual {
-    private mutating func insertEdge(from u: Vertex, to v: Vertex) {
+extension MutablePolygonalDual {
+    private func insertEdge(from u: Vertex, to v: Vertex) {
         var neighbors = self.vertexPayloads[u]!.neighbors
         let angles = neighbors.map({ self.angle(from: u, to: $0).counterclockwise })
         let index = angles.index(forInserting: self.angle(from: u, to: v).counterclockwise)
@@ -168,7 +326,7 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual: StraightLineGraph {
+extension MutablePolygonalDual: StraightLineGraph {
     typealias Vertices = OrderedSet<Vertex>
     typealias Edges = DirectedEdgeIterator<Vertex>
 
@@ -184,12 +342,12 @@ extension PolygonalDual: StraightLineGraph {
         return self.vertexPayloads[vertex]!.position
     }
 
-    mutating func move(_ vertex: Vertex, to position: CGPoint) {
+    func move(_ vertex: Vertex, to position: CGPoint) {
         self.vertexPayloads[vertex]!.position = position
     }
 }
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     func polygon(for face: FaceID) -> Polygon {
         return Polygon(points: self.boundary(of: face).map(self.position(of:)))
     }
@@ -202,7 +360,7 @@ extension PolygonalDual {
         return self.facePayloads[face]!.weight
     }
 
-    mutating func setWeight(of face: FaceID, to value: Weight) {
+    func setWeight(of face: FaceID, to value: Weight) {
         self.facePayloads[face]!.weight = value
     }
 
@@ -211,7 +369,7 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     func isBend(_ vertex: Vertex) -> Bool {
         return self.degree(of: vertex) == 2
     }
@@ -239,23 +397,12 @@ extension PolygonalDual {
     }
 }
 
-extension PolygonalDual: CustomStringConvertible {
-    var description: String {
-        var description = ""
-        for vertex in self.vertices {
-            description.append("\(vertex) -> \(Array(self.vertices(adjacentTo: vertex)))\n")
-        }
-        description.removeLast()
-        return description
-    }
-}
-
 
 // MARK: - Subdivision & Smoothing
 
-extension PolygonalDual {
+extension MutablePolygonalDual {
     @discardableResult
-    mutating func subdivideEdge(between u: Vertex, and w: Vertex) -> Vertex {
+    func subdivideEdge(between u: Vertex, and w: Vertex) -> Vertex {
         precondition(self.vertices(adjacentTo: u).contains(w))
 
         let v = self.insertVertex(at: self.segment(from: u, to: w).midpoint)
@@ -275,7 +422,7 @@ extension PolygonalDual {
         return v
     }
 
-    mutating func smooth(_ v: Vertex) throws {
+    func smooth(_ v: Vertex) throws {
         let neighbors = self.vertices(adjacentTo: v)
         let faces = self.faces(incidentTo: v)
 
@@ -350,7 +497,3 @@ extension Array where Element == Angle {
         return index
     }
 }
-
-extension PolygonalDual: Codable {}
-extension PolygonalDual.VertexPayload: Codable {}
-extension PolygonalDual.FacePayload: Codable {}

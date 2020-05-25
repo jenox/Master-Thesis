@@ -10,6 +10,16 @@ import CoreGraphics
 
 extension PolygonalDual {
     mutating func willStepOnce() throws {
+        self.ensureValueSemantics()
+        try self.storage.performSmoothingsAndSubdivisionsIfNeeded()
+    }
+
+    mutating func didStepOnce() throws {
+    }
+}
+
+private extension MutablePolygonalDual {
+    func performSmoothingsAndSubdivisionsIfNeeded() throws {
         let lengths = self.edges.map(self.distance(from:to:))
         let average = lengths.reduce(0, +) / CGFloat(lengths.count)
 
@@ -27,9 +37,6 @@ extension PolygonalDual {
 //            print("subdivide \(u)-\(v)")
             self.subdivideEdge(between: u, and: v)
         }
-    }
-
-    mutating func didStepOnce() throws {
     }
 
     private func distanceToClosestNeighbor(of v: Vertex) -> CGFloat {

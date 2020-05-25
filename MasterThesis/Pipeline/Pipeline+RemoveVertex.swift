@@ -46,6 +46,13 @@ extension PolygonalDual {
 
 private extension PolygonalDual {
     mutating func removeFace(_ faceID: FaceID) throws {
+        self.ensureValueSemantics()
+        try self.storage.removeFace(faceID)
+    }
+}
+
+private extension MutablePolygonalDual {
+    func removeFace(_ faceID: FaceID) throws {
         guard self.faces.contains(faceID) else { throw UnsupportedOperationError() }
 
         let face = Face(vertices: self.facePayloads[faceID]!.boundary)

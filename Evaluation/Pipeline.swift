@@ -13,72 +13,77 @@ struct Pipeline {
         self.seed = seed
         self.generator = generator
         self.randomNumberGenerator = .init(seed: seed)
-        self.state = .vertexWeighted(try! generator.generateRandomGraph(using: &self.randomNumberGenerator))
+        self.vertexWeightedGraph = try! generator.generateRandomGraph(using: &self.randomNumberGenerator)
+        self.polygonalDual = nil
     }
 
     private let seed: UInt64
     private let generator: DelaunayGraphGenerator
-    private var state: EitherGraph
+
+    // Double optionals over enum to prevent COW
+    private var vertexWeightedGraph: VertexWeightedGraph?
+    private var polygonalDual: PolygonalDual?
 
     private let transformer: Transformer = NaiveTransformer()
     private let forceApplicator: ForceApplicator = PrEdForceApplicator()
     private var randomNumberGenerator: Xoroshiro128PlusRandomNumberGenerator
 
     var data: Data {
-        switch self.state {
-        case .vertexWeighted(let graph):
+        if let graph = self.vertexWeightedGraph {
             return try! JSONEncoder().encode(graph)
-        case .faceWeighted(let graph):
+        } else if let graph = self.polygonalDual {
             return try! JSONEncoder().encode(graph)
+        } else {
+            fatalError()
         }
     }
 
     mutating func transform() {
-        let untransformed = self.state.vertexWeightedGraph!
-        let transformed = try! self.transformer.transform(untransformed)
-
-        self.state = .faceWeighted(transformed)
+        self.polygonalDual = try! self.transformer.transform(self.vertexWeightedGraph!)
+        self.vertexWeightedGraph = nil
     }
 
     mutating func save(to url: URL) {
-        switch self.state {
-        case .vertexWeighted(let graph):
+        if let graph = self.vertexWeightedGraph {
             try! JSONEncoder().encode(graph).write(to: url)
-        case .faceWeighted(let graph):
+        } else if let graph = self.polygonalDual {
             try! JSONEncoder().encode(graph).write(to: url)
+        } else {
+            fatalError()
         }
     }
 
     mutating func step() {
-        switch self.state {
-        case .vertexWeighted(var graph):
-            try! self.forceApplicator.applyForces(to: &graph)
-            self.state = .vertexWeighted(graph)
-        case .faceWeighted(var graph):
-            try! graph.willStepOnce()
-            try! self.forceApplicator.applyForces(to: &graph)
-            try! graph.didStepOnce()
-            self.state = .faceWeighted(graph)
+        if self.vertexWeightedGraph != nil {
+            try! self.forceApplicator.applyForces(to: &self.vertexWeightedGraph!)
+        } else if self.polygonalDual != nil {
+            try! self.polygonalDual!.willStepOnce()
+            try! self.forceApplicator.applyForces(to: &self.polygonalDual!)
+            try! self.polygonalDual!.didStepOnce()
+        } else {
+            fatalError()
         }
     }
 
     mutating func applyRandomOperation() {
-        var graph = self.state.faceWeightedGraph!
+        self.polygonalDual!.applyRandomOperation(using: self.generator, prng: &self.randomNumberGenerator)
+    }
+}
 
-        for face in graph.faces {
-            let generated = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-            let weight = 0.75 * graph.weight(of: face) + 0.25 * generated
+private extension PolygonalDual {
+    mutating func applyRandomOperation<T>(using generator: DelaunayGraphGenerator, prng: inout T) where T: RandomNumberGenerator {
+        for face in self.faces {
+            let generated = generator.generateRandomWeight(using: &prng)
+            let weight = 0.75 * self.weight(of: face) + 0.25 * generated
 
-            graph.setWeight(of: face, to: weight)
+            self.setWeight(of: face, to: weight)
         }
 
         let possibleNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ".map(ClusterName.init)
-        let name = possibleNames.first(where: { !graph.faces.contains($0) })!
-        let weight = self.generator.generateRandomWeight(using: &self.randomNumberGenerator)
-        let operation = graph.randomDynamicOperation(name: name, weight: weight, using: &self.randomNumberGenerator)
+        let name = possibleNames.first(where: { !self.faces.contains($0) })!
+        let weight = generator.generateRandomWeight(using: &prng)
+        let operation = self.randomDynamicOperation(name: name, weight: weight, using: &prng)
 
-        try! graph.apply(operation)
-
-        self.state = .faceWeighted(graph)
+        try! self.apply(operation)
     }
 }
