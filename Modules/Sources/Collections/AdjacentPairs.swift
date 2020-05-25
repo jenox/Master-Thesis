@@ -26,10 +26,11 @@ import Swift
 
 // TODO: Naming. Wraparound, circular, cyclic, looping?
 public struct AdjacentPairs<Base> where Base: BidirectionalCollection {
-    private let base: Base
-    private let wraparound: Bool
+    @usableFromInline internal let base: Base
+    @usableFromInline internal let wraparound: Bool
 
-    fileprivate init(base: Base, wraparound: Bool) {
+    @usableFromInline
+    internal init(base: Base, wraparound: Bool) {
         self.base = base
         self.wraparound = wraparound
     }
@@ -42,17 +43,25 @@ extension AdjacentPairs: BidirectionalCollection {
     public typealias Indices = DefaultIndices<AdjacentPairs>
 
     public struct Index: Comparable {
-        fileprivate var index: Base.Index
+        @usableFromInline internal var index: Base.Index
 
+        @usableFromInline
+        internal init(index: Base.Index) {
+            self.index = index
+        }
+
+        @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {
             return lhs.index < rhs.index
         }
     }
 
+    @inlinable
     public var startIndex: Index {
         return Index(index: self.base.startIndex)
     }
 
+    @inlinable
     public var endIndex: Index {
         if self.wraparound {
             return Index(index: self.base.endIndex)
@@ -68,15 +77,18 @@ extension AdjacentPairs: BidirectionalCollection {
         }
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         // TODO: Prevent advancement past endIndex for non-wraparound?
         return Index(index: self.base.index(after: index.index))
     }
 
+    @inlinable
     public func index(before index: Index) -> Index {
         return Index(index: self.base.index(before: index.index))
     }
 
+    @inlinable
     public subscript(position: Index) -> (Base.Element, Base.Element) {
         let circulator = Circulator(base: self.base)
 
@@ -88,6 +100,7 @@ extension AdjacentPairs: BidirectionalCollection {
 }
 
 public extension BidirectionalCollection {
+    @inlinable
     func adjacentPairs(wraparound: Bool) -> AdjacentPairs<Self> {
         return AdjacentPairs(base: self, wraparound: wraparound)
     }

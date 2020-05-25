@@ -27,19 +27,21 @@ import Swift
 // TODO: Make this implement BidirectionalCollection.
 // TODO: Relax requirement to BidirectionalCollection.
 public struct Pairs<Base> where Base: RandomAccessCollection {
-    private let base: Base
-    private let mode: CombinationMode
+    @usableFromInline
+    internal enum CombinationMode {
+        case cartesian // any indices
+        case triangular // nondecreasing indices
+        case strictlyTriangular // increasing indices
+    }
 
-    fileprivate init(base: Base, mode: CombinationMode) {
+    @usableFromInline internal let base: Base
+    @usableFromInline internal let mode: CombinationMode
+
+    @usableFromInline
+    internal init(base: Base, mode: CombinationMode) {
         self.base = base
         self.mode = mode
     }
-}
-
-private enum CombinationMode {
-    case cartesian // any indices
-    case triangular // nondecreasing indices
-    case strictlyTriangular // increasing indices
 }
 
 extension Pairs: Collection {
@@ -52,6 +54,7 @@ extension Pairs: Collection {
         case pastEnd
         case inRange(Int, Int)
 
+        @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {
             switch (lhs, rhs) {
             case (.pastEnd, .pastEnd), (.pastEnd, .inRange):
@@ -63,6 +66,7 @@ extension Pairs: Collection {
             }
         }
 
+        @inlinable
         public var debugDescription: String {
             switch self {
             case .pastEnd:
@@ -73,6 +77,7 @@ extension Pairs: Collection {
         }
     }
 
+    @inlinable
     public var startIndex: Index {
         let count = self.base.count
 
@@ -86,10 +91,12 @@ extension Pairs: Collection {
         }
     }
 
+    @inlinable
     public var endIndex: Index {
         return .pastEnd
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         guard case .inRange(let first, let second) = index else { preconditionFailure() }
 
@@ -123,10 +130,12 @@ extension Pairs: Collection {
         }
     }
 
+    @inlinable
     public func index(before index: Index) -> Index {
         fatalError()
     }
 
+    @inlinable
     public subscript(position: Index) -> Element {
         guard case .inRange(let first, let second) = position else { preconditionFailure() }
 
@@ -138,14 +147,17 @@ extension Pairs: Collection {
 }
 
 public extension RandomAccessCollection {
+    @inlinable
     func cartesianPairs() -> Pairs<Self> {
         return Pairs(base: self, mode: .cartesian)
     }
 
+    @inlinable
     func triangularPairs() -> Pairs<Self> {
         return Pairs(base: self, mode: .triangular)
     }
 
+    @inlinable
     func strictlyTriangularPairs() -> Pairs<Self> {
         return Pairs(base: self, mode: .strictlyTriangular)
     }

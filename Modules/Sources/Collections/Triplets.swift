@@ -27,19 +27,21 @@ import Swift
 // TODO: Make this implement BidirectionalCollection.
 // TODO: Relax requirement to BidirectionalCollection.
 public struct Triplets<Base> where Base: RandomAccessCollection {
-    private let base: Base
-    private let mode: CombinationMode
+    @usableFromInline internal let base: Base
+    @usableFromInline internal let mode: CombinationMode
 
-    fileprivate init(base: Base, mode: CombinationMode) {
+    @usableFromInline
+    internal init(base: Base, mode: CombinationMode) {
         self.base = base
         self.mode = mode
     }
-}
 
-private enum CombinationMode {
-    case cartesian // any indices
-    case triangular // nondecreasing indices
-    case strictlyTriangular // increasing indices
+    @usableFromInline
+    internal enum CombinationMode {
+        case cartesian // any indices
+        case triangular // nondecreasing indices
+        case strictlyTriangular // increasing indices
+    }
 }
 
 extension Triplets: Collection {
@@ -52,6 +54,7 @@ extension Triplets: Collection {
         case pastEnd
         case inRange(Int, Int, Int)
 
+        @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {
             switch (lhs, rhs) {
             case (.pastEnd, .pastEnd), (.pastEnd, .inRange):
@@ -63,6 +66,7 @@ extension Triplets: Collection {
             }
         }
 
+        @inlinable
         public var debugDescription: String {
             switch self {
             case .pastEnd:
@@ -73,6 +77,7 @@ extension Triplets: Collection {
         }
     }
 
+    @inlinable
     public var startIndex: Index {
         let count = self.base.count
 
@@ -86,10 +91,12 @@ extension Triplets: Collection {
         }
     }
 
+    @inlinable
     public var endIndex: Index {
         return .pastEnd
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         guard case .inRange(let first, let second, let third) = index else { preconditionFailure() }
 
@@ -129,10 +136,12 @@ extension Triplets: Collection {
         }
     }
 
+    @inlinable
     public func index(before index: Index) -> Index {
         fatalError()
     }
 
+    @inlinable
     public subscript(position: Index) -> Element {
         guard case .inRange(let first, let second, let third) = position else { preconditionFailure() }
 
@@ -145,14 +154,17 @@ extension Triplets: Collection {
 }
 
 public extension RandomAccessCollection {
+    @inlinable
     func cartesianTriplets() -> Triplets<Self> {
         return Triplets(base: self, mode: .cartesian)
     }
 
+    @inlinable
     func triangularTriplets() -> Triplets<Self> {
         return Triplets(base: self, mode: .triangular)
     }
 
+    @inlinable
     func strictlyTriangularTriplets() -> Triplets<Self> {
         return Triplets(base: self, mode: .strictlyTriangular)
     }

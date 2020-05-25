@@ -27,10 +27,11 @@ import Swift
 // Trivial implementation as concat of two!
 // But: loses ability to index by base indices. though we might want that?
 public struct RotatedCollection<Base> where Base: Collection {
-    private let base: Base
-    private let _indices: Concat<Base.Indices, Base.Indices>
+    @usableFromInline internal let base: Base
+    @usableFromInline internal let _indices: Concat<Base.Indices, Base.Indices>
 
-    fileprivate init(base: Base, middle: Base.Index) {
+    @usableFromInline
+    internal init(base: Base, middle: Base.Index) {
         self.base = base
         self._indices = Concat(base.indices[middle...], with: base.indices[..<middle])
     }
@@ -43,18 +44,22 @@ extension RotatedCollection: Collection {
     public typealias SubSequence = Slice<RotatedCollection>
     public typealias Indices = DefaultIndices<RotatedCollection>
 
+    @inlinable
     public var startIndex: Index {
         return self._indices.startIndex
     }
 
+    @inlinable
     public var endIndex: Index {
         return self._indices.endIndex
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         return self._indices.index(after: index)
     }
 
+    @inlinable
     public subscript(position: Index) -> Base.Element {
         return self.base[self._indices[position]]
     }
@@ -67,6 +72,7 @@ extension RotatedCollection: Collection {
 }
 
 extension RotatedCollection: BidirectionalCollection where Base: BidirectionalCollection {
+    @inlinable
     public func index(before index: Index) -> Index {
         return self._indices.index(before: index)
     }
@@ -74,6 +80,7 @@ extension RotatedCollection: BidirectionalCollection where Base: BidirectionalCo
 // TODO: Conditional RandomAccessCollection conformance.
 
 extension Collection {
+    @inlinable
     public func rotated(shiftingToStart middle: Index) -> RotatedCollection<Self> {
         return RotatedCollection(base: self, middle: middle)
     }

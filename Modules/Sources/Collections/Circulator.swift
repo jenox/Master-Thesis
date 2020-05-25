@@ -26,14 +26,16 @@ import Swift
 
 // TODO: Check with CGAL behavior. Is that also infinite?
 public struct Circulator<Base> where Base: Collection {
-    private let base: Base
-    private var index: Base.Index
+    @usableFromInline internal let base: Base
+    @usableFromInline internal var index: Base.Index
 
+    @inlinable
     public init(base: Base) {
         self.base = base
         self.index = base.startIndex
     }
 
+    @inlinable
     public func index(_ index: Base.Index, offsetBy distance: Int) -> Base.Index {
         var index = index
 
@@ -58,6 +60,7 @@ public struct Circulator<Base> where Base: Collection {
 extension Circulator: IteratorProtocol {
     public typealias Element = Base.Element
 
+    @inlinable
     public mutating func next() -> Element? {
         if self.index == self.base.endIndex {
             return nil

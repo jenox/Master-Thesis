@@ -25,10 +25,11 @@
 import Swift
 
 public struct CartesianProduct<Base1, Base2> where Base1: Collection, Base2: Collection {
-    private let base1: Base1
-    private let base2: Base2
+    @usableFromInline internal let base1: Base1
+    @usableFromInline internal let base2: Base2
 
-    fileprivate init(base1: Base1, base2: Base2) {
+    @usableFromInline
+    internal init(base1: Base1, base2: Base2) {
         self.base1 = base1
         self.base2 = base2
     }
@@ -41,37 +42,50 @@ extension CartesianProduct: Collection {
     public typealias Indices = DefaultIndices<CartesianProduct>
 
     public struct Index: Comparable, CustomDebugStringConvertible {
-        fileprivate var index1: Base1.Index
-        fileprivate var index2: Base2.Index
+        @usableFromInline internal var index1: Base1.Index
+        @usableFromInline internal var index2: Base2.Index
 
+        @usableFromInline
+        internal init(index1: Base1.Index, index2: Base2.Index) {
+            self.index1 = index1
+            self.index2 = index2
+        }
+
+        @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {
             return (lhs.index1, lhs.index2) < (rhs.index1, rhs.index2)
         }
 
+        @inlinable
         public var debugDescription: String {
             return "(\(self.index1), \(self.index2))"
         }
     }
 
+    @inlinable
     public var startIndex: Index {
         let index = Index(index1: self.base1.startIndex, index2: self.base2.startIndex)
         return self.wraparound(index)
     }
 
+    @inlinable
     public var endIndex: Index {
         return Index(index1: self.base1.endIndex, index2: self.base2.startIndex)
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         let index = Index(index1: index.index1, index2: self.base2.index(after: index.index2))
         return self.wraparound(index)
     }
 
+    @inlinable
     public subscript(position: Index) -> (Base1.Element, Base2.Element) {
         return (self.base1[position.index1], self.base2[position.index2])
     }
 
-    private func wraparound(_ index: Index) -> Index {
+    @usableFromInline
+    internal func wraparound(_ index: Index) -> Index {
         var index = index
         while index.index2 == self.base2.endIndex && index.index1 < self.base1.endIndex {
             index = Index(index1: self.base1.index(after: index.index1), index2: self.base2.startIndex)
@@ -81,6 +95,7 @@ extension CartesianProduct: Collection {
 }
 
 public extension Collection {
+    @inlinable
     func cartesianProduct<T>(with other: T) -> CartesianProduct<Self, T> where T: Collection {
         return CartesianProduct(base1: self, base2: other)
     }

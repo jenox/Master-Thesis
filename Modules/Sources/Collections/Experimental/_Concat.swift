@@ -25,9 +25,10 @@
 import Swift
 
 public struct Concat<S, T> where S: Collection, T: Collection, S.Element == T.Element {
-    private let base1: S
-    private let base2: T
+    @usableFromInline internal let base1: S
+    @usableFromInline internal let base2: T
 
+    @inlinable
     public init(_ base1: S, with base2: T) {
         self.base1 = base1
         self.base2 = base2
@@ -44,6 +45,7 @@ extension Concat: Collection {
         case inFirst(S.Index)
         case inSecond(T.Index)
 
+        @inlinable
         public static func < (lhs: Concat<S, T>.Index, rhs: Concat<S, T>.Index) -> Bool {
             switch (lhs, rhs) {
             case (.inFirst, .inSecond): return true
@@ -54,6 +56,7 @@ extension Concat: Collection {
         }
     }
 
+    @inlinable
     public var startIndex: Index {
         if self.base1.startIndex == self.base1.endIndex {
             return .inSecond(self.base2.startIndex)
@@ -62,10 +65,12 @@ extension Concat: Collection {
         }
     }
 
+    @inlinable
     public var endIndex: Index {
         return .inSecond(self.base2.endIndex)
     }
 
+    @inlinable
     public func index(after index: Index) -> Index {
         switch index {
         case .inFirst(let index):
@@ -76,6 +81,7 @@ extension Concat: Collection {
         }
     }
 
+    @inlinable
     public subscript(position: Index) -> (S.Element) {
         switch position {
         case .inFirst(let index):
@@ -87,6 +93,7 @@ extension Concat: Collection {
 }
 
 extension Concat: BidirectionalCollection where S: BidirectionalCollection, T: BidirectionalCollection {
+    @inlinable
     public func index(before index: Index) -> Index {
         switch index {
         case .inFirst(let index):
