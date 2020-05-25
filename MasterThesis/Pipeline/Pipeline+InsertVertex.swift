@@ -153,6 +153,7 @@ private extension MutablePolygonalDual {
         }
 
         self.defineFace(named: name, boundedBy: boundary, weight: weight)
+        self.invalidateCaches()
         self.ensureIntegrity(strict: true)
     }
 }

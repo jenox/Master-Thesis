@@ -161,17 +161,7 @@ extension MutablePolygonalDual: PolygonalDualRequirements {
 
 
 
-
-
-
-
-
-
-
-
-
-
-final class MutablePolygonalDual: Codable {
+final class MutablePolygonalDual {
     init() {}
 
     typealias Vertex = UniquelyIdentifiedVertex
@@ -194,6 +184,37 @@ final class MutablePolygonalDual: Codable {
     var facePayloads: [FaceID: FacePayload] = [:]
     var currentVertexIdentifier: Int = 0
 
+    private var cachedEdgesAndVerticesToCheck: ([Vertex: DirectedEdgeSet<Vertex>], [Vertex: OrderedSet<Vertex>])? = nil
+}
+
+extension MutablePolygonalDual: Codable {
+    enum CodingKeys: String, CodingKey {
+        case vertices = "vertices"
+        case vertexPayloads = "vertexPayloads"
+        case faces = "faces"
+        case facePayloads = "facePayloads"
+        case currentVertexIdentifier = "currentVertexIdentifier"
+    }
+
+    convenience init(from decoder: Decoder) throws {
+        self.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.vertices = try container.decode(OrderedSet<Vertex>.self, forKey: .vertices)
+        self.vertexPayloads = try container.decode([Vertex: VertexPayload].self, forKey: .vertexPayloads)
+        self.faces = try container.decode(OrderedSet<FaceID>.self, forKey: .faces)
+        self.facePayloads = try container.decode([FaceID: FacePayload].self, forKey: .facePayloads)
+        self.currentVertexIdentifier = try container.decode(Int.self, forKey: .currentVertexIdentifier)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.vertices, forKey: .vertices)
+        try container.encode(self.vertexPayloads, forKey: .vertexPayloads)
+        try container.encode(self.faces, forKey: .faces)
+        try container.encode(self.facePayloads, forKey: .facePayloads)
+        try container.encode(self.currentVertexIdentifier, forKey: .currentVertexIdentifier)
+    }
+
     func clone() -> MutablePolygonalDual {
         let copy = MutablePolygonalDual()
         copy.vertices = self.vertices
@@ -204,6 +225,21 @@ final class MutablePolygonalDual: Codable {
 
         return copy
     }
+
+    // ImPrEd implementation detail, but has to live here for efficient caching.
+    var edgesAndVerticesToCheck: ([Vertex: DirectedEdgeSet<Vertex>], [Vertex: OrderedSet<Vertex>]) {
+        if let cachedEdgesAndVerticesToCheck = self.cachedEdgesAndVerticesToCheck {
+            return cachedEdgesAndVerticesToCheck
+        } else {
+            let objects = self.computeEdgesAndVerticesToCheck()
+            self.cachedEdgesAndVerticesToCheck = objects
+            return objects
+        }
+    }
+
+    func invalidateCaches() {
+        self.cachedEdgesAndVerticesToCheck = nil
+    }
 }
 
 extension MutablePolygonalDual {
@@ -213,6 +249,7 @@ extension MutablePolygonalDual {
 
         self.vertices.insert(vertex)
         self.vertexPayloads[vertex] = .init(neighbors: [], position: position)
+        self.invalidateCaches()
 
         return vertex
     }
@@ -231,6 +268,7 @@ extension MutablePolygonalDual {
 
         self.vertexPayloads[u]!.neighbors.remove(v)
         self.vertexPayloads[v]!.neighbors.remove(u)
+        self.invalidateCaches()
     }
 
     func defineFace(named name: FaceID, boundedBy boundary: [Vertex], weight: Weight) {
@@ -239,11 +277,13 @@ extension MutablePolygonalDual {
 
         self.faces.insert(name)
         self.facePayloads[name] = .init(boundary: boundary, weight: weight)
+        self.invalidateCaches()
     }
 }
 
 extension MutablePolygonalDual {
     func ensureIntegrity(strict: Bool) {
+        // TODO: maybe check that cached is still what slow would give us?
         switch self.validateIntegrity(strict: strict) {
         case .success:
             break
@@ -312,6 +352,7 @@ extension MutablePolygonalDual {
         let index = angles.index(forInserting: self.angle(from: u, to: v).counterclockwise)
         neighbors.insert(v, at: index)
         self.vertexPayloads[u]!.neighbors = neighbors
+        self.invalidateCaches()
     }
 
     func containsEdge(between u: Vertex, and v: Vertex) -> Bool {
@@ -344,6 +385,7 @@ extension MutablePolygonalDual: StraightLineGraph {
 
     func move(_ vertex: Vertex, to position: CGPoint) {
         self.vertexPayloads[vertex]!.position = position
+        // don't invalidate here, just assume it doesn't break shit
     }
 }
 
@@ -417,6 +459,7 @@ extension MutablePolygonalDual {
             }
         }
 
+        self.invalidateCaches()
         self.ensureIntegrity(strict: false)
 
         return v
@@ -459,6 +502,7 @@ extension MutablePolygonalDual {
             }
         }
 
+        self.invalidateCaches()
         self.ensureIntegrity(strict: false)
     }
 }

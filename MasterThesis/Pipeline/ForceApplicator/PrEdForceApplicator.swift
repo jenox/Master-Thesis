@@ -51,11 +51,11 @@ struct PrEdForceApplicator: ForceApplicator {
     }
 
     func applyForces(to graph: inout VertexWeightedGraph) throws {
-        self.apply(self.forces(in: graph), to: &graph, edgesToCheck: self.computeEdgesAndVerticesToCheck(in: graph).0)
+        self.apply(self.forces(in: graph), to: &graph, edgesToCheck: graph.computeEdgesAndVerticesToCheck().0)
     }
 
     func forces(in graph: PolygonalDual) -> [PolygonalDual.Vertex: CGVector] {
-        let (edgesToCheck, verticesToCheck) = self.computeEdgesAndVerticesToCheck(in: graph)
+        let (edgesToCheck, verticesToCheck) = graph.storage.edgesAndVerticesToCheck
 
         return self.forces(in: graph, edgesToCheck: edgesToCheck, verticesToCheck: verticesToCheck)
     }
@@ -152,7 +152,7 @@ struct PrEdForceApplicator: ForceApplicator {
     }
 
     func applyForces(to graph: inout PolygonalDual) throws {
-        let (edgesToCheck, verticesToCheck) = self.computeEdgesAndVerticesToCheck(in: graph)
+        let (edgesToCheck, verticesToCheck) = graph.storage.edgesAndVerticesToCheck
         let forces = self.forces(in: graph, edgesToCheck: edgesToCheck, verticesToCheck: verticesToCheck)
         self.apply(forces, to: &graph, edgesToCheck: edgesToCheck)
     }
@@ -216,24 +216,6 @@ extension PrEdForceApplicator {
         }
 
         return upperBounds
-    }
-
-    private func computeEdgesAndVerticesToCheck<Graph>(in graph: Graph) -> ([Graph.Vertex: DirectedEdgeSet<Graph.Vertex>], [Graph.Vertex: OrderedSet<Graph.Vertex>]) where Graph: StraightLineGraph {
-        var edgesToCheck: [Graph.Vertex: DirectedEdgeSet<Graph.Vertex>] = [:]
-        var verticesToCheck: [Graph.Vertex: OrderedSet<Graph.Vertex>] = [:]
-
-        for face in graph.allFaces() {
-            for vertex in face.vertices {
-                for (u,v) in face.vertices.adjacentPairs(wraparound: true) where vertex != u && vertex != v {
-                    edgesToCheck[vertex, default: []].insert((u,v))
-                }
-                for v in face.vertices where v != vertex {
-                    verticesToCheck[vertex, default: []].insert(v)
-                }
-            }
-        }
-
-        return (edgesToCheck, verticesToCheck)
     }
 }
 

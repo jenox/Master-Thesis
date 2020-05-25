@@ -119,4 +119,22 @@ extension PlanarGraph {
 
         return .init(vertices: boundingVertices)
     }
+
+    func computeEdgesAndVerticesToCheck() -> ([Vertex: DirectedEdgeSet<Vertex>], [Vertex: OrderedSet<Vertex>]) {
+        var edgesToCheck: [Vertex: DirectedEdgeSet<Vertex>] = [:]
+        var verticesToCheck: [Vertex: OrderedSet<Vertex>] = [:]
+
+        for face in self.allFaces() {
+            for vertex in face.vertices {
+                for (u,v) in face.vertices.adjacentPairs(wraparound: true) where vertex != u && vertex != v {
+                    edgesToCheck[vertex, default: []].insert((u,v))
+                }
+                for v in face.vertices where v != vertex {
+                    verticesToCheck[vertex, default: []].insert(v)
+                }
+            }
+        }
+
+        return (edgesToCheck, verticesToCheck)
+    }
 }

@@ -85,6 +85,7 @@ private extension MutablePolygonalDual {
             // no-op
         }
 
+        self.invalidateCaches()
         self.ensureIntegrity(strict: true)
     }
 }

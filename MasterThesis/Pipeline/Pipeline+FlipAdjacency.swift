@@ -96,6 +96,7 @@ extension MutablePolygonalDual {
         self.ensureIntegrity(strict: false)
         self.expandDegenerateBoundary(at: vertex, into: u)
         self.expandDegenerateBoundary(at: vertex, into: v)
+        self.invalidateCaches()
         self.ensureIntegrity(strict: true)
     }
 
@@ -107,6 +108,7 @@ extension MutablePolygonalDual {
         self.ensureIntegrity(strict: false)
         self.expandDegenerateBoundary(at: vertex, into: nil)
         self.expandDegenerateBoundary(at: vertex, into: operation.sharedNeighbor)
+        self.invalidateCaches()
         self.ensureIntegrity(strict: true)
     }
 
@@ -135,6 +137,7 @@ extension MutablePolygonalDual {
         self.ensureIntegrity(strict: false)
         self.expandDegenerateBoundary(at: vertex, into: u)
         self.expandDegenerateBoundary(at: vertex, into: v)
+        self.invalidateCaches()
         self.ensureIntegrity(strict: true)
     }
 }
