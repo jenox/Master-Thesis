@@ -4,12 +4,12 @@ SCRIPT_PATH=$(dirname "$0")
 export SWIFT_DETERMINISTIC_HASHING="1"
 
 function evaluate {
-    echo "$SCRIPT_PATH/$4/"
-    mkdir -p "$SCRIPT_PATH/$4/"
+    echo "$4"
+    mkdir -p "$SCRIPT_PATH/../Evaluation/graphs/$4/"
     NUMBER_OF_STEPS=100
     NUMBER_OF_OPERATIONS=20
-    
-    swift run --package-path="$SCRIPT_PATH/../Implementation/Modules/" --configuration=release Evaluation pipeline --number-of-vertices="$1" --nesting-ratio="$2" --nesting-bias="$3" --number-of-optimization-steps="$NUMBER_OF_STEPS" --number-of-dynamic-operations="$NUMBER_OF_OPERATIONS" --uuid-file="$SCRIPT_PATH/uuids.txt" --output-directory="$SCRIPT_PATH/$4/"
+
+    swift run --package-path="$SCRIPT_PATH/../Implementation/Modules/" --configuration=release Evaluation pipeline --number-of-vertices="$1" --nesting-ratio="$2" --nesting-bias="$3" --number-of-optimization-steps="$NUMBER_OF_STEPS" --number-of-dynamic-operations="$NUMBER_OF_OPERATIONS" --uuid-file="$SCRIPT_PATH/../Evaluation/uuids.txt" --output-directory="$SCRIPT_PATH/../Evaluation/graphs/$4/"
 }
 
 evaluate 10 0 0 "10-0.0-0.0"
