@@ -137,3 +137,11 @@ private struct Value: Hashable, CustomStringConvertible {
         return "(\(self.maxerror)|\(self.avgerror)|\(self.maxcomplexity)|\(self.avgcomplexity))"
     }
 }
+
+private extension Collection where Element == Double {
+    func mean() -> Double? {
+        guard !self.isEmpty else { return nil }
+
+        return self.reduce(0, +) / Double(self.count)
+    }
+}

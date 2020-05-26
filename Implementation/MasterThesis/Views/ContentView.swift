@@ -43,9 +43,9 @@ struct ContentView: View {
         }
     }
 
-    private var statisticsView: some View {
-        return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
-    }
+//    private var statisticsView: some View {
+//        return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
+//    }
 
     private var dynamicOperationsView: some View {
         return Group(content: {

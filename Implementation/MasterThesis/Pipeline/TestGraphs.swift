@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import Framework
 
 enum TestGraphs {
     static func makeVoronoiInputGraph() -> VertexWeightedGraph {

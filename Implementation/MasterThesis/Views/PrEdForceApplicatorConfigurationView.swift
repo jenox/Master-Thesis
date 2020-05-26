@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Framework
 
 struct PrEdForceApplicatorConfigurationView: View {
     var forceApplicator: Binding<PrEdForceApplicator>

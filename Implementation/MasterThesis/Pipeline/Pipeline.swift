@@ -6,21 +6,19 @@
 //  Copyright © 2020 Christian Schnorr. All rights reserved.
 //
 
-import Dispatch
-import Combine
-import CoreGraphics
-import CoreFoundation
 import Foundation
+import Combine
+import Framework
 
-final class Pipeline<Generator, Transformer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: MasterThesis.Transformer, ForceApplicator: MasterThesis.ForceApplicator {
+final class Pipeline<Generator, Transformer, ForceApplicator>: ObservableObject where Generator: GraphGenerator, Transformer: Framework.Transformer, ForceApplicator: Framework.ForceApplicator {
 
     // MARK: - Initialization
 
-    init(generator: Generator, transformer: Transformer, forceApplicator: ForceApplicator, qualityMetrics: [(name: String, evaluator: QualityEvaluator)], randomNumberGenerator: AnyRandomNumberGenerator) {
+    init(generator: Generator, transformer: Transformer, forceApplicator: ForceApplicator/*, qualityMetrics: [(name: String, evaluator: QualityEvaluator)]*/, randomNumberGenerator: AnyRandomNumberGenerator) {
         self.generator = generator
         self.transformer = transformer
         self.forceApplicator = forceApplicator
-        self.qualityMetrics = qualityMetrics
+//        self.qualityMetrics = qualityMetrics
         self.randomNumberGenerator = randomNumberGenerator
     }
 
@@ -30,7 +28,7 @@ final class Pipeline<Generator, Transformer, ForceApplicator>: ObservableObject 
     @Published var generator: Generator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     @Published var transformer: Transformer { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
     @Published var forceApplicator: ForceApplicator { didSet { dispatchPrecondition(condition: .onQueue(.main)) } }
-    let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
+//    let qualityMetrics: [(name: String, evaluator: QualityEvaluator)]
     private(set) var randomNumberGenerator: AnyRandomNumberGenerator
 
 

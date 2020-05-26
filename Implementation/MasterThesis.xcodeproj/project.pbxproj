@@ -10,7 +10,6 @@
 		CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */; };
 		CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */; };
 		CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */; };
-		CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */; };
 		CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
@@ -24,64 +23,15 @@
 		CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */; };
 		CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6124156E4A00B5F5BB /* StatisticsView.swift */; };
 		CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */; };
-		CB131A66241598FE00B5F5BB /* CustomStringConvertibles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A65241598FE00B5F5BB /* CustomStringConvertibles.swift */; };
 		CB131A682415991200B5F5BB /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A672415991200B5F5BB /* CanvasView.swift */; };
 		CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A692415A1A400B5F5BB /* GraphView.swift */; };
 		CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
-		CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */; };
-		CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
-		CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
-		CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
 		CB2F82F724784BE000060881 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F82F624784BE000060881 /* main.swift */; };
-		CB2F82FB24784BF100060881 /* Pipeline+DynamicOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */; };
-		CB2F82FC24784BF100060881 /* Pipeline+InsertVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */; };
-		CB2F82FD24784BF100060881 /* Pipeline+RemoveVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */; };
-		CB2F82FE24784BF100060881 /* Pipeline+FlipAdjacency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */; };
 		CB2F830024784C0100060881 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F82FF24784C0100060881 /* Delaunay */; };
 		CB2F830224784C0100060881 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830124784C0100060881 /* Collections */; };
 		CB2F830424784C0100060881 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830324784C0100060881 /* Geometry */; };
-		CB2F830524784C1900060881 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
-		CB2F830624784C1900060881 /* DelaunayGraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */; };
-		CB2F830724784C1900060881 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2924292D3D005B3048 /* Transformer.swift */; };
-		CB2F830824784C1900060881 /* NaiveTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */; };
-		CB2F830B24784C1900060881 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */; };
-		CB2F830C24784C1900060881 /* PrEdForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */; };
-		CB2F830D24784C1900060881 /* QualityEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */; };
-		CB2F830E24784C1900060881 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
-		CB2F830F24784C1900060881 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
-		CB2F831024784C2100060881 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
-		CB2F831124784C2100060881 /* DirectedEdgeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */; };
-		CB2F831224784C2100060881 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2124314ECF0019C766 /* CGPoint.swift */; };
-		CB2F831324784C2100060881 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
-		CB2F831424784C2100060881 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1D24314E360019C766 /* Segment.swift */; };
-		CB2F831524784C2100060881 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1B24314E320019C766 /* Polygon.swift */; };
-		CB2F831624784C2100060881 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1F24314E8D0019C766 /* Circle.swift */; };
-		CB2F831724784C2700060881 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
-		CB2F831824784C2700060881 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Comparable.swift */; };
-		CB2F831924784C2700060881 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Result.swift */; };
-		CB2F831A24784C2700060881 /* AnyRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */; };
-		CB2F831B24784C2700060881 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
-		CB2F831D24784C2D00060881 /* ClusterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E472432920C0019C766 /* ClusterName.swift */; };
-		CB2F831E24784C2D00060881 /* ClusterWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E49243292120019C766 /* ClusterWeight.swift */; };
-		CB2F831F24784C2D00060881 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
-		CB2F832024784C2D00060881 /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
-		CB2F832124784C2D00060881 /* EitherGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */; };
-		CB2F832224784C2D00060881 /* PlanarGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B532478034D007472D6 /* PlanarGraph.swift */; };
-		CB2F832324784C2D00060881 /* StraightLineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */; };
-		CB2F832424784C2D00060881 /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
-		CB2F832524784C2D00060881 /* PolygonalDual.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DA245F187700317BD6 /* PolygonalDual.swift */; };
-		CB2F832624784C2D00060881 /* DirectedEdgeIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */; };
-		CB2F832724784C2D00060881 /* UniquelyIdentifiedVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */; };
-		CB2F832824784C2D00060881 /* EmbeddedClusterGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */; };
-		CB2F832924784C4100060881 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
-		CB2F832A24784C5800060881 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
-		CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
-		CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F70442478156A002B73D8 /* PolygonComplexity.swift */; };
-		CB3F704724781632002B73D8 /* CartographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3F704624781632002B73D8 /* CartographicError.swift */; };
-		CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5A22DF23F352B800001A2F /* PolygonTests.swift */; };
-		CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */; };
 		CB87646524796361002EDEE2 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = CB87646424796361002EDEE2 /* ArgumentParser */; };
 		CB87646724797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */; };
 		CB876469247976C5002EDEE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB876468247976C5002EDEE2 /* Extensions.swift */; };
@@ -90,64 +40,23 @@
 		CB87646F24797F20002EDEE2 /* EvaluateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
-		CBA25E172431344E0019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E162431344E0019C766 /* Imports.swift */; };
 		CBA25E1924314DE20019C766 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Result.swift */; };
-		CBA25E1C24314E320019C766 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1B24314E320019C766 /* Polygon.swift */; };
-		CBA25E1E24314E360019C766 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1D24314E360019C766 /* Segment.swift */; };
-		CBA25E2024314E8D0019C766 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1F24314E8D0019C766 /* Circle.swift */; };
-		CBA25E2224314ECF0019C766 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2124314ECF0019C766 /* CGPoint.swift */; };
-		CBA25E2624314EE10019C766 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
-		CBA25E28243156260019C766 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1B24314E320019C766 /* Polygon.swift */; };
-		CBA25E29243156430019C766 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2524314EE10019C766 /* CGVector.swift */; };
 		CBA25E2B2431569C0019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2A2431569C0019C766 /* Collections */; };
 		CBA25E2D2431569C0019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2C2431569C0019C766 /* Geometry */; };
 		CBA25E2F243156F80019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2E243156F80019C766 /* Imports.swift */; };
-		CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */; };
-		CBA25E46243289520019C766 /* Pipeline+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E45243289520019C766 /* Pipeline+Weight.swift */; };
-		CBA25E482432920C0019C766 /* ClusterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E472432920C0019C766 /* ClusterName.swift */; };
-		CBA25E4A243292120019C766 /* ClusterWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E49243292120019C766 /* ClusterWeight.swift */; };
-		CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */; };
-		CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC5972242F788200D067A0 /* StringInterpolations.swift */; };
-		CBB8F1252426A3060062D704 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBB8F1242426A3060062D704 /* Delaunay */; };
-		CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */; };
-		CBC63AE4246075250057DBFD /* Pipeline+RemoveVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */; };
-		CBC63B0624612E780057DBFD /* EmbeddedClusterGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */; };
 		CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA154023CB670B0070847D /* AppDelegate.swift */; };
 		CBDA154723CB670C0070847D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154623CB670C0070847D /* Assets.xcassets */; };
-		CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154923CB670C0070847D /* Preview Assets.xcassets */; };
 		CBDA154D23CB670C0070847D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */; };
-		CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
 		CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155E23CB88850070847D /* MasterThesisTests.swift */; };
-		CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */; };
-		CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
-		CBDA157023CBA70B0070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
-		CBDA157123CBA7440070847D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156F23CBA70B0070847D /* Collection.swift */; };
-		CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDA156D23CBA7000070847D /* DirectedEdge.swift */; };
 		CBDCD70E247BD117005677D0 /* BenchmarkCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCD70C247BD117005677D0 /* BenchmarkCommand.swift */; };
 		CBDCD711247BD126005677D0 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCD70F247BD126005677D0 /* Pipeline.swift */; };
-		CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE405AD2427D99D009E3922 /* GraphGenerator.swift */; };
-		CBEE493823E1E18900986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
-		CBEE493B23E1E1F000986877 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493723E1E18900986877 /* Face.swift */; };
-		CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */; };
-		CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */; };
-		CBF37CF12401844C00AA4846 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF37CF02401844C00AA4846 /* Comparable.swift */; };
-		CBF61B542478034D007472D6 /* PlanarGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B532478034D007472D6 /* PlanarGraph.swift */; };
-		CBF61B5624780D7B007472D6 /* Pipeline+DynamicOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */; };
-		CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2924292D3D005B3048 /* Transformer.swift */; };
-		CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */; };
-		CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */; };
-		CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */; };
+		CBEE3C82247D817300BC8EBA /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CBEE3C81247D817300BC8EBA /* Delaunay */; };
+		CBEE3C84247D817300BC8EBA /* Framework in Frameworks */ = {isa = PBXBuildFile; productRef = CBEE3C83247D817300BC8EBA /* Framework */; };
 		CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE38242952A9005B3048 /* Pipeline.swift */; };
 		CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3A24295328005B3048 /* RootViewController.swift */; };
 		CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3C242954EA005B3048 /* ContentView.swift */; };
 		CBFDDE3F2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3E2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift */; };
-		CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB456EA7241AB7B300008E87 /* OrderedSet.swift */; };
 		CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE41242960C5005B3048 /* TestGraphs.swift */; };
-		CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */; };
-		CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */; };
-		CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE47242AA14D005B3048 /* Entropy.swift */; };
-		CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */; };
-		CBFDDE52242AA454005B3048 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE51242AA454005B3048 /* Errors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -175,7 +84,6 @@
 		CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHostingView.swift; sourceTree = "<group>"; };
 		CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphView.swift; sourceTree = "<group>"; };
-		CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EitherGraph.swift; sourceTree = "<group>"; };
 		CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRandomNumberGenerator.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -185,80 +93,35 @@
 		CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIReceiver.swift; sourceTree = "<group>"; };
 		CB131A6124156E4A00B5F5BB /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformGestureRecognizer.swift; sourceTree = "<group>"; };
-		CB131A65241598FE00B5F5BB /* CustomStringConvertibles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStringConvertibles.swift; sourceTree = "<group>"; };
 		CB131A672415991200B5F5BB /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		CB131A692415A1A400B5F5BB /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
-		CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeSet.swift; sourceTree = "<group>"; };
-		CB2D53DA245F187700317BD6 /* PolygonalDual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalDual.swift; sourceTree = "<group>"; };
-		CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdgeIterator.swift; sourceTree = "<group>"; };
-		CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniquelyIdentifiedVertex.swift; sourceTree = "<group>"; };
 		CB2F82F424784BE000060881 /* Evaluation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Evaluation; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2F82F624784BE000060881 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		CB3F70442478156A002B73D8 /* PolygonComplexity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonComplexity.swift; sourceTree = "<group>"; };
-		CB3F704624781632002B73D8 /* CartographicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartographicError.swift; sourceTree = "<group>"; };
-		CB456EA7241AB7B300008E87 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
-		CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Step.swift"; sourceTree = "<group>"; };
 		CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Xoroshiro128PlusRandomNumberGenerator.swift; sourceTree = "<group>"; };
 		CB876468247976C5002EDEE2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CB87646A2479784E002EDEE2 /* GenerateUUIDsCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateUUIDsCommand.swift; sourceTree = "<group>"; };
 		CB87646C2479798C002EDEE2 /* RunThroughPipelineCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunThroughPipelineCommand.swift; sourceTree = "<group>"; };
 		CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluateCommand.swift; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
-		CBA25E162431344E0019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBA25E1824314DE20019C766 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		CBA25E1B24314E320019C766 /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
-		CBA25E1D24314E360019C766 /* Segment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
-		CBA25E1F24314E8D0019C766 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
-		CBA25E2124314ECF0019C766 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
-		CBA25E2524314EE10019C766 /* CGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
 		CBA25E2E243156F80019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
-		CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+FlipAdjacency.swift"; sourceTree = "<group>"; };
-		CBA25E45243289520019C766 /* Pipeline+Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+Weight.swift"; sourceTree = "<group>"; };
-		CBA25E472432920C0019C766 /* ClusterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterName.swift; sourceTree = "<group>"; };
-		CBA25E49243292120019C766 /* ClusterWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterWeight.swift; sourceTree = "<group>"; };
-		CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineGraph.swift; sourceTree = "<group>"; };
-		CBAC5972242F788200D067A0 /* StringInterpolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolations.swift; sourceTree = "<group>"; };
-		CBB8F1232426A1E70062D704 /* Delaunay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Delaunay; sourceTree = "<group>"; };
-		CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+InsertVertex.swift"; sourceTree = "<group>"; };
-		CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+RemoveVertex.swift"; sourceTree = "<group>"; };
-		CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedClusterGraph.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBDA154623CB670C0070847D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CBDA154923CB670C0070847D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CBDA154C23CB670C0070847D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBDA154E23CB670C0070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexWeightedGraph.swift; sourceTree = "<group>"; };
 		CBDA155C23CB88850070847D /* MasterThesisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MasterThesisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA155E23CB88850070847D /* MasterThesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterThesisTests.swift; sourceTree = "<group>"; };
 		CBDA156023CB88850070847D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CBDA156D23CBA7000070847D /* DirectedEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedEdge.swift; sourceTree = "<group>"; };
-		CBDA156F23CBA70B0070847D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CBDCD70C247BD117005677D0 /* BenchmarkCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkCommand.swift; sourceTree = "<group>"; };
 		CBDCD70F247BD126005677D0 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
-		CBE405AD2427D99D009E3922 /* GraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerator.swift; sourceTree = "<group>"; };
-		CBEE493723E1E18900986877 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
-		CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaiveTransformer.swift; sourceTree = "<group>"; };
-		CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicator.swift; sourceTree = "<group>"; };
-		CBF37CF02401844C00AA4846 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
-		CBF61B532478034D007472D6 /* PlanarGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanarGraph.swift; sourceTree = "<group>"; };
-		CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pipeline+DynamicOperations.swift"; sourceTree = "<group>"; };
-		CBFDDE2924292D3D005B3048 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
-		CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityEvaluator.swift; sourceTree = "<group>"; };
-		CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayGraphGenerator.swift; sourceTree = "<group>"; };
-		CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceApplicator.swift; sourceTree = "<group>"; };
 		CBFDDE38242952A9005B3048 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
 		CBFDDE3A24295328005B3048 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		CBFDDE3C242954EA005B3048 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CBFDDE3E2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicatorConfigurationView.swift; sourceTree = "<group>"; };
 		CBFDDE41242960C5005B3048 /* TestGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGraphs.swift; sourceTree = "<group>"; };
-		CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromCircumcircle.swift; sourceTree = "<group>"; };
-		CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFromConvexHull.swift; sourceTree = "<group>"; };
-		CBFDDE47242AA14D005B3048 /* Entropy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entropy.swift; sourceTree = "<group>"; };
-		CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticalAccuracy.swift; sourceTree = "<group>"; };
-		CBFDDE51242AA454005B3048 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,9 +149,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBB8F1252426A3060062D704 /* Delaunay in Frameworks */,
 				CBA25E1524312CD20019C766 /* Geometry in Frameworks */,
+				CBEE3C82247D817300BC8EBA /* Delaunay in Frameworks */,
 				CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */,
+				CBEE3C84247D817300BC8EBA /* Framework in Frameworks */,
 				CBA25E1324312CD20019C766 /* Collections in Frameworks */,
 				CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */,
 			);
@@ -340,43 +204,13 @@
 			path = Evaluation;
 			sourceTree = "<group>";
 		};
-		CB456EA6241AB7AA00008E87 /* DataStructures */ = {
-			isa = PBXGroup;
-			children = (
-				CB456EA7241AB7B300008E87 /* OrderedSet.swift */,
-				CB2D53D8245EFE7F00317BD6 /* DirectedEdgeSet.swift */,
-			);
-			path = DataStructures;
-			sourceTree = "<group>";
-		};
-		CBA25E1A24314E150019C766 /* Geometry */ = {
-			isa = PBXGroup;
-			children = (
-				CBA25E2124314ECF0019C766 /* CGPoint.swift */,
-				CBA25E2524314EE10019C766 /* CGVector.swift */,
-				CBA25E1D24314E360019C766 /* Segment.swift */,
-				CBA25E1B24314E320019C766 /* Polygon.swift */,
-				CBA25E1F24314E8D0019C766 /* Circle.swift */,
-			);
-			path = Geometry;
-			sourceTree = "<group>";
-		};
 		CBA25E27243155010019C766 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
 				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
-				CB6985CB2433F08E00782F80 /* Pipeline+Step.swift */,
-				CBA25E45243289520019C766 /* Pipeline+Weight.swift */,
-				CBF61B5524780D7B007472D6 /* Pipeline+DynamicOperations.swift */,
-				CBC63AE1245F64A60057DBFD /* Pipeline+InsertVertex.swift */,
-				CBC63AE3246075250057DBFD /* Pipeline+RemoveVertex.swift */,
-				CBA25E30243157850019C766 /* Pipeline+FlipAdjacency.swift */,
-				CBFDDE51242AA454005B3048 /* Errors.swift */,
 				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
-				CBFDDE2824292AFE005B3048 /* Generator */,
-				CBFDDE3024292E0F005B3048 /* Transformer */,
-				CBFDDE2F24292DDD005B3048 /* ForceApplicator */,
-				CBFDDE2B24292D4D005B3048 /* Quality Metrics */,
+				CBA25E1824314DE20019C766 /* Result.swift */,
+				CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */,
 			);
 			path = Pipeline;
 			sourceTree = "<group>";
@@ -408,29 +242,14 @@
 		CBDA153F23CB670B0070847D /* MasterThesis */ = {
 			isa = PBXGroup;
 			children = (
-				CBA25E162431344E0019C766 /* Imports.swift */,
-				CBDA154023CB670B0070847D /* AppDelegate.swift */,
-				CBEE493623E1E17B00986877 /* Graph */,
-				CBA25E27243155010019C766 /* Pipeline */,
-				CBFDDE372429303C005B3048 /* Views */,
-				CB456EA6241AB7AA00008E87 /* DataStructures */,
-				CBA25E1A24314E150019C766 /* Geometry */,
-				CBF37CE824014BD800AA4846 /* Other */,
-				CBB8F1232426A1E70062D704 /* Delaunay */,
+				CBDA154E23CB670C0070847D /* Info.plist */,
 				CBDA154623CB670C0070847D /* Assets.xcassets */,
 				CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */,
-				CBDA154E23CB670C0070847D /* Info.plist */,
-				CBDA154823CB670C0070847D /* Preview Content */,
+				CBDA154023CB670B0070847D /* AppDelegate.swift */,
+				CBA25E27243155010019C766 /* Pipeline */,
+				CBFDDE372429303C005B3048 /* Views */,
 			);
 			path = MasterThesis;
-			sourceTree = "<group>";
-		};
-		CBDA154823CB670C0070847D /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				CBDA154923CB670C0070847D /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		CBDA155D23CB88850070847D /* MasterThesisTests */ = {
@@ -442,79 +261,6 @@
 				CBDA156023CB88850070847D /* Info.plist */,
 			);
 			path = MasterThesisTests;
-			sourceTree = "<group>";
-		};
-		CBEE493623E1E17B00986877 /* Graph */ = {
-			isa = PBXGroup;
-			children = (
-				CBA25E472432920C0019C766 /* ClusterName.swift */,
-				CBA25E49243292120019C766 /* ClusterWeight.swift */,
-				CBEE493723E1E18900986877 /* Face.swift */,
-				CBDA156D23CBA7000070847D /* DirectedEdge.swift */,
-				CB04F73E242E6E0C00E319C7 /* EitherGraph.swift */,
-				CBF61B532478034D007472D6 /* PlanarGraph.swift */,
-				CBA25E4B2433DABC0019C766 /* StraightLineGraph.swift */,
-				CBDA155623CB800F0070847D /* VertexWeightedGraph.swift */,
-				CB2D53DA245F187700317BD6 /* PolygonalDual.swift */,
-				CB2D53DC245F1E4700317BD6 /* DirectedEdgeIterator.swift */,
-				CB2D53DE245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift */,
-				CBC63B0524612E780057DBFD /* EmbeddedClusterGraph.swift */,
-			);
-			path = Graph;
-			sourceTree = "<group>";
-		};
-		CBF37CE824014BD800AA4846 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				CBDA156F23CBA70B0070847D /* Collection.swift */,
-				CBF37CF02401844C00AA4846 /* Comparable.swift */,
-				CBA25E1824314DE20019C766 /* Result.swift */,
-				CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */,
-				CBAC5972242F788200D067A0 /* StringInterpolations.swift */,
-				CB131A65241598FE00B5F5BB /* CustomStringConvertibles.swift */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		CBFDDE2824292AFE005B3048 /* Generator */ = {
-			isa = PBXGroup;
-			children = (
-				CBE405AD2427D99D009E3922 /* GraphGenerator.swift */,
-				CBFDDE3124292E75005B3048 /* DelaunayGraphGenerator.swift */,
-			);
-			path = Generator;
-			sourceTree = "<group>";
-		};
-		CBFDDE2B24292D4D005B3048 /* Quality Metrics */ = {
-			isa = PBXGroup;
-			children = (
-				CBFDDE2C24292D63005B3048 /* QualityEvaluator.swift */,
-				CBFDDE4B242AA189005B3048 /* StatisticalAccuracy.swift */,
-				CBFDDE43242AA13C005B3048 /* DistanceFromCircumcircle.swift */,
-				CBFDDE45242AA143005B3048 /* DistanceFromConvexHull.swift */,
-				CBFDDE47242AA14D005B3048 /* Entropy.swift */,
-				CB3F704624781632002B73D8 /* CartographicError.swift */,
-				CB3F70442478156A002B73D8 /* PolygonComplexity.swift */,
-			);
-			path = "Quality Metrics";
-			sourceTree = "<group>";
-		};
-		CBFDDE2F24292DDD005B3048 /* ForceApplicator */ = {
-			isa = PBXGroup;
-			children = (
-				CBFDDE3324292F4A005B3048 /* ForceApplicator.swift */,
-				CBF37CEC240150FB00AA4846 /* PrEdForceApplicator.swift */,
-			);
-			path = ForceApplicator;
-			sourceTree = "<group>";
-		};
-		CBFDDE3024292E0F005B3048 /* Transformer */ = {
-			isa = PBXGroup;
-			children = (
-				CBFDDE2924292D3D005B3048 /* Transformer.swift */,
-				CBEE493C23E1EAE100986877 /* NaiveTransformer.swift */,
-			);
-			path = Transformer;
 			sourceTree = "<group>";
 		};
 		CBFDDE372429303C005B3048 /* Views */ = {
@@ -598,9 +344,10 @@
 			packageProductDependencies = (
 				CB1AA1B924045AA0009028F8 /* SnapKit */,
 				CB131A432415438300B5F5BB /* MultipeerKit */,
-				CBB8F1242426A3060062D704 /* Delaunay */,
 				CBA25E1224312CD20019C766 /* Collections */,
 				CBA25E1424312CD20019C766 /* Geometry */,
+				CBEE3C81247D817300BC8EBA /* Delaunay */,
+				CBEE3C83247D817300BC8EBA /* Framework */,
 			);
 			productName = MasterThesis;
 			productReference = CBDA153D23CB670B0070847D /* MasterThesis.app */;
@@ -683,7 +430,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBDA154D23CB670C0070847D /* LaunchScreen.storyboard in Resources */,
-				CBDA154A23CB670C0070847D /* Preview Assets.xcassets in Resources */,
 				CBDA154723CB670C0070847D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,54 +459,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB2F832A24784C5800060881 /* DistanceFromConvexHull.swift in Sources */,
-				CB2F830824784C1900060881 /* NaiveTransformer.swift in Sources */,
 				CBDCD70E247BD117005677D0 /* BenchmarkCommand.swift in Sources */,
-				CB2F831124784C2100060881 /* DirectedEdgeSet.swift in Sources */,
-				CB2F831324784C2100060881 /* CGVector.swift in Sources */,
 				CB87646724797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift in Sources */,
 				CB87646D2479798C002EDEE2 /* RunThroughPipelineCommand.swift in Sources */,
-				CB2F832424784C2D00060881 /* VertexWeightedGraph.swift in Sources */,
-				CB2F830624784C1900060881 /* DelaunayGraphGenerator.swift in Sources */,
-				CB2F830B24784C1900060881 /* ForceApplicator.swift in Sources */,
-				CB2F830524784C1900060881 /* GraphGenerator.swift in Sources */,
-				CB2F82FC24784BF100060881 /* Pipeline+InsertVertex.swift in Sources */,
-				CB2F832224784C2D00060881 /* PlanarGraph.swift in Sources */,
 				CBDCD711247BD126005677D0 /* Pipeline.swift in Sources */,
-				CB2F831824784C2700060881 /* Comparable.swift in Sources */,
-				CB2F831224784C2100060881 /* CGPoint.swift in Sources */,
-				CB2F82FB24784BF100060881 /* Pipeline+DynamicOperations.swift in Sources */,
-				CB2F831D24784C2D00060881 /* ClusterName.swift in Sources */,
-				CB2F831424784C2100060881 /* Segment.swift in Sources */,
-				CB2F830E24784C1900060881 /* CartographicError.swift in Sources */,
-				CB2F832724784C2D00060881 /* UniquelyIdentifiedVertex.swift in Sources */,
-				CB2F830F24784C1900060881 /* PolygonComplexity.swift in Sources */,
-				CB2F831E24784C2D00060881 /* ClusterWeight.swift in Sources */,
 				CB87646F24797F20002EDEE2 /* EvaluateCommand.swift in Sources */,
-				CB2F831924784C2700060881 /* Result.swift in Sources */,
-				CB2F832624784C2D00060881 /* DirectedEdgeIterator.swift in Sources */,
 				CB876469247976C5002EDEE2 /* Extensions.swift in Sources */,
-				CB2F832B24784FF600060881 /* Pipeline+Step.swift in Sources */,
-				CB2F831024784C2100060881 /* OrderedSet.swift in Sources */,
-				CB2F831A24784C2700060881 /* AnyRandomNumberGenerator.swift in Sources */,
-				CB2F82FE24784BF100060881 /* Pipeline+FlipAdjacency.swift in Sources */,
-				CB2F831F24784C2D00060881 /* Face.swift in Sources */,
-				CB2F832924784C4100060881 /* Errors.swift in Sources */,
-				CB2F831724784C2700060881 /* Collection.swift in Sources */,
-				CB2F831B24784C2700060881 /* StringInterpolations.swift in Sources */,
-				CB2F830C24784C1900060881 /* PrEdForceApplicator.swift in Sources */,
-				CB2F831524784C2100060881 /* Polygon.swift in Sources */,
-				CB2F830D24784C1900060881 /* QualityEvaluator.swift in Sources */,
 				CB2F82F724784BE000060881 /* main.swift in Sources */,
-				CB2F82FD24784BF100060881 /* Pipeline+RemoveVertex.swift in Sources */,
-				CB2F831624784C2100060881 /* Circle.swift in Sources */,
-				CB2F832024784C2D00060881 /* DirectedEdge.swift in Sources */,
-				CB2F830724784C1900060881 /* Transformer.swift in Sources */,
-				CB2F832124784C2D00060881 /* EitherGraph.swift in Sources */,
-				CB2F832824784C2D00060881 /* EmbeddedClusterGraph.swift in Sources */,
 				CB87646B2479784E002EDEE2 /* GenerateUUIDsCommand.swift in Sources */,
-				CB2F832324784C2D00060881 /* StraightLineGraph.swift in Sources */,
-				CB2F832524784C2D00060881 /* PolygonalDual.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,69 +474,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBE405AE2427D99D009E3922 /* GraphGenerator.swift in Sources */,
-				CBFDDE2D24292D63005B3048 /* QualityEvaluator.swift in Sources */,
-				CBAC5973242F788200D067A0 /* StringInterpolations.swift in Sources */,
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
-				CB2D53D9245EFE7F00317BD6 /* DirectedEdgeSet.swift in Sources */,
-				CBFDDE3424292F4A005B3048 /* ForceApplicator.swift in Sources */,
-				CB3F704724781632002B73D8 /* CartographicError.swift in Sources */,
-				CBA25E4C2433DABC0019C766 /* StraightLineGraph.swift in Sources */,
-				CB3F70452478156A002B73D8 /* PolygonComplexity.swift in Sources */,
 				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
-				CBA25E31243157850019C766 /* Pipeline+FlipAdjacency.swift in Sources */,
-				CBC63AE2245F64A60057DBFD /* Pipeline+InsertVertex.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
-				CBFDDE3224292E75005B3048 /* DelaunayGraphGenerator.swift in Sources */,
-				CBA25E482432920C0019C766 /* ClusterName.swift in Sources */,
-				CB6985CC2433F08E00782F80 /* Pipeline+Step.swift in Sources */,
-				CB2D53DF245F1FDE00317BD6 /* UniquelyIdentifiedVertex.swift in Sources */,
 				CBA25E1924314DE20019C766 /* Result.swift in Sources */,
-				CBFDDE48242AA14D005B3048 /* Entropy.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
 				CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */,
 				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
-				CBF37CF12401844C00AA4846 /* Comparable.swift in Sources */,
-				CBC63AE4246075250057DBFD /* Pipeline+RemoveVertex.swift in Sources */,
-				CBA25E46243289520019C766 /* Pipeline+Weight.swift in Sources */,
-				CBA25E2024314E8D0019C766 /* Circle.swift in Sources */,
-				CB456EA8241AB7B300008E87 /* OrderedSet.swift in Sources */,
-				CBDA156E23CBA7000070847D /* DirectedEdge.swift in Sources */,
 				CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */,
-				CBF61B5624780D7B007472D6 /* Pipeline+DynamicOperations.swift in Sources */,
-				CBEE493D23E1EAE100986877 /* NaiveTransformer.swift in Sources */,
 				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
-				CBA25E172431344E0019C766 /* Imports.swift in Sources */,
-				CB04F73F242E6E0C00E319C7 /* EitherGraph.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */,
 				CB131A5D24154A1600B5F5BB /* CLIResponse.swift in Sources */,
-				CBA25E2224314ECF0019C766 /* CGPoint.swift in Sources */,
-				CBA25E1E24314E360019C766 /* Segment.swift in Sources */,
-				CBEE493823E1E18900986877 /* Face.swift in Sources */,
-				CB2D53DB245F187700317BD6 /* PolygonalDual.swift in Sources */,
-				CB131A66241598FE00B5F5BB /* CustomStringConvertibles.swift in Sources */,
-				CBDA155723CB800F0070847D /* VertexWeightedGraph.swift in Sources */,
-				CBF37CED240150FB00AA4846 /* PrEdForceApplicator.swift in Sources */,
 				CB131A682415991200B5F5BB /* CanvasView.swift in Sources */,
 				CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */,
-				CBFDDE46242AA143005B3048 /* DistanceFromConvexHull.swift in Sources */,
-				CBF61B542478034D007472D6 /* PlanarGraph.swift in Sources */,
-				CB2D53DD245F1E4700317BD6 /* DirectedEdgeIterator.swift in Sources */,
-				CBA25E2624314EE10019C766 /* CGVector.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
-				CBC63B0624612E780057DBFD /* EmbeddedClusterGraph.swift in Sources */,
-				CBFDDE44242AA13C005B3048 /* DistanceFromCircumcircle.swift in Sources */,
-				CBA25E4A243292120019C766 /* ClusterWeight.swift in Sources */,
-				CBFDDE4C242AA189005B3048 /* StatisticalAccuracy.swift in Sources */,
 				CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */,
-				CBFDDE52242AA454005B3048 /* Errors.swift in Sources */,
 				CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */,
-				CBDA157023CBA70B0070847D /* Collection.swift in Sources */,
-				CBA25E1C24314E320019C766 /* Polygon.swift in Sources */,
 				CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */,
 				CBFDDE3F2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift in Sources */,
-				CBFDDE2A24292D3D005B3048 /* Transformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,14 +502,7 @@
 			files = (
 				CBDA155F23CB88850070847D /* MasterThesisTests.swift in Sources */,
 				CBA25E2F243156F80019C766 /* Imports.swift in Sources */,
-				CBDA157123CBA7440070847D /* Collection.swift in Sources */,
-				CBA25E29243156430019C766 /* CGVector.swift in Sources */,
-				CBDA157223CBA7440070847D /* DirectedEdge.swift in Sources */,
 				CB5A22E023F352B800001A2F /* PolygonTests.swift in Sources */,
-				CBFDDE4024295B85005B3048 /* OrderedSet.swift in Sources */,
-				CBA25E28243156260019C766 /* Polygon.swift in Sources */,
-				CBEE493B23E1E1F000986877 /* Face.swift in Sources */,
-				CBDA156423CB88B50070847D /* VertexWeightedGraph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1030,7 +685,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"MasterThesis/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MasterThesis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1049,7 +704,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"MasterThesis/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MasterThesis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1228,9 +883,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Geometry;
 		};
-		CBB8F1242426A3060062D704 /* Delaunay */ = {
+		CBEE3C81247D817300BC8EBA /* Delaunay */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Delaunay;
+		};
+		CBEE3C83247D817300BC8EBA /* Framework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Framework;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

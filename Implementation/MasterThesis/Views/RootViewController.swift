@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Framework
 
 typealias PrimaryPipeline = Pipeline<DelaunayGraphGenerator, NaiveTransformer, PrEdForceApplicator>
 
@@ -15,13 +16,13 @@ class RootViewController: UIHostingController<AnyView> {
         generator: DelaunayGraphGenerator(numberOfCountries: 10, nestingRatio: 0, nestingBias: 0),
         transformer: NaiveTransformer(),
         forceApplicator: PrEdForceApplicator(),
-        qualityMetrics: [
-            ("Statistical Accuracy", StatisticalAccuracy()),
-//            ("Distance from Circumcircle", DistanceFromCircumcircle()),
-//            ("Distance from Hull", DistanceFromConvexHull()),
-//            ("Entropy of Angles", EntropyOfAngles()),
-//            ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
-        ],
+//        qualityMetrics: [
+//            ("Statistical Accuracy", StatisticalAccuracy()),
+////            ("Distance from Circumcircle", DistanceFromCircumcircle()),
+////            ("Distance from Hull", DistanceFromConvexHull()),
+////            ("Entropy of Angles", EntropyOfAngles()),
+////            ("Entropy of Distances", EntropyOfDistancesFromCentroid()),
+//        ],
         randomNumberGenerator: AnyRandomNumberGenerator(SystemRandomNumberGenerator())
     )
 
