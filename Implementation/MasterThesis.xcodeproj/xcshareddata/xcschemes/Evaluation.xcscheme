@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB2F82F324784BE000060881"
+               BlueprintIdentifier = "Evaluation"
                BuildableName = "Evaluation"
                BlueprintName = "Evaluation"
-               ReferencedContainer = "container:MasterThesis.xcodeproj">
+               ReferencedContainer = "container:Modules">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CB2F82F324784BE000060881"
+            BlueprintIdentifier = "Evaluation"
             BuildableName = "Evaluation"
             BlueprintName = "Evaluation"
-            ReferencedContainer = "container:MasterThesis.xcodeproj">
+            ReferencedContainer = "container:Modules">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -90,10 +90,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CB2F82F324784BE000060881"
+            BlueprintIdentifier = "Evaluation"
             BuildableName = "Evaluation"
             BlueprintName = "Evaluation"
-            ReferencedContainer = "container:MasterThesis.xcodeproj">
+            ReferencedContainer = "container:Modules">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
