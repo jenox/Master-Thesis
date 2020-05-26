@@ -88,7 +88,7 @@
 		CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluateCommand.swift; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		CBA25E1824314DE20019C766 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBDA153D23CB670B0070847D /* GUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBDA154623CB670C0070847D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CBDA154C23CB670C0070847D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				CBA25E1124312A7E0019C766 /* Modules */,
-				CBDA153F23CB670B0070847D /* MasterThesis */,
+				CBDA153F23CB670B0070847D /* GUI */,
 				CB131A4A241543A600B5F5BB /* CLI */,
 				CB2F82F524784BE000060881 /* Evaluation */,
 				CBDA153E23CB670B0070847D /* Products */,
@@ -186,14 +186,14 @@
 		CBDA153E23CB670B0070847D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CBDA153D23CB670B0070847D /* MasterThesis.app */,
+				CBDA153D23CB670B0070847D /* GUI.app */,
 				CB131A49241543A600B5F5BB /* CLI */,
 				CB2F82F424784BE000060881 /* Evaluation */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CBDA153F23CB670B0070847D /* MasterThesis */ = {
+		CBDA153F23CB670B0070847D /* GUI */ = {
 			isa = PBXGroup;
 			children = (
 				CBDA154E23CB670C0070847D /* Info.plist */,
@@ -210,7 +210,7 @@
 				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
 				CBA25E1824314DE20019C766 /* Extensions.swift */,
 			);
-			path = MasterThesis;
+			path = GUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,9 +259,9 @@
 			productReference = CB2F82F424784BE000060881 /* Evaluation */;
 			productType = "com.apple.product-type.tool";
 		};
-		CBDA153C23CB670B0070847D /* MasterThesis */ = {
+		CBDA153C23CB670B0070847D /* GUI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CBDA155123CB670C0070847D /* Build configuration list for PBXNativeTarget "MasterThesis" */;
+			buildConfigurationList = CBDA155123CB670C0070847D /* Build configuration list for PBXNativeTarget "GUI" */;
 			buildPhases = (
 				CBDA153923CB670B0070847D /* Sources */,
 				CBDA153A23CB670B0070847D /* Frameworks */,
@@ -271,7 +271,7 @@
 			);
 			dependencies = (
 			);
-			name = MasterThesis;
+			name = GUI;
 			packageProductDependencies = (
 				CB1AA1B924045AA0009028F8 /* SnapKit */,
 				CB131A432415438300B5F5BB /* MultipeerKit */,
@@ -281,7 +281,7 @@
 				CBEE3C83247D817300BC8EBA /* Framework */,
 			);
 			productName = MasterThesis;
-			productReference = CBDA153D23CB670B0070847D /* MasterThesis.app */;
+			productReference = CBDA153D23CB670B0070847D /* GUI.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -323,7 +323,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CBDA153C23CB670B0070847D /* MasterThesis */,
+				CBDA153C23CB670B0070847D /* GUI */,
 				CB131A48241543A600B5F5BB /* CLI */,
 				CB2F82F324784BE000060881 /* Evaluation */,
 			);
@@ -570,7 +570,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MasterThesis/Info.plist;
+				INFOPLIST_FILE = GUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -589,7 +589,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MasterThesis/Info.plist;
+				INFOPLIST_FILE = GUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -631,7 +631,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CBDA155123CB670C0070847D /* Build configuration list for PBXNativeTarget "MasterThesis" */ = {
+		CBDA155123CB670C0070847D /* Build configuration list for PBXNativeTarget "GUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CBDA155223CB670C0070847D /* Debug */,
