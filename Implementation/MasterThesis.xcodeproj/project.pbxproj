@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */; };
-		CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */; };
-		CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */; };
 		CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */; };
 		CB131A442415438300B5F5BB /* MultipeerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB131A432415438300B5F5BB /* MultipeerKit */; };
 		CB131A4C241543A600B5F5BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A4B241543A600B5F5BB /* main.swift */; };
@@ -21,11 +18,9 @@
 		CB131A5C241548D700B5F5BB /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A5A241548D000B5F5BB /* Commands.swift */; };
 		CB131A5D24154A1600B5F5BB /* CLIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A582415451F00B5F5BB /* CLIResponse.swift */; };
 		CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */; };
-		CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6124156E4A00B5F5BB /* StatisticsView.swift */; };
 		CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */; };
 		CB131A682415991200B5F5BB /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A672415991200B5F5BB /* CanvasView.swift */; };
 		CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A692415A1A400B5F5BB /* GraphView.swift */; };
-		CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB2F82F724784BE000060881 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F82F624784BE000060881 /* main.swift */; };
 		CB2F830024784C0100060881 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F82FF24784C0100060881 /* Delaunay */; };
@@ -40,7 +35,7 @@
 		CB87646F24797F20002EDEE2 /* EvaluateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
-		CBA25E1924314DE20019C766 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Result.swift */; };
+		CBA25E1924314DE20019C766 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Extensions.swift */; };
 		CBA25E2B2431569C0019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2A2431569C0019C766 /* Collections */; };
 		CBA25E2D2431569C0019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E2C2431569C0019C766 /* Geometry */; };
 		CBA25E2F243156F80019C766 /* Imports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E2E243156F80019C766 /* Imports.swift */; };
@@ -55,7 +50,6 @@
 		CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE38242952A9005B3048 /* Pipeline.swift */; };
 		CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3A24295328005B3048 /* RootViewController.swift */; };
 		CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3C242954EA005B3048 /* ContentView.swift */; };
-		CBFDDE3F2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE3E2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift */; };
 		CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDDE41242960C5005B3048 /* TestGraphs.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,9 +75,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHostingView.swift; sourceTree = "<group>"; };
-		CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphStatisticsView.swift; sourceTree = "<group>"; };
-		CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphView.swift; sourceTree = "<group>"; };
 		CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRandomNumberGenerator.swift; sourceTree = "<group>"; };
 		CB131A49241543A600B5F5BB /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB131A4B241543A600B5F5BB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -91,11 +82,9 @@
 		CB131A582415451F00B5F5BB /* CLIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIResponse.swift; sourceTree = "<group>"; };
 		CB131A5A241548D000B5F5BB /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		CB131A5E24154C3D00B5F5BB /* CLIReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIReceiver.swift; sourceTree = "<group>"; };
-		CB131A6124156E4A00B5F5BB /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformGestureRecognizer.swift; sourceTree = "<group>"; };
 		CB131A672415991200B5F5BB /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		CB131A692415A1A400B5F5BB /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
-		CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatisticsView.swift; sourceTree = "<group>"; };
 		CB2F82F424784BE000060881 /* Evaluation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Evaluation; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2F82F624784BE000060881 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB5A22DF23F352B800001A2F /* PolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonTests.swift; sourceTree = "<group>"; };
@@ -105,7 +94,7 @@
 		CB87646C2479798C002EDEE2 /* RunThroughPipelineCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunThroughPipelineCommand.swift; sourceTree = "<group>"; };
 		CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluateCommand.swift; sourceTree = "<group>"; };
 		CBA25E1124312A7E0019C766 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
-		CBA25E1824314DE20019C766 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		CBA25E1824314DE20019C766 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CBA25E2E243156F80019C766 /* Imports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Imports.swift; sourceTree = "<group>"; };
 		CBDA153D23CB670B0070847D /* MasterThesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MasterThesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBDA154023CB670B0070847D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -120,7 +109,6 @@
 		CBFDDE38242952A9005B3048 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
 		CBFDDE3A24295328005B3048 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		CBFDDE3C242954EA005B3048 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		CBFDDE3E2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrEdForceApplicatorConfigurationView.swift; sourceTree = "<group>"; };
 		CBFDDE41242960C5005B3048 /* TestGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGraphs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,17 +192,6 @@
 			path = Evaluation;
 			sourceTree = "<group>";
 		};
-		CBA25E27243155010019C766 /* Pipeline */ = {
-			isa = PBXGroup;
-			children = (
-				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
-				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
-				CBA25E1824314DE20019C766 /* Result.swift */,
-				CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */,
-			);
-			path = Pipeline;
-			sourceTree = "<group>";
-		};
 		CBDA153423CB670B0070847D = {
 			isa = PBXGroup;
 			children = (
@@ -245,9 +222,16 @@
 				CBDA154E23CB670C0070847D /* Info.plist */,
 				CBDA154623CB670C0070847D /* Assets.xcassets */,
 				CBDA154B23CB670C0070847D /* LaunchScreen.storyboard */,
+				CBFDDE38242952A9005B3048 /* Pipeline.swift */,
+				CB04F740242E808300E319C7 /* AnyRandomNumberGenerator.swift */,
+				CBFDDE41242960C5005B3048 /* TestGraphs.swift */,
 				CBDA154023CB670B0070847D /* AppDelegate.swift */,
-				CBA25E27243155010019C766 /* Pipeline */,
-				CBFDDE372429303C005B3048 /* Views */,
+				CBFDDE3A24295328005B3048 /* RootViewController.swift */,
+				CBFDDE3C242954EA005B3048 /* ContentView.swift */,
+				CB131A692415A1A400B5F5BB /* GraphView.swift */,
+				CB131A672415991200B5F5BB /* CanvasView.swift */,
+				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
+				CBA25E1824314DE20019C766 /* Extensions.swift */,
 			);
 			path = MasterThesis;
 			sourceTree = "<group>";
@@ -261,24 +245,6 @@
 				CBDA156023CB88850070847D /* Info.plist */,
 			);
 			path = MasterThesisTests;
-			sourceTree = "<group>";
-		};
-		CBFDDE372429303C005B3048 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				CBFDDE3A24295328005B3048 /* RootViewController.swift */,
-				CBFDDE3C242954EA005B3048 /* ContentView.swift */,
-				CBFDDE3E2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift */,
-				CB04F73C242E6D7F00E319C7 /* SwiftUIGraphView.swift */,
-				CB04F73A242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift */,
-				CB04F738242E6D7000E319C7 /* UIViewHostingView.swift */,
-				CB131A692415A1A400B5F5BB /* GraphView.swift */,
-				CB131A6B2416DBE000B5F5BB /* GraphStatisticsView.swift */,
-				CB131A6124156E4A00B5F5BB /* StatisticsView.swift */,
-				CB131A672415991200B5F5BB /* CanvasView.swift */,
-				CB131A63241598ED00B5F5BB /* TransformGestureRecognizer.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -475,13 +441,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB131A64241598ED00B5F5BB /* TransformGestureRecognizer.swift in Sources */,
-				CB131A6224156E4A00B5F5BB /* StatisticsView.swift in Sources */,
 				CBFDDE3D242954EA005B3048 /* ContentView.swift in Sources */,
 				CBFDDE3B24295328005B3048 /* RootViewController.swift in Sources */,
-				CBA25E1924314DE20019C766 /* Result.swift in Sources */,
+				CBA25E1924314DE20019C766 /* Extensions.swift in Sources */,
 				CB131A5C241548D700B5F5BB /* Commands.swift in Sources */,
-				CB04F73B242E6D7900E319C7 /* SwiftUIGraphStatisticsView.swift in Sources */,
-				CB131A6C2416DBE000B5F5BB /* GraphStatisticsView.swift in Sources */,
 				CBFDDE42242960C5005B3048 /* TestGraphs.swift in Sources */,
 				CB04F741242E808300E319C7 /* AnyRandomNumberGenerator.swift in Sources */,
 				CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */,
@@ -490,9 +453,6 @@
 				CBFDDE39242952A9005B3048 /* Pipeline.swift in Sources */,
 				CBDA154123CB670B0070847D /* AppDelegate.swift in Sources */,
 				CB131A6024154C4000B5F5BB /* CLIReceiver.swift in Sources */,
-				CB04F73D242E6D7F00E319C7 /* SwiftUIGraphView.swift in Sources */,
-				CB04F739242E6D7000E319C7 /* UIViewHostingView.swift in Sources */,
-				CBFDDE3F2429559B005B3048 /* PrEdForceApplicatorConfigurationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

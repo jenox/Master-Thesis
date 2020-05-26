@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Framework
 
 struct ContentView: View {
     @EnvironmentObject private var pipeline: PrimaryPipeline
@@ -15,9 +16,8 @@ struct ContentView: View {
         let insets = EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
         return SwiftUIGraphView(graph: self.pipeline.graph, forceApplicator: self.pipeline.forceApplicator)
-//            .overlay(self.statisticsView.padding(insets), alignment: .bottomLeading)
             .overlay(self.controlView.padding(insets), alignment: .topLeading)
-//            .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
+            .overlay(self.forceConfigurationView.padding(insets), alignment: .topTrailing)
     }
 
     private var controlView: some View {
@@ -43,10 +43,6 @@ struct ContentView: View {
         }
     }
 
-//    private var statisticsView: some View {
-//        return SwiftUIGraphStatisticsView(graph: self.pipeline.graph, qualityMetrics: self.pipeline.qualityMetrics)
-//    }
-
     private var dynamicOperationsView: some View {
         return Group(content: {
             Button(action: self.pipeline.changeRandomCountryWeight, label: { Text("Change Weight") })
@@ -66,6 +62,45 @@ struct ContentView: View {
 
     private func loadLarge() {
         self.pipeline.load(TestGraphs.makeVoronoiInputGraph())
+    }
+}
+
+private struct PrEdForceApplicatorConfigurationView: View {
+    var forceApplicator: Binding<PrEdForceApplicator>
+
+    var body: some View {
+        return VStack(content: {
+            self.logarithmicSlider(value: self.forceApplicator.airPressureStrength, range: 1e-2...1e1, text: "Air Pressure")
+            self.logarithmicSlider(value: self.forceApplicator.angularResolutionStrength, range: 1e-2...1e2, text: "Angular Resolution")
+            self.logarithmicSlider(value: self.forceApplicator.vertexVertexRepulsionStrength, range: 1e-2...1e3, text: "V-V Repulsion")
+            self.logarithmicSlider(value: self.forceApplicator.vertexEdgeRepulsionStrength, range: 1e-2...1e3, text: "V-E Repulsion")
+        })
+    }
+
+    private func logarithmicSlider(value: Binding<CGFloat>, range: ClosedRange<CGFloat>, text: String) -> Slider<EmptyView, AnyView> {
+        let binding = Binding(get: { log10(value.wrappedValue) }, set: { value.wrappedValue = pow(10, $0) })
+        let range = log10(range.lowerBound)...log10(range.upperBound)
+        let minimumValueLabel = AnyView(Text(verbatim: text))
+        let maximumValueLabel = AnyView(EmptyView())
+
+        return Slider(value: binding, in: range, minimumValueLabel: minimumValueLabel, maximumValueLabel: maximumValueLabel, label: { EmptyView() })
+    }
+}
+
+private struct SwiftUIGraphView: View, UIViewRepresentable {
+    var graph: EitherGraph?
+    var forceApplicator: PrEdForceApplicator
+
+    func makeUIView(context: UIViewRepresentableContext<SwiftUIGraphView>) -> GraphView {
+        return GraphView(frame: UIScreen.main.bounds, graph: self.graph, forceApplicator: self.forceApplicator)
+    }
+
+    func updateUIView(_ view: GraphView, context: UIViewRepresentableContext<SwiftUIGraphView>) {
+        view.graph = self.graph
+        view.forceApplicator = self.forceApplicator
+    }
+
+    static func dismantleUIView(_ uiView: GraphView, coordinator: Void) {
     }
 }
 
