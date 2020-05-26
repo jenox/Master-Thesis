@@ -9,22 +9,24 @@
 import CoreGraphics
 import Geometry
 
-struct EntropyOfAngles: QualityEvaluator {
-    func quality(of face: PolygonalDual.FaceID, in graph: PolygonalDual) throws -> QualityValue {
-        let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
-        let angles = polygon.points.indices.map(polygon.normalAndAngle(at:)).map({ Angle(turns: 1) - $0.angle })
-
-        return .double(angles.localAngleFactor())
+public struct EntropyOfAngles {
+    public func evaluate(in graph: PolygonalDual) throws -> [Double] {
+        fatalError()
+//        let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
+//        let angles = polygon.points.indices.map(polygon.normalAndAngle(at:)).map({ Angle(turns: 1) - $0.angle })
+//
+//        return .double(angles.localAngleFactor())
     }
 }
 
-struct EntropyOfDistancesFromCentroid: QualityEvaluator {
-    func quality(of face: PolygonalDual.FaceID, in graph: PolygonalDual) throws -> QualityValue {
-        let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
-        let centroid = CGPoint.centroid(of: polygon.points)
-        let distances = polygon.points.map(centroid.distance(to:))
-
-        return .double(distances.globalDistanceFactor())
+public struct EntropyOfDistancesFromCentroid {
+    public func evaluate(in graph: PolygonalDual) throws -> [Double] {
+        fatalError()
+//        let polygon = graph.polygon(for: face).withEvenlyDistributedEdgeLengths()
+//        let centroid = CGPoint.centroid(of: polygon.points)
+//        let distances = polygon.points.map(centroid.distance(to:))
+//
+//        return .double(distances.globalDistanceFactor())
     }
 }
 

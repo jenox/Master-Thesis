@@ -8,6 +8,8 @@
 
 import Foundation
 import ArgumentParser
+import Framework
+import Collections
 
 struct EvaluateCommand: ParsableCommand {
     static let configuration = CommandConfiguration(commandName: "evaluate")

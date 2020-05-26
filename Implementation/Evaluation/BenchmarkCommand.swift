@@ -8,6 +8,7 @@
 
 import Foundation
 import ArgumentParser
+import Framework
 
 struct BenchmarkCommand: ParsableCommand {
     static let configuration = CommandConfiguration(

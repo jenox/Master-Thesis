@@ -84,3 +84,47 @@ extension Polygon {
         return self.area >= 0
     }
 }
+
+extension Polygon {
+    var convexHull: Polygon {
+        return Polygon(points: calculateConvexHull(fromPoints: self.points))
+    }
+}
+
+// Graham's scan
+private func calculateConvexHull(fromPoints points: [CGPoint]) -> [CGPoint] {
+    guard points.count >= 3 else { return points }
+
+    precondition(Polygon(points: points).area >= 0)
+
+    let index = points.firstIndexOfMinimum(by: \.x)!
+    var stack: [CGPoint] = []
+
+    for p in points.rotated(shiftingToStart: index) + [points[index]] {
+        while stack.count >= 2, calculateOrientation(stack[stack.count - 2], stack[stack.count - 1], p) == .clockwise {
+            stack.removeLast()
+        }
+
+        stack.append(p)
+    }
+
+    stack.removeLast()
+
+    return stack
+}
+
+private func calculateOrientation(_ p: CGPoint, _ q: CGPoint, _ r: CGPoint) -> Orientation {
+    let val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
+
+    if val == 0 {
+        return .straight
+    } else if val > 0 {
+        return .clockwise
+    } else {
+        return .counterClockwise
+    }
+}
+
+private enum Orientation {
+    case straight, clockwise, counterClockwise
+}

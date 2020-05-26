@@ -19,7 +19,7 @@ extension PolygonalDual {
         case removeAdjacency
     }
 
-    enum AnyDynamicOperation: Hashable {
+    public enum AnyDynamicOperation: Hashable {
         case insertFaceInside(PolygonalDual.InsertFaceInsideOperation)
         case insertFaceOutside(PolygonalDual.InsertFaceOutsideOperation)
         case removeFaceWithoutBoundaryToExternalFace(PolygonalDual.RemoveFaceWithoutBoundaryToExternalFaceOperation)
@@ -27,23 +27,9 @@ extension PolygonalDual {
         case flipAdjacency(PolygonalDual.FlipAdjacencyOperation)
         case createAdjacency(PolygonalDual.CreateAdjacencyOperation)
         case removeAdjacency(PolygonalDual.RemoveAdjacencyOperation)
-
-        var isInsertion: Bool {
-            switch self {
-            case .insertFaceInside, .insertFaceOutside: return true
-            default: return false
-            }
-        }
-
-        var isRemoval: Bool {
-            switch self {
-            case .removeFaceWithoutBoundaryToExternalFace, .removeFaceWithBoundaryToExternalFace: return true
-            default: return false
-            }
-        }
     }
 
-    func randomDynamicOperation<T>(name: ClusterName, weight: ClusterWeight, using generator: inout T) -> AnyDynamicOperation where T: RandomNumberGenerator {
+    public func randomDynamicOperation<T>(name: ClusterName, weight: ClusterWeight, using generator: inout T) -> AnyDynamicOperation where T: RandomNumberGenerator {
         var operations: Set<AnyDynamicOperation> = []
 
         while operations.isEmpty {
@@ -74,7 +60,7 @@ extension PolygonalDual {
         return operations.randomElement(using: &generator)!
     }
 
-    mutating func apply(_ operation: AnyDynamicOperation) throws {
+    public mutating func apply(_ operation: AnyDynamicOperation) throws {
         switch operation {
         case .insertFaceInside(let operation): try self.insertFaceInside(operation)
         case .insertFaceOutside(let operation): try self.insertFaceOutside(operation)

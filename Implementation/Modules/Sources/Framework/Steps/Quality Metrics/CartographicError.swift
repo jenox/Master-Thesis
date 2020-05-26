@@ -8,8 +8,11 @@
 
 import Swift
 
-struct CartographicError {
-    func evaluate(in graph: PolygonalDual) throws -> [Double] {
+public struct CartographicError {
+    public init() {
+    }
+
+    public func evaluate(in graph: PolygonalDual) throws -> [Double] {
         let totalweight = graph.faces.map(graph.weight(of:)).reduce(0, +).rawValue
         let totalarea = graph.faces.map(graph.area(of:)).reduce(0, +)
 

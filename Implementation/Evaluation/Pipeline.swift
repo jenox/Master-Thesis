@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Framework
 
 struct Pipeline {
     init(seed: UInt64, generator: DelaunayGraphGenerator) {
@@ -76,7 +77,7 @@ private extension PolygonalDual {
             let generated = generator.generateRandomWeight(using: &prng)
             let weight = 0.75 * self.weight(of: face) + 0.25 * generated
 
-            self.setWeight(of: face, to: weight)
+            try! self.adjustWeight(of: face, to: weight)
         }
 
         let possibleNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÄÆÃÅĀÈÉÊÊĒĖĘEÎÏÍĪĮÌÔÖÒÓŒØŌÕÛÜÙÚŪ".map(ClusterName.init)

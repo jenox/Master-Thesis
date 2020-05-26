@@ -133,7 +133,7 @@ extension PolygonalDual: PolygonalDualRequirements {
         return self.storage.area(of: face)
     }
 
-    func weight(of face: FaceID) -> Weight {
+    public func weight(of face: ClusterName) -> ClusterWeight {
         return self.storage.weight(of: face)
     }
 

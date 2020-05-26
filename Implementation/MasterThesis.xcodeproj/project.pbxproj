@@ -23,15 +23,14 @@
 		CB131A6A2415A1A400B5F5BB /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB131A692415A1A400B5F5BB /* GraphView.swift */; };
 		CB1AA1BA24045AA0009028F8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB1AA1B924045AA0009028F8 /* SnapKit */; };
 		CB2F82F724784BE000060881 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F82F624784BE000060881 /* main.swift */; };
-		CB2F830024784C0100060881 /* Delaunay in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F82FF24784C0100060881 /* Delaunay */; };
 		CB2F830224784C0100060881 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830124784C0100060881 /* Collections */; };
-		CB2F830424784C0100060881 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CB2F830324784C0100060881 /* Geometry */; };
 		CB87646524796361002EDEE2 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = CB87646424796361002EDEE2 /* ArgumentParser */; };
 		CB87646724797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646624797021002EDEE2 /* Xoroshiro128PlusRandomNumberGenerator.swift */; };
 		CB876469247976C5002EDEE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB876468247976C5002EDEE2 /* Extensions.swift */; };
 		CB87646B2479784E002EDEE2 /* GenerateUUIDsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646A2479784E002EDEE2 /* GenerateUUIDsCommand.swift */; };
 		CB87646D2479798C002EDEE2 /* RunThroughPipelineCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646C2479798C002EDEE2 /* RunThroughPipelineCommand.swift */; };
 		CB87646F24797F20002EDEE2 /* EvaluateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87646E24797F20002EDEE2 /* EvaluateCommand.swift */; };
+		CB8ACBA0247D9843001D7C16 /* Framework in Frameworks */ = {isa = PBXBuildFile; productRef = CB8ACB9F247D9843001D7C16 /* Framework */; };
 		CBA25E1324312CD20019C766 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1224312CD20019C766 /* Collections */; };
 		CBA25E1524312CD20019C766 /* Geometry in Frameworks */ = {isa = PBXBuildFile; productRef = CBA25E1424312CD20019C766 /* Geometry */; };
 		CBA25E1924314DE20019C766 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA25E1824314DE20019C766 /* Extensions.swift */; };
@@ -117,9 +116,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB2F830224784C0100060881 /* Collections in Frameworks */,
-				CB2F830424784C0100060881 /* Geometry in Frameworks */,
 				CB87646524796361002EDEE2 /* ArgumentParser in Frameworks */,
-				CB2F830024784C0100060881 /* Delaunay in Frameworks */,
+				CB8ACBA0247D9843001D7C16 /* Framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,10 +251,9 @@
 			);
 			name = Evaluation;
 			packageProductDependencies = (
-				CB2F82FF24784C0100060881 /* Delaunay */,
 				CB2F830124784C0100060881 /* Collections */,
-				CB2F830324784C0100060881 /* Geometry */,
 				CB87646424796361002EDEE2 /* ArgumentParser */,
+				CB8ACB9F247D9843001D7C16 /* Framework */,
 			);
 			productName = Evaluation;
 			productReference = CB2F82F424784BE000060881 /* Evaluation */;
@@ -693,22 +690,18 @@
 			package = CB1AA1B824045AA0009028F8 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		CB2F82FF24784C0100060881 /* Delaunay */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Delaunay;
-		};
 		CB2F830124784C0100060881 /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Collections;
-		};
-		CB2F830324784C0100060881 /* Geometry */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Geometry;
 		};
 		CB87646424796361002EDEE2 /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CB131A53241543E700B5F5BB /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		CB8ACB9F247D9843001D7C16 /* Framework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Framework;
 		};
 		CBA25E1224312CD20019C766 /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

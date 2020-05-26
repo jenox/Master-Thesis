@@ -10,6 +10,9 @@ import CoreGraphics
 import Geometry
 
 public struct PolygonComplexity {
+    public init() {
+    }
+
     public func evaluate(in graph: PolygonalDual) throws -> [Double] {
         var complexities: [Double] = []
 
