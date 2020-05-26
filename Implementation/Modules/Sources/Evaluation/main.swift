@@ -16,4 +16,10 @@ private struct TopLevelCommand: ParsableCommand {
     )
 }
 
+#if DEBUG
+print("Running in debug mode")
+#elseif RELEASE
+print("Running in release mode")
+#endif
+
 TopLevelCommand.main()

@@ -3,6 +3,11 @@
 
 import PackageDescription
 
+private let settings = [
+    SwiftSetting.define("DEBUG", .when(configuration: .debug)),
+    SwiftSetting.define("RELEASE", .when(configuration: .release)),
+]
+
 let package = Package(
     name: "Modules",
     platforms: [.iOS(.v13), .macOS(.v10_15)],
@@ -23,7 +28,7 @@ let package = Package(
         .target(name: "Delaunay", dependencies: []),
         .target(name: "Framework", dependencies: ["Geometry", "Collections", "Delaunay"]),
 
-        .target(name: "Evaluation", dependencies: ["Framework", "Collections", .product(name: "ArgumentParser", package: "swift-argument-parser")]),
+        .target(name: "Evaluation", dependencies: ["Framework", "Collections", .product(name: "ArgumentParser", package: "swift-argument-parser")], swiftSettings: settings),
 
         .testTarget(name: "CollectionsTests", dependencies: ["Collections"]),
     ]
