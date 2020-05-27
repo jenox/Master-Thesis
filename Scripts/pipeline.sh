@@ -1,49 +1,49 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "$0")
 export SWIFT_DETERMINISTIC_HASHING="1"
 
-function evaluate {
-    echo "$4"
-    mkdir -p "$SCRIPT_PATH/../Evaluation/graphs/$4/"
-    NUMBER_OF_STEPS_PER_VERTEX=10
-    NUMBER_OF_OPERATIONS=20
+SCRIPT_PATH=$(dirname "$0")
+PACKAGE_PATH="$SCRIPT_PATH/../Implementation/Modules/"
+INPUT_FILE="$SCRIPT_PATH/../Evaluation/uuids.txt"
+OUTPUT_DIRECTORY="$SCRIPT_PATH/../Evaluation/graphs/"
 
-    swift run --package-path="$SCRIPT_PATH/../Implementation/Modules/" --configuration=release Evaluation pipeline --number-of-vertices="$1" --nesting-ratio="$2" --nesting-bias="$3" --number-of-optimization-steps-per-vertex="$NUMBER_OF_STEPS_PER_VERTEX" --number-of-dynamic-operations="$NUMBER_OF_OPERATIONS" --uuid-file="$SCRIPT_PATH/../Evaluation/uuids.txt" --output-directory="$SCRIPT_PATH/../Evaluation/graphs/$4/"
+function pipeline {
+    swift run --package-path="$PACKAGE_PATH" --configuration=release Evaluation pipeline --number-of-vertices="$1" --nesting-ratio="$2" --nesting-bias="$3" --number-of-optimization-steps-per-vertex=10 --number-of-dynamic-operations=20 --uuid-file="$INPUT_FILE" --output-directory="$OUTPUT_DIRECTORY"
 }
 
-evaluate 10 0 0 "10-0.0-0.0"
-evaluate 10 0.25 0 "10-0.25-0.0"
-evaluate 10 0.25 0.5 "10-0.25-0.5"
-evaluate 10 0.25 0.99 "10-0.25-1.0"
-evaluate 10 0.5 0 "10-0.5-0.0"
-evaluate 10 0.5 0.5 "10-0.5-0.5"
-evaluate 10 0.5 0.99 "10-0.5-1.0"
-evaluate 15 0 0 "15-0.0-0.0"
-evaluate 15 0.25 0 "15-0.25-0.0"
-evaluate 15 0.25 0.5 "15-0.25-0.5"
-evaluate 15 0.25 0.99 "15-0.25-1.0"
-evaluate 15 0.5 0 "15-0.5-0.0"
-evaluate 15 0.5 0.5 "15-0.5-0.5"
-evaluate 15 0.5 0.99 "15-0.5-1.0"
-evaluate 20 0 0 "20-0.0-0.0"
-evaluate 20 0.25 0 "20-0.25-0.0"
-evaluate 20 0.25 0.5 "20-0.25-0.5"
-evaluate 20 0.25 0.99 "20-0.25-1.0"
-evaluate 20 0.5 0 "20-0.5-0.0"
-evaluate 20 0.5 0.5 "20-0.5-0.5"
-evaluate 20 0.5 0.99 "20-0.5-1.0"
-evaluate 25 0 0 "25-0.0-0.0"
-evaluate 25 0.25 0 "25-0.25-0.0"
-evaluate 25 0.25 0.5 "25-0.25-0.5"
-evaluate 25 0.25 0.99 "25-0.25-1.0"
-evaluate 25 0.5 0 "25-0.5-0.0"
-evaluate 25 0.5 0.5 "25-0.5-0.5"
-evaluate 25 0.5 0.99 "25-0.5-1.0"
-evaluate 30 0 0 "30-0.0-0.0"
-evaluate 30 0.25 0 "30-0.25-0.0"
-evaluate 30 0.25 0.5 "30-0.25-0.5"
-evaluate 30 0.25 0.99 "30-0.25-1.0"
-evaluate 30 0.5 0 "30-0.5-0.0"
-evaluate 30 0.5 0.5 "30-0.5-0.5"
-evaluate 30 0.5 0.99 "30-0.5-1.0"
+time pipeline 10 0 0 &&
+time pipeline 10 0.25 0 &&
+time pipeline 10 0.25 0.5 &&
+time pipeline 10 0.25 0.99 &&
+time pipeline 10 0.5 0 &&
+time pipeline 10 0.5 0.5 &&
+time pipeline 10 0.5 0.99 &&
+time pipeline 15 0 0 &&
+time pipeline 15 0.25 0 &&
+time pipeline 15 0.25 0.5 &&
+time pipeline 15 0.25 0.99 &&
+time pipeline 15 0.5 0 &&
+time pipeline 15 0.5 0.5 &&
+time pipeline 15 0.5 0.99 &&
+# time pipeline 20 0 0 &&
+# time pipeline 20 0.25 0 &&
+# time pipeline 20 0.25 0.5 &&
+# time pipeline 20 0.25 0.99 &&
+# time pipeline 20 0.5 0 &&
+# time pipeline 20 0.5 0.5 &&
+# time pipeline 20 0.5 0.99 &&
+time pipeline 25 0 0 &&
+time pipeline 25 0.25 0 &&
+time pipeline 25 0.25 0.5 &&
+time pipeline 25 0.25 0.99 &&
+time pipeline 25 0.5 0 &&
+time pipeline 25 0.5 0.5 &&
+time pipeline 25 0.5 0.99 &&
+time pipeline 30 0 0 &&
+time pipeline 30 0.25 0 &&
+time pipeline 30 0.25 0.5 &&
+time pipeline 30 0.25 0.99 &&
+time pipeline 30 0.5 0 &&
+time pipeline 30 0.5 0.5 &&
+time pipeline 30 0.5 0.99 &&
+: # no-op

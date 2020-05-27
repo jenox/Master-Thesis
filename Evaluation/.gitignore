@@ -1,2 +1,2 @@
-/graphs/*/*/*.json
-/figures/*.pdf
+/graphs
+/plots

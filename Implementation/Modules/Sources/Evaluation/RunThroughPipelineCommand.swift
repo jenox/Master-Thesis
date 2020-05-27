@@ -34,6 +34,9 @@ struct RunThroughPipelineCommand: ParsableCommand {
     }
 
     func run() throws {
+        try FileManager.default.createDirectory(at: self.outputDirectory, withIntermediateDirectories: true)
+        let parameters = "\(self.numberOfVertices)-\(self.nestingRatio)-\(self.nestingBias)"
+
         let generator = DelaunayGraphGenerator(numberOfCountries: self.numberOfVertices, nestingRatio: self.nestingRatio, nestingBias: self.nestingBias)
 
         let group = DispatchGroup()
@@ -51,8 +54,8 @@ struct RunThroughPipelineCommand: ParsableCommand {
 
                     print("Starting instance \(uuid) on thread #\(thread)")
 
-                    let directory = self.outputDirectory.appendingPathComponent(uuid.uuidString)
-                    try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+                    let directory = self.outputDirectory.appendingPathComponent(parameters).appendingPathComponent(uuid.uuidString)
+                    try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
                     var hasher = Hasher()
                     hasher.combine(uuid.uuidString)

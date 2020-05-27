@@ -16,10 +16,14 @@ private struct TopLevelCommand: ParsableCommand {
     )
 }
 
+if ProcessInfo.processInfo.environment["SWIFT_DETERMINISTIC_HASHING"] != "1" {
+    print("Please turn on deterministic hashing:")
+    print("export SWIFT_DETERMINISTIC_HASHING=\"1\"")
+    fatalError()
+}
+
 #if DEBUG
-print("Running in debug mode")
-#elseif RELEASE
-print("Running in release mode")
+print("Warning: running in debug mode!")
 #endif
 
 TopLevelCommand.main()

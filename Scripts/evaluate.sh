@@ -1,6 +1,51 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname "$0")
 export SWIFT_DETERMINISTIC_HASHING="1"
 
-swift run --package-path="$SCRIPT_PATH/../Implementation/Modules/" --configuration=release Evaluation evaluate --sizes 10 15 20 25 30 --times 1 3 5 7 11 21 --complexities 0,0 0.25,0 0.25,0.5 0.25,1 0.5,0 0.5,0.5 0.5,1 --limited-to-number-of-identifiers 100 --uuid-file="$SCRIPT_PATH/../Evaluation/uuids.txt" --input-directory="$SCRIPT_PATH/../Evaluation/graphs/" --output-directory="$SCRIPT_PATH/../Evaluation/metrics/"
+SCRIPT_PATH=$(dirname "$0")
+PACKAGE_PATH="$SCRIPT_PATH/../Implementation/Modules/"
+INPUT_DIRECTORY="$SCRIPT_PATH/../Evaluation/graphs/"
+OUTPUT_DIRECTORY="$SCRIPT_PATH/../Evaluation/metrics/"
+
+function evaluate {        
+    swift run --package-path="$PACKAGE_PATH" --configuration=release Evaluation evaluate --number-of-vertices="$1" --nesting-ratio="$2" --nesting-bias="$3" --input-directory="$INPUT_DIRECTORY" --output-directory="$OUTPUT_DIRECTORY"
+}
+
+time (
+evaluate 10 0 0 &&
+evaluate 10 0.25 0 &&
+evaluate 10 0.25 0.5 &&
+evaluate 10 0.25 0.99 &&
+evaluate 10 0.5 0 &&
+evaluate 10 0.5 0.5 &&
+evaluate 10 0.5 0.99 &&
+evaluate 15 0 0 &&
+evaluate 15 0.25 0 &&
+evaluate 15 0.25 0.5 &&
+evaluate 15 0.25 0.99 &&
+evaluate 15 0.5 0 &&
+evaluate 15 0.5 0.5 &&
+evaluate 15 0.5 0.99 &&
+# evaluate 20 0 0 &&
+# evaluate 20 0.25 0 &&
+# evaluate 20 0.25 0.5 &&
+# evaluate 20 0.25 0.99 &&
+# evaluate 20 0.5 0 &&
+# evaluate 20 0.5 0.5 &&
+# evaluate 20 0.5 0.99 &&
+evaluate 25 0 0 &&
+evaluate 25 0.25 0 &&
+evaluate 25 0.25 0.5 &&
+evaluate 25 0.25 0.99 &&
+evaluate 25 0.5 0 &&
+evaluate 25 0.5 0.5 &&
+evaluate 25 0.5 0.99 &&
+evaluate 30 0 0 &&
+evaluate 30 0.25 0 &&
+evaluate 30 0.25 0.5 &&
+evaluate 30 0.25 0.99 &&
+evaluate 30 0.5 0 &&
+evaluate 30 0.5 0.5 &&
+evaluate 30 0.5 0.99 &&
+: # no-op
+)

@@ -1,54 +1,63 @@
-import pandas as pd
-from matplotlib import pyplot as plt
-import seaborn as sns
+# coding=utf8
 
-q1 = "maximum cartographic error"
-q2 = "average cartographic error"
-q3 = "maximum polygon complexity"
-q4 = "average polygon complexity"
+import os
+import pandas
+import seaborn
+from matplotlib import pyplot
 
-times = ["t=1","t=3","t=5","t=7","t=11","t=21"]
-sizes = ["n=10","n=15","n=20","n=25","n=30"]
-complexities = ["a=0.0,b=0.0","a=0.25,b=0.0","a=0.25,b=0.5","a=0.25,b=1.0","a=0.5,b=0.0","a=0.5,b=0.5","a=0.5,b=1.0"]
+pwd = os.path.dirname(os.path.realpath(__file__))
+inputdir = "{0}/../Evaluation/metrics".format(pwd)
+outputdir = "{0}/../Evaluation/plots".format(pwd)
+if not os.path.exists("{0}/".format(outputdir)):
+    os.makedirs("{0}/".format(outputdir))
 
-for size in sizes:
-    for complexity in complexities:
-        filename = "t=?,{0},{1}".format(size, complexity)
-        print(filename)
-        df = pd.read_csv("../Evaluation/metrics/{0}.csv".format(filename), index_col=0)
-        plt.clf()
-        sns.swarmplot(y=q1, x="number of operations", data=df).get_figure().savefig("../Evaluation/figures/ErrorMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q2, x="number of operations", data=df).get_figure().savefig("../Evaluation/figures/ErrorAverage-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q3, x="number of operations", data=df).get_figure().savefig("../Evaluation/figures/ComplexityMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q4, x="number of operations", data=df).get_figure().savefig("../Evaluation/figures/ComplexityAverage-{0}.pdf".format(filename))
+inputfilenames = [
+    "10-0.0-0.0", "10-0.25-0.0", "10-0.25-0.5", "10-0.25-0.99", "10-0.5-0.0", "10-0.5-0.5", "10-0.5-0.99",
+    "15-0.0-0.0", "15-0.25-0.0", "15-0.25-0.5", "15-0.25-0.99", "15-0.5-0.0", "15-0.5-0.5", "15-0.5-0.99",
+    # "20-0.0-0.0", "20-0.25-0.0", "20-0.25-0.5", "20-0.25-0.99", "20-0.5-0.0", "20-0.5-0.5", "20-0.5-0.99",
+    "25-0.0-0.0", "25-0.25-0.0", "25-0.25-0.5", "25-0.25-0.99", "25-0.5-0.0", "25-0.5-0.5", "25-0.5-0.99",
+    "30-0.0-0.0", "30-0.25-0.0", "30-0.25-0.5", "30-0.25-0.99", "30-0.5-0.0", "30-0.5-0.5", "30-0.5-0.99",
+]
+frames = map(lambda x: pandas.read_csv("{0}/{1}.csv".format(inputdir, x)), inputfilenames)
+data = pandas.concat(frames)
+data["nesting ratio and bias"] = "(" + data["nesting ratio"].astype(str) + ", " + data["nesting bias"].astype(str) + ")"
 
-for size in sizes:
-    for time in times:
-        filename = "a=?,b=?,{0},{1}".format(size, time)
-        print(filename)
-        df = pd.read_csv("../Evaluation/metrics/{0}.csv".format(filename), index_col=0)
-        plt.clf()
-        sns.swarmplot(y=q1, x="nesting ratio and bias", data=df).get_figure().savefig("../Evaluation/figures/ErrorMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q2, x="nesting ratio and bias", data=df).get_figure().savefig("../Evaluation/figures/ErrorAverage-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q3, x="nesting ratio and bias", data=df).get_figure().savefig("../Evaluation/figures/ComplexityMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q4, x="nesting ratio and bias", data=df).get_figure().savefig("../Evaluation/figures/ComplexityAverage-{0}.pdf".format(filename))
+sizes = [10, 15, 25, 30]
+nestings = [(0.0, 0.0), (0.25, 0.0), (0.25, 0.5), (0.25, 0.99), (0.5, 0.0), (0.5, 0.5), (0.5, 0.99)]
+times = [0, 2, 4, 6, 10, 20]
 
-for complexity in complexities:
-    for time in times:
-        filename = "n=?,{0},{1}".format(complexity, time)
-        print(filename)
-        df = pd.read_csv("../Evaluation/metrics/{0}.csv".format(filename), index_col=0)
-        plt.clf()
-        sns.swarmplot(y=q1, x="number of vertices", data=df).get_figure().savefig("../Evaluation/figures/ErrorMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q2, x="number of vertices", data=df).get_figure().savefig("../Evaluation/figures/ErrorAverage-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q3, x="number of vertices", data=df).get_figure().savefig("../Evaluation/figures/ComplexityMaximum-{0}.pdf".format(filename))
-        plt.clf()
-        sns.swarmplot(y=q4, x="number of vertices", data=df).get_figure().savefig("../Evaluation/figures/ComplexityAverage-{0}.pdf".format(filename))
+metrics = [
+    ("maximum cartographic error", "MaximumCartographicError"),
+    ("average cartographic error", "AverageCartographicError"),
+    ("maximum polygon complexity", "MaximumPolygonComplexity"),
+    ("average polygon complexity", "AveragePolygonComplexity"),
+]
+
+seaborn.set(rc = { 'figure.figsize': (8, 6) })
+
+print("Creating plots for variable number of operations…")
+for n in sizes:
+    for (a, b) in nestings:
+        suffix = "t=?,n={0},a={1},b={2}".format(n, a, b)
+        filtered = data[data["number of vertices"].eq(n) & data["nesting ratio"].eq(a) & data["nesting bias"].eq(b) & data["number of operations"].isin(times)]
+        for (column, prefix) in metrics:
+            pyplot.clf()
+            seaborn.swarmplot(y=column, x="number of operations", data=filtered).get_figure().savefig("{0}/{1}-{2}.pdf".format(outputdir, prefix, suffix))
+
+print("Creating plots for variable nesting ratio and bias…")
+for n in sizes:
+    for t in times:
+        suffix = "a=?,b=?,n={0},t={1}".format(n, t)
+        filtered = data[data["number of vertices"].eq(n) & data["number of operations"].eq(t)]
+        for (column, prefix) in metrics:
+            pyplot.clf()
+            seaborn.swarmplot(y=column, x="nesting ratio and bias", data=filtered).get_figure().savefig("{0}/{1}-{2}.pdf".format(outputdir, prefix, suffix))
+
+print("Creating plots for variable number of vertices…")
+for (a, b) in nestings:
+    for t in times:
+        suffix = "n=?,a={0},b={0},t={2}".format(a, b, t)
+        filtered = data[data["nesting ratio"].eq(a) & data["nesting bias"].eq(b) & data["number of operations"].eq(t)]
+        for (column, prefix) in metrics:
+            pyplot.clf()
+            seaborn.swarmplot(y=column, x="number of vertices", data=filtered).get_figure().savefig("{0}/{1}-{2}.pdf".format(outputdir, prefix, suffix))
