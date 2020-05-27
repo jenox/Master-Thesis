@@ -12,10 +12,6 @@ We find an equilibrium position by iteratively computing the net force acting on
 
 \paragraph{Forces}
 
-%https://slideplayer.com/slide/4924642/
-%v-v-rep: Eades 1984, Fruchterman & Reingold
-%v-e-rep: Davidson & Harel 1996, Bertault 1999
-
 We define the forces that exist in our particle system with two goals in mind:
 First, the faces of the graph (the regions of the map) to have an area ought to be close to proportional to some prescribed value.
 Second, we want the faces to be \emph{locally fat}.
@@ -84,7 +80,6 @@ We therefore define a force that optimizes angular resolution, \ie{} a force tha
 
 Let $v$ be a vertex and let $u$ and $w$ be two successive neighbors of $u$ in counterclockwise order.
 Also let $\measuredangle_{uvw} \in \lbrack 0^\circ, 360^\circ )$ denote the normalized angle from $u$ via $v$ to $w$ measured in counterclockwise direction.
-%Analogous to \cite{argyriou2013maximizing}, we define an angular force
 With this, we define the force $\vec{F}_\measuredangle(v;u,w)$ as
 %
 \begin{equation}

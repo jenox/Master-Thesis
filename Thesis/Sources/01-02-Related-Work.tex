@@ -23,7 +23,6 @@ However, the clustering is performed on the abstract input graph, independent fr
 This can be problematic, because if the clustering and the computed embedding don't fit together well, one ends up with many fragmented, noncontinuous clusters on the map.
 OpMap has only been evaluated for relatively small input sizes and works with static inputs only.
 We want to explore an approach that supports larger \emdash{} and most importantly dynamic \emdash{} opinion networks.
-%We will not attempt to answer open questions from the OpMap paper such as how to scale the clustering to larger graphs, or how adapt the clustering to a dynamic setting.
 
 In this thesis we therefore cluster the graph and extract important features first, and only then embed the graph in the plane while keeping the clusters connected.
 

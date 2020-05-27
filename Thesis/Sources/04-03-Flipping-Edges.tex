@@ -9,9 +9,6 @@ Flipping the edge $\{u,v\}$ would replace it with the edge $\{x,y\}$.
 This operation is therefore only permitted iff $x$ and $y$ are not already adjacent \emdash{} otherwise we would introduce a duplicate adjacency.
 A valid edge flip operation is illustrated in \cref{fig:flip-edge-example-internal}.
 
-%let p1 denote first bend on boundary after p3
-%include yellow face in 4.10? make alternating clearer. make angle thing clearer and what happens if more than 180. why do we repeat on other side?
-
 \begin{figure}[H]
 	\centering
 	\subfigure[]{\includegraphics[height=29mm]{Resources/FlipEdge-Example-Internal-1.pdf}}
@@ -29,10 +26,6 @@ An edge flip in a cluster graph translates to region adjacencies being flipped i
 Given a polygonal dual of some cluster graph, we apply an edge flip in two phases.
 First, we contract the region boundary we want to remove into a single point, creating a degenerate contact representation in which 4 regions meet in a point.
 In the second phase, we create a region boundary in the opposite direction, getting rid of the degeneracy at the point the original boundary has been contracted into.
-
-%Let us \todo{} using the example of \cref{fig:flip-edge-example-internal}.
-%We now provide a detailed description using the example of \cref{fig:flip-edge-example-internal}.
-%We start by computing the path $P_{uv} = (p_0, \dots, p_n)$ forming the boundary between the faces $u$ and $v$.
 
 Let $u$ and $v$ be two adjacent faces in the polygonal dual whose boundary we want to contract.
 Also let path $P_{uv}$ be the maximal common boundary between $u$ and $v$, oriented such that $u$ lies on the left of it and $v$ lies on the right of it.
