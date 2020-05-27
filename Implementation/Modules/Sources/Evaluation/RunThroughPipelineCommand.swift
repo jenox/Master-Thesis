@@ -15,20 +15,20 @@ struct RunThroughPipelineCommand: ParsableCommand {
         commandName: "pipeline"
     )
 
-    @Option(help: "") var numberOfVertices: Int
-    @Option(help: "") var nestingRatio: Double
-    @Option(help: "") var nestingBias: Double
-    @Option(default: 100, help: "") var numberOfOptimizationSteps: Int
-    @Option(default: 20, help: "") var numberOfDynamicOperations: Int
-    @Option(default: ProcessInfo.processInfo.activeProcessorCount, help: "") var numberOfThreads: Int
-    @Option(help: "") var uuidFile: URL
-    @Option(help: "") var outputDirectory: URL
+    @Option() var numberOfVertices: Int
+    @Option() var nestingRatio: Double
+    @Option() var nestingBias: Double
+    @Option(default: 10) var numberOfOptimizationStepsPerVertex: Int
+    @Option(default: 20) var numberOfDynamicOperations: Int
+    @Option(default: ProcessInfo.processInfo.activeProcessorCount) var numberOfThreads: Int
+    @Option() var uuidFile: URL
+    @Option() var outputDirectory: URL
 
     func validate() throws {
         guard self.numberOfVertices >= 3 else { throw ValidationError("") }
         guard 0...1 ~= self.nestingRatio else { throw ValidationError("") }
         guard 0..<1 ~= self.nestingBias else { throw ValidationError("") }
-        guard self.numberOfOptimizationSteps >= 0 else { throw ValidationError("") }
+        guard self.numberOfOptimizationStepsPerVertex >= 0 else { throw ValidationError("") }
         guard self.numberOfDynamicOperations >= 0 else { throw ValidationError("") }
         guard self.numberOfThreads >= 1 else { throw ValidationError("") }
     }
@@ -63,16 +63,16 @@ struct RunThroughPipelineCommand: ParsableCommand {
 
                     var pipeline = Pipeline(seed: seed, generator: generator)
                     pipeline.save(to: directory.appendingPathComponent("cluster-0.json"))
-                    for _ in 0..<self.numberOfOptimizationSteps { pipeline.step() }
+                    for _ in 0..<pipeline.numberOfOperations(multiplier: self.numberOfOptimizationStepsPerVertex) { pipeline.step() }
                     pipeline.save(to: directory.appendingPathComponent("cluster-1.json"))
                     pipeline.transform()
                     pipeline.save(to: directory.appendingPathComponent("map-0.json"))
-                    for _ in 0..<self.numberOfOptimizationSteps { pipeline.step() }
+                    for _ in 0..<pipeline.numberOfOperations(multiplier: self.numberOfOptimizationStepsPerVertex) { pipeline.step() }
                     pipeline.save(to: directory.appendingPathComponent("map-1.json"))
 
                     for i in 0..<self.numberOfDynamicOperations {
                         pipeline.applyRandomOperation()
-                        for _ in 0..<self.numberOfOptimizationSteps { pipeline.step() }
+                        for _ in 0..<pipeline.numberOfOperations(multiplier: self.numberOfOptimizationStepsPerVertex) { pipeline.step() }
                         pipeline.save(to: directory.appendingPathComponent("map-\(2 + i).json"))
                     }
                 }

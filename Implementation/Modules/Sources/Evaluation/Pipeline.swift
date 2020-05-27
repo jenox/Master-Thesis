@@ -29,6 +29,16 @@ struct Pipeline {
     private let forceApplicator: ForceApplicator = PrEdForceApplicator()
     private var randomNumberGenerator: Xoroshiro128PlusRandomNumberGenerator
 
+    func numberOfOperations(multiplier: Int) -> Int {
+        if let graph = self.vertexWeightedGraph {
+            return multiplier * graph.vertices.count
+        } else if let graph = self.polygonalDual {
+            return multiplier * graph.faces.count
+        } else {
+            fatalError()
+        }
+    }
+
     var data: Data {
         if let graph = self.vertexWeightedGraph {
             return try! JSONEncoder().encode(graph)

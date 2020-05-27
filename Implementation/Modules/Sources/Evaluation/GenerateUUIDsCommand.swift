@@ -14,8 +14,8 @@ struct GenerateUUIDsCommand: ParsableCommand {
         commandName: "generate"
     )
 
-    @Option(default: 100, help: "") private var numberOfIdentifiers: Int
-    @Option(help: "") private var outputFile: URL
+    @Option(default: 100) private var numberOfIdentifiers: Int
+    @Option() private var outputFile: URL
 
     func validate() throws {
         guard self.numberOfIdentifiers >= 1 else { throw ValidationError("") }

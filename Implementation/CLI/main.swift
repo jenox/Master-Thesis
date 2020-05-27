@@ -61,8 +61,8 @@ struct CLI: ParsableCommand {
             abstract: "Flip an internal border"
         )
 
-        @Argument(help: "") var first: String
-        @Argument(help: "") var second: String
+        @Argument() var first: String
+        @Argument() var second: String
 
         func run() throws {
             send(FlipBorderCommand(first: first, second: second))
