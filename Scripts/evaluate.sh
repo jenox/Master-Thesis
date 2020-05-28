@@ -26,13 +26,13 @@ evaluate 15 0.25 0.99 &&
 evaluate 15 0.5 0 &&
 evaluate 15 0.5 0.5 &&
 evaluate 15 0.5 0.99 &&
-# evaluate 20 0 0 &&
-# evaluate 20 0.25 0 &&
-# evaluate 20 0.25 0.5 &&
-# evaluate 20 0.25 0.99 &&
-# evaluate 20 0.5 0 &&
-# evaluate 20 0.5 0.5 &&
-# evaluate 20 0.5 0.99 &&
+evaluate 20 0 0 &&
+evaluate 20 0.25 0 &&
+evaluate 20 0.25 0.5 &&
+evaluate 20 0.25 0.99 &&
+evaluate 20 0.5 0 &&
+evaluate 20 0.5 0.5 &&
+evaluate 20 0.5 0.99 &&
 evaluate 25 0 0 &&
 evaluate 25 0.25 0 &&
 evaluate 25 0.25 0.5 &&

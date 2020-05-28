@@ -25,13 +25,13 @@ time pipeline 15 0.25 0.99 &&
 time pipeline 15 0.5 0 &&
 time pipeline 15 0.5 0.5 &&
 time pipeline 15 0.5 0.99 &&
-# time pipeline 20 0 0 &&
-# time pipeline 20 0.25 0 &&
-# time pipeline 20 0.25 0.5 &&
-# time pipeline 20 0.25 0.99 &&
-# time pipeline 20 0.5 0 &&
-# time pipeline 20 0.5 0.5 &&
-# time pipeline 20 0.5 0.99 &&
+time pipeline 20 0 0 &&
+time pipeline 20 0.25 0 &&
+time pipeline 20 0.25 0.5 &&
+time pipeline 20 0.25 0.99 &&
+time pipeline 20 0.5 0 &&
+time pipeline 20 0.5 0.5 &&
+time pipeline 20 0.5 0.99 &&
 time pipeline 25 0 0 &&
 time pipeline 25 0.25 0 &&
 time pipeline 25 0.25 0.5 &&
