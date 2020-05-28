@@ -26,13 +26,15 @@ This framework can be applied to a variety of real-world applications, allowing 
 
 \selectlanguage{ngerman}
 In der vorliegenden Arbeit untersuchen wir, wie Clusterinformationen in Graphen als Länder einer Landkarte dargestellt werden können, wobei sich der Eingabegraph mit der Zeit verändert.
-Unsere Ziele sind hierbei eine starke Korrelation zwischen der Größe eines Landes auf der Karte und der Größe des entsprechenden Clusters, und, dass wir so auf Änderungen des Eingabegraphen reagieren können, dass ein Betrachter seine Orientierung auf der Karte nicht verliert.
-Das ist eine herausfordernde Problemstellung, da beliebte Algorithmen, um Graphen landkartenähnlich zu visualisieren, mit Clustern zu kämpfen haben, die über mehrere Länder auf der Karte fragmentiert sind.
+Wichtig ist dabei eine starke Korrelation zwischen der Größe eines Landes auf der Karte und der Größe des entsprechenden Clusters.
+Außerdem wollen wir so auf Änderungen des Eingabegraphen reagieren können, dass ein Betrachter seine Orientierung auf der Karte nicht verliert.
+Das ist eine herausfordernde Problemstellung, da gängige Algorithmen zur landkartenähnlich Visualisierung von Graphen mit Clustern zu kämpfen haben, die über mehrere Länder auf der Karte fragmentiert sind.
 Außerdem geht die Orientierung des Betrachters bei einer Neuzeichnung der Karte für einen anderen, wennauch sehr ähnlichen Graphen, im Allgemeinen verloren.
 
-Zur Lösung dieser Probleme schlagen wir ein Rahmenkonzept vor, welches garantiert dass die Cluster jeweils zusammenhängende Regionen auf der Karte bilden, und dynamische Eingaben insofern unterstützt, als dass kleine, inkrementelle Änderungen, wie z.B. das Einfügen oder Entfernen einer Region, durchgeführt werden können.
-Dafür arbeiten wir auf einem Hilfsgraphen dessen Knoten den Clustern im Eingabegraph entsprechen, konstruieren die Karte als Kontaktrepräsentation dieses Graphen und passen bei Änderungen am Eingabegraphen sowohl den Hilfsgraphen als auch dessen Kontraktrepräsentation entsprechend an.
-Dieser Ansatz kann für eine Vielzahl von Anwendungen verwendet werden, um Cluster und deren zeitliche Enwicklung auf eine natürliche Art und Weise darzustellen, und es dem Betrachter somit zu erleichtern, Trends in den zugrundeliegenden Daten zu erkennen.
+Zur Lösung dieser Probleme schlagen wir ein Rahmenkonzept vor, welches garantiert, dass die Cluster jeweils zusammenhängende Regionen auf der Karte bilden.
+Außerdem werden dynamische Eingaben insofern unterstützt, als dass kleine, inkrementelle Änderungen wie z.B. das Einfügen oder Entfernen einer Region, durchgeführt werden können.
+Dafür arbeiten wir auf einem Hilfsgraphen, dessen Knoten den Clustern im Eingabegraph entsprechen, konstruieren die Karte als Kontaktrepräsentation dieses Graphen und passen bei Änderungen am Eingabegraphen sowohl den Hilfsgraphen als auch dessen Kontraktrepräsentation entsprechend an.
+Dieser Ansatz kann für eine Vielzahl von Anwendungen benutzt werden, um Cluster und deren zeitliche Enwicklung auf eine natürliche Art und Weise darzustellen und es dem Betrachter somit zu erleichtern, Trends in den zugrundeliegenden Daten zu erkennen.
 \selectlanguage{american}
 
 \end{addmargin}
