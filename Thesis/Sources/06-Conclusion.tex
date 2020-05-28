@@ -1,17 +1,23 @@
+% https://www.scribbr.com/dissertation/write-conclusion/
 \chapter{Conclusion}
 \label{chap:conclusion}
 
-\begin{itemize}
-	\item relax requirements on cluster graph, e.g. allow countries on outer face that are adjacent to only one country (found in application and on natural maps)
-	\item implement more dynamic operations
-	\item improve implementation of individual phases / black boxes \begin{itemize}
-		\item improve initial layout: can start out with perfect statistical accuracy with just one bend per edge (Kleist) (always!) or even without bends at all (thomassen) if we don't relax requirements too much
-		\item improve on forces or use different optimization method altogether
-		\item improve on precise mathematical formulation of shapes we are looking for. and optimization working towards that.
-	\end{itemize}
-	\item evaluate how our quality metrics relate to human perception and the map metaphor
-	\item evaluate how quality metrics differ when applying incremental changes vs starting from scratch. this is where "geographical accuracy" from cartograms comes into play.
-\end{itemize}
+% Summarize and reflect on the research
+In this thesis, we explored how cluster information in graphs can be visualized naturally as countries on a map in a dynamic setting where the graph changes over time.
+We proposed a framework that produces maps whose regions' sizes are approximately proportional to the respective clusters' sizes.
+The framework is also able to react to dynamic changes of the input graph in a way that preserves the viewer's mental model of the map.
 
+% Show what new knowledge you have contributed
+We are able to make these guarantees by working on an intermediate representation that encompasses all combinatorial properties of the eventual map, breaking changes down into small, incremental changes, and using a force-directed algorithm to draw the eventual map.
+This way, the structure of our algorithmic pipeline alone guarantees that changes to the map are minor and comprehensible, thereby preserving the viewer's mental map as the underlying data changes over time.
 
-%\todo{incircle / circumcircle} in future work
+Besides the preservation of the mental map, related work struggles with keeping clusters as continuous regions on the generated maps \cite{gansner2009gmap} \cite{mashima2011visualizing}.
+The structure of our algorithmic pipeline addresses and solves this problem, too.
+Considering the maps we produce are contact representations of the intermediate cluster graph, clusters cannot possibly be fragmented across different regions.
+
+The framework presented here can be applied to a variety of real-world applications, allowing us to visualize clusters in the underlying data and how they change over time, thereby enabling viewers of the visualization to easily detect trends in the data.
+
+% Clearly state the answer to the main research question
+
+% Make recommendations for future work on the topic
+\input{Sources/06-01-Future-Work.tex}

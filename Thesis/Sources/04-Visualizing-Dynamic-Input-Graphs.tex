@@ -47,8 +47,8 @@ With our force-directed implementation of the drawing phase, we can even incorpo
 
 \paragraph{Supported Operations}
 
-Our pipeline supports numerous classes of primitive operations on the filtered cluster graph, such as inserting and removing vertices and edges, flipping edges, or simply changing a cluster's weight.
-By composing multiple primitive operations in a sequence, more drastic changes can be made to the filtered cluster graph.
+Our pipeline supports numerous classes of atomic operations on the filtered cluster graph, such as inserting and removing vertices and edges, flipping edges, or simply changing a cluster's weight.
+By composing multiple atomic operations in a sequence, more drastic changes can be made to the filtered cluster graph.
 In our pipeline, the operations are applied one after the other nonetheless.
 
 The simplest operation of all is changing a vertex $v$'s weight:

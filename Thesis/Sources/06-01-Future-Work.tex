@@ -1,0 +1,53 @@
+\section{Future Work}
+\label{sect:future-work}
+
+There are a number of aspects of the framework discussed here that can be improved upon in future research.
+
+
+\paragraph{Requirements}
+
+First and foremost, one might relax the requirements imposed on the filtered cluster graph and adjust the implementations of the different phases of the pipeline accordingly.
+For example, one could support connected but not necessarily biconnected cluster graphs.
+This would allow for additional features found on many real-world geographic maps, such as regions that are adjacent to only one internal face (\eg{} Portugal) or regions that have multiple boundaries with the implicit outer face (\eg{} Spain).
+Similarly, one could allow cluster graphs that aren't internally triangulated, allowing for maps in which lakes or rivers separate different regions.
+More interesting perhaps would be scenarios in which two adjacent regions don't necessarily have a single continuous boundary, but multiple ones, as is the case between Romania and Ukraine.
+
+
+\paragraph{User Study}
+
+An empirical user study should be performed to evaluate how the quality metrics presented in \cref{chap:evaluation} relate to human perception and the map metaphor.
+It might also be interesting to evaluate how the quality of the maps produced by our framework differs after applying long sequences of dynamic operations versus starting from scratch with the cluster graph at that point in time, \ie{} not applying incremental updates to an already-existing map, but instead running the cluster graph through the regular transformation phase again.
+We believe that starting from scratch has the potential to get rid of artifacts that the incremental transformation and drawing phases cannot, at the cost of potentially destroying the viewer's mental map.
+Still, this might be worth doing every once in a while if artifacts become too pronounced.
+
+
+\paragraph{Dynamic Operations}
+
+Regarding the dynamic operations themselves, it might be worth supporting additional, more complex operations.
+Such operations capture the semantics of a change much better than their decompositions into atomic operations and have the potential to be implemented more efficiently, while also yielding better results in terms of aesthetics.
+
+
+\paragraph{Implementation}
+
+Obviously, the implementations of the individual phases of the pipeline presented in \crefrange{chap:visualizing-static-input-graphs}{chap:visualizing-dynamic-input-graphs} leave room for improvement and can be improved independently from each other.
+
+For example, having the transformation phase produce an initial map with zero cartographic error which is then tweaked by the force-directed drawing phase to improve the regions' local fatness might yield better results overall.
+Such an initial map exists for all planar graphs according with just one bend per boundary \cite{kleist2019planar}.
+If one doesn't relax the requirements imposed on the cluster graph too much and its augmented dual remains a cubic graph, such an initial layout even exists without any bends at all \cite{thomassen1992plane}.
+
+Similarly, one could try to improve upon the force-directed drawing phase by tweaking the forces' parameters or introducing new forces altogether.
+In combination with the aforementioned user study, one could improve the precise mathematical formulation of the characteristics of region shapes that we are looking for, and change the forces to work towards these characteristics accordingly.
+
+
+\paragraph{Visualization}
+
+Similar to GMap \cite{gansner2009gmap} and OpMap \cite{schmettow2017}, one could try to draw the original, unclustered graph on top of the map.
+Doing so would greatly improve the visualization's expressiveness as it would show what is actually going on within the different clusters.
+However, one must pay great attention to also preserve the viewer's mental map of the structure within the individual clusters.
+
+It would also be interesting to see if the visual appeal of maps produced by our framework can be improved by smoothening the region's boundaries to make the map look more organic.
+This could be achieved by computing non-intersecting splines through the polygon's corners and using those instead of the polygon's sides to bound the regions of the map.
+
+Another idea worth exploring is using the cluster graph's edge weights to control the relative length of a region's boundaries with its neighboring regions.
+This way, the length of the boundary between two regions gives the viewer an idea of how similar the respective clusters are.
+There exist some theoretical results on this topic \cite{nollenburg2012edge}, but integrating this criterion into the force-directed formulation requires further research.
