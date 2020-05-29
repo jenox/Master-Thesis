@@ -58,8 +58,8 @@ for (n, t) in [(20, 0)]:
     filtered = data[data["initial number of clusters"].eq(n) & data["number of operations"].eq(t)]
     for (column, prefix) in metrics:
         swarmplot(data=filtered, x="nesting ratio and bias", y=column, prefix=prefix, suffix=suffix)
-    filtered = data[data["initial number of clusters"].eq(n) & data["number of operations"].eq(t)]
     violinplot(data=filtered, x="nesting ratio and bias", y="number of external vertices in cluster graph", prefix="NumberOfExternalVertices", suffix=suffix)
+    swarmplot(data=filtered, x="nesting ratio and bias", y="average internal vertex degree in cluster graph", prefix="AverageDegreeOfInternalVertices", suffix=suffix)
 
 print("Creating plots for variable number of vertices…")
 for (a, b, t) in [(0, 0, 0)]:

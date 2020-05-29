@@ -20,7 +20,7 @@ To gain insights into the effect the number of clusters $n$, the nesting ratio $
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumCartographicError-t.pdf}}
 	\quad
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumPolygonComplexity-t.pdf}}
-	\caption{Quality metrics of 100 randomized instances after applying a different number of operations $t$, with $n = 20$, $\alpha = 0$, and $\beta = 0$.}
+	\caption{Quality metrics of maps \propmap{t} for 100 randomized instances after applying a different number of operations $t$, with $n = 20$, $\alpha = 0$, and $\beta = 0$.}
 	\label{fig:experimental-evaluation-variable-number-of-operations}
 \end{figure}
 
@@ -46,7 +46,7 @@ The effect of the initial number of clusters $n$ on the maps' quality is shown i
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumCartographicError-n.pdf}}
 	\quad
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumPolygonComplexity-n.pdf}}
-	\caption{Quality metrics of 100 randomized instances with different numbers of clusters $n$, with $\alpha = 0$, $\beta = 0$, and $t = 0$.}
+	\caption{Quality metrics of maps \propmap{t} for 100 randomized instances with different numbers of clusters $n$, with $\alpha = 0$, $\beta = 0$, and $t = 0$.}
 	\label{fig:experimental-evaluation-variable-number-of-vertices}
 \end{figure}
 
@@ -72,7 +72,7 @@ We therefore see more pronounced trends for these two metrics.
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumCartographicError-ab.pdf}}
 	\quad
 	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-MaximumPolygonComplexity-ab.pdf}}
-	\caption{Quality metrics of 100 randomized instances with different nesting ratios $\alpha$ and nesting biases $\beta$, with $n = 20$ and $t = 0$.}
+	\caption{Quality metrics of maps \propmap{t} for 100 randomized instances with different nesting ratios $\alpha$ and nesting biases $\beta$, with $n = 20$ and $t = 0$.}
 	\label{fig:experimental-evaluation-variable-nesting-ratio-and-bias}
 \end{figure}
 
@@ -80,10 +80,22 @@ We cannot see any effect of statistical significance of nesting ratio and bias o
 
 For the polygon complexity, however, the nesting ratio $\alpha$ has a pronounced impact.
 The figure clearly shows that instances with $\alpha = 0.25$ tend to have higher polygon complexities than instances with $\alpha = 0$, and instances with $\alpha = 0.5$ even higher ones, regardless of nesting bias $\beta$.
+
 A possible explanation is that by nesting vertices of the cluster graph into existing triangles, we create internal vertices with low degree.
 The regions of the map corresponding to these vertices are therefore surrounded by few neighboring regions which are inevitably more complex as these few regions have to span the entire boundary of the original region.
+Additionally, there generally lie fewer vertices on the outer face of the cluster graph, whose corresponding regions must again surround the entire inside.
+These decreases in number of external vertices and average degree of internal vertices as the nesting ratio $\alpha$ increases is illustrated in \cref{fig:experimental-evaluation-variable-nesting-ratio-and-bias-2}.
 
-It also appears as if for fixed nesting ratio $\alpha$, the nesting bias $\beta$ slightly reduces the map's polygon complexity.
+\begin{figure}[H]
+	\centering
+	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-AverageDegreeOfInternalVertices-ab.pdf}}
+	\quad
+	\subfigure{\includegraphics[width=0.47\textwidth]{Resources/Evaluation-NumberOfExternalVertices-ab.pdf}}
+	\caption{Properties of 100 randomized filtered cluster graphs \clustergraph{t} with different nesting ratios $\alpha$ and nesting biases $\beta$, with $n = 20$ and $t = 0$.}
+	\label{fig:experimental-evaluation-variable-nesting-ratio-and-bias-2}
+\end{figure}
+
+\Cref{fig:experimental-evaluation-variable-nesting-ratio-and-bias} also indicates that for fixed a nesting ratio $\alpha$, the nesting bias $\beta$ slightly reduces the map's polygon complexity.
 This observation isn't significant enough to jump to any conclusions though.
 
 Again, the maximum polygon complexity over all regions of the map exhibits the same overall trend but with a larger spread.

@@ -25,7 +25,7 @@ extension EmbeddedClusterGraph: PlanarGraph {
         return DirectedEdgeIterator(vertices: self.vertices, neighbors: self.neighbors)
     }
 
-    func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
+    public func vertices(adjacentTo vertex: Vertex) -> OrderedSet<Vertex> {
         return self.neighbors[vertex]!
     }
 }

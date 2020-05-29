@@ -35,7 +35,9 @@ struct EvaluateCommand: ParsableCommand {
 
         var text = "uuid,initial number of clusters,nesting ratio,nesting bias,number of operations"
         text += ",maximum cartographic error,average cartographic error,maximum polygon complexity,average polygon complexity"
-        text += ",number of internal vertices in cluster graph,number of external vertices in cluster graph,number of internal edges in cluster graph,number of external edges in cluster graph,number of faces in cluster graph"
+        text += ",number of internal vertices in cluster graph,number of external vertices in cluster graph"
+        text += ",number of internal edges in cluster graph,number of external edges in cluster graph,number of faces in cluster graph"
+        text += ",average internal vertex degree in cluster graph,average external vertex degree in cluster graph"
 
         for (url, uuid) in urlsAndUUIDs {
             for i in 1... {
@@ -47,7 +49,13 @@ struct EvaluateCommand: ParsableCommand {
 
                 text += "\n\(uuid),\(self.numberOfVertices),\(self.nestingRatio),\(self.nestingBias),\(i-1)"
                 text += ",\(errors.max()!),\(errors.mean()!),\(complexities.max()!),\(complexities.mean()!)"
-                text += ",\(primal.internalVertices.count),\(primal.externalVertices.count),\(primal.internalEdges.count),\(primal.externalEdges.count),\(primal.internalFaces.count)"
+
+                text += ",\(primal.internalVertices.count),\(primal.externalVertices.count)"
+                text += ",\(primal.internalEdges.count),\(primal.externalEdges.count),\(primal.internalFaces.count)"
+
+                let averageInternalDegree = primal.internalVertices.map({ Double(primal.vertices(adjacentTo: $0).count) }).mean()
+                let averageExternalDegree = primal.externalVertices.map({ Double(primal.vertices(adjacentTo: $0).count) }).mean()
+                text += ",\(averageInternalDegree.map({ "\($0)" }) ?? "NaN"),\(averageExternalDegree.map({ "\($0)" }) ?? "NaN")"
             }
         }
 
