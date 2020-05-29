@@ -65,6 +65,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "evaluate --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/metrics/"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "render --number-of-vertices=20 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/drawings/"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

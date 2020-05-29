@@ -21,7 +21,7 @@ public struct EmbeddedClusterGraph {
 }
 
 extension EmbeddedClusterGraph: PlanarGraph {
-    var edges: DirectedEdgeIterator<Vertex> {
+    public var edges: DirectedEdgeIterator<Vertex> {
         return DirectedEdgeIterator(vertices: self.vertices, neighbors: self.neighbors)
     }
 

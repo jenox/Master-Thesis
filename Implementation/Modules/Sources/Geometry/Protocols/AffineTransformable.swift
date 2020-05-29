@@ -47,8 +47,12 @@ public extension AffineTransformable {
         return self.applying(.init(translationX: tx, y: ty))
     }
 
-    func scaled(by scale: CGFloat) -> TransformedSelf {
-        return self.applying(.init(scaleX: scale, y: scale))
+    func scaled(by scale: CGFloat, around center: CGPoint = .zero) -> TransformedSelf {
+        var transform = CGAffineTransform(translationX: center.x, y: center.y)
+        transform = transform.scaledBy(x: scale, y: scale)
+        transform = transform.translatedBy(x: -center.x, y: -center.y)
+
+        return self.applying(transform)
     }
 
     func scaledBy(sx: CGFloat, sy: CGFloat) -> TransformedSelf {
@@ -66,6 +70,10 @@ public extension AffineTransformable {
 
 extension CGPoint: AffineTransformable {
     public typealias TransformedSelf = CGPoint
+}
+
+extension CGRect: AffineTransformable {
+    public typealias TransformedSelf = CGRect
 }
 
 extension CGVector: AffineTransformable {

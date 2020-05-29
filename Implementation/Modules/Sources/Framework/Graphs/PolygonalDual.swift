@@ -142,7 +142,7 @@ extension PolygonalDual: PolygonalDualRequirements {
         self.storage.setWeight(of: face, to: value)
     }
 
-    func boundary(of face: FaceID) -> [Vertex] {
+    public func boundary(of face: ClusterName) -> [Vertex] {
         return self.storage.boundary(of: face)
     }
 }
