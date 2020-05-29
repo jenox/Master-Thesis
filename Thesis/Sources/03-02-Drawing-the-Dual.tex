@@ -163,10 +163,6 @@ This works for many graph drawing algorithms because for them, uniform edge leng
 In our case, however, there is no correlation between the extent of a region and the number of edges on its boundary and, subsequently, the length of the edges on its boundary.
 Including such an attractive force here would in fact be counterproductive.
 
-To make sure that the physical simulation converges, we cool the particle system down over time.
-We define a global cooling parameter $\alpha = 0.01$ and, at step $i$ of the iterative process, add $(1 - \alpha)^i$ as a factor to all of the forces mentioned above.
-By doing so, we prevent unstable oscillations around equilibrium.
-
 In our implementation, we also smooth vertices of degree 2 that become too close to other vertices and subdivide edges that become too long in order to create more degrees of freedom in the respective face's shape.
 To do so, we first compute the average edge length $\bar{l}$ as
 %
