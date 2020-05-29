@@ -53,7 +53,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "benchmark"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "generate --output-file=/Users/jenox/Desktop/MasterThesis/Evaluation/uuids.txt"
@@ -65,7 +65,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "evaluate --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/metrics/"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>

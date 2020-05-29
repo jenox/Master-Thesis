@@ -8,7 +8,7 @@
 
 import Swift
 
-struct Face<T>: Hashable where T: Hashable {
+public struct Face<T>: Hashable where T: Hashable {
     init(vertices: [T]) {
         precondition(vertices.count >= 3)
         precondition(vertices.count == Set(vertices).count)
@@ -16,7 +16,7 @@ struct Face<T>: Hashable where T: Hashable {
         self.vertices = vertices
     }
 
-    let vertices: [T]
+    public let vertices: [T]
 
     func neighbors(of vertex: T) -> (before: T, after: T) {
         let index = self.vertices.firstIndex(of: vertex)!
@@ -70,14 +70,14 @@ struct Face<T>: Hashable where T: Hashable {
         return self.vertices[predecessor] == second || self.vertices[successor] == second
     }
 
-    static func == (lhs: Face, rhs: Face) -> Bool {
+    public static func == (lhs: Face, rhs: Face) -> Bool {
         guard lhs.vertices.count == rhs.vertices.count else { return false }
         guard let index = lhs.vertices.firstIndex(of: rhs.vertices[0]) else { return false }
 
         return lhs.vertices.rotated(shiftingToStart: index) == rhs.vertices
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         // Suboptimal implementation
         Set(self.vertices).hash(into: &hasher)
     }
@@ -104,11 +104,11 @@ struct Face<T>: Hashable where T: Hashable {
 }
 
 extension Face: CustomStringConvertible, CustomDebugStringConvertible {
-    var description: String {
+    public var description: String {
         return "Face(\(Array(self.vertices)))"
     }
 
-    var debugDescription: String {
+    public var debugDescription: String {
         return "Face(\(Array(self.vertices)))"
     }
 }

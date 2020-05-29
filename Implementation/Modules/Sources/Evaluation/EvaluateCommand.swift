@@ -33,16 +33,21 @@ struct EvaluateCommand: ParsableCommand {
 
         print("Found \(urlsAndUUIDs.count) instances in \(inputDirectory.absoluteURL)")
 
-        var text = "uuid,number of vertices,nesting ratio,nesting bias,number of operations,maximum cartographic error,average cartographic error,maximum polygon complexity,average polygon complexity"
+        var text = "uuid,initial number of clusters,nesting ratio,nesting bias,number of operations"
+        text += ",maximum cartographic error,average cartographic error,maximum polygon complexity,average polygon complexity"
+        text += ",number of internal vertices in cluster graph,number of external vertices in cluster graph,number of internal edges in cluster graph,number of external edges in cluster graph,number of faces in cluster graph"
 
         for (url, uuid) in urlsAndUUIDs {
             for i in 1... {
-                guard let graph = try self.parseGraph(at: url.appendingPathComponent("map-\(i).json")) else { break }
+                guard let dual = try self.parseDualGraph(at: url.appendingPathComponent("map-\(i).json")) else { break }
 
-                let errors = try! CartographicError().evaluate(in: graph)
-                let complexities = try! PolygonComplexity().evaluate(in: graph)
+                let errors = try! CartographicError().evaluate(in: dual)
+                let complexities = try! PolygonComplexity().evaluate(in: dual)
+                let primal = dual.embeddedClusterGraph
 
-                text += "\n\(uuid),\(self.numberOfVertices),\(self.nestingRatio),\(self.nestingBias),\(i-1),\(errors.max()!),\(errors.mean()!),\(complexities.max()!),\(complexities.mean()!)"
+                text += "\n\(uuid),\(self.numberOfVertices),\(self.nestingRatio),\(self.nestingBias),\(i-1)"
+                text += ",\(errors.max()!),\(errors.mean()!),\(complexities.max()!),\(complexities.mean()!)"
+                text += ",\(primal.internalVertices.count),\(primal.externalVertices.count),\(primal.internalEdges.count),\(primal.externalEdges.count),\(primal.internalFaces.count)"
             }
         }
 
@@ -50,7 +55,7 @@ struct EvaluateCommand: ParsableCommand {
         try! text.data(using: .utf8)!.write(to: url)
     }
 
-    private func parseGraph(at url: URL) throws -> PolygonalDual? {
+    private func parseDualGraph(at url: URL) throws -> PolygonalDual? {
         guard let data = try? Data(contentsOf: url) else { return nil }
 
         let graph = try JSONDecoder().decode(PolygonalDual.self, from: data)

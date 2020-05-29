@@ -9,12 +9,12 @@
 import Swift
 import Collections
 
-struct EmbeddedClusterGraph {
-    typealias Vertex = ClusterName
+public struct EmbeddedClusterGraph {
+    public typealias Vertex = ClusterName
 
-    var vertices: OrderedSet<Vertex> = []
-    var neighbors: [Vertex: OrderedSet<Vertex>] = [:]
-    var outerFaceBoundary: [Vertex] = []
+    public internal(set) var vertices: OrderedSet<Vertex> = []
+    public internal(set) var neighbors: [Vertex: OrderedSet<Vertex>] = [:]
+    public internal(set) var outerFaceBoundary: [Vertex] = []
 
     init() {
     }
@@ -31,7 +31,7 @@ extension EmbeddedClusterGraph: PlanarGraph {
 }
 
 extension EmbeddedClusterGraph {
-    public func ensureIntegrity() throws {
+    func ensureIntegrity() throws {
         // Planar
         _ = self.allFaces()
 
@@ -55,15 +55,15 @@ private enum EmbeddedClusterGraphViolation: Error {
 }
 
 extension EmbeddedClusterGraph {
-    var internalVertices: AnyBidirectionalCollection<Vertex> {
+    public var internalVertices: AnyBidirectionalCollection<Vertex> {
         return AnyBidirectionalCollection(self.vertices.filter({ !self.outerFaceBoundary.contains($0) }))
     }
 
-    var externalVertices: AnyBidirectionalCollection<Vertex> {
+    public var externalVertices: AnyBidirectionalCollection<Vertex> {
         return AnyBidirectionalCollection(self.outerFaceBoundary)
     }
 
-    var internalEdges: AnyBidirectionalCollection<(Vertex, Vertex)> {
+    public var internalEdges: AnyBidirectionalCollection<(Vertex, Vertex)> {
         let externalEdges = self.externalEdges
 
         var internalEdges = self.edges.filter(<)
@@ -72,15 +72,15 @@ extension EmbeddedClusterGraph {
         return AnyBidirectionalCollection(internalEdges)
     }
 
-    var externalEdges: AnyBidirectionalCollection<(Vertex, Vertex)> {
+    public var externalEdges: AnyBidirectionalCollection<(Vertex, Vertex)> {
         return AnyBidirectionalCollection(self.outerFaceBoundary.adjacentPairs(wraparound: true))
     }
 
-    var outerFace: Face<Vertex> {
+    public var outerFace: Face<Vertex> {
         return .init(vertices: self.outerFaceBoundary)
     }
 
-    var internalFaces: AnyBidirectionalCollection<Face<Vertex>> {
+    public var internalFaces: AnyBidirectionalCollection<Face<Vertex>> {
         var faces = Array(self.allFaces())
         faces.remove(at: faces.firstIndex(of: self.outerFace)!)
 

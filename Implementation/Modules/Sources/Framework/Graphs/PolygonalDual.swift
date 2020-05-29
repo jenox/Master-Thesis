@@ -117,7 +117,7 @@ extension PolygonalDual: PolygonalDualRequirements {
         return self.storage.faces
     }
 
-    var embeddedClusterGraph: EmbeddedClusterGraph {
+    public var embeddedClusterGraph: EmbeddedClusterGraph {
         return self.storage.embeddedClusterGraph
     }
 
