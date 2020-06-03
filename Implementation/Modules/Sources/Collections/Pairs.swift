@@ -37,7 +37,7 @@ public struct Pairs<Base> where Base: RandomAccessCollection {
     @usableFromInline internal let base: Base
     @usableFromInline internal let mode: CombinationMode
 
-    @usableFromInline
+    @inlinable
     internal init(base: Base, mode: CombinationMode) {
         self.base = base
         self.mode = mode
@@ -53,6 +53,18 @@ extension Pairs: Collection {
     public enum Index: Comparable, CustomDebugStringConvertible {
         case pastEnd
         case inRange(Int, Int)
+
+        @inlinable
+        public static func == (lhs: Index, rhs: Index) -> Bool {
+            switch (lhs, rhs) {
+            case (.pastEnd, .pastEnd):
+                return true
+            case (.inRange(let a, let b), .inRange(let c, let d)):
+                return (a, b) == (c, d)
+            default:
+                return false
+            }
+        }
 
         @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {

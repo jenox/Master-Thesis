@@ -29,7 +29,7 @@ public struct AdjacentPairs<Base> where Base: BidirectionalCollection {
     @usableFromInline internal let base: Base
     @usableFromInline internal let wraparound: Bool
 
-    @usableFromInline
+    @inlinable
     internal init(base: Base, wraparound: Bool) {
         self.base = base
         self.wraparound = wraparound
@@ -45,9 +45,14 @@ extension AdjacentPairs: BidirectionalCollection {
     public struct Index: Comparable {
         @usableFromInline internal var index: Base.Index
 
-        @usableFromInline
+        @inlinable
         internal init(index: Base.Index) {
             self.index = index
+        }
+
+        @inlinable
+        public static func == (lhs: Index, rhs: Index) -> Bool {
+            return lhs.index == rhs.index
         }
 
         @inlinable

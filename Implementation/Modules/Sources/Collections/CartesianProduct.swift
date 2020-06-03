@@ -45,10 +45,15 @@ extension CartesianProduct: Collection {
         @usableFromInline internal var index1: Base1.Index
         @usableFromInline internal var index2: Base2.Index
 
-        @usableFromInline
+        @inlinable
         internal init(index1: Base1.Index, index2: Base2.Index) {
             self.index1 = index1
             self.index2 = index2
+        }
+
+        @inlinable
+        public static func == (lhs: Index, rhs: Index) -> Bool {
+            return (lhs.index1, lhs.index2) == (rhs.index1, rhs.index2)
         }
 
         @inlinable
@@ -84,7 +89,7 @@ extension CartesianProduct: Collection {
         return (self.base1[position.index1], self.base2[position.index2])
     }
 
-    @usableFromInline
+    @inlinable
     internal func wraparound(_ index: Index) -> Index {
         var index = index
         while index.index2 == self.base2.endIndex && index.index1 < self.base1.endIndex {

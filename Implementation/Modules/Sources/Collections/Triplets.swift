@@ -30,7 +30,7 @@ public struct Triplets<Base> where Base: RandomAccessCollection {
     @usableFromInline internal let base: Base
     @usableFromInline internal let mode: CombinationMode
 
-    @usableFromInline
+    @inlinable
     internal init(base: Base, mode: CombinationMode) {
         self.base = base
         self.mode = mode
@@ -53,6 +53,18 @@ extension Triplets: Collection {
     public enum Index: Comparable, CustomDebugStringConvertible {
         case pastEnd
         case inRange(Int, Int, Int)
+
+        @inlinable
+        public static func == (lhs: Index, rhs: Index) -> Bool {
+            switch (lhs, rhs) {
+            case (.pastEnd, .pastEnd):
+                return true
+            case (.inRange(let a, let b, let c), .inRange(let d, let e, let f)):
+                return (a, b, c) == (d, e, f)
+            default:
+                return false
+            }
+        }
 
         @inlinable
         public static func < (lhs: Index, rhs: Index) -> Bool {
