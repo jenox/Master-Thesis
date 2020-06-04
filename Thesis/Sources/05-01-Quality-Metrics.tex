@@ -15,7 +15,7 @@ Three well-established quantifiable measures are commonly used to assess a carto
 The statistical accuracy of a cartogram describes how closely the areas of the modified geographic regions match the variable of interest.
 Recall that the normalized cartographic error of a region $v$ is defined as $\frac{\abs{A^\prime(v)-w(v)}}{max(A^\prime(v),w(v))}$ where $A^\prime(v)$ is its normalized actual area and $w(v)$ is its desired area.
 The maximum and average normalized cartographic error over all regions in the cartogram are commonly used to quantify its statistical accuracy.
-We borrow this quality metric from cartograms and use it for our visualizations in the form of $\varepsilon$-area-proportionality.
+We borrow this quality metric from cartograms as we have already used it previously to define $\varepsilon$-proportional maps.
 
 \item \textbf{Topological accuracy:}
 The topological accuracy describes how well the original adjacencies between the geographic regions are preserved in the cartogram.
@@ -27,9 +27,9 @@ The geographic accuracy of a cartogram describes to what degree the shapes and p
 In our case, however, there is no real geographic map that our visualization is based upon:
 The maps we generate are entirely artificial and there is no geographic reference map.
 
-But why is this resemblance a meaningful quality metric?
+However, the motivation behind geographic accuracy as a quality metric still makes sense in our setting.
 Geographic accuracy captures the preservation of the viewer's mental map between the real geographic map and the distorted map in the cartogram.
-And this does apply to our framework as well, albeit only once we start incorporating dynamic updates into the artificial map.
+And this applies to our framework as well, albeit only once we start incorporating dynamic updates into the artificial map.
 Our dynamic pipeline naturally preserves the viewer's mental map by only allowing small, incremental changes to be incorporated and redrawing the artificial map using a force-directed algorithm.
 This makes it easy for the viewer to track how the map changes between versions of the underlying cluster graph at different points in time.
 \end{itemize}
@@ -40,7 +40,7 @@ This makes it easy for the viewer to track how the map changes between versions 
 
 Brinkhoff \etal{} \cite{brinkhoff1995measuring} propose a method to quantify the complexity of polygons.
 They measure the complexity of polygons as a combination of three properties: the frequency of the vibration of its boundary, the amplitude of said vibration, and the deviation from its convex hull.
-Given a polygon $P$, they count the number of corners where the polygon's internal angle is more than $180^\circ$, called notches, and define the fraction of those corners as
+Given a polygon $P$, they count the number of corners where the polygon's internal angle is more than $180^\circ$, called \emph{notches}, and define the fraction of those corners as
 %
 \begin{equation*}
 \text{notches}_{\lbrack0,1\rbrack}(P) \coloneqq
@@ -70,9 +70,9 @@ and its amplitude as
 ,
 \end{equation*}
 %
-where $\text{circumference}(P)$ is the the length of $P$'s boundary and $\text{hull}(P)$ is $P$'s convex hull in the form of another polygon.
-For convex polygons $P$, both the frequency $\text{freq}(P)$ and the amplitude $\text{ampl}(P)$ of the vibration of its boundary is zero.
-The frequency value is at its maximum when half of the polygon's corners are notches.
+where $\text{circumference}(P)$ is the the length of $P$'s boundary and $\text{hull}(P)$ is the convex hull of $P$'s corners in the form of another polygon.
+These equations were chose such that the frequency $\text{freq}(P)$ of the vibration of a polygon reaches its maximum when half of the polygon's corners are notches, and the amplitude $\text{ampl}(P)$ of the vibration is close to 1 when the area of the polygon is very small in relation to the area of it's convex hull.
+Intuitively, for convex polygons $P$, both the frequency $\text{freq}(P)$ and the amplitude $\text{ampl}(P)$ of the vibration of its boundary is zero.
 
 To measure the convexity of a polygon, Brinkhoff \etal{} use the fraction of the area of the polygon's convex hull that the polygon itself covers:
 %
@@ -82,7 +82,9 @@ To measure the convexity of a polygon, Brinkhoff \etal{} use the fraction of the
 \in \lbrack0,1\rbrack
 \end{equation*}
 
-They then combine these three properties as
+According to their observations, a relative increase of the boundary in combination with a high-frequency vibration of the boundary has the most significant impact on the intuitive perception a polygon's complexity \cite{brinkhoff1995measuring}.
+They therefore combine these three properties as
+%
 \begin{equation}
 \text{compl}(P) \coloneqq
 0.8 \cdot \text{ampl}(P) \cdot \text{freq}(P) + 0.2 \cdot \text{conv}(P)
@@ -94,7 +96,14 @@ to measure the overall complexity of a polygon.
 We adopt this definition of polygon complexity as a quality metric for the maps generated by our framework, but only with a slight change because as is, $\text{compl}(\cdot)$ assigns a perfect score of $0$ to all convex polygons.
 This means that, for example, there is no distinction between a square region and a long, drawn-out rectangular region, even though the square regions matches our understanding of local fatness much better.
 Instead of calculating the fraction of area a polygon $P$ doesn't cover within its convex hull, we therefore compute the fraction of area it doesn't cover in its smallest enclosing circle.
-We normalize this fraction to unit interval by dividing by whatever area a maximal regular $n$-gon covers in a circle of that size.
+To keep $\text{conv}(\cdot)$ in unit interval, we actually compare $P$'s area to the maximal area of a regular $n$-gon in said smallest enclosing circle:
+%
+\begin{equation*}
+\text{compl}^\prime(P) \coloneqq
+1 - \frac{\text{area}(P)}{\text{area}(\text{smallestEnclosingCircle}(P)) \cdot \sin\left(\frac{360^\circ}{n}\right) \cdot \frac{n}{2\pi}}
+\in \lbrack0,1\rbrack
+\end{equation*}
+
 In our tests, this measure has shown to align with our intuitive understanding of local fatness nicely.
 
 
@@ -111,7 +120,7 @@ In our use case, we don't even have to implement the heuristic to guess the shap
 We know that the points form a closed curve that is in fact a polygon.
 However, by connecting the points in this predetermined manner, we possibly get drastically different edge lengths.
 The points on these edges that aren't corners of the polygon have no impact on the computed entropies at all.
-This problem becomes obvious when we consider two straight-line segments of the same length, one that is a side of our polygon, and one which is the union of multiple sides of our polygon with corners (with internal angle $180^\circ$) in between:
+This problem becomes obvious when we consider two straight-line segments of the same length, one that is a single side of our polygon, and one which is the union of multiple sides of our polygon with corners (with internal angle $180^\circ$) in between:
 The one with additional corners has a much greater impact on the computed entropies, even though both look the same to an observer.
 
 We can try to remedy by subdividing the polygon's sides first, creating roughly uniform side lengths.

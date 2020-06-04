@@ -21,7 +21,7 @@ We can see that as we apply more operations, the cartographic error decreases; a
 We believe that this is because for larger values of $t$, the force-directed optimization algorithm is given more time overall to optimize the statistical accuracy of the maps, amongst other features.
 
 The polygon complexity, on the other hand, increases over time.
-When processing topology-altering operations, additional subdivision vertices may be are inserted to prevent the introduction of edge crossings, potentially creating shapes that aren't locally fat in the process.
+When processing topology-altering operations, additional subdivision vertices may be inserted to prevent the introduction of edge crossings, potentially creating shapes that aren't locally fat in the process.
 The optimization algorithm obviously tries to improve the local fatness of the involved regions afterwards, but appears unable to do so until around $t = 16$, where it seems to become able to counteract these effects and to prevent further degradation.
 In \cref{sect:future-work} we discuss an approach to verify whether this change indeed happens over time, or lies in the nature of the arrangement of the regions in the different test instances.
 
@@ -69,7 +69,7 @@ We therefore see more pronounced trends for these two metrics.
 	\label{fig:experimental-evaluation-variable-nesting-ratio-and-bias}
 \end{figure}
 
-We cannot see any effect of statistical significance of nesting ratio and bias on the maps' cartographic error.
+We cannot see any meaningful effect of nesting ratio and bias on the maps' cartographic error.
 
 For the polygon complexity, however, the nesting ratio $\alpha$ has a pronounced impact.
 The figure clearly shows that instances with $\alpha = 0.25$ tend to have higher polygon complexities than instances with $\alpha = 0$, and instances with $\alpha = 0.5$ even higher ones, regardless of nesting bias $\beta$.
