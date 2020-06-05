@@ -20,6 +20,7 @@ struct RenderCommand: ParsableCommand {
     @Option() private var nestingBias: Double
     @Option() private var inputDirectory: URL
     @Option() private var outputDirectory: URL
+    @Option(default: true) private var pressure: Bool
 
     func validate() throws {
     }
@@ -40,14 +41,17 @@ struct RenderCommand: ParsableCommand {
             hasher.combine(self.numberOfVertices)
             hasher.combine(self.nestingRatio)
             hasher.combine(self.nestingBias)
+
             let seed = UInt64(bitPattern: Int64(hasher.finalize()))
             let generator = Xoroshiro128PlusRandomNumberGenerator(seed: seed)
+
+            var colors: [ClusterName: Color] = [:]
 
             for t in 1...5 {
                 var copy = generator
 
                 guard let dual = try self.parseDualGraph(at: url.appendingPathComponent("map-\(t).json")) else { break }
-                guard let data = dual.svgData(using: &copy) else { break }
+                guard let data = dual.svgData(using: &copy, colors: &colors, colorized: !self.pressure) else { break }
 
                 try data.write(to: self.outputDirectory.appendingPathComponent(parameters).appendingPathComponent("\(uuid)-\(t - 1).svg"))
             }
@@ -63,7 +67,7 @@ struct RenderCommand: ParsableCommand {
 }
 
 private extension PolygonalDual {
-    func svgData<T>(using generator: inout T) -> Data? where T: RandomNumberGenerator {
+    func svgData<T>(using generator: inout T, colors: inout [ClusterName: Color], colorized: Bool) -> Data? where T: RandomNumberGenerator {
         var bounds = CGRect(boundingBoxOf: self.vertices.map(self.position(of:)))
         bounds = bounds.scaled(by: 1.1, around: bounds.center)
 
@@ -77,14 +81,14 @@ private extension PolygonalDual {
         svg += "<g transform=\"matrix(1,0,0,-1,0,\(height)),matrix(1,0,0,1,\(-bounds.minX),\(-bounds.minY))\">"
 
         let clusterGraph = self.embeddedClusterGraph
-        var colors: [ClusterName: Color] = [:]
-        var counts: [Color: Int] = [:]
-        for cluster in clusterGraph.vertices {
+        var counts: [Color: Int] = Dictionary(grouping: colors.values, by: { $0 }).mapValues({ $0.count })
+
+        for cluster in clusterGraph.vertices where colors[cluster] == nil {
             let availableColors = Set(Color.allCases).subtracting(clusterGraph.vertices(adjacentTo: cluster).compactMap({ colors[$0] }))
             var color: Color? = nil
 
             for count in 0...5 {
-                if let availableColor = availableColors.filter({ counts[$0] == count }).randomElement(using: &generator) {
+                if let availableColor = availableColors.filter({ counts[$0, default: 0] == count }).randomElement(using: &generator) {
                     color = availableColor
                     break
                 }
@@ -94,16 +98,37 @@ private extension PolygonalDual {
                 colors[cluster] = color
                 counts[color, default: 0] += 1
             } else {
+                print("Cannot export, didn't find valid color!")
                 return nil
             }
         }
+
+        let totalweight = self.faces.map(self.weight(of:)).reduce(0, +).rawValue
+        let totalarea = self.faces.map(self.area(of:)).reduce(0, +)
 
         // faces
         svg += "<g stroke=\"none\">"
         for face in self.faces {
             let points = self.boundary(of: face).map(self.position(of:))
+            let d = "M \(points[0].x),\(points[0].y) \(points.dropFirst().map({ " L \($0.x),\($0.y)" }).joined(separator: " ")) Z"
 
-            svg += "<path d=\"M \(points[0].x),\(points[0].y) \(points.dropFirst().map({ " L \($0.x),\($0.y)" }).joined(separator: " ")) Z\" fill=\"\(colors[face]!.rgbValue)\" opacity=\"0.25\" />"
+            if colorized {
+                svg += "<path d=\"\(d)\" fill=\"\(colors[face]!.rgbValue)\" opacity=\"0.25\" />"
+            } else {
+                let weight = self.weight(of: face).rawValue
+                let area = self.area(of: face)
+                let normalizedArea = (area / totalarea) * totalweight
+                let ratio = normalizedArea / weight // in (0, inf)
+                let x = (ratio <= 1 ? ratio : 2 - 1 / ratio) / 2
+                let present = (2 - 2 * x).clamped(to: 0...1)
+                let notpresent = (1 - 2 * x).clamped(to: 0...1)
+
+                let r = Int((255 * notpresent).rounded().clamped(to: 0...255))
+                let g = Int((255 * present).rounded().clamped(to: 0...255))
+                let b = Int((255 * notpresent).rounded().clamped(to: 0...255))
+
+                svg += "<path d=\"\(d)\" fill=\"rgb(\(r),\(g),\(b))\" opacity=\"1\" />"
+            }
         }
         svg += "</g>"
 
@@ -129,6 +154,13 @@ private extension PolygonalDual {
         svg += "</svg>"
 
         return svg.data(using: .utf8)!
+    }
+}
+
+
+private extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        return min(max(self, range.lowerBound), range.upperBound)
     }
 }
 

@@ -129,7 +129,7 @@ extension PolygonalDual: PolygonalDualRequirements {
         return self.storage.polygon(for: face)
     }
 
-    func area(of face: FaceID) -> Double {
+    public func area(of face: ClusterName) -> Double {
         return self.storage.area(of: face)
     }
 

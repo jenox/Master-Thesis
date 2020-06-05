@@ -6,16 +6,15 @@ In this section, we showcase a range of maps produced by our framework.
 \Crefrange{fig:exemplary-maps-small}{fig:exemplary-maps-large} show representative maps for different numbers of regions $n \in \{10,20,30\}$.
 
 \newcommand{\bigdrawing}[1]{\setlength\fboxsep{0pt}\colorbox{gray!10}{\makebox(190,190){\includegraphics[width=190pt,height=190pt,keepaspectratio]{#1}}}}
+\newcommand{\smalldrawing}[1]{\setlength\fboxsep{0pt}\colorbox{gray!10}{\makebox(120,111){\includegraphics[width=120pt,height=111pt,keepaspectratio]{#1}}}}
 
 \begin{figure}[H]
 	\centering
-	\subfigure[]{\bigdrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-0.pdf}}
-	\quad
-	\subfigure[]{\bigdrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-1.pdf}}
-	\subfigure[]{\bigdrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-2.pdf}}
-	\quad
-	\subfigure[]{\bigdrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-3.pdf}}
-	\caption{Exemplary evolution of the generated map for an input graph with $n = 10$ at different points in time $t \in \{0,1,2,3\}$. From (a) to (b) the blue-cyan boundary is flipped, from (b) to (c) the red-green boundary is flipped, and eventually from (c) to (d) the smaller red region is removed.}
+	\subfigure[]{\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-0.pdf}\quad\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-0-P.pdf}}
+	\subfigure[]{\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-1.pdf}\quad\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-1-P.pdf}}
+	\subfigure[]{\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-2.pdf}\quad\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-2-P.pdf}}
+	\subfigure[]{\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-3.pdf}\quad\smalldrawing{Resources/Evaluation-Example-Dynamics-AE097F3A-14FD-4735-A19B-8FD343CA3346-3-P.pdf}}
+	\caption{Exemplary evolution of the generated map for an input graph with $n = 10$ at different points in time $t \in \{0,1,2,3\}$. The lightness of the region colors in the right column represents the pressure in the respective regions, with lighter regions having lower pressure than darker regions. From (a) to (b) the green-purple boundary is flipped, from (b) to (c) the red-blue boundary is flipped, and eventually from (c) to (d) the blue region is removed.}
 	\label{fig:exemplary-maps-dynamics}
 \end{figure}
 

@@ -53,23 +53,23 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "benchmark"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "generate --output-file=/Users/jenox/Desktop/Master-Thesis/Evaluation/uuids.txt"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "pipeline --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --uuid-file=/Users/jenox/Desktop/Master-Thesis/Evaluation/uuids.txt --output-directory=/Users/jenox/Desktop/Master-Thesis/Evaluation/graphs/"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "evaluate --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/Master-Thesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/Master-Thesis/Evaluation/metrics/"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "render --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/Master-Thesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/Master-Thesis/Evaluation/drawings/ --pressure=false"
             isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "generate --output-file=/Users/jenox/Desktop/MasterThesis/Evaluation/uuids.txt"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "pipeline --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --uuid-file=/Users/jenox/Desktop/MasterThesis/Evaluation/uuids.txt --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "evaluate --number-of-vertices=10 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/metrics/"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "render --number-of-vertices=20 --nesting-ratio=0 --nesting-bias=0 --input-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/graphs/ --output-directory=/Users/jenox/Desktop/MasterThesis/Evaluation/drawings/"
-            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
