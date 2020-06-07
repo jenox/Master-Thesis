@@ -74,8 +74,10 @@ There are numerous popular algorithms to construct such a drawing, \eg{} Tutte's
   \vspace{5pt}
   \KwData{filtered cluster graph \clustergraph{} and a planar straight-line drawing \clusterdrawing{} thereof}
   \KwResult{polygonal dual \initmap{} of \clustergraph{}, in the form of a 1-subdivision of the augmented dual of \clustergraph{} and planar straight-line drawing thereof}
-  \vspace{10pt}
+  \BlankLine
   create empty contact representation \initmap{}\;
+  \BlankLine
+  \tcp{compute dual vertices and edges}
   \ForEach{internal face $f$ in \clustergraph{}}{
     \label{line:transformation-loop1-start}
     add \quoted{internal face vertex} $v_f$ to \initmap{}\; \label{line:transformation-innerfacevertex}
@@ -108,6 +110,8 @@ There are numerous popular algorithms to construct such a drawing, \eg{} Tutte's
     add edge between $v_\text{sub}$ and $v_{\{v,w\}}$ to \initmap{}\; \label{line:transformation-edgetype3-end}
     \label{line:transformation-loop3-end}
   }
+  \BlankLine
+  \tcp{compute faces in \initmap{} and match them to vertices in \clustergraph{}}
   \ForEach{vertex $u$ in \clustergraph{} \label{line:transformation-enumeratevertices}}{
     \label{line:transformation-loop4-start}
     $\Endpoints \gets ()$\;
@@ -142,7 +146,7 @@ Second, we show that the constructed drawing thereof is planar, making it a cont
 Recall that $(\clustergraph{})^+$ is a contact representation of \clustergraph{}.
 We can construct $(\clustergraph{})^+$ via a helper graph \clustergraph{+} that we obtain by inserting a helper vertex $v_+$ in the outer face of \clustergraph{} and connecting it to all vertices on the outer face of \clustergraph{}, in order, without introducing edge crossings.
 The contact representation $(\clustergraph{})^+$ then is the regular dual of \clustergraph{+}, \ie{} $(\clustergraph{})^+ = (\clustergraph{+})^*$.
-By adding the helper vertex $V_+$ and helper edges $\{v,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of \clustergraph{+}.
+By adding the helper vertex $v_+$ and helper edges $\{v_+,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of \clustergraph{+}.
 
 The dual of a plane graph has vertices in each of the primal graph's faces.
 We place these vertices in the original internal faces in \cref{line:transformation-innerfacevertex} and in \emdash{} or rather on \emdash{} the new triangular faces in \clustergraph{+} in \cref{line:transformation-outeredgevertex}.
