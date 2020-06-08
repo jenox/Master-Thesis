@@ -144,15 +144,15 @@ First, we show that the algorithm does indeed construct a 1-subdivision of the a
 Second, we show that the constructed drawing thereof is planar, making it a contact representation of \clustergraph{} as previously explained and illustrated in \cref{fig:transformation-augmented-dual}.
 
 Recall that $(\clustergraph{})^+$ is a contact representation of \clustergraph{}.
-We can construct $(\clustergraph{})^+$ via a helper graph \clustergraph{+} that we obtain by inserting a helper vertex $v_+$ in the outer face of \clustergraph{} and connecting it to all vertices on the outer face of \clustergraph{}, in order, without introducing edge crossings.
+We can construct $(\clustergraph{})^+$ via a helper graph \clustergraph{+} that we obtain by inserting a helper vertex $v^+$ in the outer face of \clustergraph{} and connecting it to all vertices on the outer face of \clustergraph{}, in order, without introducing edge crossings.
 The contact representation $(\clustergraph{})^+$ then is the regular dual of \clustergraph{+}, \ie{} $(\clustergraph{})^+ = (\clustergraph{+})^*$.
-By adding the helper vertex $v_+$ and helper edges $\{v_+,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of \clustergraph{+}.
+By adding the helper vertex $v^+$ and helper edges $\{v^+,\cdot\}$, the edges on the outer face of \clustergraph{} bound new triangular faces of \clustergraph{+}.
 
 The dual of a plane graph has vertices in each of the primal graph's faces.
 We place these vertices in the original internal faces in \cref{line:transformation-innerfacevertex} and in \emdash{} or rather on \emdash{} the new triangular faces in \clustergraph{+} in \cref{line:transformation-outeredgevertex}.
 Vertices in the dual are adjacent if their respective faces are adjacent in the primal.
 Thus for every edge separating two faces in the primal \clustergraph{+}, we require a dual edge in $(\clustergraph{+})^*$.
-We add these edges in \crefrange{line:transformation-edgetype1-start}{line:transformation-edgetype1-end} (for adjacent internal faces in \clustergraph{}), in \crefrange{line:transformation-edgetype2-start}{line:transformation-edgetype2-end} (for edges separating an internal face in \clustergraph{} from a new face in \clustergraph{+}), and in \crefrange{line:transformation-edgetype3-start}{line:transformation-edgetype3-end} (for helper edges $\{v_+,\cdot\}$ separating two new faces in \clustergraph{+}).
+We add these edges in \crefrange{line:transformation-edgetype1-start}{line:transformation-edgetype1-end} (for adjacent internal faces in \clustergraph{}), in \crefrange{line:transformation-edgetype2-start}{line:transformation-edgetype2-end} (for edges separating an internal face in \clustergraph{} from a new face in \clustergraph{+}), and in \crefrange{line:transformation-edgetype3-start}{line:transformation-edgetype3-end} (for helper edges $\{v^+,\cdot\}$ separating two new faces in \clustergraph{+}).
 Because we place all bends of the dual edges on the respective primal edge, the cyclic order of the edges incident to each vertex is equivalent to the cyclic order of the edges bounding the respective faces in the primal.
 
 \begin{figure}[H]

@@ -7,7 +7,7 @@ Still, changes between visualizations at consecutive points in time should minim
 
 Extending the pipeline for static inputs discussed in the previous section in a straightforward way will not satisfy these requirements.
 Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization, destroying the viewer's mental map.
-This is because even though the combinatorial arrangement of regions in the map \propmap{t} is predetermined by the planar embedding of the filtered cluster graph \clustergraph{t}, the independent nature of the runs through the pipeline can result in regions with drastically different shapes and (absolute) positions.
+This is because even though the combinatorial arrangement of the regions of the map \propmap{t} is predetermined by the planar embedding of the filtered cluster graph \clustergraph{t}, the independent nature of the runs through the pipeline can result in regions with drastically different shapes and (absolute) positions.
 We therefore extend the pipeline in a way that allows for small, incremental changes to be propagated through the pipeline and to eventually be applied to the previous output in a way that preserves the viewer's mental map.
 
 We extend the pipeline for static input by an incremental transformation phase.
@@ -38,7 +38,7 @@ Extending the pipeline to allow the propagation of small, incremental changes of
 %
 \begin{itemize}
 \item It allows highly efficient implementations of the incremental parts of the pipeline as only the aspects that have actually changed in the input graph or intermediate products need to be processed and propagated further along the pipeline.
-\item It makes the dynamic pipeline highly parallelizable: when a later phase is processing changes, an earlier phase can already start processing new changes independently.
+\item It makes the pipeline highly parallelizable for dynamic inputs: when a later phase is processing changes, an earlier phase can already start processing new changes independently.
 With our force-directed implementation of the drawing phase, we can even incorporate dynamic updates while the drawing phase is still running, even if it has not converged yet: we pause the force simulation, feed the current map \initmap{t} into the incremental transformation phase to incorporate the dynamic updates, and then resume the simulation with the updated map graph \initmap{t+1} produced by the incremental transformation phase.
 \item It efficiently supports dynamic input in an online setting, \ie{} a setting in which the incremental changes aren't known in advance, for example when visualizing live data.
 \end{itemize}

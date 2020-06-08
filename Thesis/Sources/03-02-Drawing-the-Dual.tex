@@ -127,14 +127,14 @@ We apply this force to adjacent vertices as well because we don't use spring-lik
 
 \item \textbf{Vertex-edge repulsion:} % bertault1999force
 In another attempt to prevent tight corridors from forming, we define an additional repulsive force between vertices and edges.
-Given an edge $e = \{u,w\}$ and non-incident vertex $v$, we define $v_+$ as the point on the segment from $u$ to $w$ with the smallest Euclidean distance to $v$.
+Given an edge $e = \{u,w\}$ and non-incident vertex $v$, we define $v_\perp$ as the point on the segment from $u$ to $w$ with the smallest Euclidean distance to $v$.
 We then define the repulsive force as
 %
 \begin{equation}
 	\vec{F}_\bot(v;\{u,w\}) \coloneqq
-	10 \cdot \frac{1}{\norm{\longvec{v_+v}}^2}
-	\cdot \abs{\vec{n}_e \cdot \Norm(\longvec{v_+v})}
-	\cdot \Norm(\longvec{v_+v})
+	10 \cdot \frac{1}{\norm{\longvec{v_\perp{}v}}^2}
+	\cdot \abs{\vec{n}_e \cdot \Norm(\longvec{v_\perp{}v})}
+	\cdot \Norm(\longvec{v_\perp{}v})
 	,
 \end{equation}
 %
