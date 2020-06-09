@@ -61,7 +61,7 @@ Subdividing the edge $\{u,v\}$ therefore produces the graph $G^\prime = (V^\prim
 A graph $H$ is said to be a \emph{subdivision} of $G$ if $H$ can be obtained from $G$ by repeatedly subdividing edges.
 $H$ is a \emph{1-subdivision} of $G$ if it can be obtained from $G$ by subdividing every edge exactly once.
 
-One can also \emph{contract} an edge $\{u,v\}$ of a graph $G = (V, E)$ if its endpoints $u$ and $v$ don't have any neighbors in common, deleting the edge and \quoted{merging} its endpoints into a new vertex $w$.
+One can also \emph{contract} an edge $\{u,v\}$ of a graph $G = (V, E)$ if its endpoints $u$ and $v$ do not have any neighbors in common, deleting the edge and \quoted{merging} its endpoints into a new vertex $w$.
 Doing so removes the edges $E_- \coloneqq \{ \{x,y\} \in E \vert u \in \{x,y\} \lor v \in \{x,y\} \}$ and creates new edges $E_+ \coloneqq \{ \{w,x\} \vert \{u,x\} \in E \lor \{v,x\} \in E \}$, producing a new graph $G^\prime = (V^\prime, E^\prime)$ with $V^\prime = V - u - v + w$ and $E^\prime = E - E_- + E_+$.
 Similarly, a vertex $v$ of degree 2 can be \emph{smoothed}, replacing it and its incident edges with a new edge $\{u,w\}$ between its original neighbors $u$ and $v$, \ie{}, $G^\prime = (G^\prime, E^\prime)$ with $V^\prime = V - v$ and $E^\prime = E - \{u,v\} - \{v,w\} + \{u,w\}$.
 
@@ -73,7 +73,7 @@ Similarly, a vertex $v$ of degree 2 can be \emph{smoothed}, replacing it and its
 % https://proofwiki.org/wiki/Definition:Adjacent_(Graph_Theory)/Faces
 
 A \emph{drawing} $\Gamma$ of a graph $G = (V, E)$ maps its vertices to distinct points in the plane and its edges to continuous curves between its endpoints in the plane.
-The graph $G$ is called \emph{planar} if it permits a drawing in which its edges don't self-intersect and don't cross other edges, \ie{}, the graph's edges only intersect in shared endpoints.
+The graph $G$ is called \emph{planar} if it permits a drawing in which its edges do not self-intersect and do not cross other edges, \ie{}, the graph's edges only intersect in shared endpoints.
 Such a drawing is called a \emph{planar drawing} of $G$.
 If all edges of $G$ are line segments, we also call it a \emph{planar straight-line drawing}.
 

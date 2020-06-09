@@ -3,12 +3,12 @@
 
 We implement a randomized test case generation in two phases.
 First, we generate a filtered cluster graph \clustergraph{}.
-We accompany this cluster graph with a planar straight-line drawing \clusterdrawing{} thereof so that such a drawing doesn't need to be calculated in retrospect as previously discussed in \cref{sect:transformation-to-dual}.
+We accompany this cluster graph with a planar straight-line drawing \clusterdrawing{} thereof so that such a drawing does not need to be calculated in retrospect, as previously discussed in \cref{sect:transformation-to-dual}.
 Second, we generate a sequence of dynamic operations to be applied to said cluster graph.
 
 \paragraph{Filtered Cluster Graph Generation}
 
-Our test case generation can be configured using the following five parameters, the usage of which become clear in the following:
+Our test case generation can be configured using the following five parameters, the usage of which becomes evident in the following:
 %
 \begin{itemize}
 \item \textbf{Number of clusters:} The number of clusters $n \in \mathbb{N}, n \geq 3$ determines how many vertices the generated cluster graph \clustergraph{} has.
@@ -19,22 +19,24 @@ Our test case generation can be configured using the following five parameters, 
 \end{itemize}
 
 The idea behind generating filtered cluster graphs \clustergraph{} is as follows:
-We start by placing a number of vertices randomly within the bounding box $\mathcal{A}$ and computing a triangulation of these vertices.
-We then place the remaining vertices into existing triangles based on the nesting ratio $\alpha$ and bias $\beta$, inserting additional edges to those triangles' endpoints in the process.
+We start by randomly placing a fixed number of vertices within the bounding box $\mathcal{A}$ and computing a triangulation of these vertices.
+We then place the remaining vertices into existing triangles based on the nesting ratio $\alpha$ and bias $\beta$, inserting additional edges to those triangles' endpoints along the way.
 The algorithm is illustrated in pseudocode in \cref{alg:randomized-filtered-cluster-graph-generation} on the next page.
 
-Obviously, the generated graph is plane and internally triangulated.
-Considering a point set's triangulation covers the same area as the set's convex hull, no vertex of the generated graph can appear on its outer face more than once and the graph is therefore also biconnected.
+The generated graph is obviously plane and internally triangulated.
+Considering a point set's triangulation covers the same area as the set's convex hull, no vertex of the generated graph can appear on its outer face more than once.
+Therefore, the graph is also biconnected.
 
 Due to the independent sampling of vertex positions in \cref{alg:randomized-filtered-cluster-graph-generation}, vertices often clump together, especially for larger test instances.
-This isn't an ideal starting position for the transformation as previously discussed in \cref{sect:transformation-to-dual} because the polygonal dual contains at least twice the number of vertices, therefore clumping even more and severely restricting the involved vertices' movement.
+This is not an ideal starting position for the transformation as previously discussed in \cref{sect:transformation-to-dual} because the polygonal dual contains at least twice the number of vertices, therefore clumping even more and severely restricting the involved vertices' movement.
 To address this issue, we apply a force-directed \quoted{shake} to the generated straight-line drawing \clusterdrawing{} of the cluster graph while preserving its edge crossing and combinatorial properties.
 
-We do this by defining attractive forces between pairs of adjacent vertices and strong repulsive forces between non-adjacent vertices and between edges and non-incident vertices based on their distances, and again applying the rules of ImPrEd \cite{simonetto2011impred} to prevent the introduction of edge crossings.
+We do this by defining attractive forces between pairs of adjacent vertices and strong repulsive forces between non-adjacent vertices and between edges and non-incident vertices based on their distances.
+Again, we apply the rules of ImPrEd \cite{simonetto2011impred} to prevent the introduction of edge crossings.
 The repulsive forces are the same as the ones defined in \cref{sect:drawing-the-dual}, although we use a higher scaling constant of $1000$ here to really prevent the vertices from clumping together.
 For the attractive force between adjacent vertices, we apply the force $F_\text{att}(u,v) \coloneqq \log(d(u,v) / 100)$ to both endpoints of an edge, directed towards each other.
 Here, the value of $100$ represents our ideal edge length.
-This new force is based on a logarithmic springs as suggested by Eades \cite{eades84heuristic}.
+This new force is based on logarithmic springs, as suggested by Eades \cite{eades84heuristic}.
 
 \vfill
 
@@ -88,7 +90,7 @@ In such a sequence of operations, we combine simple weight change operations wit
 
 For each point in time $t$ at which we want to incorporate dynamic operations, we first sample new target weights $w_i^\prime$ for all clusters $i$ according to $\pmf(\cdot)$.
 To prevent too drastic weight changes that would likely not appear in natural data sets, we set the clusters' new weights to a weighted average of their current weight and the newly sampled target weight as $w_{i,t+1} \coloneqq \frac34 w_{i,t} + \frac14 w_i^\prime$.
-Finally, we compute the set of valid operations affecting topology, pick one at random.
-To counteract the bias of instances getting bigger and bigger due to there being way more valid vertex insertion operations, we first pick one of the 5 classes of operations that isn't empty uniformly at random and then select a random operation inside that class uniformly at random.
+Finally, we compute the set of valid operations affecting topology and pick one at random.
+To prevent instances from getting bigger and bigger due to there being way more valid vertex insertion operations, we first pick a non-empty class of operations uniformly at random and then select a random operation inside that class uniformly at random.
 We apply this topology-altering operation alongside the weight changes in $\sigma_t$.
 Each $\sigma_t$ therefore consists of $\lvert V(\clustergraph{t}) \rvert + 1$ dynamic operations.

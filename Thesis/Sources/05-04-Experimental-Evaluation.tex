@@ -1,7 +1,8 @@
 \section{Experimental Evaluation}
 \label{sect:experimental-evaluation}
 
-To gain insights into the effect the number of clusters $n$, the nesting ratio $\alpha$ and nesting bias $\beta$, and the number of dynamic operations $t$ has on the different quality metrics, we create create swarm plots showing the distribution of the maps' qualities based on one of these parameters, while keeping the other parameters constant.
+We create various plots showing the distribution of the maps' qualities to gain insights into the effect of the number of clusters $n$, the nesting ratio $\alpha$, nesting bias $\beta$, and the number of dynamic operations $t$ on the different quality metrics.
+In these plots, we vary the value for one of these parameters, while keeping the others constant.
 
 \Cref{fig:experimental-evaluation-variable-number-of-operations} shows how the number of dynamic operations $t$ applied to the instance affects the cartographic error and polygon complexity.
 
@@ -17,15 +18,16 @@ To gain insights into the effect the number of clusters $n$, the nesting ratio $
 	\label{fig:experimental-evaluation-variable-number-of-operations}
 \end{figure}
 
-We can see that as we apply more operations, the cartographic error decreases; and very quickly so, with cartographic errors after $t = 5$ operations being almost indistinguishable.
-We believe that this is because for larger values of $t$, the force-directed optimization algorithm is given more time overall to optimize the statistical accuracy of the maps, amongst other features.
+We can see that as we apply more operations, the cartographic error decreases, and very quickly so: after $t = 5$ operations, the cartographic errors become almost indistinguishable.
+We believe that this is because, for larger values of $t$, the force-directed optimization algorithm has more time overall to optimize the statistical accuracy of the maps, amongst other features.
 
 The polygon complexity, on the other hand, increases over time.
-When processing topology-altering operations, additional subdivision vertices may be inserted to prevent the introduction of edge crossings, potentially creating shapes that aren't locally fat in the process.
-The optimization algorithm obviously tries to improve the local fatness of the involved regions afterwards, but appears unable to do so until around $t = 16$, where it seems to become able to counteract these effects and to prevent further degradation.
-In \cref{sect:future-work} we discuss an approach to verify whether this change indeed happens over time, or lies in the nature of the arrangement of the regions in the different test instances.
+When processing topology-altering operations, additional subdivision vertices may be inserted to prevent the introduction of edge crossings, potentially creating shapes that are not locally fat in the process.
+The optimization algorithm obviously tries to improve the local fatness of the involved regions afterward.
+However, it seems unable to do so until around $t = 16$, where it seems to become able to counteract these effects and to prevent further degradation.
+In \cref{sect:future-work}, we discuss an approach to verify whether this change indeed happens over time, or lies in the nature of the arrangement of the regions in the different test instances.
 
-The maximum cartographic error and polygon complexity over all regions of the map paint a picture with similar trends but greater mean and variance as outliers have a greater impact on the map's overall quality.
+The maximum cartographic error and polygon complexity over all regions of the map paint pictures with similar trends but greater mean and variance as outliers have a more significant impact on the map's overall quality.
 
 \vspace{1cm}
 
@@ -43,15 +45,15 @@ The effect of the initial number of clusters $n$ on the maps' quality is shown i
 	\label{fig:experimental-evaluation-variable-number-of-vertices}
 \end{figure}
 
-The average cartographic error across all instances appears largely unaffected by input size.
-Its variance decreases though as we increase the number of clusters.
-This makes sense, because as there are more clusters, the impact an outlier has on the average cartographic error decreases.
+The average cartographic error across all instances appears mostly unaffected by the input size.
+Its variance decreases, though, as we increase the number of clusters.
+This observation makes sense because as there are more clusters, the impact an outlier has on the average cartographic error decreases.
 
 Regarding the polygon complexity, a slight increase in complexity for larger input sizes can be seen in the plot.
-We believe that this is because for larger instances, there is simply more room for challenging constructs that require higher polygon complexity to visualize correctly.
+We believe that this is because, for larger instances, there is simply more room for challenging constructs that require higher polygon complexity to visualize correctly.
 
 With a larger number of clusters, there come more potential outliers that can negatively affect the instances' maximum cartographic errors and polygon complexities.
-We therefore see more pronounced trends for these two metrics.
+Hence we see more pronounced trends for these two metrics.
 
 \clearpage
 
@@ -74,10 +76,10 @@ We cannot see any meaningful effect of nesting ratio and bias on the maps' carto
 For the polygon complexity, however, the nesting ratio $\alpha$ has a pronounced impact.
 The figure clearly shows that instances with $\alpha = 0.25$ tend to have higher polygon complexities than instances with $\alpha = 0$, and instances with $\alpha = 0.5$ even higher ones, regardless of nesting bias $\beta$.
 
-A possible explanation is that by nesting vertices of the cluster graph into existing triangles, we create internal vertices with low degree.
-The regions of the map corresponding to these vertices are therefore surrounded by few neighboring regions which are inevitably more complex as these few regions have to span the entire boundary of the original region.
+A possible explanation is that by nesting vertices of the cluster graph into existing triangles, we create internal vertices with low degrees.
+Therefore, the regions of the map corresponding to these vertices are surrounded by few neighboring regions, which are inevitably more complex as these few regions have to span the entire boundary of the original region.
 Additionally, there generally lie fewer vertices on the outer face of the cluster graph, whose corresponding regions must again surround the entire inside.
-These decreases in the number of external vertices and average degree of internal vertices as the nesting ratio $\alpha$ increases is illustrated in \cref{fig:experimental-evaluation-variable-nesting-ratio-and-bias-2}.
+These decreases in the number of external vertices and average degree of internal vertices as the nesting ratio $\alpha$ increases are illustrated in \cref{fig:experimental-evaluation-variable-nesting-ratio-and-bias-2}.
 
 \begin{figure}[H]
 	\centering
@@ -89,6 +91,6 @@ These decreases in the number of external vertices and average degree of interna
 \end{figure}
 
 \Cref{fig:experimental-evaluation-variable-nesting-ratio-and-bias} also indicates that for fixed a nesting ratio $\alpha$, the nesting bias $\beta$ slightly reduces the map's polygon complexity.
-This observation isn't significant enough to jump to any conclusions though.
+However, this observation is not significant enough to jump to any conclusions.
 
 Again, the maximum polygon complexity over all regions of the map exhibits the same overall trend but with a larger spread.

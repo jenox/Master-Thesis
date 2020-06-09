@@ -2,13 +2,14 @@
 \label{sect:implementation-and-experiment-setup}
 
 Besides this written report, we have implemented the framework illustrated in 
-\crefrange{chap:visualizing-static-input-graphs}{chap:visualizing-dynamic-input-graphs} along with the test case generation discussed in \cref{sect:test-case-generation} as a Swift package.
-We also provide a graphical user interface to interactively explore the individual steps of the pipeline.
+\crefrange{chap:visualizing-static-input-graphs}{chap:visualizing-dynamic-input-graphs}, along with the test case generation discussed in \cref{sect:test-case-generation}, as a Swift package.
+We also provide a graphical user interface to explore the individual steps of the pipeline interactively.
 
-To perform the experimental evaluation, we include a command line tool that efficiently generates test instances, runs them through the pipeline, and assesses their quality.
+To perform the experimental evaluation, we include a command-line tool that efficiently generates test instances, runs them through the pipeline, and assesses their quality.
 Each instance is generated randomly based on the parameters $n$, $\alpha$, and $\beta$ discussed previously; the bounding box $\mathcal{A}$ and the weight distribution $\pmf$ are kept constant.
 We vary $n$, $\alpha$, and $\beta$ to get insights into their effect on the generated maps' qualities.
-Whenever we run the force-directed optimization algorithm, we perform $10c$ iterations, where $c$ is the current number of clusters in the cluster graph or the number of regions in the polygonal dual.
+Whenever we run the force-directed optimization algorithm, we perform $10c$ iterations.
+Here, $c$ is the current number of clusters in the cluster graph or the number of regions in the polygonal dual.
 
 The implementation is open source and can be found on GitHub:
 %
@@ -16,5 +17,5 @@ The implementation is open source and can be found on GitHub:
   \url{https://github.com/jenox/master-thesis/}
 \end{center}
 
-The results presented here are based on 100 randomly generated identifiers which are included in the repository.
-These identifiers are used to seed the pseudorandom number generator used by our framework, thereby making the results presented here reproducible on any machine running macOS 10.15 or later.
+The results presented here are based on 100 randomly generated identifiers that are included in the repository.
+We use these identifiers to seed the pseudorandom number generator used by our framework, thereby making the results presented here reproducible on any machine running macOS 10.15 or later.
