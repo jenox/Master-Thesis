@@ -6,70 +6,70 @@
 \paragraph{GMap and OpMap}
 
 GMap \cite{gansner2009gmap} is a framework for visualizing graphs as geographical maps.
-In a first step, it embeds the input graph in the plane and performs a cluster analysis using arbitrary user-provided algorithms.
+The first step consists of embedding the input graph in the plane and performing a cluster analysis using arbitrary user-provided algorithms.
 Embedding and clustering are typically done independently from one another; however, the algorithms should be well-matched such that clusters form continuous regions in the computed embedding.
 A combination of force-directed graph drawing and modularity-based clustering methods is commonly used.
 GMap then creates a map by computing the Voronoi diagram of the graph's vertices as per the computed embedding and merging adjacent cells whose vertices belong to the same cluster.
 Eventually, the original graph's edges are drawn on top of this map.
 
 In a follow-up paper, Mashima \etal{} \cite{mashima2011visualizing} built upon GMap to visualize dynamic input graphs.
-To maintain the mental map of the viewer, they create a \quoted{canonical map} storing positional information of a much larger graph than the one that is eventually going to be shown to the viewer.
+To maintain the viewer's mental map, they create a \quoted{canonical map} storing positional information of a much larger graph than the one that is eventually shown to the viewer.
 At different points in time, only the most prominent vertices and clusters of the canonical map are then visualized.
-Because the canonical map is much less volatile, vertices and clusters don't move as much on the resulting map.
+Because the canonical map is much less volatile, vertices and clusters do not move as much on the resulting map.
 
-The aforementioned algorithm for visualizing opinion networks by Betz \etal{} is called OpMap.
+The algorithm for visualizing opinion networks by Betz \etal{} mentioned earlier is called OpMap.
 OpMap focuses on clustering and weighting the opinion vectors in the network and delegates the visualization to GMap.
 However, the clustering is performed on the abstract input graph, independent from the force-directed embedding algorithm.
-This can be problematic, because if the clustering and the computed embedding don't fit together well, one ends up with many fragmented, noncontinuous clusters on the map.
+This can be problematic, because if the clustering and the computed embedding do not fit together well, one ends up with many fragmented, noncontinuous clusters on the map.
 OpMap has only been evaluated for relatively small input sizes and works with static inputs only.
-We want to explore an approach that supports larger \emdash{} and most importantly dynamic \emdash{} opinion networks.
+We want to explore an approach that supports larger, and most importantly, dynamic, opinion networks.
 
-In this thesis we therefore cluster the graph and extract important features first, and only then embed the graph in the plane while keeping the clusters connected.
+Therefore, in this thesis, we propose a framework that clusters the graph and extracts relevant features first, and only then embeds the graph in the plane while keeping the clusters connected.
 
 
 \paragraph{Cartograms}
 
-Cartograms have been studied for more than 50 years \cite{tobler2004thirty} and there are lots of fundamentally different approaches to generate different kinds of cartograms \cite{nusrat2016state}.
+Cartograms have been studied for more than 50 years \cite{tobler2004thirty}, and there are lots of fundamentally different approaches to generate different kinds of cartograms \cite{nusrat2016state}.
 Their quality is generally assessed by a combination of statistical accuracy, topological accuracy, and geographic accuracy \cite{alam2015quantitative}: \emph{Statistical accuracy} describes how closely the areas of the modified geographic regions match the variable of interest, \emph{topological accuracy} to what degree the original region adjacencies are preserved, and \emph{geographic accuracy} how well the shapes and positions of the distorted regions resemble their original.
-Geographic accuracy is closely related to the preservation of the mental map as it captures a viewer's ability to intuitively recognize the regions and therefore detect the trends in the underlying data.
-Although traditionally used for other applications, cartograms are closely related to our problem statement and the aforementioned quality metrics translate directly to our use case.
-While we don't have a reference map for the initial area-proportional map like cartograms do, we can use that initial map as a reference map that we can base geographical accuracy on when incorporating dynamic updates of the input graph.
+Geographic accuracy is closely related to the preservation of the mental map: it captures a viewer's ability to intuitively recognize the regions and therefore detect the trends in the underlying data.
+Although traditionally used for other applications, cartograms are closely related to our problem statement, and the quality metrics mentioned above translate directly to our use case.
+While we do not have a reference map for the initial area-proportional map like cartograms do, we can use that initial map as a reference map that we can base geographical accuracy on when incorporating dynamic updates of the input graph.
 There is a large body of literature on the generation of cartograms \cite{tobler2004thirty} \cite{alam2015quantitative} \cite{nusrat2016state}.
 Here, we mention only the most relevant techniques and explain to what degree we have adopted them.
 
 Gastner and Newman \cite{gastner2004diffusion} propose a physical model based on diffusion to generate cartograms:
-They rasterize the original map into a two-dimensional matrix with the values being the initial densities, \ie{} the statistical values divided by the regions' areas at any given point.
+They rasterize the original map into a two-dimensional matrix with the values being the initial densities, \ie{}, the statistical values divided by the regions' areas at any given point.
 This matrix is then used to precompute the gradient of the diffusion field and the pathlines of these \quoted{density particles} as they diffuse through the map and equalize the overall density.
 The pathlines essentially map locations on the original map to their location in the diffused map and can be used to draw the distorted, density-equalizing map.
-However, due to the rasterization and heavy precomputation of pathlines, this algorithm isn't well-suited for our dynamic setting in which densities can change and are not necessarily known a priori.
+However, due to the rasterization and heavy precomputation of pathlines, this algorithm is not well-suited for our dynamic setting in which densities can change and are not necessarily known a priori.
 
 Kämper \etal{} \cite{kamper2013circular} start with a polygonal map and transform every edge into a circular arc that can bend to realize the desired areas of individual regions.
-They use a max-flow-based formulation on the dual graph of the map to find out how the area should be distributed among the regions and solve for the circular arc radii.
+They use a max-flow-based formulation on the map's dual graph to determine how the area should be distributed among the regions and solve for the circular arc radii.
 However, the degree to which the edges can bend is heavily restricted since the circular arcs may not touch or cross, making it difficult for circular arc cartograms to achieve good statistical accuracy.
-The resulting regions' shapes also appear very artificial, unlike the ones you would find on a real geographic map.
+The resulting regions' shapes also appear very artificial, unlike those found on a real geographic map.
 
 Alam \etal{} \cite{alam2013computing} show how air-pressure-based models for the general floorplan problem such as \cite{izumi1998air} and \cite{felsner2013exploiting} can be applied to generating rectilinear cartograms.
-They give a force-directed heuristic to iteratively compute the cartogram and experimentally show very fast convergence to more than 99\% accuracy.
+They give a force-directed heuristic to compute the cartogram iteratively and experimentally show very fast convergence to more than 99\% accuracy.
 Each region is assigned a target area based on the statistic one wants to visualize.
-They then compute the pressure in each region based on its current area and target area and use it to iteratively grow and/or shrink the regions by shifting its boundaries.
+They then compute the pressure in each region based on its current area and target area and use it to grow or shrink the regions iteratively by shifting its boundaries.
 This heuristic motivates the force-directed formulation of a pivotal part of our framework whose theoretical background we discuss in the following paragraph.
 
 
 \paragraph{Force-directed Graph Drawing}
 
 Force-directed graph drawing algorithms regard the graph to be visualized as a physical system in which the vertices are individual particles, and several forces are acting on said particles.
-These forces are defined such that they act to bring the system into a stable equilibrium position in which its potential energy is at a local minimum and the resulting drawing has certain desired features.
+These forces are defined such that they act to bring the system into a stable equilibrium position in which its potential energy is at a local minimum, and the resulting drawing has certain desired features.
 Eades \cite{eades84heuristic} first used a combination of attractive forces between adjacent vertices based on physical springs and repulsive forces between all pairs of vertices based on electric repulsion.
-These forces result in adjacent vertices being pulled together while non-adjacent vertices are pushed further apart from each other.
+These forces result in adjacent vertices being pulled together while non-adjacent vertices are pushed further apart.
 The drawings resulting from force-directed algorithms are generally visually appealing and easy to grasp \cite{kobourov2013force}.
 
 Bertault \cite{bertault1999force} designed a force-directed algorithm called PrEd that imposes additional constraints on the displacement of vertices.
-In PrEd vertices are only allowed to move in a way that preserves the edge crossing properties of the initial layout, \ie{} existing edge crossings are preserved and no new edge crossings are introduced.
-Simonetto \etal{} \cite{simonetto2011impred} introduced an improved version of this algorithm called ImPrEd that is more flexible and performs much better on larger input graphs.
+In PrEd vertices are only allowed to move in a way that preserves the edge crossing properties of the initial layout, \ie{}, existing edge crossings are preserved, and no new edge crossings are introduced.
+Simonetto \etal{} \cite{simonetto2011impred} introduced an improved version of this algorithm called ImPrEd, which is more flexible and performs much better on larger input graphs.
 
 In this thesis, we use a force-directed algorithm with custom forces to control the layout of our polygonal maps.
-The forces we use are based on the aforementioned \quoted{pressure} in the individual regions of the map.
-It is crucial that we do not introduce edge crossings when tweaking the map's layout because regions aren't allowed to overlap on geographical maps.
+The forces we use are based on the aforementioned \quoted{pressure} in the map's regions.
+We must pay attention not to introduce edge crossings when tweaking the map's layout because regions are not allowed to overlap on geographical maps.
 
 
 \paragraph{Area Universality}
@@ -78,9 +78,12 @@ Area-universal graphs are plane graphs that can realize any area assignment to i
 Research on area-universality gives us important theoretical bounds on the statistical accuracy we can achieve with polygonal maps.
 
 Back in 1992, Thomassen \cite{thomassen1992plane} showed that plane cubic graphs are area-universal.
-For polygonal maps this means that, as long as at most three regions meet in a point, we can achieve perfect statistical accuracy for arbitrary region weights.
-This is because if we were to eliminate all corners that are part of only two region boundaries, all corners in the resulting polygonal map would would be are part of exactly three region boundaries, and the map could therefore be interpreted as a plane cubic graph.
+For polygonal maps, this means that, as long as at most three regions meet in a point, we can achieve perfect statistical accuracy for arbitrary region weights.
+This is because if we were to eliminate all corners that are part of only two regions' boundaries, all remaining corners would be are part of precisely three regions' boundaries.
+Therefore, one can interpret the map as a plane cubic graph.
 
 Kleist \cite{kleist2018drawing} \cite{kleist2019planar} showed that the 1-subdivision of any plane graph is area-universal.
-With just one bend per edge, any plane graph can therefore be drawn with arbitrary prescribed face areas.
-This, too, translates to polygonal maps: as long as there's a point that's part of at most two region boundaries between two points that are part of more than two region boundaries, we can lift the requirement of no more than three regions meeting in a point, all while still being able to achieve perfect statistical accuracy for arbitrary region weights.
+With just one bend per edge, any plane graph can hence be drawn with arbitrary prescribed face areas.
+This property translates to polygonal maps, too.
+As long as there exists a point that's part of at most two regions' boundaries between two points that are part of more than two regions' boundaries, we can lift the requirement of no more than three regions meeting in a point.
+Most importantly, we can relax the requirements while still being able to achieve perfect statistical accuracy for arbitrary region weights.

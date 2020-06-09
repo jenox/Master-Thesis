@@ -3,46 +3,47 @@
 \label{sect:motivation}
 
 % Clustered data
-In the field of graph theory and graph drawing, for example, for larger graphs, global structures such as clusters and their relationships become increasingly important while the importance of local features such as  individual edges diminishes.
+In the fields of graph theory and graph drawing, for example, for larger graphs, global structures such as clusters and their relationships become increasingly important.
+In contrast, the importance of local features such as individual edges diminishes.
 Clustered data appears naturally in many real-world data sets.
-For example, university students can be grouped by their academic major, or politicians can be grouped according to their party affiliation.
-When done correctly, clustering provides a lot of additional structure to data and essentially functions as a high-level data aggregation that is easy to visualize while still conveying crucial global information.
-In this thesis, we propose a framework that explicitly visualizes clusters in the input graph as a high-level overview in addition to all local details.
+For example, one can group university students by their academic major, or politicians according to their party affiliation. 
+When done correctly, clustering provides much additional structure to data and essentially functions as a high-level data aggregation that is easy to visualize while still conveying crucial global information.
+In this thesis, we propose a framework that explicitly visualizes clusters in the input graph as a high-level overview in addition to all the local details.
 
 % Map metaphor
 Given a map of the earth, it is remarkably easy to find out whether or not two countries are neighbors, or to compare their size.
 We are confronted with such tasks starting at a very young age, and absorbing data through this visual channel becomes very natural for most of us.
 In fact, we generally enjoy working with maps \cite{saket2016comparing}.
 Skupin and Fabrikant \cite{skupin2003spatialization} realized the relevance of applying a cartographic perspective to general information visualization very early and motivated research of transferring the geographic map metaphor to non-geographic domains.
-In the following years, map-based graph visualizations, \ie{} drawings of graphs in which the vertices' cluster information is explicitly encoded as colored regions of the plane, have been studied and evaluated in great detail.
-Such visualizations outperform traditional node-link diagrams on tasks related to detecting clustering information while not negatively affect the performance of other tasks \cite{saket2014node}, provide greater memorability of data \cite{saket2015map}, and are more enjoyable to work with \cite{saket2016comparing}.
-In this thesis, we too shall utilize the map metaphor and encode the clustering information by placing all vertices of a cluster in a continuous region of the map.
+In the following years, map-based graph visualizations, \ie{}, drawings of graphs in which the vertices' cluster information is explicitly encoded as colored regions of the plane, have been studied and evaluated in great detail.
+Such visualizations outperform traditional node-link diagrams on tasks related to detecting clustering information while not negatively affecting the performance regarding other tasks \cite{saket2014node}. At the same time, they provide greater memorability of the data \cite{saket2015map} and are more enjoyable to work with for many \cite{saket2016comparing}.
+In this thesis, we, too, shall utilize the map metaphor and encode the clustering information by placing all vertices of a cluster in a continuous region of the map.
 
 % Dynamic aspect + mental map
-In today's world, it's not only big data that we're dealing with.
+In today's world, we are not only dealing with huge amounts of data.
 Data is also changing at a much greater pace than before: visualizations that were accurate yesterday may be outdated today.
 Many applications deal with volatile data by nature, such as stock prices or, in light of current events, the number of coronavirus infections.
-It is therefore crucial to not only visualize the data at a single point in time, but to also visualize trends in the data as it evolves over time.
-But visualizing a dynamic graph brings its own challenges:
+Therefore, it is crucial to not only visualize the data at a single point in time but to also visualize trends in the data as it evolves over time.
+However, visualizing a dynamic graph brings challenges of its own:
 We are essentially producing a sequence of snapshots at different points in time.
 Upon viewing such a snapshot, we inevitably create some internal representation of what we see in our minds.
-It is crucial that this mental model remains consistent throughout the visualization:
+It is crucial for this mental model to remain consistent throughout the visualization:
 If it doesn't, viewers may not be able to see the overall trends in the dynamic data because they need re-orient often \cite{bohringer1990using} \cite{lee2006mental} \cite{purchase2006important}.
 This fundamental aesthetic criterion of dynamic graph visualizations was coined \emph{preserving the mental map} by Eades \etal{} \cite{eades1991preserving} \cite{misue1995layout} and is also known as \emph{dynamic stability} \cite{diehl2002graphs}.
-In this thesis, we shall preserve the mental map of the dynamic map visualization by preserving the combinatorial embedding and outer face of the map and breaking changes down into small, incremental pieces that can easily be applied to the dynamic map.
+In this thesis, we shall preserve the mental map of the dynamic map visualization by preserving the combinatorial embedding and outer face of the map and breaking changes down into small, incremental pieces that can be applied to the dynamic map easily.
 
 % Area-proportionality
-Cartograms are maps in which geographic regions appear skewed such that their areas are proportional to some statistic, \eg{} the population or gross domestic product of a country.
-Although cartograms are traditionally used to visualize demographic data and are based on real geographic maps, extensive studies related to human perception \cite{nusrat2016state} \cite{nusrat2018evaluating} give us a few valuable insights that can be transferred to our problem definition:
-First, area is a strong visual variable that can be interpreted naturally.
-And second, having before/after-comparison allows viewers to easily detect trends in the underlying data.
+Cartograms are maps in which geographic regions appear skewed such that their areas are proportional to some statistic, \eg{}, the population or gross domestic product of a country.
+Although cartograms are traditionally used to visualize demographic data and are based on real geographic maps, extensive studies related to human perception \cite{nusrat2016state} \cite{nusrat2018evaluating} give us a few valuable insights that translate to our problem definition.
+First, the area is a strong visual variable that can be interpreted naturally.
+Second, having a before/after-comparison allows viewers to detect trends in the underlying data easily.
 In this thesis, we therefore aim to create maps whose regions' areas are proportional to their respective cluster sizes and adopt established quality metrics of cartograms for the visualizations we produce.
 
 % Motivating application: concrete use case
-A real-world application with great potential to benefit from this framework and its goals is the visualization of opinion networks \cite{betz2019applying} and in particular how they evolve over time.
-An opinion network is represented as a weighted graph whose vertices are so-called opinion vectors and the edge weights represent the similarity between two opinion vectors.
+A real-world application with great potential to benefit from this framework and its goals is the visualization of opinion networks \cite{betz2019applying} and how they evolve over time in particular.
+An opinion network is represented as a weighted graph whose vertices are so-called opinion vectors and whose edge weights represent the similarity between two opinion vectors.
 Betz \etal{} \cite{betz2019applying} cluster the vertices to group similar opinions together, visualize the graph as a map in which each cluster corresponds to a country, and draw the original graph on top of this map following the GMap algorithm \cite{gansner2009gmap}.
-Naturally, such an opinion network is dynamic in a sense where new opinions can be incorporated or individual opinions can change over time: clusters can therefore grow or shrink, appear or disappear, merge or split, etc.
-We are interested in visualizing such processes effectively in order to find and communicate important trends in the underlying data.
+Naturally, such an opinion network is dynamic in a sense where existing opinions can change and new opinions can be incorporated over time: clusters can grow or shrink, appear or disappear, merge or split, etc.
+We are interested in visualizing such processes effectively to find and communicate important trends in the underlying data.
 
 Before diving into the contributions of this thesis, we discuss related work that we build upon to better understand the aspects we are going to address.
