@@ -1,20 +1,20 @@
 \chapter{Visualizing Dynamic Input Graphs}
 \label{chap:visualizing-dynamic-input-graphs}
 
-Extending the approach discussed in the previous section to dynamic input graphs is challenging primarily because we must try to preserve the viewer's mental map as the underlying data changes over time.
-We want the visualization at different points in time to be similar enough so that the viewer can clearly tell what parts have changed \cite{mashima2011visualizing}, yet allow for the required changes in geography and topology.
+Extending the approach discussed in the previous section to dynamic input graphs is challenging because we must try to preserve the viewer's mental map as the underlying data changes over time.
+We want the visualization at different points in time to be similar enough so that the viewer can easily tell what parts have changed \cite{mashima2011visualizing}, yet allow for the required changes in geography and topology.
 Still, changes between visualizations at consecutive points in time should minimize movement and allow for smooth animations therebetween.
 
 Extending the pipeline for static inputs discussed in the previous section in a straightforward way will not satisfy these requirements.
-Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization, destroying the viewer's mental map.
+Running through the entire pipeline with a different, albeit similar, input graph, may result in a completely different visualization, thereby destroying the viewer's mental map.
 This is because even though the combinatorial arrangement of the regions of the map \propmap{t} is predetermined by the planar embedding of the filtered cluster graph \clustergraph{t}, the independent nature of the runs through the pipeline can result in regions with drastically different shapes and (absolute) positions.
-We therefore extend the pipeline in a way that allows for small, incremental changes to be propagated through the pipeline and to eventually be applied to the previous output in a way that preserves the viewer's mental map.
+Therefore, we extend the pipeline in a way that allows for small, incremental changes to be propagated through the pipeline and to eventually be applied to the previous output in a way that preserves the viewer's mental map.
 
 We extend the pipeline for static input by an incremental transformation phase.
 This phase takes two inputs:
 A map \initmap{t} that the pipeline previously produced as output for some filtered cluster graph \clustergraph{t}, and a sequence of operations on said cluster graph, that, when applied to \clustergraph{t}, yields the cluster graph \clustergraph{t+1}.
 The incremental transformation phase then determines how these operations translate to a polygonal dual of \clustergraph{t} and applies the translated operations to \initmap{t}, producing \initmap{t+1}, a polygonal dual of \clustergraph{t+1}.
-This new polygonal dual is then fed back into the drawing phase to make it an $\varepsilon$-area-proportional contact representation \propmap{t+1} for some small $\varepsilon > 0$ and to improve the local fatness of the map's regions.
+We then feed this new polygonal dual back into the drawing phase to make it an $\varepsilon$-area-proportional contact representation \propmap{t+1} for some small $\varepsilon > 0$ and to improve the local fatness of the map's regions.
 
 \begin{figure}[H]
 	\centering\includegraphics[width=0.9\textwidth]{Resources/Framework-3.pdf}
@@ -23,10 +23,10 @@ This new polygonal dual is then fed back into the drawing phase to make it an $\
 \end{figure}
 
 Real-world applications, such as visualizing a dynamic opinion network, need a way to feed a sequence of operations on the filtered cluster graph into our framework.
-This could be done by prepending an incremental clustering phase that translates changes to the simple input graph $G_t$ into changes of its filtered cluster graph \clustergraph{t}.
-However, such a sequence of operations $\sigma_t$ is only meaningful in combination with a graph that these operations can be applied to.
-One must therefore provide the previously-produced cluster graph \clustergraph{t} as additional input to the incremental clustering phase such that it can tailor its output to the cluster graph that has already been locked in in an earlier run through the pipeline.
-This possible extension to our pipeline is illustrated in the following figure:
+One could compute such a sequence of operations $\sigma_t$ by prepending an incremental clustering phase that translates changes of the simple input graph $G_t$ into changes of its filtered cluster graph \clustergraph{t}.
+However, such a sequence of operations $\sigma_t$ is only meaningful in combination with a graph to which these operations can be applied.
+One must consequently provide the previously-produced cluster graph \clustergraph{t} as an additional input to the incremental clustering phase such that it can tailor its output to the cluster graph that has already been locked in in an earlier run through the pipeline.
+The following figure illustrates this possible extension to our pipeline:
 %
 \begin{figure}[H]
 	\centering\includegraphics[width=\textwidth]{Resources/Framework-4.pdf}
@@ -34,13 +34,14 @@ This possible extension to our pipeline is illustrated in the following figure:
 	\label{fig:dynamic-pipeline-application}
 \end{figure}
 
-Extending the pipeline to allow the propagation of small, incremental changes of the input graph has numerous benefits other than the ability to preserve the viewer's mental map:
+Extending the pipeline to allow the propagation of small, incremental changes of the input graph has numerous benefits other than preserving the viewer's mental map:
 %
 \begin{itemize}
 \item It allows highly efficient implementations of the incremental parts of the pipeline as only the aspects that have actually changed in the input graph or intermediate products need to be processed and propagated further along the pipeline.
 \item It makes the pipeline highly parallelizable for dynamic inputs: when a later phase is processing changes, an earlier phase can already start processing new changes independently.
-With our force-directed implementation of the drawing phase, we can even incorporate dynamic updates while the drawing phase is still running, even if it has not converged yet: we pause the force simulation, feed the current map \initmap{t} into the incremental transformation phase to incorporate the dynamic updates, and then resume the simulation with the updated map \initmap{t+1} produced by the incremental transformation phase.
-\item It efficiently supports dynamic input in an online setting, \ie{} a setting in which the incremental changes aren't known in advance, for example when visualizing live data.
+With our force-directed implementation of the drawing phase, we can even incorporate dynamic updates while the drawing phase is still running, even if it has not converged yet:
+We pause the force simulation, feed the current map \initmap{t} into the incremental transformation phase to incorporate the dynamic updates, and then resume the simulation with the updated map \initmap{t+1} produced by the incremental transformation phase.
+\item It efficiently supports dynamic input in an online setting, \ie{}, a setting in which the incremental changes are not known in advance, such as when visualizing live data.
 \end{itemize}
 
 
@@ -49,13 +50,13 @@ With our force-directed implementation of the drawing phase, we can even incorpo
 
 Our pipeline supports numerous classes of atomic operations on the filtered cluster graph, such as inserting and removing vertices and edges, flipping edges, or simply changing a cluster's weight.
 By composing multiple atomic operations in a sequence, more drastic changes can be made to the filtered cluster graph.
-In our pipeline, the operations are applied one after the other nonetheless.
+Nonetheless, the operations are applied one after the other in our pipeline.
 
-The simplest operation of all is changing a vertex $v$'s weight:
+The most straightforward operation of all is changing a vertex $v$'s weight:
 We simply take the previous $\varepsilon$-proportional map \propmap{t}, update the weight of the face $f_v$ corresponding to the vertex $v$, and declare that as the new map \initmap{t+1}.
 The map \initmap{t+1} then runs through the drawing phase again to account for the updated face weights.
 
-Implementing the remaining operations as part of the incremental transformation is a little more challenging, and we'll discuss those in great detail in the following sections.
+Implementing the remaining operations as part of the incremental transformation is a little more challenging, and we will discuss those in great detail in the following sections.
 
 \clearpage
 \input{Sources/04-01-Inserting-Vertices}
