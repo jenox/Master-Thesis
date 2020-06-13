@@ -1,15 +1,15 @@
 \section{Transformation to Polygonal Dual}
 \label{sect:transformation-to-dual}
 
-In this step of the pipeline, we take a filtered cluster graph \clustergraph{} and form a polygonal dual of thereof, resulting in the map \initmap{}.
-To formalize the relationship between these two graphs, we require the concept of the augmented dual:
+In this step of the pipeline, we take a filtered cluster graph \clustergraph{} and form a polygonal dual thereof, producing the map \initmap{}.
+To formalize the relationship between these two graphs, we require the concept of the augmented dual.
 
 \begin{definition}
 The \emph{augmented dual} $G^+$ of a plane graph $G$ is the plane multigraph obtained by first placing a new vertex $v^+$ in the outer face of $G$, connecting it to all vertices on the outer face, in order, without introducing edge crossings, and then forming its dual.
 \label{def:augmented-dual}
 \end{definition}
 
-\Cref{fig:transformation-augmented-dual} illustrates the formation of the augmented dual $G^+$ of a plane graph $G$ (\cref{subfig:transformation-augmented-dual-1}).
+\Cref{fig:transformation-augmented-dual} illustrates the construction of the augmented dual $G^+$ of a plane graph $G$ (\cref{subfig:transformation-augmented-dual-1}).
 We add the helper vertex $v^+$ and helper edges $\{v^+,\cdot\}$ in the outer face in \cref{subfig:transformation-augmented-dual-2}.
 We draw the helper edges as in \cite{wagner2016algorithmen} because it does not matter where this helper vertex lies in the plane \emdash{} all that matters is that each pair of adjacent vertices on the outer face forms a new triangular face with $v^+$.
 In \cref{subfig:transformation-augmented-dual-3}, we overlay the dual vertices and edges in red.
@@ -39,7 +39,7 @@ Therefore, one can interpret the map \initmap{} as a subdivision of the augmente
 \paragraph{Algorithm Overview}
 
 The underlying idea of creating the initial map \initmap{} is as follows:
-Given a filtered cluster graph \clustergraph{}, we place vertices on edges of the outer face of \clustergraph{} (these edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of \clustergraph{}.
+Given a filtered cluster graph \clustergraph{}, we place vertices on the edges of the outer face of \clustergraph{} (these edges bound additional triangular faces after adding the helper vertex in the process of forming the augmented dual) and inside the internal faces of \clustergraph{}.
 We then connect these vertices if their corresponding faces are adjacent.
 Connecting two vertices may require additional subdivision vertices or bends in order not to introduce edge crossings \emdash{} we use a single bend per edge.
 
@@ -52,7 +52,7 @@ The following figure illustrates an example:
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-2.pdf}\label{subfig:transformation-algorithm-2}}
 	\quad
 	\subfigure[]{\includegraphics[height=70mm]{Resources/Transformation-Algorithm-3.pdf}\label{subfig:transformation-algorithm-3}}
-	\caption{A filtered cluster graph \clustergraph{} (a), the helper graph \clustergraph{+} (b), and the polygonal dual \initmap{} of \clustergraph{} as produced by \cref{alg:transformation-to-dual} (c).}
+	\caption{A filtered cluster graph \clustergraph{} (a), the helper graph \clustergraph{+} (b), and the polygonal dual \initmap{} of \clustergraph{} produced by \cref{alg:transformation-to-dual} (c).}
 	\label{fig:transformation-algorithm}
 \end{figure}
 
@@ -81,22 +81,22 @@ There are numerous popular algorithms to construct such a drawing, \eg{}, Tutte'
   \ForEach{internal face $f$ in \clustergraph{}}{
     \label{line:transformation-loop1-start}
     add \quoted{internal face vertex} $v_f$ to \initmap{}\; \label{line:transformation-innerfacevertex}
-    position $v_f$ at barycenter of $f$ in \clustergraph{} \label{line:transformation-barycenter1}\;
+    position $v_f$ in \initmap{} at barycenter of $f$ in \clustergraph{} \label{line:transformation-barycenter1}\;
     \label{line:transformation-loop1-end}
   }
   \ForEach{edge $\{u,v\}$ in \clustergraph{}}{
     \label{line:transformation-loop2-start}
   	\If{$\{u,v\}$ is incident to two different internal faces $f, g$ in \clustergraph{} \label{line:transformation-incidentfacelookup1}}{
   	  add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex1}
-  	  position $v_\text{sub}$ at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
+  	  position $v_\text{sub}$ in \initmap{} at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
   	  add edge between $v_f$ and $v_\text{sub}$ to \initmap{}\; \label{line:transformation-edgetype1-start}
   	  add edge between $v_\text{sub}$ and $v_g$ to \initmap{}\; \label{line:transformation-edgetype1-end}
   	}
   	\ElseIf{$\{u,v\}$ is incident to a single internal face $f$ in \clustergraph{} \label{line:transformation-incidentfacelookup2}}{
-  	  add \quoted{outer edge vertex} $v_{\{u,v\}}$ to $G_\text{init}$\; \label{line:transformation-outeredgevertex}
-  	  position $v_{\{u,v\}}$ at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
+  	  add \quoted{outer edge vertex} $v_{\{u,v\}}$ to \initmap{}\; \label{line:transformation-outeredgevertex}
+  	  position $v_{\{u,v\}}$ in \initmap{} at midpoint of ${\{u,v\}}$ in \clustergraph{}\;
   	  add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex2}
-  	  position $v_\text{sub}$ at midpoint of segment between barycenter of $f$ and midpoint of ${\{u,v\}}$ in \clustergraph{} \label{line:transformation-barycenter2}\;
+  	  position $v_\text{sub}$ in \initmap{} at midpoint of segment between barycenter of $f$ and midpoint of ${\{u,v\}}$ in \clustergraph{} \label{line:transformation-barycenter2}\;
   	  add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to \initmap{}\; \label{line:transformation-edgetype2-start}
   	  add edge between $v_\text{sub}$ and $v_f$ to \initmap{}\; \label{line:transformation-edgetype2-end}
   	}
@@ -105,7 +105,7 @@ There are numerous popular algorithms to construct such a drawing, \eg{}, Tutte'
   \ForEach{incident edges $\{\{u,v\},\{v,w\}\}$ on outer face of \clustergraph{}}{
     \label{line:transformation-loop3-start}
     add \quoted{subdivision vertex} $v_\text{sub}$ to \initmap{}\; \label{line:transformation-subdivisionvertex3}
-    position $v_\text{sub}$ at position of $v$ in \clustergraph{}\;
+    position $v_\text{sub}$ in \initmap{} at position of $v$ in \clustergraph{}\;
     add edge between $v_{\{u,v\}}$ and $v_\text{sub}$ to \initmap{}\; \label{line:transformation-edgetype3-start}
     add edge between $v_\text{sub}$ and $v_{\{v,w\}}$ to \initmap{}\; \label{line:transformation-edgetype3-end}
     \label{line:transformation-loop3-end}
@@ -196,7 +196,7 @@ We therefore find the graph's faces in $\bigTheta{n+m}$, where $n = \lvert V(\cl
 The input graph has $\bigTheta{n}$ internal faces.
 They are all triangles; therefore, we can compute their barycenter in $\bigTheta{1}$ each (\cref{line:transformation-barycenter1}, \cref{line:transformation-barycenter2}).
 By keeping track of which faces an edge of the input graph is incident to while computing the faces as outlined above, we allow for $\bigTheta{1}$ lookups in \cref{line:transformation-incidentfacelookup1} and \cref{line:transformation-incidentfacelookup2}.
-As a result, the loop in \crefrange{line:transformation-loop1-start}{line:transformation-loop1-end} runs in $\bigTheta{n}$, the loop in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end} in $\bigTheta{m}$, and the loop in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end} in $\bigTheta{m}$.
+As a result, the loop in \crefrange{line:transformation-loop1-start}{line:transformation-loop1-end} runs in $\bigOh{n}$, the loop in \crefrange{line:transformation-loop2-start}{line:transformation-loop2-end} in $\bigTheta{m}$, and the loop in \crefrange{line:transformation-loop3-start}{line:transformation-loop3-end} in $\bigOh{m}$.
 
 The loop in \crefrange{line:transformation-loop4-start}{line:transformation-loop4-end} processes every vertex once in \cref{line:transformation-enumeratevertices} and every edge twice in \cref{line:transformation-enumerateedges}.
 We can check if the vertices $u,v,w$ form a triangle in constant time (\cref{line:transformation-checktriangle}) by checking if there is an edge between $v$ and $w$.
@@ -208,7 +208,7 @@ Therefore, the entire algorithm can be implemented to run in $\bigTheta{n+m}$.
 
 \paragraph{Theoretical Bounds}
 
-Do we have to subdivide edges of the augmented dual of our filtered cluster graph \clustergraph{} to get a valid polygonal dual of \clustergraph{}?
+One might wonder if we have to subdivide edges of the augmented dual of the filtered cluster graph \clustergraph{} to get a valid polygonal dual of \clustergraph{}.
 Although the augmented dual $(\clustergraph{})^+$ is plane by definition, it is not immediately evident that there exists a planar straight-line drawing of $(\clustergraph{})^+$ \emdash{} and that is what we need for it to be a polygonal contact representation.
 
 In our case, however, $(\clustergraph{})^+$ is simple; \ie{}, there are no loops or multiple adjacencies.
@@ -217,7 +217,7 @@ As a consequence, adding the helper vertex in the outer face of \clustergraph{} 
 In a simple triangulated graph, there are no two edges that are incident to the same faces (only those would create multiple adjacencies when forming the dual) and no edges that have the same face on both sides (only those would create loops when forming the dual) either.
 The augmented dual $(\clustergraph{})^+$ is therefore simple, and, according to Fáry's theorem \cite{fary1948straight}, there exists a planar straight-line drawing of $(\clustergraph{})^+$ respecting its original planar embedding.
 
-In addition to having a planar straight-line drawing, $(\clustergraph{})^+$ is also a cubic graph, \ie{}, one in which all vertices have degree 3.
+In addition to having a planar straight-line drawing, $(\clustergraph{})^+$ is a cubic graph, \ie{}, one in which all vertices have degree 3.
 This is because \clustergraph{} with the helper vertex is a triangulated graph, meaning every face is incident to exactly three edges, which turns into every vertex being incident to exactly three edges when forming the dual.
 Therefore, according to the results of Thomassen \cite{thomassen1992plane}, $(\clustergraph{})^+$ is area-universal.
 This result implies that regardless of the actual face weights that \clustergraph{} prescribes, there exists a planar straight-line drawing of $(\clustergraph{})^+$ realizing those weights/areas.

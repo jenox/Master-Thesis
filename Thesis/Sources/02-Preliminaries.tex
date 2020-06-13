@@ -13,8 +13,8 @@ In these cases, the element is wrapped in a set implicitly.
 
 \paragraph{Graphs}
 
-A \emph{(simple, undirected) graph} $G$ is a tuple $G = (V, E)$ of \emph{vertices} $V$ and \emph{edges} $E \subseteq \left\{\{u,v\} \vert (u,v) \in V^2 \right\}$.
-For an arbitrary graph $H$, we sometimes denote its vertices by $V(H)$ and its edges by $E(H)$.
+A \emph{(simple, undirected) graph} $G$ is a tuple $G = (V, E)$ of \emph{vertices} $V$ and \emph{edges} $E \subseteq \left\{\{u,v\} \vert (u,v) \in V^2, u \neq v \right\}$.
+For an arbitrary graph $H$, we also denote its vertices by $V(H)$ and its edges by $E(H)$.
 Graphs can be weighted, assigning real-valued weights to its vertices or edges.
 We differentiate between vertex-weighted graphs that provide a weight function $w_v \colon V \to \mathbb{R}$ and edge-weighted graphs that provide a weight function $w_e \colon E \to \mathbb{R}$.
 When graphs are weighted, we typically include the weight functions in the graph tuple, \eg{}, $G_w = (V,E,w_v)$.
@@ -29,7 +29,7 @@ A \emph{path} $p$ is a (non-empty) sequence of edges that connects a sequence of
 The first and last vertices $v_1, v_n$ of a path are called its \emph{endpoints}.
 A path $p$'s \emph{length} is the number of edges in the path.
 
-A graph $G = (V, E)$ is \emph{connected} if there exists a path between any pair of vertices in the graph.
+A graph $G = (V, E)$ is \emph{connected} if there exists a path between any pair of distinct vertices in the graph.
 $G$ is said to be \emph{$k$-(vertex)-connected} if one needs to remove $k$ or more vertices and their incident edges to disconnect $G$.
 Graphs that are 2-vertex-connected are also called \emph{biconnected}.
 
@@ -77,7 +77,7 @@ The graph $G$ is called \emph{planar} if it permits a drawing in which its edges
 Such a drawing is called a \emph{planar drawing} of $G$.
 If all edges of $G$ are line segments, we also call it a \emph{planar straight-line drawing}.
 
-A planar drawing $\Gamma$ of a graph $G$ partitions the plane into mutually disjoint regions called \emph{faces}.
+A planar drawing $\Gamma$ of a connected graph $G$ partitions the plane into mutually disjoint regions called \emph{faces}.
 All faces but one, the \emph{internal faces}, are bounded; the unbounded face is called the \emph{outer face}.
 Faces are identified by the cyclic order of the vertices that are encountered when walking along its boundary \cite{angelini2015monotone} in such a way that the inside of the face lies on the left side of the boundary.
 Vertices and edges are said to be \emph{incident} to a face if they lie on the face's boundary.
@@ -86,34 +86,35 @@ If vertices or edges lie on the outer face's boundary, we call them \emph{extern
 
 % Planar Embedding
 
-A \emph{planar embedding} $\phi$ of $G$ is an equivalence class of planar drawings that define the same set of faces for $G$.
-Therefore, a planar embedding $\phi$ uniquely determines the internal faces and the outer face, or, equivalently, the cyclic order of the edges incident to each vertex and the choice of the outer face \cite{angelini2015monotone}.
+A \emph{planar embedding} $\phi$ of a connected graph $G$ is an equivalence class of planar drawings that define the same set of faces for $G$.
+Therefore, a planar embedding $\phi$ uniquely determines the internal faces and the outer face.
+Equivalently, it also determines the cyclic order of the edges incident to each vertex and the choice of the outer face \cite{angelini2015monotone}.
 
-We also use the term \emph{plane graph} to refer to a planar graph $G$ in combination with a planar embedding $\phi$ and denote it as $G_\phi$.
-A plane graph $G$ can be \emph{face-weighted} if there's a weight function $w_f \colon F_\text{int}(G) \to \mathbb{R}$ assigning real numbers to its internal faces $F_\text{int}(G)$.
+We use the term \emph{plane graph} to refer to a planar graph $G$ in combination with a planar embedding $\phi$ thereof and denote it as $G_\phi$.
+A plane graph $G_\phi$ can be \emph{face-weighted} if there's a weight function $w_f \colon F_\text{int}(G_\phi) \to \mathbb{R}$ assigning real numbers to its internal faces $F_\text{int}(G_\phi)$.
 
 % Triangulatedness
 
-A planar graph $G$ is said to be \emph{maximal} or \emph{triangulated} if adding any edge to $G$ would result in a nonplanar graph.
+A planar graph $G$ is said to be \emph{maximal} or \emph{triangulated} if adding any edge to $G$ would result in a non-planar graph.
 Thus, in a maximal plane graph, all faces, including the outer face, are triangles.
 Similarly, a plane graph $G_\phi$ is said to be \emph{internally triangulated} if all internal faces are triangles.
 
 A \emph{multigraph} is a graph that, as opposed to a simple graph, can have multiple edges between a pair of vertices as well as so-called loops, \ie{}, edges connecting a vertex to itself.
 The \emph{dual (graph)} $G_\phi^*$ of a plane graph $G_\phi$ is a plane multigraph consisting of a vertex $v_f$ for every face $f$ of $G_\phi$ and edges connecting the vertices corresponding to the incident faces of each edge in the graph $G_\phi$.
-The dual is embedded in such a way that the cyclic order of the edges incident to each vertex is equivalent to the cyclic order of the edges bounding the respective faces in the original graph.
+The dual is embedded in such a way that the cyclic order of the dual edges incident to each dual vertex is equivalent to the cyclic order of the edges bounding the respective faces in the original graph.
 In relation to the dual $G_\phi^*$, the original graph $G_\phi$ is also called the \emph{primal (graph)}.
 The \emph{weak dual} $G_\phi^-$ of a plane graph $G_\phi$ is its dual without the vertex corresponding to the $G_\phi$'s outer face \cite{fleischner1974}.
 
 \begin{figure}[H]
 	\centering\includegraphics[height=130px]{Resources/Preliminaries-Dual.pdf}
-	\caption{A plane graph $G$ (in blue) and its dual $G^*$ (in red).}
+	\caption{A plane graph $G_\phi$ (in blue) and its dual $G_\phi^*$ (in red).}
 	\label{fig:preliminaries-dual}
 \end{figure}
 
 \Cref{fig:preliminaries-dual} illustrates an example of a plane graph and its dual.
 Forming the dual of a plane graph essentially turns vertices into faces and vice versa and \quoted{rotates} the edges of the plane graph, as illustrated in \cref{fig:preliminaries-dual}.
 Note that the planar embedding of the primal graph uniquely determines the embedding of its dual.
-When forming the dual of the dual of a plane graph, we get back the original plane graph, \ie{}, $(G^*)^* = G$.
+When forming the dual of the dual of a plane graph $G_\phi$, we get back the original plane graph, \ie{}, $(G_\phi^*)^* = G_\phi$.
 
 
 
@@ -137,7 +138,7 @@ We use the term rectilinear dual to refer to the actual arrangement of rectiline
 	\subfigure[]{\includegraphics[height=90px]{Resources/Preliminaries-RectilinearDual-Polygons.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=90px]{Resources/Preliminaries-RectilinearDual-Dual.pdf}}
-	\caption{A plane graph $G_\phi$ (a) and a possible rectilinear dual of $G_\phi$ with a hole, as a plain arrangement of polygons (b), and construed as yet another plane graph (c).}
+	\caption{A plane graph $G_\phi$ (a) and a possible rectilinear dual of $G_\phi$ with a hole, both as a plain arrangement of polygons (b) and interpreted as yet another plane graph (c).}
 	\label{fig:preliminaries-rectilinear-dual}
 \end{figure}
 
@@ -158,8 +159,8 @@ We say that a weighted contact representation is \emph{$\varepsilon$-area-propor
 
 
 
-\paragraph{Area Universality}
+\paragraph{Area-Universality}
 
-A plane graph $G$ with internal faces $F_\text{int}$ is \emph{area universal} if, for every area assignment of its internal faces $A \colon F_\text{int} \to \mathbb{R}_+$, there exists a planar straight-line drawing of $G$ with the same embedding such that all internal faces $f \in F_\text{int}$ have the area $A(f)$ prescribed by $A$.
+A plane graph $G$ with internal faces $F_\text{int}$ is \emph{area-universal} if, for every area assignment of its internal faces $A \colon F_\text{int} \to \mathbb{R}_+$, there exists a planar straight-line drawing of $G$ with the same embedding such that all internal faces $f \in F_\text{int}$ have the area $A(f)$ prescribed by $A$.
 
 Recall that Thomassen \cite{thomassen1992plane} showed that all (planar embeddings of) cubic graphs, \ie{}, graphs in which all vertices have degree 3, are area-universal, and that Kleist \cite{kleist2019planar} showed that all plane 1-subdivisions of planar graphs are area-universal, too.

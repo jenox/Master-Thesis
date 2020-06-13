@@ -20,7 +20,7 @@ Because the canonical map is much less volatile, vertices and clusters do not mo
 The algorithm for visualizing opinion networks by Betz \etal{} mentioned earlier is called OpMap.
 OpMap focuses on clustering and weighting the opinion vectors in the network and delegates the visualization to GMap.
 However, the clustering is performed on the abstract input graph, independent from the force-directed embedding algorithm.
-This can be problematic, because if the clustering and the computed embedding do not fit together well, one ends up with many fragmented, noncontinuous clusters on the map.
+This can be problematic, because if the clustering and the computed embedding do not fit together well, one ends up with many fragmented, non-continuous clusters on the map.
 OpMap has only been evaluated for relatively small input sizes and works with static inputs only.
 We want to explore an approach that supports larger, and most importantly, dynamic, opinion networks.
 
@@ -64,15 +64,15 @@ These forces result in adjacent vertices being pulled together while non-adjacen
 The drawings resulting from force-directed algorithms are generally visually appealing and easy to grasp \cite{kobourov2013force}.
 
 Bertault \cite{bertault1999force} designed a force-directed algorithm called PrEd that imposes additional constraints on the displacement of vertices.
-In PrEd vertices are only allowed to move in a way that preserves the edge crossing properties of the initial layout, \ie{}, existing edge crossings are preserved, and no new edge crossings are introduced.
-Simonetto \etal{} \cite{simonetto2011impred} introduced an improved version of this algorithm called ImPrEd, which is more flexible and performs much better on larger input graphs.
+In PrEd, vertices are only allowed to move in a way that preserves the edge crossing properties of the initial layout, \ie{}, existing edge crossings are preserved, and no new edge crossings are introduced.
+Simonetto \etal{} \cite{simonetto2011impred} introduced an improved version of this algorithm, called ImPrEd, which is more flexible and performs much better on larger input graphs.
 
 In this thesis, we use a force-directed algorithm with custom forces to control the layout of our polygonal maps.
 The forces we use are based on the aforementioned \quoted{pressure} in the map's regions.
 We must pay attention not to introduce edge crossings when tweaking the map's layout because regions are not allowed to overlap on geographical maps.
 
 
-\paragraph{Area Universality}
+\paragraph{Area-Universality}
 
 Area-universal graphs are plane graphs that can realize any area assignment to its internal faces with straight-line edges.
 Research on area-universality gives us important theoretical bounds on the statistical accuracy we can achieve with polygonal maps.
@@ -84,6 +84,6 @@ Therefore, one can interpret the map as a plane cubic graph.
 
 Kleist \cite{kleist2018drawing} \cite{kleist2019planar} showed that the 1-subdivision of any plane graph is area-universal.
 With just one bend per edge, any plane graph can therefore be drawn with arbitrary prescribed face areas.
-This property translates to polygonal maps, too.
+This property translates to polygonal maps, too:
 As long as there exists a point that's part of at most two regions' boundaries between two points that are part of more than two regions' boundaries, we can lift the requirement of no more than three regions meeting in a point.
 Most importantly, we can relax the requirements while still being able to achieve perfect statistical accuracy for arbitrary region weights.

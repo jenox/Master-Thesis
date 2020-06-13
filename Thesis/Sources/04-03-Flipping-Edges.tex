@@ -2,7 +2,7 @@
 \label{sect:flipping-edges}
 
 Let us now discuss the edge flip mentioned in the previous sections.
-An internal edge $\{u,v\}$ is incident to two different internal faces $f$, $g$.
+An internal edge $\{u,v\}$ is incident to two different internal faces $f$ and $g$.
 Let $x$ and $y$ denote the third vertex bounding $f$ and $g$, respectively.
 It is $x \neq y$ because the cluster graph is simple.
 Flipping the edge $\{u,v\}$ would replace it with the edge $\{x,y\}$.
@@ -45,7 +45,7 @@ We do so on alternating ends, \ie{}, we start by contracting the first edge, the
 	\label{fig:flip-edge-contract-boundary-below}
 \end{figure}
 
-\Cref{fig:flip-edge-contract-boundary-below} illustrates how we contract the first edge of the oriented upwards without introducing edge crossings.
+\Cref{fig:flip-edge-contract-boundary-below} illustrates how we contract the first edge of the oriented boundary upwards without introducing edge crossings.
 We describe only this construction in writing; the contraction of the last edge works virtually the same way and is illustrated in \cref{fig:flip-edge-contract-boundary-above}.
 Let $p_{uvy}$ denote the vertex where the faces $u$, $v$, and $y$ meet and $p_{uy}$ and $p_{vy}$ the subdivision vertices on the $u$-$y$- and $v$-$y$-boundaries that are incident to $p_{uvy}$, respectively.
 If the $u$-$y$- or $v$-$y$-boundary consists of only one edge, we subdivide it at its midpoint first.
@@ -55,7 +55,7 @@ These edges may introduce crossings, though, as illustrated by the dashed lines 
 However, with just one bend on each of the edges, we can guarantee that no edge crossings are created:
 
 \begin{itemize}
-\item If adding the edge between $p_{uv}$ and $p_{ay}$ ($a \in \{u,v\}$) does not introduce a crossing, we simply add the edge.
+\item If adding the edge between $p_{uv}$ and $p_{ay}$ ($a \in \{u,v\}$) does not introduce a crossing, we simply add the edge without a bend.
 (for $a = u$ in \cref{subfig:flip-edge-contract-boundary-below-2})
 \item Otherwise, if the internal angle of face $a$ at $p_{uvy}$ is $180^\circ$ or more, we place the bend at $p_{uvy}$, \ie{}, we insert the edge $\{p_{uv},p_{ay}\}$ and subdivide it with a new vertex $q_{ay}$ at the position of $p_{uvy}$.
 Note that at most one of the faces can have an internal angle at $p_{uvy}$ that is $180^\circ$ or more.
@@ -106,7 +106,7 @@ As a result, we always create an $x$-$y$-boundary that consists of at least one 
 As clusters in our data set grow increasingly similar, we may want to indicate this similarity with new edges between existing clusters in the cluster graph.
 Similarly, clusters can grow apart, and we may want to remove edges between clusters in the cluster graph.
 However, because the filtered cluster graph is internally triangulated, we cannot insert any more edges on the inside of the graph.
-Removing an internal edge is not permitted either, as that would create a hole in the graph.
+Removing an internal edge is not permitted either, as that would create holes in the graph.
 Consequently, we can insert edges only in the outer face and remove edges only on the outer face.
 
 On top of that, inserting an edge in the outer face is only possible if it preserves the cluster graph's internal triangulatedness.
@@ -148,7 +148,7 @@ If that vertex laid on the outer face already, we would end up creating a duplic
 \end{figure}
 
 Both of these operations are again a special case of the generic edge flip discussed above with a quirk:
-Instead of four internal faces, they involve three internal faces and the implicit outer face.
+Instead of involving four internal faces, they involve three internal faces and the implicit outer face.
 
 In the example from \cref{fig:flip-edge-example-insert}, we make $v$ into an internal vertex by inserting the edge $\{u,w\}$, removing $v$'s boundary with the outer face in the dual and creating a $u$-$w$-boundary in turn.
 Again, recall that in the construction of the augmented dual from \cref{def:augmented-dual}, we insert a helper vertex $v^+$ in the outer face and add edges to all vertices on the original outer face.
@@ -158,5 +158,5 @@ Therefore, we apply the same procedure as discussed for the edge flip above, con
 
 Similarly, when removing an edge $\{u,w\}$ on the outer face as in \cref{fig:flip-edge-example-remove}, a previously-internal vertex $v$ moves onto the outer face.
 We can think of it as flipping the edge to be removed to become the helper edge $\{v,v^+\}$.
-In the polygonal dual, this gets rid of the $u$-$w$-boundary and creates a boundary between $v$ and the implicit outer face in turn.
+In the polygonal dual, this gets rid of the $u$-$w$-boundary and creates a boundary between $v$ and the implicit outer face in return.
 Again, we apply the same procedure as discussed for the edge flip, first contracting the $u$-$w$-boundary into a single point and then creating a non-degenerate boundary between $v$ and the outer face.

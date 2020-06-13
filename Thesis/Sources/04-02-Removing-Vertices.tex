@@ -10,7 +10,7 @@ We make the same distinction here as when inserting vertices: we can remove inte
 
 \paragraph{Removing Internal Vertices}
 
-When removing an internal vertex of the filtered cluster filter, we must ensure that the graph remains internally triangulated.
+When removing an internal vertex of the filtered cluster graph, we must ensure that the graph remains internally triangulated.
 This property is preserved iff the internal vertex we want to remove has degree 3.
 Removing vertices with a higher degree would create holes in the graph.
 If one wants to remove a vertex with degree 4 or higher, one must first change the adjacencies on the inside of the cluster graph using edge flips, discussed in \cref{sect:flipping-edges}.
@@ -25,7 +25,7 @@ If one wants to remove a vertex with degree 4 or higher, one must first change t
 	\subfigure[]{\includegraphics[height=28mm]{Resources/RemoveVertex-Example-Internal-3.pdf}}
 	\quad
 	\subfigure[]{\includegraphics[height=28mm]{Resources/RemoveVertex-Example-Internal-4.pdf}}
-	\caption{A cluster graph and a polygonal dual thereof, before (a, c) and after (d, d) removing the internal vertex $x$ with degree 3.}
+	\caption{A cluster graph and a polygonal dual thereof, before (a, c) and after (b, d) removing the internal vertex $x$ with degree 3.}
 	\label{fig:remove-vertex-example-internal}
 \end{figure}
 
@@ -49,11 +49,11 @@ In practice, this works well because large clusters do not disappear at a moment
 
 With this trivial removal of vertices from the filtered cluster graph, the question arises why we only allow this for vertices of degree 3.
 Let us assume we want to remove a face that is adjacent to $n \geq 4$ other faces.
-By removing one of the boundaries with its neighboring faces, we would create $n$ new adjacencies that were not there before, as illustrated in \cref{fig:remove-vertex-nondeterministic-adjacencies}.
+By removing one of the boundaries with its neighboring faces, we would create $n - 3$ new adjacencies that were not there before, as illustrated in \cref{fig:remove-vertex-nondeterministic-adjacencies}.
 The respective edges would also need to be inserted into the cluster graph.
 Most importantly, though, which new adjacencies would be created depends on which one of the $n$ boundaries is dropped.
 Considering future dynamic operations must remain applicable to the cluster graph and the map, we cannot allow such a non-deterministic operation.
-Instead, the excess edges need to be flipped away before removing the vertex is allowed, so that the operations remain deterministic.
+Instead, the excess edges need to be flipped away before removing the vertex is allowed, so that the operation remains deterministic.
 
 \begin{figure}[H]
 	\centering

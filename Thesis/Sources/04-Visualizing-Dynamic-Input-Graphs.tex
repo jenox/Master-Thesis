@@ -34,11 +34,12 @@ The following figure illustrates this possible extension to our pipeline:
 	\label{fig:dynamic-pipeline-application}
 \end{figure}
 
-Extending the pipeline to allow the propagation of small, incremental changes of the input graph has numerous benefits other than preserving the viewer's mental map:
+Extending the pipeline to allow for the propagation of small, incremental changes of the input graph has numerous benefits other than preserving the viewer's mental map:
 %
 \begin{itemize}
 \item It allows highly efficient implementations of the incremental parts of the pipeline as only the aspects that have actually changed in the input graph or intermediate products need to be processed and propagated further along the pipeline.
-\item It makes the pipeline highly parallelizable for dynamic inputs: when a later phase is processing changes, an earlier phase can already start processing new changes independently.
+\item It makes the pipeline highly parallelizable for dynamic inputs:
+When a later phase is processing changes, an earlier phase can already start processing new changes independently.
 With our force-directed implementation of the drawing phase, we can even incorporate dynamic updates while the drawing phase is still running, even if it has not converged yet:
 We pause the force simulation, feed the current map \initmap{t} into the incremental transformation phase to incorporate the dynamic updates, and then resume the simulation with the updated map \initmap{t+1} produced by the incremental transformation phase.
 \item It efficiently supports dynamic input in an online setting, \ie{}, a setting in which the incremental changes are not known in advance, such as when visualizing live data.

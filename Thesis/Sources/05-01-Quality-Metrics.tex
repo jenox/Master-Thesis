@@ -1,8 +1,8 @@
 \section{Quality Metrics}
 \label{sect:quality-metrics}
 
-We start by looking at common quality metrics of cartograms \emdash{} which are closely related to the problem we are trying to solve in this thesis, as previously discussed in \cref{sect:related-work} \emdash{} and discussing how they translate to the visualizations our framework creates.
-We then discuss different ideas to formalize and quantify the previously mentioned notion of the region's local fatness.
+We start by looking at common quality metrics of cartograms \emdash{} which are closely related to the problem we are trying to solve in this thesis, as previously discussed in \cref{sect:related-work} \emdash{} and discuss how they translate to the visualizations our framework creates.
+We then discuss different ideas to formalize and quantify the previously-mentioned notion of a region's local fatness.
 
 
 
@@ -71,7 +71,7 @@ and its amplitude as
 \end{equation*}
 %
 where $\text{circumference}(P)$ is the length of $P$'s boundary, and $\text{hull}(P)$ is the convex hull of $P$'s corners in the form of another polygon.
-These equations were chosen such that the frequency $\text{freq}(P)$ of the vibration of a polygon reaches its maximum when half of the polygon's corners are notches, and the amplitude $\text{ampl}(P)$ of the vibration is close to 1 when the area of the polygon is very small in relation to the area of its convex hull.
+These equations were chosen such that the frequency $\text{freq}(P)$ of a polygon's boundary's vibration reaches its maximum when half of the polygon's corners are notches, and the amplitude $\text{ampl}(P)$ of the vibration is close to 1 when the area of the polygon is very small in relation to the area of its convex hull.
 Intuitively, for convex polygons $P$, both the frequency $\text{freq}(P)$ and the amplitude $\text{ampl}(P)$ of the vibration of its boundary is zero.
 
 To measure the convexity of a polygon, Brinkhoff \etal{} use the fraction of the area of the polygon's convex hull that the polygon itself covers:
@@ -83,7 +83,7 @@ To measure the convexity of a polygon, Brinkhoff \etal{} use the fraction of the
 \end{equation*}
 
 According to their observations, a relative increase of the boundary in combination with a high-frequency vibration of the boundary has the most significant impact on the intuitive perception of a polygon's complexity \cite{brinkhoff1995measuring}.
-They therefore combine these three properties as
+Therefore, they combine these three properties as
 %
 \begin{equation}
 \text{compl}(P) \coloneqq
@@ -128,4 +128,4 @@ However, in doing so, we create lots of corners where the polygon has an interna
 
 In our tests, neither of two entropy-based measures, with or without our adjustments, captured our intuitive understanding of local fatness satisfactorily.
 We therefore conduct our experimental evaluation in \cref{sect:experimental-evaluation} using just cartographic error and our modified version of polygon complexity from Brinkhoff \etal{} \cite{brinkhoff1995measuring} discussed above.
-For both measures, we will look at both the maximum and average values over all regions of the map.
+For both measures, we look at both the maximum and average values over all regions of the map.

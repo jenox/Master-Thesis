@@ -24,7 +24,7 @@ Given a plane graph $G$, a polygonal contact representation of $G$ is called a \
 
 Note that polygonal duals are a generalization of rectilinear duals and that, analogous to rectilinear duals, a polygonal dual can be interpreted as a plane graph itself: the polygons' corners translate to vertices in this graph, and their sides translate to edges.
 
-With these definitions in place, we can formalize the structure of our framework:
+With these definitions in place, we can formalize the structure of our framework.
 Our input is a biconnected and internally triangulated plane subgraph of a cluster graph that we call the \emph{filtered cluster graph} \clustergraph{}.
 We start by forming an initial weighted polygonal dual of \clustergraph{}, the \emph{initial map} \initmap{}.
 \initmap{} inherits its (face) weights from the vertices of \clustergraph{}.
@@ -47,8 +47,8 @@ We require a specific planar embedding of \clustergraph{} such that the \quoted{
 This requirement becomes essential in \cref{chap:visualizing-dynamic-input-graphs}, where we start incorporating dynamic updates into the filtered cluster graph and the resulting maps.
 \item \clustergraph{} must be internally triangulated such that the maps \initmap{} and \propmap{} are hole-free.
 Applying the map metaphor, this translates to there not being any lakes or rivers separating countries on the map.
-\Cref{fig:preliminaries-rectilinear-dual} illustrates how internal faces on four or more vertices creates holes in contact representations.
-\item \clustergraph{} must be biconnected such that, in combination with the internal triangulatedness, no vertex appears on the outer face multiple times.
+\Cref{fig:preliminaries-rectilinear-dual} illustrates how internal faces on four or more vertices create holes in contact representations.
+\item \clustergraph{} must be biconnected such that, in combination with the internal triangulatedness, no vertex appears on the outer face more than once.
 The region of such a vertex in the polygonal dual would need to have multiple boundaries with the outer face, which we specifically excluded in \cref{chap:preliminaries}.
 \item \clustergraph{} must be vertex-weighted such that the map \initmap{} can inherit its vertex weights.
 We require these weights to determine the areas the polygonal regions are supposed to have in \propmap{}.

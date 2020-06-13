@@ -2,7 +2,7 @@
 \label{sect:structure-of-this-thesis}
 
 The main problem with GMap is the independent nature of the clustering and embedding phases:
-If clustering is done first, a force-directed embedding algorithm likely causes a high degree of fragmented and noncontinuous regions \cite{mashima2011visualizing}.
+If clustering is done first, a force-directed embedding algorithm likely causes a high degree of fragmented and non-continuous regions \cite{mashima2011visualizing}.
 OpMap manages to somewhat diminish this effect with a smart choice of forces that makes use of the clustering information \cite{schmettow2017}.
 Embedding the graph first and then clustering it using a geometric clustering algorithm is dangerous, too, because this may detect clusters that do not exist in the abstract data.
 Most force-directed algorithms used with GMap also lack the ability to specify the desired sizes and shapes of the clusters.
