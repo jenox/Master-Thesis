@@ -17,7 +17,7 @@ We want there to be a strong correlation between a country's size and the size o
 This is a challenging problem because popular algorithms for visualizing graphs as geographic-like maps struggle with clusters being fragmented across different countries on the map, and because redrawing the map for a new, albeit similar, input graph does generally not preserve the viewer's mental map.
 
 To address these issues, we propose a framework that guarantees to keep clusters as continuous regions in the generated maps and supports dynamic inputs by allowing for small, incremental updates such as inserting or removing regions over time.
-We do this by working on an intermediate plane graph whose vertices correspond to clusters in the input graph, the cluster graph, and constructing the map as a contact representation of this cluster graph while accounting for the dynamic changes in both the cluster graph and its contact representation.
+We do this by working on an intermediate plane graph whose vertices correspond to clusters in the input graph, the cluster graph, and by constructing the map as a contact representation of this cluster graph while accounting for the dynamic changes in both the cluster graph and its contact representation.
 This framework can be applied to a variety of real-world applications, allowing us to visualize clusters in the underlying data and how they change over time, thereby enabling viewers of the visualization to detect trends in the data easily.
 
 \vskip 2cm
